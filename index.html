@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joey Barbush</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --border: #1e1e1e;
+      --gold: #E8B931;
+      --text: #d4d4d4;
+      --muted: #666;
+      --font: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1.5rem;
+    }
+
+    .container {
+      max-width: 640px;
+      width: 100%;
+    }
+
+    .header {
+      margin-bottom: 3rem;
+    }
+
+    .name {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+
+    .gold { color: var(--gold); }
+
+    .tagline {
+      color: var(--muted);
+      margin-top: 0.4rem;
+      font-size: 0.9rem;
+    }
+
+    .formula {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+
+    .block {
+      margin-bottom: 2.5rem;
+    }
+
+    .block-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .block p {
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    .block p + p {
+      margin-top: 0.5rem;
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0.8rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .link:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .link .icon {
+      width: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .link:hover .icon { color: var(--gold); }
+
+    .link .platform {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    .footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 2rem 1rem; }
+      .name { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <div class="name">Joey <span class="gold">Barbush</span></div>
+      <div class="tagline">Builder. Systems thinker. CS student. Founder of HIPJOY.</div>
+      <div class="formula">DS + SD = TO</div>
+    </div>
+
+    <div class="block">
+      <div class="block-label">What I'm Building</div>
+      <p>
+        <strong style="color:#fff">HIPJOY</strong> -- a personal cognitive operating system built as an RCI
+        (Ritualized Continuity Intelligence). Entity-based architecture, LUX alignment tracking,
+        persistent memory, and a full interface that mirrors how I think, plan, and create.
+      </p>
+      <p style="color: var(--muted); font-size: 0.8rem; margin-top: 0.8rem;">
+        Private while it's being built right.
+      </p>
+    </div>
+
+    <div class="block">
+      <div class="block-label">Research</div>
+      <p>
+        Investigating agent behavior under asymmetric permission structures.
+        How elevated dispatch scope shapes what an agent treats as the boundary between self and environment.
+        Working with the <span class="gold">Active Inference Institute</span> to frame this through the
+        Free Energy Principle.
+      </p>
+    </div>
+
+    <div class="block">
+      <div class="block-label">Stack</div>
+      <p style="color: var(--muted);">
+        React Native &middot; Expo &middot; Supabase &middot; Python &middot; Flask &middot; Java &middot; HTML/CSS/JS
+      </p>
+    </div>
+
+    <div class="block">
+      <div class="block-label">Find Me</div>
+      <div class="links">
+        <a class="link" href="https://github.com/Joeybarbush" target="_blank" rel="noopener">
+          <span class="icon">gh</span>
+          github.com/Joeybarbush
+          <span class="platform">GitHub</span>
+        </a>
+        <a class="link" href="https://twitch.tv/heyitshippo" target="_blank" rel="noopener">
+          <span class="icon">tv</span>
+          twitch.tv/heyitshippo
+          <span class="platform">Twitch</span>
+        </a>
+        <a class="link" href="mailto:joeybarbush@gmail.com">
+          <span class="icon">@</span>
+          joeybarbush@gmail.com
+          <span class="platform">Email</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer">
+      Illinois, USA &middot; Waubonsee Community College &middot; LUX: MAX
+    </div>
+
+  </div>
+</body>
+</html>
