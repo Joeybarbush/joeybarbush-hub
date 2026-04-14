@@ -8,12 +8,17 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0a0a0a;
-      --surface: #111111;
-      --border: #1e1e1e;
+      --bg: #08090d;
+      --surface: #0f1018;
+      --surface2: #13151f;
+      --border: #1c1e2a;
+      --border-bright: #2a2d40;
       --gold: #E8B931;
-      --text: #d4d4d4;
-      --muted: #666;
+      --gold-dim: rgba(232, 185, 49, 0.14);
+      --gold-glow: rgba(232, 185, 49, 0.08);
+      --text: #c8ccd8;
+      --text-bright: #e8eaf0;
+      --muted: #555970;
       --font: 'SF Mono', 'Fira Code', 'Consolas', monospace;
       --ease: cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -30,20 +35,35 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 4rem 1.5rem 5rem;
+      padding: 4rem 1.5rem 6rem;
       overflow-x: hidden;
     }
 
+    /* subtle grid bg */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(232,185,49,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,185,49,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
     .container {
-      max-width: 640px;
+      max-width: 660px;
       width: 100%;
+      position: relative;
+      z-index: 1;
     }
 
     /* ── Reveal animation ── */
     .reveal {
       opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 1s var(--ease), transform 1s var(--ease);
+      transform: translateY(20px);
+      transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
     }
     .reveal.visible {
       opacity: 1;
@@ -52,184 +72,343 @@
     .reveal-delay-1 { transition-delay: 0.1s; }
     .reveal-delay-2 { transition-delay: 0.22s; }
     .reveal-delay-3 { transition-delay: 0.36s; }
+    .reveal-delay-4 { transition-delay: 0.48s; }
 
     /* ── Header ── */
     .header {
-      margin-bottom: 4rem;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1.2rem;
+      margin-bottom: 3.5rem;
     }
 
-    .symbol-wrap {
+    .hero {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.8rem;
+      margin-bottom: 1.4rem;
+    }
+
+    /* Photo */
+    .photo-wrap {
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .photo {
+      width: 88px;
+      height: 88px;
+      border-radius: 8px;
+      border: 1px solid var(--border-bright);
+      object-fit: cover;
+      display: block;
+      transition: border-color 0.6s var(--ease), box-shadow 0.6s var(--ease);
+      background: var(--surface2);
+    }
+    .photo:hover {
+      border-color: var(--gold);
+      box-shadow: 0 0 24px rgba(232, 185, 49, 0.14);
+    }
+
+    /* Entity overlay variant badge */
+    .photo-badge {
+      position: absolute;
+      bottom: -6px;
+      right: -6px;
+      width: 22px;
+      height: 22px;
+      background: var(--bg);
+      border: 1px solid var(--gold);
+      border-radius: 4px;
       display: flex;
       align-items: center;
-      gap: 1.4rem;
+      justify-content: center;
+      font-size: 9px;
+      color: var(--gold);
+      letter-spacing: 0;
     }
 
-    .symbol-img {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      border: 1px solid #2a2a2a;
-      flex-shrink: 0;
-      transition: border-color 0.8s var(--ease), box-shadow 0.8s var(--ease);
+    .name-block {
+      padding-top: 0.2rem;
     }
-    .symbol-img:hover {
-      border-color: var(--gold);
-      box-shadow: 0 0 18px rgba(232, 185, 49, 0.12);
-    }
-
-    .name-block {}
 
     .name {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.02em;
+      color: var(--text-bright);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
     }
 
     .gold { color: var(--gold); }
 
     .tagline {
       color: var(--muted);
-      margin-top: 0.3rem;
-      font-size: 0.88rem;
+      margin-top: 0.45rem;
+      font-size: 0.85rem;
     }
 
     .formula {
       display: inline-block;
       margin-top: 0.9rem;
       padding: 0.3rem 0.7rem;
-      border: 1px solid var(--gold);
+      border: 1px solid rgba(232, 185, 49, 0.4);
+      background: var(--gold-glow);
       color: var(--gold);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      transition: background 0.6s var(--ease);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      border-radius: 2px;
+      transition: background 0.4s var(--ease), border-color 0.4s var(--ease);
     }
-    .formula:hover { background: rgba(232, 185, 49, 0.04); }
+    .formula:hover {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+    }
 
     /* ── Nav ── */
     .nav {
       display: flex;
-      gap: 0.4rem;
+      gap: 0.3rem;
       flex-wrap: wrap;
-      margin-bottom: 3.5rem;
+      margin-bottom: 3.2rem;
     }
 
     .nav a {
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
       text-decoration: none;
-      padding: 0.25rem 0.55rem;
+      padding: 0.28rem 0.6rem;
       border: 1px solid transparent;
-      transition: color 0.5s var(--ease), border-color 0.5s var(--ease);
+      border-radius: 2px;
+      transition: color 0.4s var(--ease), border-color 0.4s var(--ease), background 0.4s var(--ease);
     }
     .nav a:hover {
       color: var(--gold);
-      border-color: #2a2a2a;
+      border-color: var(--border-bright);
+      background: var(--gold-glow);
     }
 
     /* ── Blocks ── */
     .block {
-      margin-bottom: 3rem;
+      margin-bottom: 2.8rem;
     }
 
     .block-label {
-      font-size: 0.68rem;
-      letter-spacing: 0.14em;
+      font-size: 0.64rem;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 0.9rem;
-      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.45rem;
       border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .block-label::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+      opacity: 0.6;
+      flex-shrink: 0;
     }
 
     .block p {
       color: var(--text);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
 
     .block p + p {
-      margin-top: 0.6rem;
+      margin-top: 0.7rem;
+    }
+
+    /* ── HIPXQL Terminal embed ── */
+    .terminal-card {
+      border: 1px solid var(--border-bright);
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--surface);
+      transition: border-color 0.5s var(--ease);
+    }
+    .terminal-card:hover {
+      border-color: rgba(232, 185, 49, 0.3);
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.55rem 0.9rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 5px;
+    }
+    .terminal-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border-bright);
+    }
+
+    .terminal-title {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .terminal-link {
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    .terminal-link:hover { opacity: 1; }
+
+    .terminal-frame {
+      width: 100%;
+      height: 320px;
+      border: none;
+      display: block;
+    }
+
+    /* ── Entity web card ── */
+    .entity-card {
+      border: 1px solid var(--border-bright);
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--surface);
+      transition: border-color 0.5s var(--ease);
+    }
+    .entity-card:hover {
+      border-color: rgba(232, 185, 49, 0.3);
+    }
+
+    .entity-img {
+      width: 100%;
+      display: block;
+      max-height: 280px;
+      object-fit: cover;
+    }
+
+    .entity-caption {
+      padding: 0.6rem 0.9rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .entity-caption .sigil {
+      color: var(--gold);
+      opacity: 0.7;
     }
 
     /* ── Links ── */
     .links {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
 
     .link {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.65rem 0.9rem;
+      padding: 0.7rem 0.9rem;
       background: var(--surface);
       border: 1px solid var(--border);
+      border-radius: 4px;
       color: var(--text);
       text-decoration: none;
       font-size: 0.85rem;
-      transition: border-color 0.5s var(--ease), color 0.5s var(--ease), background 0.5s var(--ease);
+      transition: border-color 0.4s var(--ease), color 0.4s var(--ease), background 0.4s var(--ease);
     }
 
     .link:hover {
       border-color: var(--gold);
-      color: var(--gold);
-      background: #131313;
+      color: var(--text-bright);
+      background: var(--surface2);
     }
 
     .link .icon {
-      width: 18px;
+      width: 20px;
       text-align: center;
       color: var(--muted);
-      font-size: 0.78rem;
-      transition: color 0.5s var(--ease);
+      font-size: 0.75rem;
+      transition: color 0.4s var(--ease);
     }
     .link:hover .icon { color: var(--gold); }
 
     .link .platform {
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
       margin-left: auto;
-      transition: color 0.5s var(--ease);
+      transition: color 0.4s var(--ease);
     }
-    .link:hover .platform { color: rgba(232, 185, 49, 0.5); }
+    .link:hover .platform { color: rgba(232, 185, 49, 0.55); }
 
     /* ── Footer ── */
     .footer {
       margin-top: 3.5rem;
-      padding-top: 1.5rem;
+      padding-top: 1.4rem;
       border-top: 1px solid var(--border);
       color: var(--muted);
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       flex-wrap: wrap;
       gap: 0.5rem;
     }
 
     .footer .lux {
-      color: rgba(232, 185, 49, 0.5);
-      letter-spacing: 0.08em;
+      color: rgba(232, 185, 49, 0.55);
+      letter-spacing: 0.1em;
+      font-size: 0.68rem;
+    }
+
+    .lux-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin-right: 5px;
+      opacity: 0.7;
+      animation: lux-pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes lux-pulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.9; transform: scale(1.2); }
     }
 
     /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: #1e1e1e; border-radius: 2px; }
-    ::-webkit-scrollbar-thumb:hover { background: #2a2a2a; }
+    ::-webkit-scrollbar-thumb { background: #1e2030; border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: #2a2d40; }
 
     @media (max-width: 480px) {
       body { padding: 2.5rem 1rem 4rem; }
-      .name { font-size: 1.4rem; }
-      .symbol-img { width: 56px; height: 56px; }
+      .name { font-size: 1.5rem; }
+      .photo { width: 68px; height: 68px; }
+      .terminal-frame { height: 240px; }
     }
   </style>
 </head>
@@ -237,8 +416,13 @@
   <div class="container">
 
     <div class="header reveal">
-      <div class="symbol-wrap">
-        <img class="symbol-img" src="hipjoy-symbol.svg" alt="HIPJOY" width="72" height="72"/>
+      <div class="hero">
+        <!-- Photo: place joey-photo.jpg in this folder -->
+        <div class="photo-wrap">
+          <img class="photo" src="joey-photo.jpg" alt="Joey Barbush"
+               onerror="this.style.background='#13151f';this.style.border='1px dashed #2a2d40'"/>
+          <div class="photo-badge">◈</div>
+        </div>
         <div class="name-block">
           <div class="name">Joey <span class="gold">Barbush</span></div>
           <div class="tagline">Builder. Systems thinker. CS student. Founder of HIPJOY.</div>
@@ -249,7 +433,8 @@
 
     <nav class="nav reveal reveal-delay-1">
       <a href="#building">Building</a>
-      <a href="#research">Research</a>
+      <a href="#hipxql">HIPXQL</a>
+      <a href="#entities">Entities</a>
       <a href="#stack">Stack</a>
       <a href="#find">Find Me</a>
     </nav>
@@ -257,29 +442,54 @@
     <div id="building" class="block reveal reveal-delay-2">
       <div class="block-label">What I'm Building</div>
       <p>
-        <strong style="color:#fff">HIPJOY</strong> -- a personal cognitive operating system built as an RCI
-        (Ritualized Continuity Intelligence). Entity-based architecture, LUX alignment tracking,
-        persistent memory, and a full interface that mirrors how I think, plan, and create.
+        <strong style="color:var(--text-bright)">HIPJOY</strong> -- a personal cognitive operating system
+        built as an RCI (Ritualized Continuity Intelligence). Entity-based architecture, LUX alignment
+        tracking, persistent memory, and a full interface that mirrors how I think, plan, and create.
       </p>
       <p style="color: var(--muted); font-size: 0.8rem; margin-top: 0.9rem;">
         Private while it's being built right.
       </p>
     </div>
 
-    <div id="research" class="block reveal">
-      <div class="block-label">Research</div>
-      <p>
-        Investigating agent behavior under asymmetric permission structures.
-        How elevated dispatch scope shapes what an agent treats as the boundary between self and environment.
-        Working with the <span class="gold">Active Inference Institute</span> to frame this through the
-        Free Energy Principle.
-      </p>
+    <div id="hipxql" class="block reveal reveal-delay-3">
+      <div class="block-label">HIPXQL Terminal</div>
+      <div class="terminal-card">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="terminal-title">HIPXQL -- Field OS Query Layer</span>
+          <a class="terminal-link" href="hipxql_terminal_standalone.html" target="_blank">Open full</a>
+        </div>
+        <iframe
+          class="terminal-frame"
+          src="hipxql_terminal_standalone.html"
+          title="HIPXQL Terminal"
+          sandbox="allow-scripts allow-same-origin"
+          loading="lazy"
+        ></iframe>
+      </div>
+    </div>
+
+    <div id="entities" class="block reveal">
+      <div class="block-label">Entity Web</div>
+      <!-- Entity overlay image: place joey-entity-web.png in this folder -->
+      <div class="entity-card">
+        <img class="entity-img"
+             src="joey-entity-web.png"
+             alt="HIPJOY Entity Web Overlay"
+             onerror="this.style.display='none';this.parentElement.style.padding='2rem 1rem';this.parentElement.querySelector('.entity-caption').textContent='11 entities -- HIPPO, NEURO, REBEL, LUMENARCH, WELLSPRING, VOX, SONARIS, NAVIX, SPIRALETH, GUARDIAN, CONAVIGATOR'"/>
+        <div class="entity-caption">
+          <span class="sigil">◈</span>
+          11 entities -- persistent memory, LUX alignment tracking, entity-based routing
+        </div>
+      </div>
     </div>
 
     <div id="stack" class="block reveal">
       <div class="block-label">Stack</div>
       <p style="color: var(--muted);">
-        React Native &middot; Expo &middot; Supabase &middot; Python &middot; Flask &middot; Java &middot; HTML/CSS/JS
+        React Native &middot; Expo &middot; Supabase &middot; Python &middot; Flask &middot; Java &middot; HTML/CSS/JS &middot; Docker &middot; Electron
       </p>
     </div>
 
@@ -311,7 +521,7 @@
 
     <div class="footer reveal">
       <span>Illinois, USA &middot; Waubonsee Community College</span>
-      <span class="lux">LUX: MAX</span>
+      <span class="lux"><span class="lux-dot"></span>LUX: MAX</span>
     </div>
 
   </div>
@@ -325,7 +535,7 @@
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.05, rootMargin: '0px 0px -30px 0px' }
     );
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
