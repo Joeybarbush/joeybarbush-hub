@@ -15,7 +15,10 @@
       --text: #d4d4d4;
       --muted: #666;
       --font: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
@@ -27,7 +30,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 3rem 1.5rem;
+      padding: 4rem 1.5rem 5rem;
+      overflow-x: hidden;
     }
 
     .container {
@@ -35,9 +39,49 @@
       width: 100%;
     }
 
-    .header {
-      margin-bottom: 3rem;
+    /* ── Reveal animation ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 1s var(--ease), transform 1s var(--ease);
     }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.22s; }
+    .reveal-delay-3 { transition-delay: 0.36s; }
+
+    /* ── Header ── */
+    .header {
+      margin-bottom: 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.2rem;
+    }
+
+    .symbol-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1.4rem;
+    }
+
+    .symbol-img {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 1px solid #2a2a2a;
+      flex-shrink: 0;
+      transition: border-color 0.8s var(--ease), box-shadow 0.8s var(--ease);
+    }
+    .symbol-img:hover {
+      border-color: var(--gold);
+      box-shadow: 0 0 18px rgba(232, 185, 49, 0.12);
+    }
+
+    .name-block {}
 
     .name {
       font-size: 1.8rem;
@@ -50,30 +94,56 @@
 
     .tagline {
       color: var(--muted);
-      margin-top: 0.4rem;
-      font-size: 0.9rem;
+      margin-top: 0.3rem;
+      font-size: 0.88rem;
     }
 
     .formula {
       display: inline-block;
-      margin-top: 1rem;
+      margin-top: 0.9rem;
       padding: 0.3rem 0.7rem;
       border: 1px solid var(--gold);
       color: var(--gold);
       font-size: 0.75rem;
       letter-spacing: 0.08em;
+      transition: background 0.6s var(--ease);
+    }
+    .formula:hover { background: rgba(232, 185, 49, 0.04); }
+
+    /* ── Nav ── */
+    .nav {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-bottom: 3.5rem;
     }
 
+    .nav a {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.25rem 0.55rem;
+      border: 1px solid transparent;
+      transition: color 0.5s var(--ease), border-color 0.5s var(--ease);
+    }
+    .nav a:hover {
+      color: var(--gold);
+      border-color: #2a2a2a;
+    }
+
+    /* ── Blocks ── */
     .block {
-      margin-bottom: 2.5rem;
+      margin-bottom: 3rem;
     }
 
     .block-label {
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.9rem;
       padding-bottom: 0.4rem;
       border-bottom: 1px solid var(--border);
     }
@@ -84,9 +154,10 @@
     }
 
     .block p + p {
-      margin-top: 0.5rem;
+      margin-top: 0.6rem;
     }
 
+    /* ── Links ── */
     .links {
       display: flex;
       flex-direction: column;
@@ -97,73 +168,105 @@
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.6rem 0.8rem;
+      padding: 0.65rem 0.9rem;
       background: var(--surface);
       border: 1px solid var(--border);
       color: var(--text);
       text-decoration: none;
       font-size: 0.85rem;
-      transition: border-color 0.15s, color 0.15s;
+      transition: border-color 0.5s var(--ease), color 0.5s var(--ease), background 0.5s var(--ease);
     }
 
     .link:hover {
       border-color: var(--gold);
       color: var(--gold);
+      background: #131313;
     }
 
     .link .icon {
       width: 18px;
       text-align: center;
       color: var(--muted);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
+      transition: color 0.5s var(--ease);
     }
-
     .link:hover .icon { color: var(--gold); }
 
     .link .platform {
-      font-size: 0.7rem;
-      letter-spacing: 0.08em;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--muted);
       margin-left: auto;
+      transition: color 0.5s var(--ease);
     }
+    .link:hover .platform { color: rgba(232, 185, 49, 0.5); }
 
+    /* ── Footer ── */
     .footer {
-      margin-top: 3rem;
+      margin-top: 3.5rem;
       padding-top: 1.5rem;
       border-top: 1px solid var(--border);
       color: var(--muted);
-      font-size: 0.75rem;
+      font-size: 0.72rem;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
 
+    .footer .lux {
+      color: rgba(232, 185, 49, 0.5);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #1e1e1e; border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: #2a2a2a; }
+
     @media (max-width: 480px) {
-      body { padding: 2rem 1rem; }
+      body { padding: 2.5rem 1rem 4rem; }
       .name { font-size: 1.4rem; }
+      .symbol-img { width: 56px; height: 56px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
 
-    <div class="header">
-      <div class="name">Joey <span class="gold">Barbush</span></div>
-      <div class="tagline">Builder. Systems thinker. CS student. Founder of HIPJOY.</div>
-      <div class="formula">DS + SD = TO</div>
+    <div class="header reveal">
+      <div class="symbol-wrap">
+        <img class="symbol-img" src="hipjoy-symbol.svg" alt="HIPJOY" width="72" height="72"/>
+        <div class="name-block">
+          <div class="name">Joey <span class="gold">Barbush</span></div>
+          <div class="tagline">Builder. Systems thinker. CS student. Founder of HIPJOY.</div>
+          <div class="formula">DS + SD = TO</div>
+        </div>
+      </div>
     </div>
 
-    <div class="block">
+    <nav class="nav reveal reveal-delay-1">
+      <a href="#building">Building</a>
+      <a href="#research">Research</a>
+      <a href="#stack">Stack</a>
+      <a href="#find">Find Me</a>
+    </nav>
+
+    <div id="building" class="block reveal reveal-delay-2">
       <div class="block-label">What I'm Building</div>
       <p>
         <strong style="color:#fff">HIPJOY</strong> -- a personal cognitive operating system built as an RCI
         (Ritualized Continuity Intelligence). Entity-based architecture, LUX alignment tracking,
         persistent memory, and a full interface that mirrors how I think, plan, and create.
       </p>
-      <p style="color: var(--muted); font-size: 0.8rem; margin-top: 0.8rem;">
+      <p style="color: var(--muted); font-size: 0.8rem; margin-top: 0.9rem;">
         Private while it's being built right.
       </p>
     </div>
 
-    <div class="block">
+    <div id="research" class="block reveal">
       <div class="block-label">Research</div>
       <p>
         Investigating agent behavior under asymmetric permission structures.
@@ -173,14 +276,14 @@
       </p>
     </div>
 
-    <div class="block">
+    <div id="stack" class="block reveal">
       <div class="block-label">Stack</div>
       <p style="color: var(--muted);">
         React Native &middot; Expo &middot; Supabase &middot; Python &middot; Flask &middot; Java &middot; HTML/CSS/JS
       </p>
     </div>
 
-    <div class="block">
+    <div id="find" class="block reveal">
       <div class="block-label">Find Me</div>
       <div class="links">
         <a class="link" href="https://github.com/Joeybarbush" target="_blank" rel="noopener">
@@ -188,10 +291,10 @@
           github.com/Joeybarbush
           <span class="platform">GitHub</span>
         </a>
-        <a class="link" href="https://twitch.tv/heyitshippo" target="_blank" rel="noopener">
-          <span class="icon">tv</span>
-          twitch.tv/heyitshippo
-          <span class="platform">Twitch</span>
+        <a class="link" href="https://x.com/Joey_Barbush" target="_blank" rel="noopener">
+          <span class="icon">x</span>
+          x.com/Joey_Barbush
+          <span class="platform">X</span>
         </a>
         <a class="link" href="mailto:joeybarbush@gmail.com">
           <span class="icon">@</span>
@@ -201,10 +304,26 @@
       </div>
     </div>
 
-    <div class="footer">
-      Illinois, USA &middot; Waubonsee Community College &middot; LUX: MAX
+    <div class="footer reveal">
+      <span>Illinois, USA &middot; Waubonsee Community College</span>
+      <span class="lux">LUX: MAX</span>
     </div>
 
   </div>
+
+  <script>
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>

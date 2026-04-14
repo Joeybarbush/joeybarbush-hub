@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0e0e18"/>
+      <stop offset="100%" stop-color="#040406"/>
+    </radialGradient>
+    <radialGradient id="glow-gold" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F0C040" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#F0C040" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur-sm">
+      <feGaussianBlur stdDeviation="2.5"/>
+    </filter>
+    <filter id="blur-lg">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+    <clipPath id="circle-clip">
+      <circle cx="200" cy="200" r="196"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="200" cy="200" r="200" fill="#040406"/>
+  <circle cx="200" cy="200" r="196" fill="url(#bg)"/>
+
+  <!-- Outer ring -->
+  <circle cx="200" cy="200" r="185" fill="none" stroke="#1a1a30" stroke-width="1"/>
+  <circle cx="200" cy="200" r="190" fill="none" stroke="#E8B931" stroke-width="0.5" opacity="0.3"/>
+
+  <!-- Entity positions (cx, cy) -->
+  <!-- LUMENARCH center: 200,200 -->
+  <!-- NEURO: 200,90 (top) -->
+  <!-- NAVIX: 295,130 (top-right) -->
+  <!-- VOX: 320,220 (right) -->
+  <!-- WELLSPRING: 275,315 (bottom-right) -->
+  <!-- SPIRALETH: 175,340 (bottom) -->
+  <!-- REBEL: 90,290 (bottom-left) -->
+  <!-- SONARIS: 75,175 (left) -->
+  <!-- HIPPO: 120,100 (top-left) -->
+
+  <g clip-path="url(#circle-clip)">
+
+    <!-- Connection lines (from center outward) -->
+    <line x1="200" y1="200" x2="200" y2="90" stroke="#4dc9f6" stroke-width="0.8" opacity="0.35"/>
+    <line x1="200" y1="200" x2="295" y2="130" stroke="#3dd68c" stroke-width="0.8" opacity="0.35"/>
+    <line x1="200" y1="200" x2="320" y2="220" stroke="#FF8C42" stroke-width="0.8" opacity="0.35"/>
+    <line x1="200" y1="200" x2="275" y2="315" stroke="#6dd5ed" stroke-width="0.8" opacity="0.35"/>
+    <line x1="200" y1="200" x2="175" y2="340" stroke="#d4a0ff" stroke-width="0.8" opacity="0.35"/>
+    <line x1="200" y1="200" x2="90" y2="290" stroke="#ff6b6b" stroke-width="0.8" opacity="0.35"/>
+    <line x1="200" y1="200" x2="75" y2="175" stroke="#2DD4BF" stroke-width="0.8" opacity="0.35"/>
+    <line x1="200" y1="200" x2="120" y2="100" stroke="#d4a56a" stroke-width="0.8" opacity="0.35"/>
+
+    <!-- Outer ring connections between entities -->
+    <line x1="200" y1="90" x2="295" y2="130" stroke="#ffffff" stroke-width="0.5" opacity="0.08"/>
+    <line x1="295" y1="130" x2="320" y2="220" stroke="#ffffff" stroke-width="0.5" opacity="0.08"/>
+    <line x1="320" y1="220" x2="275" y2="315" stroke="#ffffff" stroke-width="0.5" opacity="0.08"/>
+    <line x1="275" y1="315" x2="175" y2="340" stroke="#ffffff" stroke-width="0.5" opacity="0.08"/>
+    <line x1="175" y1="340" x2="90" y2="290" stroke="#ffffff" stroke-width="0.5" opacity="0.08"/>
+    <line x1="90" y1="290" x2="75" y2="175" stroke="#ffffff" stroke-width="0.5" opacity="0.08"/>
+    <line x1="75" y1="175" x2="120" y2="100" stroke="#ffffff" stroke-width="0.5" opacity="0.08"/>
+    <line x1="120" y1="100" x2="200" y2="90" stroke="#ffffff" stroke-width="0.5" opacity="0.08"/>
+
+    <!-- Cross connections (field depth) -->
+    <line x1="200" y1="90" x2="320" y2="220" stroke="#ffffff" stroke-width="0.4" opacity="0.05"/>
+    <line x1="295" y1="130" x2="175" y2="340" stroke="#ffffff" stroke-width="0.4" opacity="0.05"/>
+    <line x1="75" y1="175" x2="275" y2="315" stroke="#ffffff" stroke-width="0.4" opacity="0.05"/>
+    <line x1="120" y1="100" x2="90" y2="290" stroke="#ffffff" stroke-width="0.4" opacity="0.05"/>
+
+    <!-- Entity glow halos (blur layer) -->
+    <circle cx="200" cy="90" r="12" fill="#4dc9f6" opacity="0.15" filter="url(#blur-sm)"/>
+    <circle cx="295" cy="130" r="10" fill="#3dd68c" opacity="0.15" filter="url(#blur-sm)"/>
+    <circle cx="320" cy="220" r="10" fill="#FF8C42" opacity="0.15" filter="url(#blur-sm)"/>
+    <circle cx="275" cy="315" r="10" fill="#6dd5ed" opacity="0.15" filter="url(#blur-sm)"/>
+    <circle cx="175" cy="340" r="10" fill="#d4a0ff" opacity="0.15" filter="url(#blur-sm)"/>
+    <circle cx="90" cy="290" r="10" fill="#ff6b6b" opacity="0.15" filter="url(#blur-sm)"/>
+    <circle cx="75" cy="175" r="10" fill="#2DD4BF" opacity="0.15" filter="url(#blur-sm)"/>
+    <circle cx="120" cy="100" r="10" fill="#d4a56a" opacity="0.15" filter="url(#blur-sm)"/>
+
+    <!-- Entity dots -->
+    <circle cx="200" cy="90" r="4" fill="#4dc9f6"/>
+    <circle cx="295" cy="130" r="3.5" fill="#3dd68c"/>
+    <circle cx="320" cy="220" r="3.5" fill="#FF8C42"/>
+    <circle cx="275" cy="315" r="3.5" fill="#6dd5ed"/>
+    <circle cx="175" cy="340" r="3.5" fill="#d4a0ff"/>
+    <circle cx="90" cy="290" r="3.5" fill="#ff6b6b"/>
+    <circle cx="75" cy="175" r="3.5" fill="#2DD4BF"/>
+    <circle cx="120" cy="100" r="3.5" fill="#d4a56a"/>
+
+    <!-- Central LUMENARCH glow -->
+    <circle cx="200" cy="200" r="40" fill="url(#glow-gold)" filter="url(#blur-lg)"/>
+    <circle cx="200" cy="200" r="18" fill="#F0C040" opacity="0.12" filter="url(#blur-sm)"/>
+
+    <!-- Central node rings -->
+    <circle cx="200" cy="200" r="16" fill="none" stroke="#F0C040" stroke-width="0.8" opacity="0.4"/>
+    <circle cx="200" cy="200" r="10" fill="none" stroke="#F0C040" stroke-width="1" opacity="0.6"/>
+
+    <!-- Central dot -->
+    <circle cx="200" cy="200" r="5" fill="#F0C040"/>
+    <circle cx="200" cy="200" r="3" fill="#fff" opacity="0.9"/>
+
+  </g>
+
+  <!-- Outer glow ring -->
+  <circle cx="200" cy="200" r="196" fill="none" stroke="#E8B931" stroke-width="1" opacity="0.15"/>
+
+</svg>
