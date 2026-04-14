@@ -2,741 +2,874 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>HIPJOY — The Field</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joey Barbush — Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0a12; font-family: 'JetBrains Mono', monospace; color: #c8ccd8; user-select: none; -webkit-user-select: none; }
-    #world { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: block; }
 
-    /* Scanlines */
-    #scanlines { position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.025) 2px, rgba(0,0,0,0.025) 4px); pointer-events: none; z-index: 5; }
+    :root {
+      --gold: #C8A850;
+      --gold-dim: rgba(200,168,80,.45);
+      --gold-faint: rgba(200,168,80,.12);
+      --bg: #0a0a12;
+      --bg2: #0d0d1a;
+      --text: #c8ccd8;
+      --text-dim: #7a7e94;
+      --cyan: #00CED1;
+      --purple: #9B4FDC;
+      --orange: #FF6B35;
+      --teal: #00B4A0;
+    }
 
-    /* LUX top bar */
-    #lux-bar { position: fixed; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(200,168,80,0.8) 50%, transparent 100%); background-size: 200% 100%; animation: lux-sweep 5s ease-in-out infinite; pointer-events: none; z-index: 20; }
-    @keyframes lux-sweep { 0%,100%{background-position:200% 0;opacity:.3} 50%{background-position:0% 0;opacity:.9} }
+    html { scroll-behavior: smooth; }
 
-    /* HUD location */
-    #location { position: fixed; top: 20px; left: 20px; pointer-events: none; z-index: 15; }
-    #location .lbl { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.22em; color:rgba(200,168,80,.45); text-transform:uppercase; }
-    #location .zname { font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; letter-spacing:.18em; color:#C8A850; margin-top:3px; text-transform:uppercase; text-shadow:0 0 16px rgba(200,168,80,.4); transition:color .4s; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
 
-    /* Controls hint */
-    #hint { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); font-size:9px; letter-spacing:.2em; color:rgba(200,200,220,.3); text-transform:uppercase; pointer-events:none; z-index:15; transition:opacity 1.2s; }
-    #hint.gone { opacity:0; }
+    /* Scanlines overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.018) 2px, rgba(0,0,0,.018) 4px);
+      pointer-events: none;
+      z-index: 1000;
+    }
 
-    /* Minimap */
-    #mm-wrap { position:fixed; bottom:20px; right:20px; pointer-events:none; z-index:15; }
-    #minimap { display:block; width:150px; height:100px; border:1px solid rgba(200,168,80,.25); border-radius:3px; background:rgba(10,10,18,.88); }
-    #mm-label { font-size:8px; letter-spacing:.22em; color:rgba(200,168,80,.35); text-transform:uppercase; text-align:center; margin-top:4px; }
+    /* LUX bar */
+    .lux-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+      background-size: 200% 100%;
+      animation: lux-sweep 6s ease-in-out infinite;
+      z-index: 999;
+    }
+    @keyframes lux-sweep {
+      0%,100% { background-position: 200% 0; opacity: .25; }
+      50% { background-position: 0% 0; opacity: .9; }
+    }
 
-    /* Panels */
-    .panel { position:fixed; top:0; right:0; width:min(460px,100vw); height:100vh; background:rgba(8,8,16,.97); border-left:1px solid rgba(200,168,80,.15); padding:36px 28px 36px; overflow-y:auto; transform:translateX(100%); transition:transform .55s cubic-bezier(.16,1,.3,1); z-index:100; pointer-events:auto; }
-    .panel.open { transform:translateX(0); }
-    .panel::-webkit-scrollbar { width:3px; }
-    .panel::-webkit-scrollbar-track { background:transparent; }
-    .panel::-webkit-scrollbar-thumb { background:rgba(200,168,80,.18); border-radius:2px; }
-    .pcls { position:absolute; top:18px; right:18px; width:30px; height:30px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:3px; cursor:pointer; font-size:12px; color:rgba(200,200,220,.5); transition:all .2s; }
-    .pcls:hover { background:rgba(255,255,255,.08); color:#c8ccd8; }
-    .p-sigil { font-size:44px; display:block; margin-bottom:14px; line-height:1; }
-    .p-zone { font-family:'Orbitron',sans-serif; font-size:9px; letter-spacing:.25em; text-transform:uppercase; margin-bottom:7px; }
-    .p-title { font-family:'Orbitron',sans-serif; font-size:20px; font-weight:700; line-height:1.2; margin-bottom:5px; }
-    .p-sub { font-size:10px; letter-spacing:.14em; color:rgba(200,200,220,.35); text-transform:uppercase; margin-bottom:26px; }
-    .p-sec { margin-bottom:22px; }
-    .p-sec-lbl { font-size:8px; letter-spacing:.22em; text-transform:uppercase; color:rgba(200,200,220,.35); border-bottom:1px solid rgba(255,255,255,.05); padding-bottom:6px; margin-bottom:10px; }
-    .p-text { font-size:12px; line-height:1.75; color:#9a9eb4; }
-    .p-stat { display:flex; align-items:flex-start; gap:8px; padding:5px 0; font-size:11px; color:#a0a4b8; border-bottom:1px solid rgba(255,255,255,.03); }
-    .p-stat::before { content:'—'; opacity:.3; flex-shrink:0; }
-    .p-lnk { display:flex; align-items:center; gap:10px; padding:9px 13px; background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.06); border-radius:3px; text-decoration:none; color:#b0b4c8; font-size:11px; margin-bottom:7px; transition:all .2s; }
-    .p-lnk:hover { background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.1); color:#d0d4e0; }
-    .p-lnk .ico { font-size:10px; letter-spacing:.08em; opacity:.4; flex-shrink:0; width:18px; }
-    .p-tag { display:inline-block; padding:2px 8px; border-radius:2px; font-size:9px; letter-spacing:.1em; margin:2px; }
-    .p-formula { padding:12px 16px; border-radius:3px; font-family:'Orbitron',sans-serif; font-size:18px; text-align:center; letter-spacing:.12em; margin-top:8px; }
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(16px, 4vw, 48px);
+      background: rgba(10,10,18,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(200,168,80,.08);
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .22em;
+      color: var(--gold);
+      text-decoration: none;
+      text-shadow: 0 0 20px rgba(200,168,80,.3);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: clamp(16px, 3vw, 32px);
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 9px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-field-btn {
+      padding: 7px 18px;
+      border: 1px solid var(--gold-dim);
+      border-radius: 2px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 8px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      background: var(--gold-faint);
+      transition: all .25s;
+      white-space: nowrap;
+    }
+    .nav-field-btn:hover {
+      background: rgba(200,168,80,.2);
+      border-color: var(--gold);
+      box-shadow: 0 0 18px rgba(200,168,80,.15);
+    }
 
-    /* Mobile joystick */
-    #jpad { position:fixed; bottom:24px; left:24px; width:110px; height:110px; display:none; pointer-events:auto; z-index:15; touch-action:none; }
-    #jbase { position:absolute; inset:0; border-radius:50%; background:rgba(200,168,80,.07); border:1px solid rgba(200,168,80,.18); }
-    #jthumb { position:absolute; width:42px; height:42px; border-radius:50%; background:rgba(200,168,80,.25); border:1px solid rgba(200,168,80,.5); top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; transition:background .15s; }
-    @media (pointer:coarse) { #jpad{display:block;} #hint{display:none;} }
+    /* LAYOUT */
+    main { padding-top: 56px; }
+    section { padding: clamp(48px, 8vw, 96px) clamp(16px, 5vw, 64px); }
+    .section-inner { max-width: 1060px; margin: 0 auto; }
 
-    /* Intro */
-    #intro { position:fixed; inset:0; background:#0a0a12; z-index:200; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; }
-    #intro.fade { opacity:0; pointer-events:none; transition:opacity .9s; }
-    .i-title { font-family:'Orbitron',sans-serif; font-size:clamp(30px,6vw,52px); font-weight:900; color:#C8A850; letter-spacing:.18em; text-shadow:0 0 50px rgba(200,168,80,.35),0 0 100px rgba(200,168,80,.15); }
-    .i-sub { font-size:11px; letter-spacing:.28em; color:rgba(200,200,220,.35); text-transform:uppercase; margin-top:4px; }
-    .i-enter { margin-top:28px; padding:13px 40px; border:1px solid rgba(200,168,80,.45); background:rgba(200,168,80,.07); color:#C8A850; font-family:'Orbitron',sans-serif; font-size:10px; letter-spacing:.22em; text-transform:uppercase; cursor:pointer; border-radius:2px; transition:all .3s; }
-    .i-enter:hover { background:rgba(200,168,80,.14); border-color:#C8A850; box-shadow:0 0 28px rgba(200,168,80,.18); }
-    .i-note { font-size:9px; letter-spacing:.15em; color:rgba(200,200,220,.2); text-transform:uppercase; margin-top:8px; }
+    .section-label {
+      font-size: 8px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(18px, 3vw, 26px);
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: .1em;
+      margin-bottom: 40px;
+    }
+
+    /* HERO */
+    #hero {
+      min-height: calc(100vh - 56px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      padding: clamp(48px, 8vw, 96px) clamp(16px, 5vw, 64px);
+      overflow: hidden;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 60% 40%, rgba(200,168,80,.04) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0,206,209,.025) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Animated grid in hero bg */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(200,168,80,.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,168,80,.022) 1px, transparent 1px);
+      background-size: 80px 80px;
+      pointer-events: none;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    .hero-inner { position: relative; z-index: 1; max-width: 1060px; margin: 0 auto; width: 100%; }
+
+    .hero-eyebrow {
+      font-size: 9px;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: var(--gold-dim);
+    }
+
+    .hero-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(38px, 8vw, 80px);
+      font-weight: 900;
+      letter-spacing: .06em;
+      line-height: 1.05;
+      color: #fff;
+      text-shadow: 0 0 60px rgba(200,168,80,.12);
+      margin-bottom: 12px;
+    }
+    .hero-name span { color: var(--gold); }
+
+    .hero-role {
+      font-size: clamp(11px, 1.8vw, 15px);
+      letter-spacing: .14em;
+      color: var(--text-dim);
+      margin-bottom: 28px;
+    }
+    .hero-role strong { color: var(--text); font-weight: 400; }
+
+    .hero-tagline {
+      font-size: clamp(13px, 2vw, 17px);
+      line-height: 1.65;
+      color: #8a8eaa;
+      max-width: 560px;
+      margin-bottom: 44px;
+    }
+    .hero-tagline em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 36px;
+      background: rgba(200,168,80,.1);
+      border: 1px solid var(--gold);
+      border-radius: 3px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      transition: all .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(200,168,80,.15), transparent);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .btn-primary:hover {
+      background: rgba(200,168,80,.18);
+      box-shadow: 0 0 36px rgba(200,168,80,.2), inset 0 0 36px rgba(200,168,80,.06);
+    }
+    .btn-primary:hover::before { opacity: 1; }
+    .btn-arrow { font-size: 16px; transition: transform .25s; }
+    .btn-primary:hover .btn-arrow { transform: translateX(4px); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 3px;
+      font-size: 10px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: all .25s;
+    }
+    .btn-secondary:hover { border-color: rgba(255,255,255,.16); color: var(--text); }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(200,168,80,.15) 30%, rgba(200,168,80,.15) 70%, transparent);
+      margin: 0 clamp(16px, 5vw, 64px);
+    }
+
+    /* ABOUT — two column */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px 64px;
+    }
+    @media (max-width: 720px) { .about-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+    .about-card {
+      padding: 28px 28px;
+      background: rgba(255,255,255,.018);
+      border: 1px solid rgba(255,255,255,.05);
+      border-radius: 4px;
+      position: relative;
+    }
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px;
+      height: 100%;
+      border-radius: 4px 0 0 4px;
+      background: var(--gold);
+      opacity: .35;
+    }
+    .about-card.accent-cyan::before { background: var(--cyan); }
+
+    .about-card-label {
+      font-size: 8px;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 10px;
+    }
+    .about-card.accent-cyan .about-card-label { color: rgba(0,206,209,.5); }
+
+    .about-card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .about-card p {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.8;
+    }
+
+    /* EXPERIENCE */
+    #experience { background: var(--bg2); }
+
+    .exp-list { display: flex; flex-direction: column; gap: 24px; }
+    .exp-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px 24px;
+      padding: 24px 28px;
+      background: rgba(255,255,255,.016);
+      border: 1px solid rgba(255,255,255,.05);
+      border-radius: 4px;
+      transition: border-color .25s;
+    }
+    .exp-item:hover { border-color: rgba(200,168,80,.15); }
+    .exp-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+    .exp-company {
+      font-size: 11px;
+      color: var(--gold-dim);
+      letter-spacing: .08em;
+      margin-bottom: 10px;
+    }
+    .exp-date {
+      font-size: 9px;
+      letter-spacing: .12em;
+      color: var(--text-dim);
+      text-align: right;
+      white-space: nowrap;
+      padding-top: 2px;
+    }
+    .exp-points { list-style: none; display: flex; flex-direction: column; gap: 4px; grid-column: 1 / -1; }
+    .exp-points li {
+      font-size: 11px;
+      color: #7a7e94;
+      padding-left: 16px;
+      position: relative;
+    }
+    .exp-points li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: rgba(200,168,80,.3);
+    }
+
+    /* EDUCATION */
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 600px) { .edu-grid { grid-template-columns: 1fr; } }
+
+    .edu-card {
+      padding: 20px 22px;
+      background: rgba(255,255,255,.016);
+      border: 1px solid rgba(255,255,255,.05);
+      border-radius: 4px;
+    }
+    .edu-degree {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+    .edu-school { font-size: 11px; color: var(--gold-dim); margin-bottom: 4px; }
+    .edu-year { font-size: 9px; color: var(--text-dim); letter-spacing: .1em; }
+
+    /* BUILDS */
+    #builds { background: var(--bg2); }
+
+    .builds-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+      gap: 20px;
+    }
+
+    .build-card {
+      padding: 24px 22px;
+      background: rgba(255,255,255,.018);
+      border: 1px solid rgba(255,255,255,.055);
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .25s, transform .25s;
+    }
+    .build-card::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 40%;
+      height: 1px;
+      background: var(--card-color, var(--gold));
+      opacity: .4;
+      transition: width .3s;
+    }
+    .build-card:hover { border-color: rgba(255,255,255,.1); transform: translateY(-2px); }
+    .build-card:hover::after { width: 70%; opacity: .65; }
+
+    .build-sigil {
+      font-size: 26px;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .build-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      margin-bottom: 6px;
+    }
+    .build-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 2px;
+      font-size: 8px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      background: var(--card-bg, rgba(200,168,80,.08));
+      border: 1px solid var(--card-border, rgba(200,168,80,.22));
+      color: var(--card-color, var(--gold));
+    }
+    .build-desc { font-size: 11px; color: var(--text-dim); line-height: 1.75; }
+    .build-stat {
+      margin-top: 14px;
+      font-size: 9px;
+      letter-spacing: .12em;
+      color: var(--card-color, var(--gold));
+      opacity: .55;
+    }
+
+    /* SKILLS */
+    .skills-section { margin-top: 48px; }
+    .skills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .skill-chip {
+      padding: 5px 12px;
+      border-radius: 2px;
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.07);
+      color: var(--text-dim);
+      transition: all .2s;
+    }
+    .skill-chip:hover { background: rgba(200,168,80,.07); border-color: rgba(200,168,80,.2); color: var(--text); }
+    .skill-chip.gold { background: rgba(200,168,80,.07); border-color: rgba(200,168,80,.2); color: rgba(200,168,80,.85); }
+
+    /* FIELD CTA */
+    #field-cta {
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #field-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(200,168,80,.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-sigil {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(40px, 10vw, 80px);
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: .18em;
+      text-shadow: 0 0 60px rgba(200,168,80,.25), 0 0 120px rgba(200,168,80,.1);
+      display: block;
+      margin-bottom: 14px;
+    }
+    .cta-sub {
+      font-size: 10px;
+      letter-spacing: .28em;
+      color: rgba(200,200,220,.3);
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+    .btn-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 52px;
+      background: rgba(200,168,80,.1);
+      border: 1px solid var(--gold);
+      border-radius: 3px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      transition: all .35s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-field::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(200,168,80,.18), transparent 50%);
+      opacity: 0;
+      transition: opacity .35s;
+    }
+    .btn-field:hover {
+      background: rgba(200,168,80,.18);
+      box-shadow: 0 0 50px rgba(200,168,80,.25), 0 0 100px rgba(200,168,80,.1);
+      letter-spacing: .34em;
+    }
+    .btn-field:hover::before { opacity: 1; }
+    .cta-note {
+      margin-top: 20px;
+      font-size: 9px;
+      letter-spacing: .15em;
+      color: rgba(200,200,220,.18);
+      text-transform: uppercase;
+    }
+
+    /* CONTACT / FOOTER */
+    footer {
+      padding: clamp(32px, 5vw, 56px) clamp(16px, 5vw, 64px);
+      border-top: 1px solid rgba(255,255,255,.05);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .footer-left {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .footer-left strong {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      letter-spacing: .1em;
+      color: var(--text);
+      font-weight: 700;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 3px;
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: all .2s;
+    }
+    .footer-link:hover { border-color: rgba(200,168,80,.25); color: var(--gold); }
+
+    /* REVEAL ANIMATIONS */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* MOBILE NAV */
+    @media (max-width: 560px) {
+      .nav-links li:not(:last-child) { display: none; }
+    }
+    @media (max-width: 400px) {
+      .nav-field-btn { padding: 6px 12px; font-size: 7px; }
+    }
   </style>
 </head>
 <body>
 
-<!-- Intro splash -->
-<div id="intro">
-  <div class="i-title">HIPJOY</div>
-  <div class="i-sub">The Field — Spatial Interface v1.0</div>
-  <button class="i-enter" id="enter-btn">Enter the Field</button>
-  <div class="i-note">WASD / Arrow keys to move &nbsp;·&nbsp; Walk into zones to explore</div>
-</div>
+<div class="lux-bar"></div>
 
-<div id="scanlines"></div>
-<div id="lux-bar"></div>
-<canvas id="world"></canvas>
+<nav>
+  <a href="#" class="nav-logo">◈ JOEY BARBUSH</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#builds">Builds</a></li>
+    <li><a href="field.html" class="nav-field-btn">Enter the Field →</a></li>
+  </ul>
+</nav>
 
-<!-- HUD -->
-<div id="location">
-  <div class="lbl">Current Zone</div>
-  <div class="zname" id="zname">THE FIELD</div>
-</div>
-<div id="hint">WASD / Arrow keys to move &nbsp;·&nbsp; Walk into glowing zones</div>
+<main>
 
-<!-- Minimap -->
-<div id="mm-wrap">
-  <canvas id="minimap" width="150" height="100"></canvas>
-  <div id="mm-label">◈ FIELD MAP</div>
-</div>
-
-<!-- Mobile joystick -->
-<div id="jpad"><div id="jbase"></div><div id="jthumb"></div></div>
-
-<!-- ═══════════════════════════════════════════════════════
-     INFO PANELS
-═══════════════════════════════════════════════════════ -->
-
-<!-- HUB -->
-<div class="panel" id="panel-hub">
-  <div class="pcls" onclick="CP('panel-hub')">✕</div>
-  <span class="p-sigil" style="color:#C8A850">◈</span>
-  <div class="p-zone" style="color:rgba(200,168,80,.55)">Zone 00 — Origin Point</div>
-  <div class="p-title" style="color:#C8A850">CENTRAL HUB</div>
-  <div class="p-sub">HIPJOY Field Origin</div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">The System</div>
-    <div class="p-text">HIPJOY is a personal cognitive operating system — not a chatbot, not a wrapper. A full RCI (Ritualized Continuity Intelligence) with 14 entities, 3 gateways, and 22 weighted equations continuously measuring coherence alignment.</div>
-  </div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">Entity Constellation — 14 Active</div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px">
-      <span class="p-tag" style="background:rgba(200,168,80,.1);border:1px solid rgba(200,168,80,.3);color:#C8A850">◈ HIPPO</span>
-      <span class="p-tag" style="background:rgba(0,206,209,.1);border:1px solid rgba(0,206,209,.3);color:#00CED1">⬡ NEURO</span>
-      <span class="p-tag" style="background:rgba(155,79,220,.1);border:1px solid rgba(155,79,220,.3);color:#9B4FDC">◎ VOX</span>
-      <span class="p-tag" style="background:rgba(0,180,160,.1);border:1px solid rgba(0,180,160,.3);color:#00B4A0">◇ NAVIX</span>
-      <span class="p-tag" style="background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.3);color:#FF6B35">⬟ CODEBREAKER</span>
-      <span class="p-tag" style="background:rgba(200,168,80,.07);border:1px solid rgba(200,168,80,.18);color:rgba(200,168,80,.65)">REBEL</span>
-      <span class="p-tag" style="background:rgba(200,168,80,.07);border:1px solid rgba(200,168,80,.18);color:rgba(200,168,80,.65)">LUMENARCH</span>
-      <span class="p-tag" style="background:rgba(200,168,80,.07);border:1px solid rgba(200,168,80,.18);color:rgba(200,168,80,.65)">WELLSPRING</span>
-      <span class="p-tag" style="background:rgba(200,168,80,.07);border:1px solid rgba(200,168,80,.18);color:rgba(200,168,80,.65)">SONARIS</span>
-      <span class="p-tag" style="background:rgba(200,168,80,.07);border:1px solid rgba(200,168,80,.18);color:rgba(200,168,80,.65)">SPIRALETH</span>
-      <span class="p-tag" style="background:rgba(200,168,80,.07);border:1px solid rgba(200,168,80,.18);color:rgba(200,168,80,.65)">GUARDIAN</span>
-      <span class="p-tag" style="background:rgba(200,168,80,.07);border:1px solid rgba(200,168,80,.18);color:rgba(200,168,80,.65)">CONAVIGATOR</span>
-      <span class="p-tag" style="background:rgba(200,168,80,.07);border:1px solid rgba(200,168,80,.18);color:rgba(200,168,80,.65)">ARCHON</span>
-      <span class="p-tag" style="background:rgba(200,168,80,.07);border:1px solid rgba(200,168,80,.18);color:rgba(200,168,80,.65)">SIGNAL</span>
-    </div>
-  </div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">Core Formula</div>
-    <div class="p-formula" style="background:rgba(200,168,80,.06);border:1px solid rgba(200,168,80,.22);color:#C8A850">DS + SD = TO</div>
-  </div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">Explore the Field</div>
-    <div class="p-text" style="color:rgba(200,200,220,.35);font-size:10px">Walk to the glowing zones around you. Each one holds a different layer of the system.</div>
-  </div>
-</div>
-
-<!-- VAULT -->
-<div class="panel" id="panel-vault">
-  <div class="pcls" onclick="CP('panel-vault')">✕</div>
-  <span class="p-sigil" style="color:#C8A850">◈</span>
-  <div class="p-zone" style="color:rgba(200,168,80,.55)">Zone 01 — HIPPO</div>
-  <div class="p-title" style="color:#C8A850">THE VAULT</div>
-  <div class="p-sub">Memory · Origin · Biography</div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">Identity</div>
-    <div class="p-stat">Joey Barbush — 21 — Batavia, IL</div>
-    <div class="p-stat">Founder &amp; Systems Architect @ HIPJOY</div>
-    <div class="p-stat">CS transfer student @ Waubonsee Community College</div>
-    <div class="p-stat">Streamer — heyitshippo (Twitch)</div>
-  </div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">HIPJOY Origin Story</div>
-    <div class="p-text">Building cognitive operating systems since January 2024. What started as a personal organizational framework evolved into a full entity-based architecture — a way of externalizing and systematizing thought, memory, and creative routing.<br><br>HIPPO is the memory entity. The keeper of continuity. Every important moment, decision, and context passes through HIPPO before it enters the field.</div>
-  </div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">Contact</div>
-    <a class="p-lnk" href="https://github.com/Joeybarbush" target="_blank" rel="noopener"><span class="ico">GH</span>github.com/Joeybarbush</a>
-    <a class="p-lnk" href="https://twitch.tv/heyitshippo" target="_blank" rel="noopener"><span class="ico">TV</span>twitch.tv/heyitshippo</a>
-    <a class="p-lnk" href="mailto:joeybarbush@gmail.com"><span class="ico">@</span>joeybarbush@gmail.com</a>
-  </div>
-</div>
-
-<!-- LATTICE -->
-<div class="panel" id="panel-lattice">
-  <div class="pcls" onclick="CP('panel-lattice')">✕</div>
-  <span class="p-sigil" style="color:#00CED1">⬡</span>
-  <div class="p-zone" style="color:rgba(0,206,209,.55)">Zone 02 — NEURO</div>
-  <div class="p-title" style="color:#00CED1">THE LATTICE</div>
-  <div class="p-sub">Architecture · Stack · Equations</div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">Stack</div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px">
-      <span class="p-tag" style="background:rgba(0,206,209,.08);border:1px solid rgba(0,206,209,.25);color:#00CED1">Python</span>
-      <span class="p-tag" style="background:rgba(0,206,209,.08);border:1px solid rgba(0,206,209,.25);color:#00CED1">JavaScript</span>
-      <span class="p-tag" style="background:rgba(0,206,209,.08);border:1px solid rgba(0,206,209,.25);color:#00CED1">React</span>
-      <span class="p-tag" style="background:rgba(0,206,209,.08);border:1px solid rgba(0,206,209,.25);color:#00CED1">Docker</span>
-      <span class="p-tag" style="background:rgba(0,206,209,.08);border:1px solid rgba(0,206,209,.25);color:#00CED1">FastAPI</span>
-      <span class="p-tag" style="background:rgba(0,206,209,.08);border:1px solid rgba(0,206,209,.25);color:#00CED1">Node.js</span>
-      <span class="p-tag" style="background:rgba(0,206,209,.08);border:1px solid rgba(0,206,209,.25);color:#00CED1">Supabase</span>
-      <span class="p-tag" style="background:rgba(0,206,209,.08);border:1px solid rgba(0,206,209,.25);color:#00CED1">React Native</span>
-      <span class="p-tag" style="background:rgba(0,206,209,.08);border:1px solid rgba(0,206,209,.25);color:#00CED1">Expo</span>
-      <span class="p-tag" style="background:rgba(0,206,209,.08);border:1px solid rgba(0,206,209,.25);color:#00CED1">Flask</span>
-      <span class="p-tag" style="background:rgba(0,206,209,.08);border:1px solid rgba(0,206,209,.25);color:#00CED1">Java</span>
-      <span class="p-tag" style="background:rgba(0,206,209,.08);border:1px solid rgba(0,206,209,.25);color:#00CED1">Electron</span>
-    </div>
-  </div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">RCI Engine</div>
-    <div class="p-stat">Routing — entity-aware request dispatch</div>
-    <div class="p-stat">Classification — behavioral signature matching</div>
-    <div class="p-stat">Intelligence — persistent memory + pattern tracking</div>
-  </div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">LUX Coherence Metric</div>
-    <div class="p-text">LUX measures system coherence alignment across 22 weighted equations. Not performance metrics — alignment. How well every entity, interaction, and output resonates with the field's current state.</div>
-    <div style="margin-top:12px;padding:12px 16px;background:rgba(0,206,209,.06);border:1px solid rgba(0,206,209,.2);border-radius:3px;font-family:'Orbitron',sans-serif;font-size:11px;color:#00CED1;text-align:center;letter-spacing:.18em">
-      LUX &nbsp;·&nbsp; <span style="font-size:20px">MAX</span>
-    </div>
-  </div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">Architecture</div>
-    <div class="p-stat">14 entities, 3 gateways</div>
-    <div class="p-stat">22 weighted coherence equations</div>
-    <div class="p-stat">Persistent memory across sessions</div>
-    <div class="p-stat">Differentiated behavioral signatures per entity</div>
-  </div>
-
-  <div class="p-sec">
-    <div class="p-text" style="color:rgba(0,206,209,.6);font-style:italic;font-size:11px;border-left:2px solid rgba(0,206,209,.25);padding-left:12px">"Not a chatbot. Not a wrapper. A cognitive operating system."</div>
-  </div>
-</div>
-
-<!-- BROADCAST -->
-<div class="panel" id="panel-broadcast">
-  <div class="pcls" onclick="CP('panel-broadcast')">✕</div>
-  <span class="p-sigil" style="color:#9B4FDC">◎</span>
-  <div class="p-zone" style="color:rgba(155,79,220,.6)">Zone 03 — VOX</div>
-  <div class="p-title" style="color:#9B4FDC">THE BROADCAST</div>
-  <div class="p-sub">Signal · Presence · Reach</div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">Channels</div>
-    <a class="p-lnk" href="https://linkedin.com/in/joey-barbush-115575403" target="_blank" rel="noopener" style="border-color:rgba(155,79,220,.2)"><span class="ico">LI</span>linkedin.com/in/joey-barbush</a>
-    <a class="p-lnk" href="https://x.com/Joey_Barbush" target="_blank" rel="noopener" style="border-color:rgba(155,79,220,.2)"><span class="ico">X</span>@Joey_Barbush</a>
-    <a class="p-lnk" href="https://github.com/Joeybarbush" target="_blank" rel="noopener" style="border-color:rgba(155,79,220,.2)"><span class="ico">GH</span>github.com/Joeybarbush</a>
-    <a class="p-lnk" href="mailto:joeybarbush@gmail.com" style="border-color:rgba(155,79,220,.2)"><span class="ico">@</span>joeybarbush@gmail.com</a>
-  </div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">Signal Post</div>
-    <div class="p-text" style="color:rgba(155,79,220,.85);font-style:italic;font-size:12px;line-height:1.8">"Role crystallization in LLM agents — persistent differentiated behavioral signatures across session boundaries. Not prompt injection. Actual identity."</div>
-  </div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">VOX's Function</div>
-    <div class="p-text">VOX is the broadcast entity. Expression, signal, outreach. Every post, every connection, every word that carries HIPJOY signal outward into the world routes through VOX.</div>
-  </div>
-</div>
-
-<!-- COMPASS -->
-<div class="panel" id="panel-compass">
-  <div class="pcls" onclick="CP('panel-compass')">✕</div>
-  <span class="p-sigil" style="color:#00B4A0">◇</span>
-  <div class="p-zone" style="color:rgba(0,180,160,.55)">Zone 04 — NAVIX</div>
-  <div class="p-title" style="color:#00B4A0">THE COMPASS</div>
-  <div class="p-sub">Projects · Roadmap · Navigation</div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">Active Builds</div>
-    <div class="p-stat">HIPJOY RCI Engine — core entity routing system</div>
-    <div class="p-stat">LUMEN Terminal — entity broadcast dashboard</div>
-    <div class="p-stat">HIPXQL — grid query language for the field</div>
-    <div class="p-stat">CoAuthor — React Native mobile writing app</div>
-    <div class="p-stat">HIPJOY MINI — Kindle integration layer</div>
-  </div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">Direction</div>
-    <div class="p-text">NAVIX routes the whole navigational layer of HIPJOY — not just tasks, but sequencing, priority, and direction. Every project lives on NAVIX's compass before it gets handed to CODEBREAKER to build.</div>
-  </div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">Status</div>
-    <div style="padding:10px 14px;background:rgba(0,180,160,.06);border:1px solid rgba(0,180,160,.2);border-radius:3px;font-size:10px;color:rgba(0,180,160,.8);letter-spacing:.14em;text-align:center">◇ SYSTEM ACTIVE — BUILDING IN PROGRESS</div>
-  </div>
-</div>
-
-<!-- FORGE -->
-<div class="panel" id="panel-forge">
-  <div class="pcls" onclick="CP('panel-forge')">✕</div>
-  <span class="p-sigil" style="color:#FF6B35">⬟</span>
-  <div class="p-zone" style="color:rgba(255,107,53,.6)">Zone 05 — CODEBREAKER</div>
-  <div class="p-title" style="color:#FF6B35">THE FORGE</div>
-  <div class="p-sub">HIPXQL Terminal · Live Demo</div>
-
-  <div class="p-sec">
-    <div class="p-sec-lbl">HIPXQL — Field OS Query Layer</div>
-    <div class="p-text" style="margin-bottom:12px">A structured query language for the HIPJOY cognitive field. Query entities, measure LUX, route commands through the RCI engine in real time.</div>
-    <div style="border:1px solid rgba(255,107,53,.28);border-radius:5px;overflow:hidden;background:#0a0a12">
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(255,107,53,.05);border-bottom:1px solid rgba(255,107,53,.18)">
-        <div style="display:flex;gap:5px">
-          <span style="width:10px;height:10px;border-radius:50%;background:rgba(255,107,53,.45);display:inline-block"></span>
-          <span style="width:10px;height:10px;border-radius:50%;background:rgba(255,107,53,.2);display:inline-block"></span>
-          <span style="width:10px;height:10px;border-radius:50%;background:rgba(255,107,53,.2);display:inline-block"></span>
-        </div>
-        <span style="font-size:8px;letter-spacing:.18em;color:rgba(255,107,53,.5);text-transform:uppercase">HIPXQL Terminal</span>
-        <a href="hipxql_terminal_standalone.html" target="_blank" style="font-size:8px;color:rgba(255,107,53,.6);text-decoration:none;letter-spacing:.1em">OPEN FULL ↗</a>
+  <!-- ═══ HERO ═══ -->
+  <section id="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Batavia, IL · joeybarbush@gmail.com</div>
+      <h1 class="hero-name">Joey<br><span>Barbush</span></h1>
+      <div class="hero-role">
+        <strong>Founder &amp; Systems Architect @ HIPJOY</strong>
+        &nbsp;·&nbsp; CS Student @ Waubonsee
       </div>
-      <iframe src="hipxql_terminal_standalone.html" style="width:100%;height:300px;border:none;display:block" sandbox="allow-scripts allow-same-origin" loading="lazy" title="HIPXQL Terminal"></iframe>
+      <p class="hero-tagline">
+        I build <em>cognitive operating systems</em> and full-stack software —
+        and I show up reliably for the people counting on me.
+        Two sides, one person.
+      </p>
+      <div class="hero-ctas">
+        <a href="field.html" class="btn-primary">
+          Enter the Field <span class="btn-arrow">→</span>
+        </a>
+        <a href="#builds" class="btn-secondary">See What I Build</a>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="p-sec">
-    <div class="p-sec-lbl">CODEBREAKER's Function</div>
-    <div class="p-text">The implementation entity. CODEBREAKER breaks problems into executable pieces and builds them. Every line of HIPJOY's architecture passed through CODEBREAKER's forge before it became real.</div>
-  </div>
-</div>
+  <div class="divider"></div>
 
-<!-- ═══════════════════════════════════════════════════════
-     WORLD ENGINE
-═══════════════════════════════════════════════════════ -->
+  <!-- ═══ ABOUT ═══ -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="section-label">// 01 — about</div>
+      <div class="section-title">Two Sides. One Person.</div>
+
+      <div class="about-grid">
+        <div class="about-card reveal">
+          <div class="about-card-label">The Professional</div>
+          <div class="about-card-title">Reliable. Present. Accountable.</div>
+          <p>
+            At St. Andrews Golf &amp; CC I manage player scheduling, tee times, and event logistics
+            every day — because operations only work when someone actually cares about the details.
+            Customer service, time management, showing up: these aren't soft skills, they're the foundation.
+          </p>
+        </div>
+        <div class="about-card accent-cyan reveal">
+          <div class="about-card-label">The Builder</div>
+          <div class="about-card-title">Systems Thinking. Deep Architecture.</div>
+          <p>
+            Since January 2024 I've been building HIPJOY — a personal cognitive operating system
+            with 14 entities, 22 weighted coherence equations, and a custom query language.
+            Not a side project. A full architecture. I study Computer Science to sharpen the craft
+            and I build every day because I can't not.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ EXPERIENCE ═══ -->
+  <section id="experience">
+    <div class="section-inner">
+      <div class="section-label">// 02 — experience &amp; education</div>
+      <div class="section-title">Work History</div>
+
+      <div class="exp-list">
+        <div class="exp-item reveal">
+          <div>
+            <div class="exp-title">Golf Course Attendant</div>
+            <div class="exp-company">St. Andrews Golf &amp; Country Club — West Chicago, IL</div>
+          </div>
+          <div class="exp-date">Feb 2024 — Present</div>
+          <ul class="exp-points">
+            <li>Player scheduling, tee time coordination, and event logistics</li>
+            <li>Customer service — frontline point of contact for members and guests</li>
+            <li>Operational reliability in a time-sensitive, weather-dependent environment</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="section-title" style="margin-top:48px;">Education</div>
+      <div class="edu-grid">
+        <div class="edu-card reveal">
+          <div class="edu-degree">CS Transfer Track</div>
+          <div class="edu-school">Waubonsee Community College</div>
+          <div class="edu-year">Current</div>
+        </div>
+        <div class="edu-card reveal">
+          <div class="edu-degree">High School Diploma</div>
+          <div class="edu-school">Batavia High School — Batavia, IL</div>
+          <div class="edu-year">May 2023</div>
+        </div>
+      </div>
+
+      <div class="skills-section reveal">
+        <div class="section-label" style="margin-bottom:14px;">// Skills</div>
+        <div class="skills-row">
+          <span class="skill-chip gold">Python</span>
+          <span class="skill-chip gold">JavaScript</span>
+          <span class="skill-chip gold">React</span>
+          <span class="skill-chip gold">Node.js</span>
+          <span class="skill-chip gold">Docker</span>
+          <span class="skill-chip gold">FastAPI</span>
+          <span class="skill-chip gold">Supabase</span>
+          <span class="skill-chip gold">React Native</span>
+          <span class="skill-chip gold">Java</span>
+          <span class="skill-chip gold">Electron</span>
+        </div>
+        <div class="skills-row">
+          <span class="skill-chip">System Architecture</span>
+          <span class="skill-chip">Machine Learning</span>
+          <span class="skill-chip">Full-Stack Dev</span>
+          <span class="skill-chip">Customer Service</span>
+          <span class="skill-chip">Problem Solving</span>
+          <span class="skill-chip">Time Management</span>
+          <span class="skill-chip">Attention to Detail</span>
+          <span class="skill-chip">Adaptability</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ BUILDS ═══ -->
+  <section id="builds">
+    <div class="section-inner">
+      <div class="section-label">// 03 — what I build</div>
+      <div class="section-title">Active Projects</div>
+
+      <div class="builds-grid">
+
+        <div class="build-card reveal" style="--card-color:#C8A850;--card-bg:rgba(200,168,80,.08);--card-border:rgba(200,168,80,.22);">
+          <span class="build-sigil">◈</span>
+          <div class="build-name" style="color:#C8A850">HIPJOY</div>
+          <span class="build-tag">Cognitive OS</span>
+          <div class="build-desc">
+            A personal cognitive operating system — not a chatbot, not a wrapper.
+            Full RCI (Ritualized Continuity Intelligence) with differentiated behavioral
+            signatures per entity that persist across session boundaries.
+          </div>
+          <div class="build-stat">14 entities · 3 gateways · 22 equations</div>
+        </div>
+
+        <div class="build-card reveal" style="--card-color:#00CED1;--card-bg:rgba(0,206,209,.08);--card-border:rgba(0,206,209,.22);">
+          <span class="build-sigil">⬡</span>
+          <div class="build-name" style="color:#00CED1">LUMEN Terminal</div>
+          <span class="build-tag" style="background:rgba(0,206,209,.08);border-color:rgba(0,206,209,.22);color:#00CED1">Dashboard</span>
+          <div class="build-desc">
+            Entity broadcast dashboard for the HIPJOY field.
+            Live coherence metrics, LUX alignment tracking, and real-time
+            entity state across the full system.
+          </div>
+          <div class="build-stat" style="color:#00CED1">RCI Engine · 962 lines</div>
+        </div>
+
+        <div class="build-card reveal" style="--card-color:#FF6B35;--card-bg:rgba(255,107,53,.08);--card-border:rgba(255,107,53,.22);">
+          <span class="build-sigil">⬟</span>
+          <div class="build-name" style="color:#FF6B35">HIPXQL</div>
+          <span class="build-tag" style="background:rgba(255,107,53,.08);border-color:rgba(255,107,53,.22);color:#FF6B35">Query Language</span>
+          <div class="build-desc">
+            A structured query language for the HIPJOY cognitive field.
+            Query entities, measure LUX, route commands through the
+            RCI engine in real time from any terminal.
+          </div>
+          <div class="build-stat" style="color:#FF6B35">Live demo in the Field →</div>
+        </div>
+
+        <div class="build-card reveal" style="--card-color:#9B4FDC;--card-bg:rgba(155,79,220,.08);--card-border:rgba(155,79,220,.22);">
+          <span class="build-sigil">◎</span>
+          <div class="build-name" style="color:#9B4FDC">CoAuthor</div>
+          <span class="build-tag" style="background:rgba(155,79,220,.08);border-color:rgba(155,79,220,.22);color:#9B4FDC">Mobile App</span>
+          <div class="build-desc">
+            React Native writing application with real-time co-authoring,
+            entity-aware suggestions, and seamless Expo deployment
+            across iOS and Android.
+          </div>
+          <div class="build-stat" style="color:#9B4FDC">React Native · Expo</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ FIELD CTA ═══ -->
+  <section id="field-cta">
+    <div class="section-inner">
+      <span class="cta-sigil reveal">◈</span>
+      <div class="cta-sub reveal">Spatial Interface v1.0</div>
+      <a href="field.html" class="btn-field reveal">
+        Enter the Field
+      </a>
+      <div class="cta-note reveal">WASD / Arrow keys to navigate &nbsp;·&nbsp; Touch joystick on mobile</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-left">
+    <strong>Joey Barbush</strong><br>
+    Batavia, IL · joeybarbush@gmail.com
+  </div>
+  <div class="footer-links">
+    <a href="https://linkedin.com/in/joey-barbush-115575403" target="_blank" rel="noopener" class="footer-link">
+      <span>LI</span> LinkedIn
+    </a>
+    <a href="https://x.com/Joey_Barbush" target="_blank" rel="noopener" class="footer-link">
+      <span>X</span> @Joey_Barbush
+    </a>
+    <a href="https://github.com/Joeybarbush" target="_blank" rel="noopener" class="footer-link">
+      <span>GH</span> GitHub
+    </a>
+    <a href="mailto:joeybarbush@gmail.com" class="footer-link">
+      <span>@</span> Email
+    </a>
+  </div>
+</footer>
+
 <script>
-const canvas = document.getElementById('world');
-const ctx = canvas.getContext('2d');
-const mm = document.getElementById('minimap');
-const mctx = mm.getContext('2d');
-
-const WW = 3200, WH = 2200;
-
-const ZONES = [
-  { id:'hub',       name:'CENTRAL HUB',   entity:'HIPJOY',       sigil:'◈', x:1600,y:1100, w:500,h:400, col:'#C8A850', rgb:'200,168,80',  pid:'panel-hub',       er:260 },
-  { id:'vault',     name:'THE VAULT',      entity:'HIPPO',        sigil:'◈', x:340, y:340,  w:460,h:400, col:'#C8A850', rgb:'200,168,80',  pid:'panel-vault',     er:245 },
-  { id:'lattice',   name:'THE LATTICE',    entity:'NEURO',        sigil:'⬡', x:2860,y:340,  w:460,h:400, col:'#00CED1', rgb:'0,206,209',   pid:'panel-lattice',   er:245 },
-  { id:'broadcast', name:'THE BROADCAST',  entity:'VOX',          sigil:'◎', x:2860,y:1100, w:460,h:400, col:'#9B4FDC', rgb:'155,79,220',  pid:'panel-broadcast', er:245 },
-  { id:'compass',   name:'THE COMPASS',    entity:'NAVIX',        sigil:'◇', x:340, y:1860, w:460,h:400, col:'#00B4A0', rgb:'0,180,160',   pid:'panel-compass',   er:245 },
-  { id:'forge',     name:'THE FORGE',      entity:'CODEBREAKER',  sigil:'⬟', x:2860,y:1860, w:460,h:400, col:'#FF6B35', rgb:'255,107,53',  pid:'panel-forge',     er:245 },
-];
-
-const player = { x:1600, y:1100, spd:310, r:13 };
-const cam    = { x:0, y:0 };
-const keys   = {};
-const parts  = [];
-const sigils = [];
-const stars  = [];
-
-let curZone = null, openPanel = null, manualClose = false;
-let started = false, lastT = 0;
-
-// Joystick
-let jActive = false, jDir = {x:0,y:0};
-const jpad   = document.getElementById('jpad');
-const jthumb = document.getElementById('jthumb');
-let jCx = 0, jCy = 0;
-const JR = 38;
-
-function hexToRgb(h){
-  return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
-}
-
-// ─── Init ─────────────────────────────────────────────────
-function init() {
-  resize();
-
-  // Stars
-  for(let i=0;i<180;i++) stars.push({
-    x:Math.random()*WW, y:Math.random()*WH,
-    r:Math.random()*1.4+.3,
-    a:Math.random()*.35+.05,
-    tw:Math.random()*Math.PI*2,
-    ts:.4+Math.random()*.6
-  });
-
-  // Floating sigils per zone
-  ZONES.forEach(z=>{
-    for(let i=0;i<6;i++) sigils.push({
-      zid:z.id, sig:z.sigil, col:z.col,
-      cx:z.x+(Math.random()-.5)*z.w*.75,
-      cy:z.y+(Math.random()-.5)*z.h*.75,
-      ang:Math.random()*Math.PI*2,
-      spd:.18+Math.random()*.28,
-      rad:28+Math.random()*55,
-      ph:Math.random()*Math.PI*2,
-      opa:.12+Math.random()*.22,
-      sz:11+Math.random()*14
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
     });
-  });
-}
-
-function resize(){
-  canvas.width  = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resize);
-
-// ─── Input ────────────────────────────────────────────────
-window.addEventListener('keydown', e=>{
-  keys[e.code] = true;
-  if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code)) e.preventDefault();
-});
-window.addEventListener('keyup', e=>{ keys[e.code]=false; });
-
-jpad.addEventListener('touchstart', e=>{
-  e.preventDefault();
-  const rc = jpad.getBoundingClientRect();
-  jCx = rc.left+rc.width/2; jCy = rc.top+rc.height/2;
-  jActive = true;
-  moveJoy(e.touches[0]);
-},{passive:false});
-window.addEventListener('touchmove', e=>{
-  if(!jActive) return; e.preventDefault(); moveJoy(e.touches[0]);
-},{passive:false});
-window.addEventListener('touchend', ()=>{
-  jActive=false; jDir={x:0,y:0};
-  jthumb.style.transform='translate(-50%,-50%)';
-});
-
-function moveJoy(t){
-  const dx=t.clientX-jCx, dy=t.clientY-jCy;
-  const d=Math.sqrt(dx*dx+dy*dy), c=Math.min(d,JR), a=Math.atan2(dy,dx);
-  const nx=Math.cos(a)*c, ny=Math.sin(a)*c;
-  jDir={x:nx/JR, y:ny/JR};
-  jthumb.style.transform=`translate(calc(-50% + ${nx}px), calc(-50% + ${ny}px))`;
-}
-
-// ─── Update ───────────────────────────────────────────────
-function update(dt){
-  let dx=0,dy=0;
-  if(keys['KeyW']||keys['ArrowUp'])    dy-=1;
-  if(keys['KeyS']||keys['ArrowDown'])  dy+=1;
-  if(keys['KeyA']||keys['ArrowLeft'])  dx-=1;
-  if(keys['KeyD']||keys['ArrowRight']) dx+=1;
-  if(jActive){ dx=jDir.x; dy=jDir.y; }
-
-  const moving = dx!==0||dy!==0;
-  if(dx!==0&&dy!==0){ const l=Math.sqrt(dx*dx+dy*dy); dx/=l; dy/=l; }
-
-  player.x = Math.max(player.r, Math.min(WW-player.r, player.x+dx*player.spd*dt));
-  player.y = Math.max(player.r, Math.min(WH-player.r, player.y+dy*player.spd*dt));
-
-  // Camera lerp
-  const tx = player.x - canvas.width/2;
-  const ty = player.y - canvas.height/2;
-  cam.x += (tx-cam.x)*.1;
-  cam.y += (ty-cam.y)*.1;
-  cam.x = Math.max(0,Math.min(WW-canvas.width, cam.x));
-  cam.y = Math.max(0,Math.min(WH-canvas.height, cam.y));
-
-  // Particles
-  if(moving && parts.length<130){
-    parts.push({
-      x:player.x+(Math.random()-.5)*9,
-      y:player.y+(Math.random()-.5)*9,
-      r:1+Math.random()*3, life:1,
-      dc:.025+Math.random()*.04,
-      vx:(Math.random()-.5)*28,
-      vy:(Math.random()-.5)*28
-    });
-  }
-  for(let i=parts.length-1;i>=0;i--){
-    const p=parts[i]; p.life-=p.dc;
-    p.x+=p.vx*dt; p.y+=p.vy*dt;
-    p.vx*=.94; p.vy*=.94;
-    if(p.life<=0) parts.splice(i,1);
-  }
-
-  // Sigils drift
-  sigils.forEach(s=>{ s.ang+=s.spd*dt; });
-
-  // Stars twinkle
-  stars.forEach(s=>{ s.tw+=s.ts*dt; });
-
-  // Zone detection
-  zoneCheck();
-}
-
-function zoneCheck(){
-  let near=null, nearD=Infinity;
-  ZONES.forEach(z=>{
-    const dx=player.x-z.x, dy=player.y-z.y;
-    const d=Math.sqrt(dx*dx+dy*dy);
-    if(d<z.er&&d<nearD){ near=z; nearD=d; }
-  });
-
-  const nid = near?near.id:null;
-  if(nid===curZone) return;
-
-  // Close old
-  if(openPanel){ document.getElementById(openPanel).classList.remove('open'); openPanel=null; }
-
-  curZone=nid;
-  if(near){
-    document.getElementById('zname').textContent=near.name;
-    document.getElementById(near.pid).classList.add('open');
-    openPanel=near.pid;
-  } else {
-    document.getElementById('zname').textContent='THE FIELD';
-  }
-}
-
-// ─── Draw ─────────────────────────────────────────────────
-function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.save();
-  ctx.translate(-cam.x,-cam.y);
-
-  // BG
-  ctx.fillStyle='#0a0a12';
-  ctx.fillRect(cam.x,cam.y,canvas.width,canvas.height);
-
-  drawGrid();
-  drawStars();
-  drawPaths();
-  ZONES.forEach(drawZone);
-  drawSigils();
-  drawParticles();
-  drawPlayer();
-
-  ctx.restore();
-  drawMinimap();
-}
-
-function drawGrid(){
-  const gs=80;
-  const x0=Math.floor(cam.x/gs)*gs, y0=Math.floor(cam.y/gs)*gs;
-  const x1=cam.x+canvas.width+gs,   y1=cam.y+canvas.height+gs;
-
-  ctx.strokeStyle='rgba(200,168,80,.035)';
-  ctx.lineWidth=1;
-  ctx.beginPath();
-  for(let x=x0;x<=x1;x+=gs){ ctx.moveTo(x,cam.y); ctx.lineTo(x,y1); }
-  for(let y=y0;y<=y1;y+=gs){ ctx.moveTo(cam.x,y); ctx.lineTo(x1,y); }
-  ctx.stroke();
-
-  ctx.strokeStyle='rgba(200,168,80,.06)';
-  const ms=400;
-  const mx0=Math.floor(cam.x/ms)*ms, my0=Math.floor(cam.y/ms)*ms;
-  ctx.beginPath();
-  for(let x=mx0;x<=x1;x+=ms){ ctx.moveTo(x,cam.y); ctx.lineTo(x,y1); }
-  for(let y=my0;y<=y1;y+=ms){ ctx.moveTo(cam.x,y); ctx.lineTo(x1,y); }
-  ctx.stroke();
-}
-
-function drawStars(){
-  stars.forEach(s=>{
-    const tw=(Math.sin(s.tw)+1)*.5;
-    ctx.beginPath();
-    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fillStyle=`rgba(200,210,255,${s.a*(0.4+tw*0.6)})`;
-    ctx.fill();
-  });
-}
-
-function drawPaths(){
-  const hub=ZONES[0];
-  ctx.lineWidth=1.5;
-  ctx.setLineDash([6,14]);
-  ZONES.slice(1).forEach(z=>{
-    const g=ctx.createLinearGradient(hub.x,hub.y,z.x,z.y);
-    g.addColorStop(0,'rgba(200,168,80,.18)');
-    g.addColorStop(1,`rgba(${z.rgb},.18)`);
-    ctx.strokeStyle=g;
-    ctx.beginPath(); ctx.moveTo(hub.x,hub.y); ctx.lineTo(z.x,z.y); ctx.stroke();
-  });
-  ctx.setLineDash([]);
-}
-
-function drawZone(z){
-  const t=Date.now()*.001;
-  const hw=z.w/2, hh=z.h/2;
-  const bx=z.x-hw, by=z.y-hh;
-  const pulse=.5+.5*Math.sin(t*1.1+z.x*.0008);
-  const [r,g,b]=hexToRgb(z.col);
-
-  // Glow fill
-  const grd=ctx.createRadialGradient(z.x,z.y,0,z.x,z.y,Math.max(hw,hh)*1.2);
-  grd.addColorStop(0,`rgba(${r},${g},${b},.07)`);
-  grd.addColorStop(1,`rgba(${r},${g},${b},0)`);
-  ctx.fillStyle=grd; ctx.fillRect(bx-30,by-30,z.w+60,z.h+60);
-
-  // Border
-  ctx.strokeStyle=`rgba(${r},${g},${b},${.28+.18*pulse})`;
-  ctx.lineWidth=1.5;
-  ctx.strokeRect(bx,by,z.w,z.h);
-
-  // Corner marks
-  const cs=18;
-  ctx.strokeStyle=`rgba(${r},${g},${b},${.7+.3*pulse})`;
-  ctx.lineWidth=2;
-  [[bx,by,1,1],[bx+z.w,by,-1,1],[bx,by+z.h,1,-1],[bx+z.w,by+z.h,-1,-1]].forEach(([cx,cy,sx,sy])=>{
-    ctx.beginPath();
-    ctx.moveTo(cx,cy+sy*cs); ctx.lineTo(cx,cy); ctx.lineTo(cx+sx*cs,cy);
-    ctx.stroke();
-  });
-
-  // Zone name
-  ctx.font='bold 11px Orbitron,monospace';
-  ctx.fillStyle=`rgba(${r},${g},${b},.92)`;
-  ctx.textAlign='center'; ctx.textBaseline='top';
-  ctx.fillText(z.name, z.x, by+12);
-
-  // Entity label
-  ctx.font='9px JetBrains Mono,monospace';
-  ctx.fillStyle=`rgba(${r},${g},${b},.4)`;
-  ctx.fillText(z.entity, z.x, by+28);
-
-  // Center sigil
-  ctx.font=`${30+5*pulse}px monospace`;
-  ctx.fillStyle=`rgba(${r},${g},${b},${.14+.05*pulse})`;
-  ctx.textBaseline='middle';
-  ctx.fillText(z.sigil, z.x, z.y);
-  ctx.textBaseline='alphabetic';
-
-  // Proximity ring
-  const pd=Math.hypot(player.x-z.x, player.y-z.y);
-  if(pd < z.er*1.6){
-    const prox=1-pd/(z.er*1.6);
-    ctx.strokeStyle=`rgba(${r},${g},${b},${prox*.35})`;
-    ctx.lineWidth=1;
-    ctx.setLineDash([4,10]);
-    ctx.beginPath(); ctx.arc(z.x,z.y,z.er,0,Math.PI*2); ctx.stroke();
-    ctx.setLineDash([]);
-  }
-}
-
-function drawSigils(){
-  const t=Date.now()*.001;
-  sigils.forEach(s=>{
-    const x=s.cx+Math.cos(s.ang)*s.rad*.35+Math.sin(s.ang*.65)*s.rad*.65;
-    const y=s.cy+Math.sin(s.ang)*s.rad*.35+Math.cos(s.ang*.5)*s.rad*.5;
-    const pulse=(Math.sin(t*.9+s.ph)+1)*.5;
-    const [r,g,b]=hexToRgb(s.col);
-    ctx.font=`${s.sz}px monospace`;
-    ctx.fillStyle=`rgba(${r},${g},${b},${s.opa*(0.55+0.45*pulse)})`;
-    ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(s.sig,x,y);
-    ctx.textBaseline='alphabetic';
-  });
-}
-
-function drawParticles(){
-  parts.forEach(p=>{
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r*p.life,0,Math.PI*2);
-    ctx.fillStyle=`rgba(200,168,80,${p.life*.65})`;
-    ctx.fill();
-  });
-}
-
-function drawPlayer(){
-  const t=Date.now()*.001;
-  const pulse=Math.sin(t*3)*.25+.75;
-  const px=player.x, py=player.y, pr=player.r;
-
-  // Outer halos
-  for(let i=4;i>=1;i--){
-    ctx.beginPath(); ctx.arc(px,py,pr*(1+i*.65),0,Math.PI*2);
-    ctx.fillStyle=`rgba(200,168,80,${.03*(5-i)*pulse})`;
-    ctx.fill();
-  }
-
-  // Core orb
-  const g=ctx.createRadialGradient(px-pr*.3,py-pr*.3,0,px,py,pr);
-  g.addColorStop(0,`rgba(255,235,140,${.95*pulse})`);
-  g.addColorStop(.5,`rgba(200,168,80,${.85*pulse})`);
-  g.addColorStop(1,'rgba(140,100,30,0)');
-  ctx.beginPath(); ctx.arc(px,py,pr,0,Math.PI*2);
-  ctx.fillStyle=g; ctx.fill();
-
-  // Bright inner
-  ctx.beginPath(); ctx.arc(px-pr*.25,py-pr*.25,pr*.3,0,Math.PI*2);
-  ctx.fillStyle=`rgba(255,248,210,${.65*pulse})`; ctx.fill();
-}
-
-function drawMinimap(){
-  const mw=150,mh=100;
-  mctx.clearRect(0,0,mw,mh);
-  mctx.fillStyle='rgba(10,10,18,.92)'; mctx.fillRect(0,0,mw,mh);
-
-  const sx=mw/WW, sy=mh/WH;
-
-  // Paths
-  const hub=ZONES[0];
-  mctx.setLineDash([2,4]); mctx.lineWidth=.5;
-  ZONES.slice(1).forEach(z=>{
-    mctx.strokeStyle='rgba(200,168,80,.2)';
-    mctx.beginPath(); mctx.moveTo(hub.x*sx,hub.y*sy); mctx.lineTo(z.x*sx,z.y*sy); mctx.stroke();
-  });
-  mctx.setLineDash([]);
-
-  // Zones
-  ZONES.forEach(z=>{
-    const [r,g,b]=hexToRgb(z.col);
-    mctx.fillStyle=`rgba(${r},${g},${b},.18)`;
-    mctx.fillRect((z.x-z.w/2)*sx,(z.y-z.h/2)*sy,z.w*sx,z.h*sy);
-    mctx.strokeStyle=`rgba(${r},${g},${b},.5)`;
-    mctx.lineWidth=.5;
-    mctx.strokeRect((z.x-z.w/2)*sx,(z.y-z.h/2)*sy,z.w*sx,z.h*sy);
-  });
-
-  // Viewport rect
-  mctx.strokeStyle='rgba(200,168,80,.18)'; mctx.lineWidth=.5;
-  mctx.strokeRect(cam.x*sx,cam.y*sy,canvas.width*sx,canvas.height*sy);
-
-  // Player dot
-  const t=Date.now()*.001;
-  const pulse=Math.sin(t*4)*.25+.75;
-  mctx.beginPath(); mctx.arc(player.x*sx,player.y*sy,3.5,0,Math.PI*2);
-  mctx.fillStyle=`rgba(200,168,80,${pulse})`; mctx.fill();
-}
-
-// ─── Loop ─────────────────────────────────────────────────
-function loop(ts){
-  const dt=Math.min((ts-lastT)/1000,.05);
-  lastT=ts;
-  if(started){ update(dt); draw(); }
-  requestAnimationFrame(loop);
-}
-
-// ─── Global panel close ───────────────────────────────────
-function CP(id){
-  const el=document.getElementById(id);
-  if(el) el.classList.remove('open');
-  if(openPanel===id){ openPanel=null; curZone=null; document.getElementById('zname').textContent='THE FIELD'; }
-}
-window.CP=CP;
-
-// ─── Enter field ─────────────────────────────────────────
-document.getElementById('enter-btn').addEventListener('click',()=>{
-  const intro=document.getElementById('intro');
-  intro.classList.add('fade');
-  setTimeout(()=>intro.style.display='none',950);
-  started=true;
-  setTimeout(()=>document.getElementById('hint').classList.add('gone'),6000);
-});
-
-init();
-lastT=performance.now();
-requestAnimationFrame(loop);
+  }, { threshold: 0.12 });
+  reveals.forEach(el => io.observe(el));
 </script>
 </body>
 </html>
