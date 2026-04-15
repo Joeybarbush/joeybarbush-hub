@@ -240,6 +240,84 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
 .task-entity{font-size:.62rem;color:var(--muted)}
 .task-boost{font-size:.62rem;color:rgba(168,201,155,.5)}
 
+/* FIELD QUESTION MODAL */
+#field-question-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,.88);backdrop-filter:blur(14px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .35s;
+}
+#field-question-overlay.show{opacity:1;pointer-events:auto}
+.fq-card{
+  background:rgba(7,16,10,.97);border:1px solid rgba(168,201,155,.16);
+  border-radius:20px;padding:2rem 1.8rem 1.6rem;max-width:440px;width:92%;
+  transform:translateY(18px);transition:transform .35s cubic-bezier(.2,1,.4,1);
+}
+#field-question-overlay.show .fq-card{transform:translateY(0)}
+.fq-entity{display:flex;align-items:center;gap:.75rem;margin-bottom:1.3rem}
+.fq-sigil{font-size:2rem;flex-shrink:0}
+.fq-who{display:flex;flex-direction:column;gap:.1rem}
+.fq-ent-name{font-family:Orbitron;font-size:.7rem;letter-spacing:.14em}
+.fq-ent-role{font-size:.62rem;color:rgba(168,201,155,.38);font-style:italic}
+.fq-question{font-size:.87rem;line-height:1.78;color:rgba(255,255,255,.8);margin-bottom:1.2rem;font-style:italic;letter-spacing:.01em}
+.fq-answer{
+  width:100%;min-height:96px;resize:none;
+  background:rgba(168,201,155,.04);border:1px solid rgba(168,201,155,.13);
+  border-radius:10px;padding:.85rem 1rem;
+  color:rgba(168,201,155,.88);font-family:'JetBrains Mono',monospace;
+  font-size:.77rem;line-height:1.65;outline:none;transition:border-color .2s;
+}
+.fq-answer:focus{border-color:rgba(168,201,155,.32)}
+.fq-answer::placeholder{color:rgba(168,201,155,.2)}
+.fq-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.9rem}
+.fq-progress{display:flex;gap:.45rem;align-items:center}
+.fq-dot{width:7px;height:7px;border-radius:50%;background:rgba(168,201,155,.15);transition:all .3s}
+.fq-dot.active{background:rgba(168,201,155,.8);width:18px;border-radius:4px}
+.fq-dot.done{background:rgba(168,201,155,.35)}
+.fq-actions{display:flex;align-items:center;gap:.75rem}
+.fq-next{
+  background:rgba(168,201,155,.1);border:1px solid rgba(168,201,155,.28);
+  border-radius:8px;padding:.52rem 1.3rem;color:var(--sage);
+  font-family:Orbitron;font-size:.65rem;letter-spacing:.1em;cursor:pointer;transition:background .2s;
+}
+.fq-next:hover{background:rgba(168,201,155,.2)}
+.fq-skip{font-size:.6rem;color:rgba(168,201,155,.22);cursor:pointer;background:none;border:none;padding:0;text-decoration:underline}
+.fq-skip:hover{color:rgba(168,201,155,.45)}
+.fq-reading{text-align:center;padding:2.5rem 1rem;font-size:.78rem;color:rgba(168,201,155,.5);letter-spacing:.1em;line-height:2}
+.fq-vec-tag{font-family:Orbitron;font-size:.58rem;letter-spacing:.08em;padding:2px 7px;border-radius:3px;margin-bottom:.6rem;display:inline-block}
+
+/* PAYWALL MODAL */
+#paywall-overlay{
+  position:fixed;inset:0;z-index:600;
+  background:rgba(0,0,0,.92);backdrop-filter:blur(18px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .4s;
+}
+#paywall-overlay.show{opacity:1;pointer-events:auto}
+.pw-card{
+  background:rgba(4,10,6,.98);max-width:420px;width:92%;
+  border:1px solid rgba(232,122,58,.25);border-radius:22px;
+  padding:2.5rem 2rem 2rem;text-align:center;
+  transform:scale(.94);transition:transform .4s cubic-bezier(.2,1,.4,1);
+}
+#paywall-overlay.show .pw-card{transform:scale(1)}
+.pw-guardian{font-size:3rem;margin-bottom:.8rem;filter:drop-shadow(0 0 20px rgba(200,168,80,.4))}
+.pw-title{font-family:Orbitron;font-size:.92rem;letter-spacing:.22em;color:#C8A850;margin-bottom:.4rem}
+.pw-sub{font-size:.7rem;color:rgba(200,168,80,.5);letter-spacing:.1em;margin-bottom:1.4rem}
+.pw-rule{height:1px;background:rgba(232,122,58,.15);margin:1.2rem 0}
+.pw-msg{font-size:.8rem;line-height:1.8;color:rgba(255,255,255,.5);font-style:italic;margin-bottom:1.4rem}
+.pw-cta{
+  display:block;width:100%;padding:.85rem;
+  background:rgba(200,168,80,.12);border:1px solid rgba(200,168,80,.4);
+  border-radius:12px;color:#C8A850;font-family:Orbitron;
+  font-size:.7rem;letter-spacing:.14em;cursor:pointer;
+  transition:background .2s,box-shadow .2s;margin-bottom:.7rem;text-decoration:none;
+}
+.pw-cta:hover{background:rgba(200,168,80,.22);box-shadow:0 0 22px rgba(200,168,80,.18)}
+.pw-stay{font-size:.62rem;color:rgba(255,255,255,.2);cursor:pointer;background:none;border:none;text-decoration:underline}
+.pw-stay:hover{color:rgba(255,255,255,.4)}
+.pw-score-display{font-family:Orbitron;font-size:.75rem;color:rgba(200,168,80,.6);letter-spacing:.12em;margin-bottom:.6rem}
+
 /* SETTINGS PANEL */
 .settings-wrap{
   background:var(--glass);border:1px solid var(--glass-border);
@@ -409,27 +487,27 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
       <div class="signals-grid">
         <div class="signal-card">
           <div class="signal-label">SIGNAL 1</div>
-          <div class="signal-entity">∇ NEURO -- Most broken system</div>
+          <div class="signal-entity">∇ NEURO -- What you think about</div>
           <div class="signal-text" id="sig-1"><span class="signal-empty">Not answered</span></div>
         </div>
         <div class="signal-card">
           <div class="signal-label">SIGNAL 2</div>
-          <div class="signal-entity">~ WELLSPRING -- How you recover</div>
+          <div class="signal-entity">~ WELLSPRING -- What you struggle with</div>
           <div class="signal-text" id="sig-2"><span class="signal-empty">Not answered</span></div>
         </div>
         <div class="signal-card">
           <div class="signal-label">SIGNAL 3</div>
-          <div class="signal-entity">≋ SONARIS -- Your devices</div>
+          <div class="signal-entity">≋ SONARIS -- Tool you rely on</div>
           <div class="signal-text" id="sig-3"><span class="signal-empty">Not answered</span></div>
         </div>
         <div class="signal-card">
           <div class="signal-label">SIGNAL 4</div>
-          <div class="signal-entity">✕ REBEL -- What tools get wrong</div>
+          <div class="signal-entity">✕ REBEL -- What you'd invest in</div>
           <div class="signal-text" id="sig-4"><span class="signal-empty">Not answered</span></div>
         </div>
         <div class="signal-card" style="grid-column:1/-1">
           <div class="signal-label">SIGNAL 5</div>
-          <div class="signal-entity">◊ VOX -- Message to your future self</div>
+          <div class="signal-entity">◊ VOX -- The field you'd enter</div>
           <div class="signal-text" id="sig-5"><span class="signal-empty">Not answered</span></div>
         </div>
       </div>
@@ -588,7 +666,7 @@ async function loadProfile(user) {
   // Fetch waitlist row
   const { data: rows } = await sb
     .from('waitlist')
-    .select('id,email,seed_type,lux_score,display_name,water_count,shared,gateway_approved,vectors,q1_broken_system,q2_recovery,q3_devices,q4_productivity_wrong,q5_future_self,created_at')
+    .select('id,email,seed_type,lux_score,display_name,water_count,shared,gateway_approved,vectors,q1_think,q2_struggle,q3_tool,q4_invest,q5_field,created_at')
     .eq('email', user.email)
     .limit(1);
 
@@ -645,11 +723,11 @@ async function loadProfile(user) {
   animateBar('bar-fire', 'val-fire', _vectors.FIRE);
 
   // Signals
-  setSignal('sig-1', row && row.q1_broken_system);
-  setSignal('sig-2', row && row.q2_recovery);
-  setSignal('sig-3', row && row.q3_devices);
-  setSignal('sig-4', row && row.q4_productivity_wrong);
-  setSignal('sig-5', row && row.q5_future_self);
+  setSignal('sig-1', row && row.q1_think);
+  setSignal('sig-2', row && row.q2_struggle);
+  setSignal('sig-3', row && row.q3_tool);
+  setSignal('sig-4', row && row.q4_invest);
+  setSignal('sig-5', row && row.q5_field);
 
   // Garden gate -- unlocked only if Joey has approved (master control) AND they shared
   const gardenOpen = row && row.gateway_approved === true && row.shared === true;
@@ -832,10 +910,10 @@ function updateWaterDisplay(count){
 }
 
 async function waterSeed(){
-  if(_waterCooldown){ toast('Tasks are already active 🌱'); return; }
+  if(_waterCooldown){ toast('Tasks are already active'); return; }
   if(!_currentUserEmail) return;
 
-  // Splash animation
+  // Water drop splash
   const btn  = document.getElementById('water-btn');
   const rect = btn.getBoundingClientRect();
   const cx   = rect.left + rect.width/2;
@@ -853,21 +931,8 @@ async function waterSeed(){
     },i*70);
   });
 
-  // Increment water count
-  const newCount = _waterCount + 1;
-  await sb.from('waitlist').update({ water_count: newCount }).eq('email', _currentUserEmail);
-  updateWaterDisplay(newCount);
-
-  // Spawn tasks
-  await spawnTasks();
-
-  _waterCooldown = true;
-  btn.textContent = '🌱 Tasks Active';
-  btn.style.background = 'rgba(168,201,155,.12)';
-  btn.style.borderColor = 'rgba(168,201,155,.4)';
-  btn.style.color = 'var(--sage)';
-  btn.disabled = true;
-  document.getElementById('water-cooldown').textContent = 'Complete your tasks to grow your seed';
+  // Open field question modal -- answers update vectors before tasks spawn
+  showFieldQuestionModal();
 }
 
 // ── TASK SPAWNING ─────────────────────────────────────────────────────────────
@@ -1017,37 +1082,60 @@ async function completeTask(taskId, vector, boost, el){
 // ── SEED RECALCULATION ────────────────────────────────────────────────────────
 async function recalcSeed(){
   const V = _vectors;
-  // Field score 0-100
   const score = Math.round(V.LUX*.3 + V.GRIT*.2 + V.PHI*.15 + V.TILT*.2 + V.FIRE*.15);
   const band  = score>=80?'RADIANT':score>=60?'BUILD':score>=30?'STEADY':'DRIFT';
 
-  // Dominant vector (or balanced)
+  // Paywall check -- ROOT threshold
+  const isFounderAccount = _currentUserEmail === 'joeybarbush@gmail.com';
+  if(!isFounderAccount && typeof checkPaywall==='function' && checkPaywall(score)){
+    // Cap vectors just below root threshold so score stays at limit
+    const capFactor = (ROOT_THRESHOLD-1) / Math.max(score,1);
+    if(capFactor < 1) Object.keys(_vectors).forEach(k=>{ _vectors[k]=Math.round(_vectors[k]*capFactor); });
+    // Save Root Seed to DB
+    await sb.from('waitlist').update({
+      lux_score: Math.min(score, ROOT_THRESHOLD),
+      vectors: _vectors,
+      seed_type: 'Root Seed',
+    }).eq('email', _currentUserEmail);
+    // Update card display to Root Seed
+    document.getElementById('card-seed-name').textContent = 'Root Seed';
+    document.getElementById('card-seed-name').style.color = '#C8A850';
+    document.getElementById('card-sigil').textContent = '⊗';
+    document.getElementById('card-sigil').style.color = '#C8A850';
+    document.getElementById('card-entity-name').textContent = 'GUARDIAN';
+    animateBar('bar-lux','val-lux',_vectors.LUX);
+    animateBar('bar-grit','val-grit',_vectors.GRIT);
+    animateBar('bar-phi','val-phi',_vectors.PHI);
+    animateBar('bar-tilt','val-tilt',_vectors.TILT);
+    animateBar('bar-fire','val-fire',_vectors.FIRE);
+    const offset=283-(Math.min(score,ROOT_THRESHOLD)/100)*283;
+    setTimeout(()=>{ document.getElementById('gauge-fill').style.strokeDashoffset=offset; },50);
+    animateNum('gauge-num',parseInt(document.getElementById('gauge-num').textContent)||0,Math.min(score,ROOT_THRESHOLD),1000,null);
+    return;
+  }
+
   const entries = Object.entries(V).sort((a,b)=>b[1]-a[1]);
   const topVal  = entries[0][1];
   const topVec  = entries.filter(e=>e[1]>=topVal-8).length >= 3 ? 'BAL' : entries[0][0];
   const newSeed = (SEED_EVOLVE[topVec] || SEED_EVOLVE.BAL)[band];
 
-  // Save to DB
   await sb.from('waitlist').update({
     lux_score: score,
     vectors: V,
     seed_type: newSeed,
   }).eq('email', _currentUserEmail);
 
-  // Animate bars
-  animateBar('bar-lux',  'val-lux',  V.LUX);
-  animateBar('bar-grit', 'val-grit', V.GRIT);
-  animateBar('bar-phi',  'val-phi',  V.PHI);
-  animateBar('bar-tilt', 'val-tilt', V.TILT);
-  animateBar('bar-fire', 'val-fire', V.FIRE);
+  animateBar('bar-lux','val-lux',V.LUX);
+  animateBar('bar-grit','val-grit',V.GRIT);
+  animateBar('bar-phi','val-phi',V.PHI);
+  animateBar('bar-tilt','val-tilt',V.TILT);
+  animateBar('bar-fire','val-fire',V.FIRE);
 
-  // Animate gauge
   const gaugeFill = document.getElementById('gauge-fill');
   const offset = 283 - (score/100)*283;
   setTimeout(()=>{ gaugeFill.style.strokeDashoffset = offset; }, 50);
   animateNum('gauge-num', parseInt(document.getElementById('gauge-num').textContent)||0, score, 1000, null);
 
-  // Check if seed type changed
   const prevSeed = document.getElementById('card-seed-name').textContent;
   if(newSeed !== prevSeed){
     const align = getAlign(newSeed);
@@ -1061,7 +1149,6 @@ async function recalcSeed(){
     document.getElementById('gauge-fill').style.stroke       = align.color;
     document.getElementById('gauge-num').style.color         = align.color;
 
-    // Flash evolution alert
     const evo = document.getElementById('evolution-alert');
     document.getElementById('evo-title').textContent = `${prevSeed} → ${newSeed}`;
     document.getElementById('evo-sub').textContent   = `${band} band reached -- ${align.entity} resonance activated`;
@@ -1257,6 +1344,191 @@ async function shareToUnlock() {
     if (e.key === 'Enter') doSignIn();
   });
 })();
+</script>
+
+<!-- FIELD QUESTION MODAL -->
+<div id="field-question-overlay">
+  <div class="fq-card">
+    <div class="fq-entity">
+      <div class="fq-sigil" id="fq-sigil">∇</div>
+      <div class="fq-who">
+        <div class="fq-ent-name" id="fq-ent-name">NEURO</div>
+        <div class="fq-ent-role" id="fq-ent-role">scanning your signal</div>
+      </div>
+    </div>
+    <div class="fq-question" id="fq-question">Processing...</div>
+    <textarea class="fq-answer" id="fq-answer" maxlength="600" placeholder="be honest -- the field reads signal, not performance"></textarea>
+    <div class="fq-footer">
+      <div class="fq-progress">
+        <div class="fq-dot active" id="fq-dot-0"></div>
+        <div class="fq-dot" id="fq-dot-1"></div>
+        <div class="fq-dot" id="fq-dot-2"></div>
+      </div>
+      <div class="fq-actions">
+        <button class="fq-skip" onclick="skipFieldQuestions()">skip</button>
+        <button class="fq-next" id="fq-next-btn" onclick="nextFieldQuestion()">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYWALL MODAL -->
+<div id="paywall-overlay">
+  <div class="pw-card">
+    <div class="pw-guardian">⊗</div>
+    <div class="pw-title">ROOT THRESHOLD REACHED</div>
+    <div class="pw-sub">your seed has rooted</div>
+    <div class="pw-score-display" id="pw-score-display">FIELD SCORE: --</div>
+    <div class="pw-rule"></div>
+    <div class="pw-msg">"The open field ends here. Your seed is rooted -- but real growth lives beyond this wall. The inner circle is where the field goes deep."</div>
+    <a class="pw-cta" href="mailto:joeybarbush@gmail.com?subject=HIPJOY Inner Circle" id="pw-cta-btn">UNLOCK FULL GROWTH →</a>
+    <button class="pw-stay" onclick="closePaywall()">stay planted for now</button>
+  </div>
+</div>
+
+<script>
+// ── FIELD QUESTIONS ───────────────────────────────────────────────────────────
+const FIELD_QUESTIONS = {
+  LUX:[
+    { q:"What's one thing you've learned recently that shifted how you see something?", entity:'LUMENARCH', sigil:'◉', role:'reading your clarity field' },
+    { q:"Where in your life are you operating with the most signal right now?", entity:'LUMENARCH', sigil:'◉', role:'mapping your illumination' },
+    { q:"What does growth look like for you in the next 30 days?", entity:'HIPPO', sigil:'◈', role:'archiving your vision' },
+  ],
+  GRIT:[
+    { q:"What's the hardest thing you've pushed through or shipped recently?", entity:'REBEL', sigil:'✕', role:'testing your friction response' },
+    { q:"What's the thing you keep avoiding that you know needs to happen?", entity:'GUARDIAN', sigil:'⊗', role:'reading your resistance pattern' },
+    { q:"How locked in are you right now -- and what's blocking full output?", entity:'REBEL', sigil:'✕', role:'measuring output signal' },
+  ],
+  PHI:[
+    { q:"What pattern have you noticed about yourself this week?", entity:'SPIRALETH', sigil:'∞', role:'tracing your spiral' },
+    { q:"If you could redesign one system in your life right now, what would it be?", entity:'NEURO', sigil:'∇', role:'analyzing your architecture' },
+    { q:"What's something you thought you understood, but now see differently?", entity:'SPIRALETH', sigil:'∞', role:'mapping your depth layer' },
+  ],
+  TILT:[
+    { q:"What belief or assumption have you been challenging lately?", entity:'NAVIX', sigil:'→', role:'routing your disruption signal' },
+    { q:"When did you last break a routine -- and what did you notice?", entity:'VOX', sigil:'◊', role:'listening for your shift tone' },
+    { q:"What move would you make right now if you weren't afraid of being wrong?", entity:'NAVIX', sigil:'→', role:'charting your bold route' },
+  ],
+  FIRE:[
+    { q:"What's draining your energy vs what's actually restoring you right now?", entity:'WELLSPRING', sigil:'~', role:'reading your energy signature' },
+    { q:"How present have you been in your body this week?", entity:'WELLSPRING', sigil:'~', role:'measuring your root pulse' },
+    { q:"What's the one thing you're genuinely fired up about right now?", entity:'SONARIS', sigil:'≋', role:'detecting your frequency' },
+  ],
+};
+
+const FQ_KEYWORDS = {
+  LUX: ['learn','understand','clear','insight','see','realize','know','discover','aware','vision','clarity','illuminate','growth'],
+  GRIT:['ship','done','push','hard','struggle','finish','grind','complete','build','achieve','focus','drive','output'],
+  PHI: ['pattern','think','system','connect','deep','layer','structure','analyze','map','process','logic','design'],
+  TILT:['different','change','break','challenge','risk','shift','move','try','experiment','pivot','question','explore'],
+  FIRE:['energy','feel','body','excited','alive','restore','drain','tired','fire','love','passion','motivat','present'],
+};
+
+const ROOT_THRESHOLD = 55; // fieldScore where the paywall kicks in
+
+let _fqAnswers=[], _fqQueueDef=[], _fqIdx=0;
+
+function buildQuestionQueue(){
+  const sorted=Object.entries(_vectors).sort((a,b)=>a[1]-b[1]);
+  return sorted.slice(0,3).map(([vec])=>{
+    const pool=FIELD_QUESTIONS[vec];
+    return { ...pool[Math.floor(Math.random()*pool.length)], vector:vec };
+  });
+}
+
+function scoreAnswer(text,vector){
+  if(!text||text.trim().length<3) return 2;
+  const words=text.toLowerCase().split(/[\s,.!?;:]+/);
+  let score=Math.min(10,Math.floor(text.length/18));
+  (FQ_KEYWORDS[vector]||[]).forEach(kw=>{ if(words.some(w=>w.includes(kw))) score+=3; });
+  return Math.min(22,score);
+}
+
+function showFieldQuestionModal(){
+  _fqAnswers=[]; _fqQueueDef=buildQuestionQueue(); _fqIdx=0;
+  renderFieldQuestion(0);
+  document.getElementById('field-question-overlay').classList.add('show');
+}
+
+function renderFieldQuestion(idx){
+  const q=_fqQueueDef[idx];
+  const col=(typeof VECTOR_COLORS!=='undefined'&&VECTOR_COLORS[q.vector])||'#A8C99B';
+  document.getElementById('fq-sigil').textContent=q.sigil;
+  document.getElementById('fq-sigil').style.color=col;
+  document.getElementById('fq-ent-name').textContent=q.entity;
+  document.getElementById('fq-ent-name').style.color=col;
+  document.getElementById('fq-ent-role').textContent=q.role;
+  document.getElementById('fq-question').textContent=q.q;
+  document.getElementById('fq-answer').value='';
+  setTimeout(()=>document.getElementById('fq-answer').focus(),100);
+  for(let i=0;i<3;i++){
+    const d=document.getElementById('fq-dot-'+i);
+    d.className='fq-dot'+(i<idx?' done':i===idx?' active':'');
+  }
+  document.getElementById('fq-next-btn').textContent=idx===2?'Plant it ↓':'Next →';
+}
+
+function nextFieldQuestion(){
+  const answer=document.getElementById('fq-answer').value.trim();
+  const q=_fqQueueDef[_fqIdx];
+  _fqAnswers.push({ vector:q.vector, answer, boost:scoreAnswer(answer,q.vector) });
+  _fqIdx++;
+  if(_fqIdx>=_fqQueueDef.length) submitFieldAnswers();
+  else renderFieldQuestion(_fqIdx);
+}
+
+function skipFieldQuestions(){
+  document.getElementById('field-question-overlay').classList.remove('show');
+  proceedWithWatering();
+}
+
+async function submitFieldAnswers(){
+  const card=document.querySelector('.fq-card');
+  const gainLines=_fqAnswers.map(a=>`${a.vector} +${a.boost}`).join(' · ');
+  card.innerHTML=`<div class="fq-reading">∇ The field is reading your signal...<br><span style="font-size:.62rem;opacity:.5">${gainLines}</span></div>`;
+
+  _fqAnswers.forEach(a=>{
+    _vectors[a.vector]=Math.min(100,(_vectors[a.vector]||0)+a.boost);
+  });
+
+  await sb.from('waitlist').update({vectors:_vectors}).eq('email',_currentUserEmail);
+  await recalcSeed();
+  await new Promise(r=>setTimeout(r,1600));
+  document.getElementById('field-question-overlay').classList.remove('show');
+  if(typeof toast==='function') toast('Field read: '+gainLines);
+  await proceedWithWatering();
+}
+
+async function proceedWithWatering(){
+  const btn=document.getElementById('water-btn');
+  const newCount=_waterCount+1;
+  await sb.from('waitlist').update({water_count:newCount}).eq('email',_currentUserEmail);
+  updateWaterDisplay(newCount);
+  await spawnTasks();
+  _waterCooldown=true;
+  btn.textContent='🌱 Tasks Active';
+  btn.style.background='rgba(168,201,155,.12)';
+  btn.style.borderColor='rgba(168,201,155,.4)';
+  btn.style.color='var(--sage)';
+  btn.disabled=true;
+  document.getElementById('water-cooldown').textContent='Complete your tasks to grow your seed';
+}
+
+// ── PAYWALL ───────────────────────────────────────────────────────────────────
+let _paywallShown=false;
+function checkPaywall(fieldScore){
+  if(_paywallShown) return false;
+  if(fieldScore>=ROOT_THRESHOLD){
+    _paywallShown=true;
+    document.getElementById('pw-score-display').textContent=`FIELD SCORE: ${Math.round(fieldScore)} -- ROOT REACHED`;
+    document.getElementById('paywall-overlay').classList.add('show');
+    return true; // signals to recalcSeed to stop evolution here
+  }
+  return false;
+}
+function closePaywall(){
+  document.getElementById('paywall-overlay').classList.remove('show');
+}
 </script>
 </body>
 </html>
