@@ -216,6 +216,30 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
   100%{opacity:0;transform:scale(3)}
 }
 
+/* TASK CARDS */
+.task-card{
+  display:flex;align-items:flex-start;gap:.9rem;
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:10px;padding:.85rem 1rem;
+  transition:background .2s,border-color .2s;cursor:pointer;
+}
+.task-card:hover{background:rgba(255,255,255,.06)}
+.task-card.done{opacity:.5;pointer-events:none}
+.task-card.done .task-text{text-decoration:line-through;color:var(--muted)}
+.task-check{
+  width:20px;height:20px;border-radius:50%;flex-shrink:0;
+  border:1.5px solid var(--task-col);margin-top:1px;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+}
+.task-card.done .task-check{background:var(--task-col)}
+.task-body{flex:1}
+.task-text{font-size:.8rem;line-height:1.55;color:var(--text)}
+.task-meta{display:flex;align-items:center;gap:.5rem;margin-top:.35rem}
+.task-vector{font-family:Orbitron;font-size:.6rem;letter-spacing:.1em;padding:1px 6px;border-radius:3px}
+.task-entity{font-size:.62rem;color:var(--muted)}
+.task-boost{font-size:.62rem;color:rgba(168,201,155,.5)}
+
 /* SETTINGS PANEL */
 .settings-wrap{
   background:var(--glass);border:1px solid var(--glass-border);
@@ -317,6 +341,34 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
       <button class="water-btn" id="water-btn" onclick="waterSeed()">💧 Water Your Seed</button>
       <div class="water-count" id="water-count"></div>
       <div class="water-cooldown" id="water-cooldown"></div>
+    </div>
+
+    <!-- FIELD TASKS -->
+    <div id="tasks-section" style="display:none">
+      <div class="section-head" style="display:flex;align-items:center;justify-content:space-between">
+        <span>🌱 FIELD TASKS</span>
+        <span id="tasks-progress" style="font-size:.65rem;color:var(--muted)"></span>
+      </div>
+      <div id="tasks-list" style="display:flex;flex-direction:column;gap:.65rem"></div>
+    </div>
+
+    <!-- SEED EVOLUTION ALERT -->
+    <div id="evolution-alert" style="display:none;padding:1rem 1.2rem;background:rgba(200,168,80,.06);border:1px solid rgba(200,168,80,.3);border-radius:12px;text-align:center">
+      <div style="font-size:1.2rem;margin-bottom:.4rem">✨</div>
+      <div style="font-family:Orbitron;font-size:.82rem;color:#C8A850;letter-spacing:.1em" id="evo-title">Seed Evolved</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-top:.3rem" id="evo-sub"></div>
+    </div>
+
+    <!-- SHARE CARD -->
+    <div id="share-card-section" style="display:none">
+      <div class="section-head">◊ SHARE YOUR SEED</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:1rem">
+        <canvas id="share-canvas" style="border-radius:14px;max-width:100%;box-shadow:0 0 30px rgba(168,201,155,.12)"></canvas>
+        <div style="display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center">
+          <button class="cta-btn cta-primary" onclick="downloadCard()" style="font-size:.7rem;padding:.6rem 1.2rem">↓ Download Card</button>
+          <button class="cta-btn" onclick="tweetCard()" style="font-size:.7rem;padding:.6rem 1.2rem;background:rgba(29,161,242,.08);border:1px solid rgba(29,161,242,.3);color:#1da1f2">✕ Share on X</button>
+        </div>
+      </div>
     </div>
 
     <!-- VECTOR SCORES -->
@@ -536,17 +588,25 @@ async function loadProfile(user) {
   // Fetch waitlist row
   const { data: rows } = await sb
     .from('waitlist')
-    .select('*')
+    .select('id,email,seed_type,lux_score,display_name,water_count,shared,gateway_approved,vectors,q1_broken_system,q2_recovery,q3_devices,q4_productivity_wrong,q5_future_self,created_at')
     .eq('email', user.email)
     .limit(1);
 
   const row = rows && rows[0];
   _currentUserEmail = user.email;
+  _rowId            = row && row.id;
   const seedName   = (row && row.seed_type)    || 'Field Seed';
   const lux        = (row && row.lux_score != null) ? row.lux_score : 0;
   const displayName= (row && row.display_name) || user.email.split('@')[0];
   const waterCount = (row && row.water_count)  || 0;
   const since      = new Date(user.created_at || Date.now()).toLocaleDateString('en-US',{month:'short',year:'numeric'});
+
+  // Load vectors -- use stored if available, else derive from seed profile
+  if(row && row.vectors && row.vectors.LUX !== undefined){
+    _vectors = row.vectors;
+  } else {
+    _vectors = deriveVectors(seedName, lux);
+  }
 
   // Entity alignment
   const align = getAlign(seedName);
@@ -577,14 +637,12 @@ async function loadProfile(user) {
   setTimeout(() => { gaugeFill.style.strokeDashoffset = offset; }, 50);
   animateNum('gauge-num', 0, lux, 1400, align.color);
 
-  // Score bars -- reconstruct from lux_score as proxy if vectors not stored
-  // Show lux_score proportionally; derive rough splits from seed type
-  const vectors = deriveVectors(seedName, lux);
-  animateBar('bar-lux',  'val-lux',  vectors.LUX);
-  animateBar('bar-grit', 'val-grit', vectors.GRIT);
-  animateBar('bar-phi',  'val-phi',  vectors.PHI);
-  animateBar('bar-tilt', 'val-tilt', vectors.TILT);
-  animateBar('bar-fire', 'val-fire', vectors.FIRE);
+  // Score bars from live vectors
+  animateBar('bar-lux',  'val-lux',  _vectors.LUX);
+  animateBar('bar-grit', 'val-grit', _vectors.GRIT);
+  animateBar('bar-phi',  'val-phi',  _vectors.PHI);
+  animateBar('bar-tilt', 'val-tilt', _vectors.TILT);
+  animateBar('bar-fire', 'val-fire', _vectors.FIRE);
 
   // Signals
   setSignal('sig-1', row && row.q1_broken_system);
@@ -602,6 +660,7 @@ async function loadProfile(user) {
   document.getElementById('signin-panel').style.display  = 'none';
   document.getElementById('profile-panel').style.display = 'flex';
   setTimeout(initCardTilt, 100);
+  setTimeout(loadExistingTasks, 400);
   document.getElementById('nav-signout-wrap').style.display = '';
   document.getElementById('nav-signin-wrap').style.display  = 'none';
 }
@@ -704,9 +763,67 @@ function initCardTilt(){
   });
 }
 
+// ── TASK LIBRARY ─────────────────────────────────────────────────────────────
+const TASK_POOL = {
+  LUX: [
+    { text:'Write down one thing you learned today', entity:'LUMENARCH', sigil:'◉', boost:9 },
+    { text:'Illuminate one blind spot you\'ve been avoiding', entity:'LUMENARCH', sigil:'◉', boost:10 },
+    { text:'Read one thing outside your usual space for 15 min', entity:'HIPPO', sigil:'◈', boost:8 },
+    { text:'Teach someone one thing you know well', entity:'LUMENARCH', sigil:'◉', boost:10 },
+    { text:'Map out what clarity looks like for one goal', entity:'HIPPO', sigil:'◈', boost:9 },
+    { text:'Identify one thing that is draining your signal today', entity:'LUMENARCH', sigil:'◉', boost:8 },
+  ],
+  GRIT: [
+    { text:'Ship something small today -- anything counts', entity:'REBEL', sigil:'✕', boost:10 },
+    { text:'Do the hard thing before you check your phone', entity:'GUARDIAN', sigil:'⊗', boost:11 },
+    { text:'Hold a 2-minute plank or cold shower', entity:'REBEL', sigil:'✕', boost:9 },
+    { text:'Say no to one thing that doesn\'t serve you', entity:'GUARDIAN', sigil:'⊗', boost:10 },
+    { text:'Finish something that has been sitting 50% done', entity:'REBEL', sigil:'✕', boost:12 },
+    { text:'Work in silence for 30 uninterrupted minutes', entity:'GUARDIAN', sigil:'⊗', boost:10 },
+  ],
+  PHI: [
+    { text:'Find the hidden pattern in something you see every day', entity:'SPIRALETH', sigil:'∞', boost:9 },
+    { text:'Journal for 10 minutes without stopping', entity:'SPIRALETH', sigil:'∞', boost:8 },
+    { text:'Map a system you use daily as if explaining it to an alien', entity:'NEURO', sigil:'∇', boost:11 },
+    { text:'Identify three second-order effects of a decision you made', entity:'NEURO', sigil:'∇', boost:10 },
+    { text:'Revisit something you thought you understood and go deeper', entity:'SPIRALETH', sigil:'∞', boost:9 },
+    { text:'Write the origin story of a belief you hold strongly', entity:'SPIRALETH', sigil:'∞', boost:9 },
+  ],
+  TILT: [
+    { text:'Challenge one assumption you\'ve never questioned', entity:'NAVIX', sigil:'→', boost:10 },
+    { text:'Break one routine today and notice what shifts', entity:'VOX', sigil:'◊', boost:9 },
+    { text:'Talk to someone you\'ve never spoken to before', entity:'NAVIX', sigil:'→', boost:10 },
+    { text:'Do one thing completely differently than usual', entity:'VOX', sigil:'◊', boost:9 },
+    { text:'Reroute -- take a different path home or through your day', entity:'NAVIX', sigil:'→', boost:8 },
+    { text:'Record a voice memo about where you want to be in 90 days', entity:'VOX', sigil:'◊', boost:11 },
+  ],
+  FIRE: [
+    { text:'Move your body for 20 minutes -- walk, lift, stretch', entity:'WELLSPRING', sigil:'~', boost:10 },
+    { text:'Start the thing you\'ve been putting off -- just 10 minutes', entity:'SONARIS', sigil:'≋', boost:11 },
+    { text:'Drink a full glass of water and stand outside for 5 minutes', entity:'WELLSPRING', sigil:'~', boost:8 },
+    { text:'Eliminate one energy drain from your environment today', entity:'SONARIS', sigil:'≋', boost:9 },
+    { text:'Name one thing you\'re genuinely excited about right now', entity:'WELLSPRING', sigil:'~', boost:9 },
+    { text:'Block 1 hour for something that restores you', entity:'WELLSPRING', sigil:'~', boost:10 },
+  ],
+};
+
+const VECTOR_COLORS = { LUX:'#C8A850', GRIT:'#E87A3A', PHI:'#9B4FDC', TILT:'#00CED1', FIRE:'#F4845F' };
+
+// Seed type lookup by [dominant vector][band]
+const SEED_EVOLVE = {
+  LUX:  { DRIFT:'Searching Seed', STEADY:'Grounded Seed', BUILD:'LUX Seed',     RADIANT:'Radiant Seed' },
+  GRIT: { DRIFT:'Iron Seed',      STEADY:'Anchor Seed',   BUILD:'Forge Seed',   RADIANT:'Forge Seed' },
+  PHI:  { DRIFT:'Curious Seed',   STEADY:'Deep Seed',     BUILD:'Wandering Seed', RADIANT:'Wandering Seed' },
+  TILT: { DRIFT:'Orbit Seed',     STEADY:'Spark Seed',    BUILD:'Builder Seed', RADIANT:'Builder Seed' },
+  FIRE: { DRIFT:'Field Seed',     STEADY:'Engine Seed',   BUILD:'Edge Seed',    RADIANT:'Edge Seed' },
+  BAL:  { DRIFT:'Field Seed',     STEADY:'Flow Seed',     BUILD:'Bloom Seed',   RADIANT:'Bloom Seed' },
+};
+
 // ── WATERING ──────────────────────────────────────────────────────────────────
-let _waterCount = 0;
+let _waterCount  = 0;
 let _waterCooldown = false;
+let _rowId = null;  // waitlist.id (UUID) for task linking
+let _vectors = { LUX:0, GRIT:0, PHI:0, TILT:0, FIRE:0 };
 
 function updateWaterDisplay(count){
   _waterCount = count;
@@ -715,45 +832,370 @@ function updateWaterDisplay(count){
 }
 
 async function waterSeed(){
-  if(_waterCooldown){ toast('Already watered this session 💧'); return; }
+  if(_waterCooldown){ toast('Tasks are already active 🌱'); return; }
   if(!_currentUserEmail) return;
 
-  // Splash animation at button
+  // Splash animation
   const btn  = document.getElementById('water-btn');
   const rect = btn.getBoundingClientRect();
   const cx   = rect.left + rect.width/2;
   const cy   = rect.top  + rect.height/2;
-
-  // Ripple
-  const rip = document.createElement('div');
+  const rip  = document.createElement('div');
   rip.className = 'w-ripple';
   rip.style.cssText = `left:${cx-30}px;top:${cy-30}px;width:60px;height:60px`;
   document.body.appendChild(rip);
   setTimeout(()=>rip.remove(), 700);
-
-  // Drops
-  const drops = ['💧','💦','🌱','✨'];
-  for(let i=0;i<6;i++){
+  ['💧','💦','🌱','✨'].forEach((em,i)=>{
     setTimeout(()=>{
-      const d = document.createElement('div');
-      d.className = 'w-drop';
-      d.textContent = drops[Math.floor(Math.random()*drops.length)];
-      d.style.cssText = `left:${cx + (Math.random()-0.5)*80}px;top:${cy}px`;
-      document.body.appendChild(d);
-      setTimeout(()=>d.remove(), 900);
-    }, i*60);
-  }
+      const d=document.createElement('div'); d.className='w-drop'; d.textContent=em;
+      d.style.cssText=`left:${cx+(Math.random()-.5)*80}px;top:${cy}px`;
+      document.body.appendChild(d); setTimeout(()=>d.remove(),900);
+    },i*70);
+  });
 
-  // Persist
+  // Increment water count
   const newCount = _waterCount + 1;
   await sb.from('waitlist').update({ water_count: newCount }).eq('email', _currentUserEmail);
   updateWaterDisplay(newCount);
 
-  // Cooldown this session
+  // Spawn tasks
+  await spawnTasks();
+
   _waterCooldown = true;
-  btn.textContent = '💧 Watered ✓';
+  btn.textContent = '🌱 Tasks Active';
+  btn.style.background = 'rgba(168,201,155,.12)';
+  btn.style.borderColor = 'rgba(168,201,155,.4)';
+  btn.style.color = 'var(--sage)';
   btn.disabled = true;
-  document.getElementById('water-cooldown').textContent = 'Come back tomorrow to water again';
+  document.getElementById('water-cooldown').textContent = 'Complete your tasks to grow your seed';
+}
+
+// ── TASK SPAWNING ─────────────────────────────────────────────────────────────
+function pickTasks(vectors, count=4){
+  // Sort vectors: weakest first (grow what needs water most)
+  const sorted = Object.entries(vectors).sort((a,b)=>a[1]-b[1]);
+  const tasks  = [];
+  const used   = new Set();
+  let i = 0;
+  while(tasks.length < count){
+    const vec = sorted[i % sorted.length][0];
+    const pool = TASK_POOL[vec].filter(t=>!used.has(t.text));
+    if(pool.length){
+      const t = pool[Math.floor(Math.random()*pool.length)];
+      used.add(t.text);
+      tasks.push({ ...t, vector: vec });
+    }
+    i++;
+    if(i > 20) break;
+  }
+  return tasks;
+}
+
+async function spawnTasks(){
+  if(!_rowId) return;
+
+  // Check for existing incomplete tasks first
+  const { data: existing } = await sb
+    .from('field_tasks')
+    .select('*')
+    .eq('waitlist_id', _rowId)
+    .eq('completed', false);
+
+  if(existing && existing.length > 0){
+    renderTasks(existing);
+    return;
+  }
+
+  // Generate new tasks based on vectors
+  const taskDefs = pickTasks(_vectors, 4);
+  const inserts  = taskDefs.map(t=>({
+    waitlist_id: _rowId,
+    text:   t.text,
+    vector: t.vector,
+    entity: t.entity,
+    boost:  t.boost,
+    completed: false,
+  }));
+
+  const { data: newTasks } = await sb.from('field_tasks').insert(inserts).select();
+  renderTasks(newTasks || []);
+}
+
+async function loadExistingTasks(){
+  if(!_rowId) return;
+  const { data } = await sb
+    .from('field_tasks')
+    .select('*')
+    .eq('waitlist_id', _rowId)
+    .eq('completed', false)
+    .order('created_at', {ascending:false})
+    .limit(8);
+  if(data && data.length > 0){
+    renderTasks(data);
+    _waterCooldown = true;
+    const btn = document.getElementById('water-btn');
+    btn.textContent = '🌱 Tasks Active';
+    btn.style.background = 'rgba(168,201,155,.12)';
+    btn.style.borderColor = 'rgba(168,201,155,.4)';
+    btn.style.color = 'var(--sage)';
+    btn.disabled = true;
+    document.getElementById('water-cooldown').textContent = 'Complete your tasks to grow your seed';
+  }
+}
+
+function renderTasks(tasks){
+  const section = document.getElementById('tasks-section');
+  const list    = document.getElementById('tasks-list');
+  section.style.display = 'block';
+  section.scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+  const done = tasks.filter(t=>t.completed).length;
+  document.getElementById('tasks-progress').textContent = `${done}/${tasks.length} complete`;
+
+  list.innerHTML = tasks.map(t=>{
+    const col = VECTOR_COLORS[t.vector] || 'var(--sage)';
+    return `<div class="task-card${t.completed?' done':''}"
+        style="--task-col:${col}"
+        onclick="completeTask('${t.id}','${t.vector}',${t.boost},this)"
+        data-id="${t.id}">
+      <div class="task-check">
+        ${t.completed ? `<span style="color:white;font-size:10px">✓</span>` : ''}
+      </div>
+      <div class="task-body">
+        <div class="task-text">${escHtml(t.text)}</div>
+        <div class="task-meta">
+          <span class="task-vector" style="background:${col}22;color:${col}">${t.vector}</span>
+          <span class="task-entity">${t.entity}</span>
+          <span class="task-boost">+${t.boost} pts</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── TASK COMPLETION ───────────────────────────────────────────────────────────
+async function completeTask(taskId, vector, boost, el){
+  if(el.classList.contains('done')) return;
+
+  // Mark done visually
+  el.classList.add('done');
+  el.querySelector('.task-check').innerHTML = '<span style="color:white;font-size:10px">✓</span>';
+
+  // Save to DB
+  await sb.from('field_tasks')
+    .update({ completed:true, completed_at: new Date().toISOString() })
+    .eq('id', taskId);
+
+  // Boost vector
+  _vectors[vector] = Math.min(100, (_vectors[vector] || 0) + boost);
+
+  // Recalculate LUX score + possibly evolve seed
+  await recalcSeed();
+
+  // Update progress count
+  const cards = document.querySelectorAll('.task-card');
+  const done  = [...cards].filter(c=>c.classList.contains('done')).length;
+  document.getElementById('tasks-progress').textContent = `${done}/${cards.length} complete`;
+
+  // Particle burst at task
+  const r = el.getBoundingClientRect();
+  const cx = r.left + r.width/2, cy = r.top + r.height/2;
+  for(let i=0;i<5;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div'); p.className='w-drop';
+      p.textContent='✨'; p.style.cssText=`left:${cx+(Math.random()-.5)*50}px;top:${cy}px`;
+      document.body.appendChild(p); setTimeout(()=>p.remove(),900);
+    },i*50);
+  }
+
+  // Show share card after all tasks done
+  if(done >= cards.length){
+    setTimeout(()=> renderShareCard(), 800);
+  }
+}
+
+// ── SEED RECALCULATION ────────────────────────────────────────────────────────
+async function recalcSeed(){
+  const V = _vectors;
+  // Field score 0-100
+  const score = Math.round(V.LUX*.3 + V.GRIT*.2 + V.PHI*.15 + V.TILT*.2 + V.FIRE*.15);
+  const band  = score>=80?'RADIANT':score>=60?'BUILD':score>=30?'STEADY':'DRIFT';
+
+  // Dominant vector (or balanced)
+  const entries = Object.entries(V).sort((a,b)=>b[1]-a[1]);
+  const topVal  = entries[0][1];
+  const topVec  = entries.filter(e=>e[1]>=topVal-8).length >= 3 ? 'BAL' : entries[0][0];
+  const newSeed = (SEED_EVOLVE[topVec] || SEED_EVOLVE.BAL)[band];
+
+  // Save to DB
+  await sb.from('waitlist').update({
+    lux_score: score,
+    vectors: V,
+    seed_type: newSeed,
+  }).eq('email', _currentUserEmail);
+
+  // Animate bars
+  animateBar('bar-lux',  'val-lux',  V.LUX);
+  animateBar('bar-grit', 'val-grit', V.GRIT);
+  animateBar('bar-phi',  'val-phi',  V.PHI);
+  animateBar('bar-tilt', 'val-tilt', V.TILT);
+  animateBar('bar-fire', 'val-fire', V.FIRE);
+
+  // Animate gauge
+  const gaugeFill = document.getElementById('gauge-fill');
+  const offset = 283 - (score/100)*283;
+  setTimeout(()=>{ gaugeFill.style.strokeDashoffset = offset; }, 50);
+  animateNum('gauge-num', parseInt(document.getElementById('gauge-num').textContent)||0, score, 1000, null);
+
+  // Check if seed type changed
+  const prevSeed = document.getElementById('card-seed-name').textContent;
+  if(newSeed !== prevSeed){
+    const align = getAlign(newSeed);
+    document.getElementById('card-seed-name').textContent   = newSeed;
+    document.getElementById('card-seed-name').style.color   = align.color;
+    document.getElementById('card-seed-name').style.textShadow = `0 0 30px ${align.color}80`;
+    document.getElementById('card-sigil').textContent        = align.sigil;
+    document.getElementById('card-sigil').style.color        = align.color;
+    document.getElementById('card-entity-name').textContent  = align.entity;
+    document.getElementById('holo-card').style.setProperty('--card-color', align.color);
+    document.getElementById('gauge-fill').style.stroke       = align.color;
+    document.getElementById('gauge-num').style.color         = align.color;
+
+    // Flash evolution alert
+    const evo = document.getElementById('evolution-alert');
+    document.getElementById('evo-title').textContent = `${prevSeed} → ${newSeed}`;
+    document.getElementById('evo-sub').textContent   = `${band} band reached -- ${align.entity} resonance activated`;
+    evo.style.display = 'block';
+    evo.scrollIntoView({ behavior:'smooth', block:'nearest' });
+    setTimeout(()=>evo.style.display='none', 5000);
+  }
+}
+
+// ── SHARE CARD CANVAS ─────────────────────────────────────────────────────────
+function renderShareCard(){
+  const section = document.getElementById('share-card-section');
+  section.style.display = 'block';
+  section.scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+  const c   = document.getElementById('share-canvas');
+  const ctx = c.getContext('2d');
+  const W=480, H=280;
+  c.width=W; c.height=H;
+  c.style.width=Math.min(W, window.innerWidth-40)+'px';
+
+  const seedName  = document.getElementById('card-seed-name').textContent;
+  const handle    = document.getElementById('card-handle').textContent;
+  const lux       = document.getElementById('gauge-num').textContent;
+  const align     = getAlign(seedName);
+  const [r,g,b]   = align.color.match(/\w\w/g).slice(0,3).map(x=>parseInt(x,16));
+
+  // Background
+  const bgGrad = ctx.createLinearGradient(0,0,W,H);
+  bgGrad.addColorStop(0,'#080f0b');
+  bgGrad.addColorStop(1,'#0d0f0e');
+  ctx.fillStyle = bgGrad;
+  roundRect(ctx,0,0,W,H,16);
+  ctx.fill();
+
+  // Glow
+  const glow = ctx.createRadialGradient(W*.35,H*.5,0,W*.35,H*.5,200);
+  glow.addColorStop(0,`rgba(${r},${g},${b},.12)`);
+  glow.addColorStop(1,'transparent');
+  ctx.fillStyle=glow; ctx.fillRect(0,0,W,H);
+
+  // Border
+  ctx.strokeStyle=`rgba(${r},${g},${b},.4)`;
+  ctx.lineWidth=1.5;
+  roundRect(ctx,1,1,W-2,H-2,15); ctx.stroke();
+
+  // Sigil
+  ctx.font='bold 64px Arial, monospace';
+  ctx.fillStyle=align.color;
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.shadowColor=align.color; ctx.shadowBlur=20;
+  ctx.fillText(align.sigil, 88, H/2);
+  ctx.shadowBlur=0;
+
+  // Divider
+  ctx.strokeStyle=`rgba(${r},${g},${b},.2)`;
+  ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(148,30); ctx.lineTo(148,H-30); ctx.stroke();
+
+  // Text block
+  ctx.textAlign='left'; ctx.textBaseline='alphabetic';
+
+  ctx.font='600 11px Courier New, monospace';
+  ctx.fillStyle=`rgba(${r},${g},${b},.55)`;
+  ctx.fillText('HIPJOY FIELD MEMBER', 168, 54);
+
+  ctx.font='bold 28px Courier New, monospace';
+  ctx.fillStyle=align.color;
+  ctx.shadowColor=align.color; ctx.shadowBlur=12;
+  ctx.fillText(seedName.toUpperCase(), 168, 100);
+  ctx.shadowBlur=0;
+
+  ctx.font='600 13px Courier New, monospace';
+  ctx.fillStyle='rgba(255,255,255,.55)';
+  ctx.fillText(handle, 168, 128);
+
+  // Vector bars
+  const vecs = [
+    ['LUX',_vectors.LUX,'#C8A850'],['GRIT',_vectors.GRIT,'#E87A3A'],
+    ['PHI',_vectors.PHI,'#9B4FDC'],['TILT',_vectors.TILT,'#00CED1'],
+    ['FIRE',_vectors.FIRE,'#F4845F'],
+  ];
+  vecs.forEach(([name,val,col],i)=>{
+    const bx=168, by=152+i*18, bw=180, bh=5;
+    ctx.fillStyle='rgba(255,255,255,.06)';
+    roundRect(ctx,bx,by,bw,bh,3); ctx.fill();
+    const [br,bg,bb]=col.match(/\w\w/g).slice(0,3).map(x=>parseInt(x,16));
+    ctx.fillStyle=col;
+    roundRect(ctx,bx,by,Math.max(4,bw*(val/100)),bh,3); ctx.fill();
+    ctx.font='9px Courier New';
+    ctx.fillStyle='rgba(255,255,255,.3)';
+    ctx.fillText(name, bx-42, by+bh-0.5);
+  });
+
+  // LUX score
+  ctx.font='bold 36px Courier New, monospace';
+  ctx.fillStyle=align.color;
+  ctx.textAlign='right';
+  ctx.fillText(lux, W-28, H-42);
+  ctx.font='10px Courier New';
+  ctx.fillStyle=`rgba(${r},${g},${b},.5)`;
+  ctx.fillText('LUX SCORE', W-28, H-26);
+
+  // Watermark
+  ctx.font='9px Courier New';
+  ctx.fillStyle='rgba(255,255,255,.12)';
+  ctx.textAlign='left';
+  ctx.fillText('HIPJOY.IO / PLANT YOUR SEED', 168, H-16);
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y);
+  ctx.arcTo(x+w,y,x+w,y+r,r); ctx.lineTo(x+w,y+h-r);
+  ctx.arcTo(x+w,y+h,x+w-r,y+h,r); ctx.lineTo(x+r,y+h);
+  ctx.arcTo(x,y+h,x,y+h-r,r); ctx.lineTo(x,y+r);
+  ctx.arcTo(x,y,x+r,y,r); ctx.closePath();
+}
+
+function downloadCard(){
+  const c = document.getElementById('share-canvas');
+  const a = document.createElement('a');
+  a.download = `hipjoy-seed-${Date.now()}.png`;
+  a.href = c.toDataURL('image/png');
+  a.click();
+}
+
+function tweetCard(){
+  const seedName = document.getElementById('card-seed-name').textContent;
+  const lux      = document.getElementById('gauge-num').textContent;
+  const handle   = document.getElementById('card-handle').textContent;
+  const text     = `My seed just evolved in the HIPJOY field 🌱\n${seedName} | LUX ${lux}\n${handle}\n@Joey_Barbush\n#HIPJOY #PlantYourSeed`;
+  window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
 }
 
 // ── SETTINGS ──────────────────────────────────────────────────────────────────
