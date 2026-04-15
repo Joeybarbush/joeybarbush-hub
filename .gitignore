@@ -1,0 +1,3 @@
+# Private / founder-only tools -- never deploy publicly
+.private/
+monitor.html
