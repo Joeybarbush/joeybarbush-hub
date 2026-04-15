@@ -158,6 +158,58 @@ nav{
 }
 #lab-toggle:hover{background:rgba(0,206,209,.18)}
 
+/* SIGN IN OVERLAY */
+#signin-overlay{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(0,0,0,.88);backdrop-filter:blur(14px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+#signin-overlay.show{opacity:1;pointer-events:auto}
+.si-card{
+  background:rgba(7,16,10,.97);border:1px solid rgba(168,201,155,.16);
+  border-radius:18px;padding:2rem 1.8rem;max-width:360px;width:92%;
+  transform:translateY(14px);transition:transform .3s;
+}
+#signin-overlay.show .si-card{transform:translateY(0)}
+.si-title{font-family:Orbitron;font-size:.78rem;letter-spacing:.18em;color:var(--sage);margin-bottom:.3rem}
+.si-sub{font-size:.65rem;color:rgba(168,201,155,.35);margin-bottom:1.4rem}
+.si-input{
+  width:100%;background:rgba(168,201,155,.04);
+  border:1px solid rgba(168,201,155,.14);border-radius:8px;
+  padding:.7rem .9rem;color:rgba(168,201,155,.85);
+  font-family:'JetBrains Mono',monospace;font-size:.75rem;
+  outline:none;margin-bottom:.65rem;transition:border-color .2s;
+}
+.si-input:focus{border-color:rgba(168,201,155,.32)}
+.si-btn{
+  width:100%;padding:.72rem;background:rgba(168,201,155,.1);
+  border:1px solid rgba(168,201,155,.28);border-radius:8px;
+  color:var(--sage);font-family:Orbitron;font-size:.65rem;
+  letter-spacing:.12em;cursor:pointer;transition:background .2s;
+}
+.si-btn:hover{background:rgba(168,201,155,.2)}
+.si-err{font-size:.65rem;color:rgba(240,100,100,.7);margin-top:.5rem;min-height:1rem}
+.si-close{position:absolute;top:1rem;right:1.2rem;background:none;border:none;color:rgba(168,201,155,.3);cursor:pointer;font-size:1rem}
+
+/* FOUNDER MODE HUD */
+#founder-hud{
+  position:fixed;top:56px;left:50%;transform:translateX(-50%);
+  z-index:45;opacity:0;pointer-events:none;transition:opacity .4s;
+  display:flex;align-items:center;gap:.6rem;
+  background:rgba(0,0,0,.7);border:1px solid rgba(255,215,0,.25);
+  border-radius:20px;padding:.35rem .9rem;
+  font-family:Orbitron;font-size:.6rem;letter-spacing:.14em;
+  color:rgba(255,215,0,.75);
+}
+#founder-hud.show{opacity:1}
+.fhud-dot{width:7px;height:7px;border-radius:50%;background:#FFD700;animation:fhudPulse 1.6s ease-in-out infinite}
+@keyframes fhudPulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* SIGNED-IN INDICATOR in nav */
+.nav-user{font-size:.65rem;color:rgba(168,201,155,.5);letter-spacing:.06em}
+.nav-user.founder{color:#FFD700;font-family:Orbitron;font-size:.6rem;letter-spacing:.12em}
+
 /* SONARIS PULSE overlay on canvas (drawn in JS) */
 </style>
 </head>
@@ -175,8 +227,25 @@ nav{
     <li><a href="field.html">Field</a></li>
     <li><a href="profile.html">My Seed</a></li>
     <li><a href="index.html">Home</a></li>
+    <li><span class="nav-user" id="nav-user-label" onclick="toggleSignIn()" style="cursor:pointer">Sign In</span></li>
   </ul>
 </nav>
+
+<!-- FOUNDER MODE HUD -->
+<div id="founder-hud"><div class="fhud-dot"></div>FOUNDER MODE -- ORIGIN ACTIVE</div>
+
+<!-- SIGN IN OVERLAY -->
+<div id="signin-overlay">
+  <div class="si-card" style="position:relative">
+    <button class="si-close" onclick="toggleSignIn()">✕</button>
+    <div class="si-title">ENTER THE FIELD</div>
+    <div class="si-sub">sign in to leave notes and access founder controls</div>
+    <input class="si-input" id="si-email" type="email" placeholder="email" autocomplete="email">
+    <input class="si-input" id="si-pw" type="password" placeholder="password" autocomplete="current-password">
+    <button class="si-btn" id="si-btn" onclick="doGardenSignIn()">ENTER →</button>
+    <div class="si-err" id="si-err"></div>
+  </div>
+</div>
 
 <canvas id="gc"></canvas>
 
@@ -714,8 +783,12 @@ function drawFounderSeed(s, t, sx, sy){
   const ey     = sy+bob;
   const near   = Math.hypot(player.x-s.x,player.y-s.y)<ENCOUNTER_DIST;
 
+  // Active founder boost when logged in
+  const founderActive = typeof _isFounderSession!=='undefined' && _isFounderSession;
+  const SCALE = founderActive ? 1.22 : 1; // everything a bit bigger/brighter when active
+
   // ── DEEP GROUND CORONA ──
-  const corona=ctx.createRadialGradient(sx,ey,0,sx,ey,160);
+  const corona=ctx.createRadialGradient(sx,ey,0,sx,ey,160*SCALE);
   corona.addColorStop(0,`rgba(255,215,0,${0.06+pulse*.05})`);
   corona.addColorStop(0.4,`rgba(255,165,0,${0.03+pulse*.03})`);
   corona.addColorStop(1,`rgba(255,215,0,0)`);
@@ -723,7 +796,7 @@ function drawFounderSeed(s, t, sx, sy){
   ctx.fillStyle=corona; ctx.fill();
 
   // ── 4 ROTATING WATCHTOWER ORBS ──
-  const TWR=132;
+  const TWR=132*SCALE;
   for(let i=0;i<4;i++){
     const a=t*0.00035+i*Math.PI/2;
     const tx=sx+Math.cos(a)*TWR, ty=ey+Math.sin(a)*TWR*0.6;
@@ -840,7 +913,15 @@ function drawFounderSeed(s, t, sx, sy){
   // OVERFLOW tag
   ctx.font=`bold 7px Orbitron,monospace`;
   ctx.fillStyle=`rgba(255,255,180,${0.4+pulse2*.35})`;
-  ctx.fillText('LUX:OVERFLOW',sx,ey+orbR+6);
+  ctx.fillText(founderActive?'◈ FOUNDER ACTIVE -- LUX:OVERFLOW':'LUX:OVERFLOW',sx,ey+orbR+6);
+  // Extra active ring when signed in
+  if(founderActive){
+    ctx.save(); ctx.translate(sx,ey); ctx.rotate(t*0.0007);
+    ctx.beginPath(); ctx.arc(0,0,115,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(255,215,0,${0.08+pulse*.06})`; ctx.lineWidth=1;
+    ctx.setLineDash([2,6]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.restore();
+  }
 }
 
 // ── AFFINITY LINES ────────────────────────────────────────────────────────────
@@ -920,12 +1001,18 @@ function loop(t){
   bar.style.width = '30%';
   sub.textContent = 'Loading seeds from the field...';
 
-  // Load session (enables leaving messages)
+  // Load session (enables leaving messages + founder mode)
   const { data: { session } } = await sb.auth.getSession();
   if(session){
     currentUser = session.user;
-    const { data: userRow } = await sb.from('waitlist').select('display_name').eq('user_id',session.user.id).single();
+    const { data: userRow } = await sb.from('waitlist').select('display_name,is_founder').eq('user_id',session.user.id).single();
     currentUserRow = userRow;
+    _gardenSignedIn = true;
+    _isFounderSession = !!userRow?.is_founder;
+    const label = document.getElementById('nav-user-label');
+    label.textContent = _isFounderSession ? '★ FOUNDER' : '@'+(userRow?.display_name||session.user.email.split('@')[0]);
+    label.className = _isFounderSession ? 'nav-user founder' : 'nav-user';
+    if(_isFounderSession) setTimeout(()=>document.getElementById('founder-hud').classList.add('show'),1200);
   }
 
   const { data } = await sb
@@ -956,6 +1043,66 @@ function loop(t){
     requestAnimationFrame(loop);
   }, 500);
 })();
+
+// ── GARDEN AUTH ───────────────────────────────────────────────────────────────
+let _gardenSignedIn = false;
+let _isFounderSession = false;
+
+function toggleSignIn(){
+  const overlay = document.getElementById('signin-overlay');
+  if(_gardenSignedIn){
+    // Already in -- sign out
+    sb.auth.signOut().then(()=>{
+      currentUser=null; currentUserRow=null;
+      _gardenSignedIn=false; _isFounderSession=false;
+      document.getElementById('nav-user-label').textContent='Sign In';
+      document.getElementById('nav-user-label').className='nav-user';
+      document.getElementById('founder-hud').classList.remove('show');
+    });
+    return;
+  }
+  overlay.classList.toggle('show');
+  if(overlay.classList.contains('show'))
+    setTimeout(()=>document.getElementById('si-email').focus(),120);
+}
+
+async function doGardenSignIn(){
+  const email = document.getElementById('si-email').value.trim();
+  const pw    = document.getElementById('si-pw').value;
+  const btn   = document.getElementById('si-btn');
+  const err   = document.getElementById('si-err');
+  if(!email||!pw){ err.textContent='Email and password required'; return; }
+  btn.textContent='...'; btn.disabled=true; err.textContent='';
+
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
+  if(error){
+    err.textContent=error.message; btn.textContent='ENTER →'; btn.disabled=false; return;
+  }
+
+  currentUser = data.user;
+  const { data: userRow } = await sb.from('waitlist').select('display_name,is_founder').eq('user_id',data.user.id).single();
+  currentUserRow = userRow;
+  _gardenSignedIn = true;
+  _isFounderSession = !!userRow?.is_founder;
+
+  document.getElementById('signin-overlay').classList.remove('show');
+  const label = document.getElementById('nav-user-label');
+  label.textContent = _isFounderSession ? '★ FOUNDER' : '@'+(userRow?.display_name||email.split('@')[0]);
+  label.className = _isFounderSession ? 'nav-user founder' : 'nav-user';
+  if(_isFounderSession) document.getElementById('founder-hud').classList.add('show');
+
+  btn.textContent='ENTER →'; btn.disabled=false;
+}
+
+// Enter key in password field
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('si-pw').addEventListener('keydown', e=>{
+    if(e.key==='Enter') doGardenSignIn();
+  });
+  document.getElementById('si-email').addEventListener('keydown', e=>{
+    if(e.key==='Enter') document.getElementById('si-pw').focus();
+  });
+});
 
 // ── LUMEN ENTITIES ────────────────────────────────────────────────────────────
 
