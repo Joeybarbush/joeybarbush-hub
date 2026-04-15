@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>The Garden -- HIPJOY Field</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --sage:#A8C99B;--orange:#E87A3A;--bg:#07100a;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);font-family:'JetBrains Mono',monospace}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.65rem 1.3rem;
+  background:rgba(7,16,10,.82);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(168,201,155,.1);
+}
+.nav-logo{font-family:Orbitron;font-size:.78rem;color:var(--sage);text-decoration:none;letter-spacing:.12em}
+.nav-links{display:flex;gap:1.2rem;list-style:none;align-items:center}
+.nav-links a{color:rgba(168,201,155,.5);text-decoration:none;font-size:.7rem;letter-spacing:.05em;transition:color .2s}
+.nav-links a:hover{color:var(--sage)}
+
+/* CANVAS */
+#gc{position:fixed;inset:0;display:block}
+
+/* SEED ENCOUNTER CARD */
+#encounter{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:rgba(7,16,10,.94);backdrop-filter:blur(18px);
+  border:1px solid rgba(168,201,155,.22);border-radius:14px;
+  padding:1rem 1.4rem;display:flex;align-items:center;gap:1rem;
+  opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;
+  min-width:240px;max-width:340px;z-index:40;
+}
+#encounter.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.enc-sigil{font-size:2rem;flex-shrink:0;filter:drop-shadow(0 0 10px var(--enc-col))}
+.enc-right{display:flex;flex-direction:column;gap:.25rem}
+.enc-seed{font-family:Orbitron;font-size:.78rem;letter-spacing:.1em;color:var(--enc-col)}
+.enc-handle{font-size:.72rem;color:rgba(168,201,155,.6)}
+.enc-stamp{font-size:.6rem;color:rgba(168,201,155,.3);letter-spacing:.1em}
+.enc-water{font-size:.62rem;color:rgba(100,180,255,.6)}
+
+/* MINI MAP */
+#minimap{
+  position:fixed;top:56px;right:14px;z-index:40;
+  width:110px;height:110px;border-radius:8px;
+  background:rgba(7,16,10,.7);border:1px solid rgba(168,201,155,.15);
+  overflow:hidden;
+}
+#mmc{display:block;width:110px;height:110px}
+
+/* JOYSTICK */
+#jpad{position:fixed;bottom:24px;left:24px;width:120px;height:120px;display:none;pointer-events:auto;z-index:9999;touch-action:none}
+#jbase{position:absolute;inset:0;border-radius:50%;background:rgba(168,201,155,.06);border:2px solid rgba(168,201,155,.35)}
+#jthumb{position:absolute;width:50px;height:50px;border-radius:50%;background:#E87A3A;border:2px solid rgba(232,122,58,.8);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;box-shadow:0 0 16px rgba(232,122,58,.4)}
+
+/* SEED COUNT HUD */
+#hud{
+  position:fixed;top:56px;left:14px;z-index:40;
+  font-size:.65rem;color:rgba(168,201,155,.5);letter-spacing:.1em;
+  background:rgba(7,16,10,.7);border:1px solid rgba(168,201,155,.12);
+  border-radius:8px;padding:.45rem .75rem;
+}
+
+/* LOADING SCREEN */
+#loader{
+  position:fixed;inset:0;z-index:200;
+  background:var(--bg);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:1.2rem;
+  transition:opacity .5s;
+}
+#loader.done{opacity:0;pointer-events:none}
+.loader-title{font-family:Orbitron;font-size:1.1rem;color:var(--sage);letter-spacing:.2em}
+.loader-sub{font-size:.72rem;color:rgba(168,201,155,.4);letter-spacing:.1em}
+.loader-bar-wrap{width:200px;height:2px;background:rgba(168,201,155,.1);border-radius:1px;overflow:hidden}
+.loader-bar{height:100%;background:var(--sage);width:0;transition:width .4s}
+
+/* CONTROLS HINT */
+#controls-hint{
+  position:fixed;bottom:24px;right:14px;z-index:40;
+  font-size:.62rem;color:rgba(168,201,155,.3);letter-spacing:.06em;
+  background:rgba(7,16,10,.7);border:1px solid rgba(168,201,155,.08);
+  border-radius:8px;padding:.4rem .7rem;line-height:1.7;
+}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-title">THE GARDEN</div>
+  <div class="loader-sub" id="loader-sub">Summoning seeds...</div>
+  <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">◈ THE GARDEN</a>
+  <ul class="nav-links">
+    <li><a href="field.html">Field</a></li>
+    <li><a href="profile.html">My Seed</a></li>
+    <li><a href="index.html">Home</a></li>
+  </ul>
+</nav>
+
+<canvas id="gc"></canvas>
+
+<div id="minimap"><canvas id="mmc"></canvas></div>
+
+<div id="encounter">
+  <div class="enc-sigil" id="enc-sigil">★</div>
+  <div class="enc-right">
+    <div class="enc-seed" id="enc-seed">Field Seed</div>
+    <div class="enc-handle" id="enc-handle">@fieldmember</div>
+    <div class="enc-stamp" id="enc-stamp">HIPJOY FIELD</div>
+    <div class="enc-water" id="enc-water"></div>
+  </div>
+</div>
+
+<div id="hud">
+  <span id="hud-count">-- seeds</span> in the garden
+</div>
+
+<div id="controls-hint">
+  WASD / arrows to move<br>
+  Walk near a seed to view it
+</div>
+
+<!-- JOYSTICK -->
+<div id="jpad"><div id="jbase"></div><div id="jthumb"></div></div>
+
+<script>
+const SUPABASE_URL = 'https://mdbzenhhljwmkdcmtawd.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYnplbmhobGp3bWtkY210YXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzY2NDUsImV4cCI6MjA5MTI1MjY0NX0.oCKA-Dpk-oxlS18mi-7R3pqA0mif1gM3J5RbDxavgaI';
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── DATA MAPS ─────────────────────────────────────────────────────────────────
+const ENTITY_FOR_SEED = {
+  'LUX Seed':'LUMENARCH','Forge Seed':'REBEL','Engine Seed':'REBEL',
+  'Root Seed':'WELLSPRING','Wandering Seed':'SPIRALETH','Iron Seed':'GUARDIAN',
+  'Builder Seed':'NEURO','Spark Seed':'NAVIX','Grounded Seed':'HIPPO',
+  'Anchor Seed':'HIPPO','Searching Seed':'VOX','Curious Seed':'NEURO',
+  'Field Seed':'CONAVIGATOR','Orbit Seed':'NAVIX','Deep Seed':'HIPPO',
+  'Signal Seed':'SONARIS','Radiant Seed':'LUMENARCH','Flow Seed':'WELLSPRING',
+  'Edge Seed':'REBEL','Bloom Seed':'CONAVIGATOR'
+};
+const SIGIL_MAP = {
+  'LUMENARCH':'◉','REBEL':'✕','WELLSPRING':'~','SPIRALETH':'∞',
+  'GUARDIAN':'⊗','NEURO':'∇','NAVIX':'→','HIPPO':'◈',
+  'VOX':'◊','SONARIS':'≋','CONAVIGATOR':'★'
+};
+const COLOR_MAP = {
+  'LUMENARCH':'#C8A850','REBEL':'#F4845F','WELLSPRING':'#A8C99B','SPIRALETH':'#9B4FDC',
+  'GUARDIAN':'#8899AA','NEURO':'#00CED1','NAVIX':'#00B4A0','HIPPO':'#C8A850',
+  'VOX':'#E075A8','SONARIS':'#A8C99B','CONAVIGATOR':'#A8C99B'
+};
+
+function getSeedColor(seedType) {
+  const entity = ENTITY_FOR_SEED[seedType] || 'CONAVIGATOR';
+  return COLOR_MAP[entity] || '#A8C99B';
+}
+function getSeedSigil(seedType) {
+  const entity = ENTITY_FOR_SEED[seedType] || 'CONAVIGATOR';
+  return SIGIL_MAP[entity] || '★';
+}
+
+// ── CANVAS + WORLD ────────────────────────────────────────────────────────────
+const canvas = document.getElementById('gc');
+const ctx    = canvas.getContext('2d');
+const mm     = document.getElementById('mmc');
+const mctx   = mm.getContext('2d');
+
+const WORLD_W = 2800;
+const WORLD_H = 2800;
+const TILE    = 52;   // grid cell size
+const PLAYER_SPEED = 2.8;
+const ENCOUNTER_DIST = 80;
+
+let seeds = [];           // loaded from DB
+let particles = [];       // ambient floating particles
+let cam = { x: WORLD_W/2 - window.innerWidth/2, y: WORLD_H/2 - window.innerHeight/2 };
+let player = { x: WORLD_W/2, y: WORLD_H/2, angle: 0 };
+let keys = {};
+let nearSeed = null;
+let started = false;
+let lastTime = 0;
+
+// ── RESIZE ────────────────────────────────────────────────────────────────────
+function resize(){
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ── SEED PLACEMENT ────────────────────────────────────────────────────────────
+function layoutSeeds(data){
+  const count = data.length;
+  if(!count) return [];
+  const cols = Math.ceil(Math.sqrt(count * 1.4));
+  const spacing = Math.min(220, Math.max(140, (WORLD_W * 0.7) / cols));
+  const startX = WORLD_W/2 - (cols/2) * spacing + spacing/2;
+  const startY = WORLD_H/2 - (Math.ceil(count/cols)/2) * spacing + spacing/2;
+  return data.map((row, i) => {
+    const col = i % cols;
+    const r   = Math.floor(i / cols);
+    const jitter = (seed) => { // deterministic jitter from seed name
+      let h = 0; for(const c of seed) h = (Math.imul(31,h)+c.charCodeAt(0))|0;
+      return ((h & 0xffff) / 0xffff - 0.5) * (spacing * 0.55);
+    };
+    const nm = row.display_name || 'seed';
+    return {
+      x:     startX + col * spacing + jitter(nm+'x'),
+      y:     startY + r   * spacing + jitter(nm+'y'),
+      seed_type:    row.seed_type    || 'Field Seed',
+      display_name: row.display_name || 'anon',
+      water_count:  row.water_count  || 0,
+      col:   getSeedColor(row.seed_type || 'Field Seed'),
+      sigil: getSeedSigil(row.seed_type || 'Field Seed'),
+      pulse: Math.random() * Math.PI * 2, // phase offset for animation
+      bob:   Math.random() * Math.PI * 2,
+      stampId: Math.floor(Math.random()*9000+1000),
+    };
+  });
+}
+
+// ── AMBIENT PARTICLES ─────────────────────────────────────────────────────────
+function spawnParticles(){
+  for(let i=0;i<120;i++){
+    particles.push({
+      x: Math.random()*WORLD_W, y: Math.random()*WORLD_H,
+      vx:(Math.random()-.5)*.25, vy:(Math.random()-.5)*.25,
+      r: Math.random()*.8+.2,
+      a: Math.random(), da:(Math.random()-.5)*.008,
+      col: Math.random()<.6 ? '#A8C99B' : '#C8A850',
+    });
+  }
+}
+
+// ── INPUT ─────────────────────────────────────────────────────────────────────
+window.addEventListener('keydown', e=>{
+  keys[e.code]=true;
+  if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code)) e.preventDefault();
+  started = true;
+});
+window.addEventListener('keyup', e=>{ keys[e.code]=false; });
+
+// Joystick
+let jActive=false, jDir={x:0,y:0}, jCx=0, jCy=0;
+const jpad   = document.getElementById('jpad');
+const jthumb = document.getElementById('jthumb');
+const JR = 35;
+if('ontouchstart' in window || navigator.maxTouchPoints > 0){
+  jpad.style.display = 'block';
+  document.getElementById('controls-hint').style.display = 'none';
+}
+jpad.addEventListener('touchstart', e=>{
+  e.preventDefault();
+  const rc=jpad.getBoundingClientRect();
+  jCx=rc.left+rc.width/2; jCy=rc.top+rc.height/2;
+  jActive=true; started=true;
+  moveJoy(e.touches[0]);
+},{passive:false});
+window.addEventListener('touchmove', e=>{ if(!jActive) return; e.preventDefault(); moveJoy(e.touches[0]); },{passive:false});
+window.addEventListener('touchend', ()=>{ jActive=false; jDir={x:0,y:0}; jthumb.style.transform='translate(-50%,-50%)'; });
+function moveJoy(t){
+  const dx=t.clientX-jCx, dy=t.clientY-jCy;
+  const d=Math.sqrt(dx*dx+dy*dy), c=Math.min(d,JR), a=Math.atan2(dy,dx);
+  const nx=Math.cos(a)*c, ny=Math.sin(a)*c;
+  jDir={x:nx/JR, y:ny/JR};
+  jthumb.style.transform=`translate(calc(-50% + ${nx}px), calc(-50% + ${ny}px))`;
+}
+
+// ── UPDATE ────────────────────────────────────────────────────────────────────
+function update(dt){
+  let dx=0, dy=0;
+  if(keys['KeyW']||keys['ArrowUp'])   dy-=1;
+  if(keys['KeyS']||keys['ArrowDown']) dy+=1;
+  if(keys['KeyA']||keys['ArrowLeft']) dx-=1;
+  if(keys['KeyD']||keys['ArrowRight'])dx+=1;
+  if(jActive){ dx=jDir.x; dy=jDir.y; }
+
+  if(dx!==0&&dy!==0){ const l=Math.sqrt(dx*dx+dy*dy); dx/=l; dy/=l; }
+
+  if(dx||dy){
+    player.angle = Math.atan2(dy,dx);
+    started = true;
+  }
+
+  player.x = Math.max(20, Math.min(WORLD_W-20, player.x + dx*PLAYER_SPEED));
+  player.y = Math.max(20, Math.min(WORLD_H-20, player.y + dy*PLAYER_SPEED));
+
+  // Smooth camera
+  const tw = window.innerWidth, th = window.innerHeight;
+  const tx = player.x - tw/2;
+  const ty = player.y - th/2;
+  cam.x += (tx - cam.x) * 0.1;
+  cam.y += (ty - cam.y) * 0.1;
+  cam.x = Math.max(0, Math.min(WORLD_W - tw, cam.x));
+  cam.y = Math.max(0, Math.min(WORLD_H - th, cam.y));
+
+  // Particles
+  particles.forEach(p=>{
+    p.x += p.vx; p.y += p.vy;
+    if(p.x<0) p.x=WORLD_W; if(p.x>WORLD_W) p.x=0;
+    if(p.y<0) p.y=WORLD_H; if(p.y>WORLD_H) p.y=0;
+    p.a += p.da;
+    if(p.a<.05||p.a>1) p.da*=-1;
+  });
+
+}
+
+// ── DRAW ──────────────────────────────────────────────────────────────────────
+function draw(t){
+  const tw = window.innerWidth, th = window.innerHeight;
+  ctx.clearRect(0,0,tw,th);
+
+  // ── GROUND ──
+  ctx.fillStyle = '#07100a';
+  ctx.fillRect(0,0,tw,th);
+
+  // Soft radial ground lighting
+  const grad = ctx.createRadialGradient(tw/2,th/2,0,tw/2,th/2,Math.max(tw,th)*.7);
+  grad.addColorStop(0,'rgba(20,40,20,.4)');
+  grad.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,tw,th);
+
+  // ── GRID ──
+  const gox = -(cam.x % TILE);
+  const goy = -(cam.y % TILE);
+  ctx.strokeStyle = 'rgba(168,201,155,.028)';
+  ctx.lineWidth = 1;
+  for(let x=gox; x<tw; x+=TILE){ ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,th);ctx.stroke(); }
+  for(let y=goy; y<th; y+=TILE){ ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(tw,y);ctx.stroke(); }
+
+  // ── PARTICLES ──
+  particles.forEach(p=>{
+    const sx = p.x - cam.x, sy = p.y - cam.y;
+    if(sx<-10||sx>tw+10||sy<-10||sy>th+10) return;
+    ctx.beginPath();
+    ctx.arc(sx,sy,p.r,0,Math.PI*2);
+    ctx.fillStyle = p.col === '#A8C99B'
+      ? `rgba(168,201,155,${p.a*.35})`
+      : `rgba(200,168,80,${p.a*.25})`;
+    ctx.fill();
+  });
+
+  // ── SEEDS ──
+  seeds.forEach(s=>{
+    const sx = s.x - cam.x, sy = s.y - cam.y;
+    if(sx < -120 || sx > tw+120 || sy < -120 || sy > th+120) return;
+
+    const pulse = Math.sin(t*0.0018 + s.pulse) * .5 + .5;
+    const bob   = Math.sin(t*0.0012 + s.bob) * 4;
+    const isy   = sy + bob;
+    const dist  = Math.hypot(player.x-s.x, player.y-s.y);
+    const near  = dist < ENCOUNTER_DIST;
+    const glow  = near ? 1 : pulse * .5 + .3;
+    const [r,g,b] = hexToRgb(s.col);
+
+    // Outer aura
+    const aura = ctx.createRadialGradient(sx,isy,0,sx,isy,near?55:38);
+    aura.addColorStop(0,`rgba(${r},${g},${b},${glow*.18})`);
+    aura.addColorStop(1,`rgba(${r},${g},${b},0)`);
+    ctx.beginPath();
+    ctx.arc(sx,isy, near?55:38, 0, Math.PI*2);
+    ctx.fillStyle = aura;
+    ctx.fill();
+
+    // Ground shadow
+    ctx.beginPath();
+    ctx.ellipse(sx, sy+18, 16, 5, 0, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(0,0,0,.35)';
+    ctx.fill();
+
+    // Stem
+    ctx.beginPath();
+    ctx.moveTo(sx, sy+18);
+    ctx.lineTo(sx, isy+8);
+    ctx.strokeStyle = `rgba(${r},${g},${b},.4)`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Seed orb
+    const orbR = near ? 20 : 16;
+    const orbGrad = ctx.createRadialGradient(sx-orbR*.3,isy-orbR*.3,1,sx,isy,orbR);
+    orbGrad.addColorStop(0,`rgba(${r},${g},${b},.9)`);
+    orbGrad.addColorStop(.6,`rgba(${r},${g},${b},.45)`);
+    orbGrad.addColorStop(1,`rgba(${r},${g},${b},.1)`);
+    ctx.beginPath();
+    ctx.arc(sx,isy,orbR,0,Math.PI*2);
+    ctx.fillStyle = orbGrad;
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(sx,isy,orbR,0,Math.PI*2);
+    ctx.strokeStyle = `rgba(${r},${g},${b},${glow*.7})`;
+    ctx.lineWidth = near?2:1.5;
+    ctx.stroke();
+
+    // Sigil
+    ctx.font = `${near?14:11}px 'JetBrains Mono', monospace`;
+    ctx.fillStyle = `rgba(255,255,255,${near?.95:.7})`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(s.sigil, sx, isy);
+
+    // Name tag (always visible)
+    ctx.font = `500 9px 'JetBrains Mono', monospace`;
+    ctx.fillStyle = near
+      ? `rgba(${r},${g},${b},.9)`
+      : `rgba(${r},${g},${b},.5)`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText('@'+s.display_name.slice(0,10), sx, isy - orbR - 16);
+  });
+
+  // ── PLAYER ──
+  const px = player.x - cam.x;
+  const py = player.y - cam.y;
+
+  // Player glow
+  const pGlow = ctx.createRadialGradient(px,py,0,px,py,30);
+  pGlow.addColorStop(0,'rgba(168,201,155,.25)');
+  pGlow.addColorStop(1,'rgba(168,201,155,0)');
+  ctx.beginPath();
+  ctx.arc(px,py,30,0,Math.PI*2);
+  ctx.fillStyle = pGlow;
+  ctx.fill();
+
+  // Player body
+  ctx.beginPath();
+  ctx.arc(px,py,9,0,Math.PI*2);
+  ctx.fillStyle = '#A8C99B';
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(px,py,9,0,Math.PI*2);
+  ctx.strokeStyle = 'rgba(255,255,255,.5)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Direction indicator
+  ctx.beginPath();
+  ctx.moveTo(px,py);
+  ctx.lineTo(px + Math.cos(player.angle)*14, py + Math.sin(player.angle)*14);
+  ctx.strokeStyle = 'rgba(255,255,255,.5)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // ── MINIMAP ──
+  drawMinimap();
+}
+
+function drawMinimap(){
+  const mw=110, mh=110;
+  const scaleX = mw/WORLD_W, scaleY = mh/WORLD_H;
+  mctx.clearRect(0,0,mw,mh);
+  mctx.fillStyle='rgba(7,16,10,.8)';
+  mctx.fillRect(0,0,mw,mh);
+
+  // Seeds on minimap
+  seeds.forEach(s=>{
+    const [r,g,b]=hexToRgb(s.col);
+    mctx.beginPath();
+    mctx.arc(s.x*scaleX,s.y*scaleY,2.5,0,Math.PI*2);
+    mctx.fillStyle=`rgba(${r},${g},${b},.7)`;
+    mctx.fill();
+  });
+
+  // Viewport rect
+  const vx=cam.x*scaleX, vy=cam.y*scaleY;
+  const vw=window.innerWidth*scaleX, vh=window.innerHeight*scaleY;
+  mctx.strokeStyle='rgba(168,201,155,.35)';
+  mctx.lineWidth=1;
+  mctx.strokeRect(vx,vy,vw,vh);
+
+  // Player dot
+  mctx.beginPath();
+  mctx.arc(player.x*scaleX,player.y*scaleY,3,0,Math.PI*2);
+  mctx.fillStyle='#A8C99B';
+  mctx.fill();
+}
+
+// ── ENCOUNTER LOGIC (fixed) ───────────────────────────────────────────────────
+function checkEncounter(){
+  let closest=null, closestDist=Infinity;
+  seeds.forEach(s=>{
+    const d=Math.hypot(player.x-s.x,player.y-s.y);
+    if(d<ENCOUNTER_DIST && d<closestDist){ closest=s; closestDist=d; }
+  });
+  const enc=document.getElementById('encounter');
+  if(closest){
+    if(closest!==nearSeed){
+      nearSeed=closest;
+      enc.style.setProperty('--enc-col',closest.col);
+      document.getElementById('enc-sigil').textContent=closest.sigil;
+      document.getElementById('enc-sigil').style.color=closest.col;
+      document.getElementById('enc-seed').textContent=closest.seed_type;
+      document.getElementById('enc-seed').style.color=closest.col;
+      document.getElementById('enc-handle').textContent='@'+closest.display_name;
+      document.getElementById('enc-stamp').textContent=`HX${closest.stampId} -- HIPJOY FIELD`;
+      document.getElementById('enc-water').textContent=closest.water_count>0?`💧 Watered ${closest.water_count}x`:'';
+      enc.classList.add('show');
+    }
+  } else {
+    if(nearSeed){ nearSeed=null; enc.classList.remove('show'); }
+  }
+}
+
+// ── UTIL ──────────────────────────────────────────────────────────────────────
+function hexToRgb(h){
+  if(!h||h.length<7) return [168,201,155];
+  return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+}
+
+// ── GAME LOOP ─────────────────────────────────────────────────────────────────
+function loop(t){
+  const dt = t - lastTime; lastTime = t;
+  update(dt);
+  checkEncounter();
+  draw(t);
+  requestAnimationFrame(loop);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+(async function init(){
+  const bar = document.getElementById('loader-bar');
+  const sub = document.getElementById('loader-sub');
+
+  bar.style.width = '30%';
+  sub.textContent = 'Loading seeds from the field...';
+
+  const { data } = await sb
+    .from('waitlist')
+    .select('seed_type,display_name,water_count')
+    .eq('survey_completed', true)
+    .eq('gateway_approved', true)
+    .order('created_at', {ascending:true});
+
+  bar.style.width = '70%';
+  sub.textContent = `${(data||[]).length} seeds found...`;
+
+  seeds = layoutSeeds(data || []);
+  spawnParticles();
+
+  document.getElementById('hud-count').textContent = seeds.length;
+
+  bar.style.width = '100%';
+  sub.textContent = 'Opening the garden...';
+
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('done');
+    setTimeout(()=>document.getElementById('loader').style.display='none', 500);
+    requestAnimationFrame(loop);
+  }, 500);
+})();
+</script>
+</body>
+</html>

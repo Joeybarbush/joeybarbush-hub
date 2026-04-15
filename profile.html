@@ -247,7 +247,8 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="field.html">Field</a></li>
-    <li><a href="waitlist.html#seed-library-section">Garden</a></li>
+    <li><a href="garden.html">Garden</a></li>
+    <li><a href="waitlist.html">Plant</a></li>
     <li id="nav-signout-wrap" style="display:none">
       <button class="nav-signout" onclick="signOut()">Sign Out</button>
     </li>
@@ -390,7 +391,7 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
     <!-- GARDEN GATE -->
     <div id="garden-section">
       <!-- Unlocked: direct link -->
-      <a href="waitlist.html#seed-library-section" class="cta-btn cta-secondary" id="garden-unlocked" style="display:none">View the Garden</a>
+      <a href="garden.html" class="cta-btn cta-secondary" id="garden-unlocked" style="display:none">Enter the Garden →</a>
 
       <!-- Locked: blurred preview + share overlay -->
       <div id="garden-locked" style="position:relative;border-radius:14px;overflow:hidden">
@@ -798,7 +799,7 @@ async function shareToUnlock() {
     document.getElementById('garden-locked').style.display   = 'none';
     document.getElementById('garden-unlocked').style.display = '';
     setTimeout(() => {
-      window.location.href = 'waitlist.html#seed-library-section';
+      window.location.href = 'garden.html';
     }, 300);
   };
 }
