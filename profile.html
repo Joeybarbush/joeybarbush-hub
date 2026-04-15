@@ -499,10 +499,10 @@ async function loadProfile(user) {
   setSignal('sig-4', row && row.q4_productivity_wrong);
   setSignal('sig-5', row && row.q5_future_self);
 
-  // Garden gate -- unlocked if they shared
-  const didShare = row && row.shared === true;
-  document.getElementById('garden-unlocked').style.display = didShare ? '' : 'none';
-  document.getElementById('garden-locked').style.display   = didShare ? 'none' : '';
+  // Garden gate -- unlocked only if Joey has approved (master control) AND they shared
+  const gardenOpen = row && row.gateway_approved === true && row.shared === true;
+  document.getElementById('garden-unlocked').style.display = gardenOpen ? '' : 'none';
+  document.getElementById('garden-locked').style.display   = gardenOpen ? 'none' : '';
 
   // Show profile, hide sign-in
   document.getElementById('signin-panel').style.display  = 'none';

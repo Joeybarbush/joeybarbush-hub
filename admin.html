@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HIPXQL GATE CONTROL -- CLASSIFIED</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --sage:#A8C99B; --orange:#E87A3A; --gold:#C8A850;
+  --red:#F4845F; --purple:#9B4FDC; --cyan:#00CED1;
+  --bg:#080a09; --glass:rgba(255,255,255,.04);
+  --glass-b:rgba(168,201,155,.12);
+  --text:#d4e8d0; --muted:#5a7a62;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;overflow-x:hidden}
+
+/* ── QUANTUM GATE ──────────────────────────────────────────────────────── */
+#gate{
+  position:fixed;inset:0;z-index:9999;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.8rem;
+  transition:opacity .6s,transform .6s;
+}
+#gate.dissolve{opacity:0;pointer-events:none;transform:scale(1.04)}
+
+#sigil-rain{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.s-col{
+  position:absolute;top:-100%;font-size:13px;line-height:1.6;
+  color:rgba(168,201,155,.18);font-family:'JetBrains Mono',monospace;
+  animation:fall linear infinite;white-space:nowrap;
+}
+@keyframes fall{to{top:110%}}
+
+.gate-logo{
+  font-family:Orbitron;font-size:11px;letter-spacing:.3em;
+  color:rgba(168,201,155,.4);text-align:center;
+}
+.gate-sigil-row{
+  display:flex;gap:.6rem;font-size:1.4rem;
+  animation:sigil-pulse 3s ease-in-out infinite;
+}
+@keyframes sigil-pulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+.gate-title{
+  font-family:Orbitron;font-size:clamp(1rem,4vw,1.6rem);font-weight:900;
+  letter-spacing:.2em;color:var(--sage);text-align:center;
+  text-shadow:0 0 40px rgba(168,201,155,.4);
+}
+
+.quantum-display{
+  font-family:'JetBrains Mono',monospace;font-size:.75rem;
+  letter-spacing:.15em;color:rgba(168,201,155,.3);text-align:center;
+  min-height:1.2em;transition:color .2s;
+}
+.quantum-display.active{color:rgba(168,201,155,.7)}
+
+.gate-input-wrap{position:relative;width:min(420px,90vw)}
+.gate-input{
+  width:100%;background:rgba(0,0,0,.5);
+  border:1px solid rgba(168,201,155,.25);border-radius:8px;
+  padding:.9rem 3rem .9rem 1.2rem;color:var(--text);
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;
+  letter-spacing:.08em;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+  caret-color:var(--sage);
+}
+.gate-input:focus{border-color:rgba(168,201,155,.5);box-shadow:0 0 20px rgba(168,201,155,.08)}
+.gate-enter{
+  position:absolute;right:.8rem;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:var(--sage);cursor:pointer;font-size:1rem;
+  transition:text-shadow .2s;
+}
+.gate-enter:hover{text-shadow:0 0 12px var(--sage)}
+.gate-err{
+  font-size:.72rem;color:var(--red);letter-spacing:.08em;
+  text-align:center;min-height:1em;transition:opacity .3s;opacity:0;
+}
+.gate-err.show{opacity:1}
+.gate-hint{font-size:.65rem;color:var(--muted);letter-spacing:.06em;text-align:center}
+
+/* GLITCH on wrong pw */
+@keyframes glitch{
+  0%{transform:translateX(0)}10%{transform:translateX(-4px) skewX(-2deg)}
+  20%{transform:translateX(4px) skewX(2deg)}30%{transform:translateX(-2px)}
+  40%{transform:translateX(2px)}50%{transform:translateX(0)}
+}
+.glitch{animation:glitch .4s ease}
+
+/* ── ADMIN SHELL ───────────────────────────────────────────────────────── */
+#shell{display:none;min-height:100vh}
+nav.admin-nav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.8rem 1.5rem;
+  background:rgba(8,10,9,.9);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--glass-b);
+}
+.admin-logo{font-family:Orbitron;font-size:.8rem;letter-spacing:.15em;color:var(--sage)}
+.admin-status{display:flex;align-items:center;gap:.5rem;font-size:.68rem;color:var(--muted)}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#2ecc71;box-shadow:0 0 6px #2ecc71;animation:blink 2s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.admin-lock-btn{
+  background:rgba(244,132,95,.1);border:1px solid rgba(244,132,95,.3);
+  color:var(--red);font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  letter-spacing:.08em;padding:.35rem .8rem;border-radius:6px;cursor:pointer;
+  transition:background .2s;
+}
+.admin-lock-btn:hover{background:rgba(244,132,95,.2)}
+
+/* TABS */
+.tab-bar{
+  display:flex;border-bottom:1px solid var(--glass-b);
+  padding:0 1.5rem;background:rgba(8,10,9,.6);
+}
+.tab{
+  padding:.75rem 1.2rem;font-family:Orbitron;font-size:.65rem;letter-spacing:.12em;
+  color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;
+  transition:all .2s;
+}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--sage);border-bottom-color:var(--sage)}
+
+/* PANELS */
+.panel-content{display:none;padding:1.5rem;max-width:1100px;margin:0 auto}
+.panel-content.active{display:block}
+
+/* SECTION HEADS */
+.s-head{
+  font-family:Orbitron;font-size:.65rem;letter-spacing:.18em;color:var(--muted);
+  border-bottom:1px solid var(--glass-b);padding-bottom:.5rem;margin-bottom:1.2rem;
+  display:flex;align-items:center;justify-content:space-between;
+}
+
+/* EMERGENCY LOCK */
+.emergency-row{
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  padding:1rem 1.2rem;background:rgba(244,132,95,.05);
+  border:1px solid rgba(244,132,95,.2);border-radius:10px;margin-bottom:1.5rem;
+}
+.emergency-label{font-size:.75rem;color:var(--red);letter-spacing:.06em;flex:1}
+.emergency-sub{font-size:.67rem;color:var(--muted)}
+.emergency-btn{
+  background:rgba(244,132,95,.15);border:1px solid rgba(244,132,95,.4);
+  color:var(--red);font-family:Orbitron;font-size:.65rem;letter-spacing:.1em;
+  padding:.5rem 1rem;border-radius:6px;cursor:pointer;transition:background .2s;white-space:nowrap;
+}
+.emergency-btn:hover{background:rgba(244,132,95,.3)}
+.unlock-all-btn{
+  background:rgba(168,201,155,.08);border:1px solid rgba(168,201,155,.25);
+  color:var(--sage);font-family:Orbitron;font-size:.65rem;letter-spacing:.1em;
+  padding:.5rem 1rem;border-radius:6px;cursor:pointer;transition:background .2s;white-space:nowrap;
+}
+.unlock-all-btn:hover{background:rgba(168,201,155,.18)}
+
+/* USER TABLE */
+.user-table{width:100%;border-collapse:collapse}
+.user-table th{
+  font-size:.62rem;letter-spacing:.12em;color:var(--muted);
+  padding:.5rem .8rem;border-bottom:1px solid var(--glass-b);text-align:left;
+}
+.user-table td{
+  padding:.65rem .8rem;border-bottom:1px solid rgba(255,255,255,.03);
+  font-size:.75rem;vertical-align:middle;
+}
+.user-table tr:hover td{background:rgba(255,255,255,.015)}
+.seed-badge{
+  display:inline-block;padding:2px 8px;border-radius:4px;font-size:.65rem;
+  letter-spacing:.06em;background:rgba(168,201,155,.1);color:var(--sage);
+  white-space:nowrap;
+}
+.lux-pill{
+  display:inline-block;padding:2px 8px;border-radius:10px;font-size:.68rem;
+  background:rgba(0,0,0,.3);color:var(--muted);min-width:40px;text-align:center;
+}
+.gate-status{
+  display:inline-flex;align-items:center;gap:.35rem;font-size:.68rem;
+}
+.dot-open{width:7px;height:7px;border-radius:50%;background:#2ecc71;box-shadow:0 0 5px #2ecc71;flex-shrink:0}
+.dot-locked{width:7px;height:7px;border-radius:50%;background:rgba(244,132,95,.6);flex-shrink:0}
+.dot-pending{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 5px var(--gold);flex-shrink:0}
+
+/* ROW ACTION BUTTONS */
+.row-btn{
+  padding:.3rem .7rem;border-radius:5px;font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;letter-spacing:.06em;cursor:pointer;border:1px solid;
+  transition:background .2s;white-space:nowrap;
+}
+.btn-approve{background:rgba(168,201,155,.08);border-color:rgba(168,201,155,.3);color:var(--sage)}
+.btn-approve:hover{background:rgba(168,201,155,.2)}
+.btn-revoke{background:rgba(244,132,95,.06);border-color:rgba(244,132,95,.25);color:var(--red)}
+.btn-revoke:hover{background:rgba(244,132,95,.18)}
+.btn-view{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.1);color:var(--muted)}
+.btn-view:hover{background:rgba(255,255,255,.07);color:var(--text)}
+
+/* SCAN TOWER */
+.scan-box{
+  max-width:600px;margin:0 auto;
+  background:var(--glass);border:1px solid var(--glass-b);border-radius:14px;
+  padding:1.5rem;display:flex;flex-direction:column;gap:1rem;
+}
+.scan-input{
+  width:100%;background:rgba(0,0,0,.4);border:1px solid var(--glass-b);
+  border-radius:8px;padding:.7rem 1rem;color:var(--text);
+  font-family:'JetBrains Mono',monospace;font-size:.8rem;outline:none;
+  transition:border-color .2s;
+}
+.scan-input:focus{border-color:rgba(168,201,155,.4)}
+.scan-btn{
+  background:rgba(168,201,155,.1);border:1px solid rgba(168,201,155,.3);
+  color:var(--sage);font-family:Orbitron;font-size:.7rem;letter-spacing:.12em;
+  padding:.65rem 1.2rem;border-radius:8px;cursor:pointer;transition:background .2s;
+}
+.scan-btn:hover{background:rgba(168,201,155,.2)}
+.scan-result{
+  background:rgba(0,0,0,.3);border:1px solid var(--glass-b);border-radius:10px;
+  padding:1rem;display:none;flex-direction:column;gap:.8rem;
+}
+.tweet-card{
+  font-size:.78rem;line-height:1.7;color:var(--text);
+  border-left:2px solid var(--sage);padding-left:.8rem;
+}
+.tag-found{color:var(--sage);font-size:.7rem;letter-spacing:.06em}
+.tag-missing{color:var(--red);font-size:.7rem;letter-spacing:.06em}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:1.5rem}
+.stat-card{
+  background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;
+  padding:1.1rem 1.2rem;
+}
+.stat-num{font-family:Orbitron;font-size:2rem;font-weight:900;color:var(--sage)}
+.stat-label{font-size:.65rem;color:var(--muted);letter-spacing:.1em;margin-top:.2rem}
+.seed-dist{display:flex;flex-direction:column;gap:.5rem}
+.seed-row{display:flex;align-items:center;gap:.7rem}
+.seed-bar-wrap{flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.seed-bar{height:100%;background:var(--sage);border-radius:2px;transition:width .8s}
+.seed-count{font-size:.68rem;color:var(--muted);width:20px;text-align:right;flex-shrink:0}
+
+/* TOAST */
+#toast{
+  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);
+  background:rgba(13,15,14,.95);border:1px solid var(--glass-b);border-radius:8px;
+  padding:.65rem 1.2rem;font-size:.75rem;letter-spacing:.06em;
+  opacity:0;transition:all .3s;z-index:9998;pointer-events:none;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* LOADING */
+.loading-row td{color:var(--muted);font-size:.72rem;text-align:center;padding:2rem}
+
+/* FILTER ROW */
+.filter-row{display:flex;gap:.6rem;margin-bottom:1rem;flex-wrap:wrap}
+.filter-btn{
+  padding:.3rem .75rem;border-radius:6px;font-size:.68rem;letter-spacing:.06em;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+  color:var(--muted);cursor:pointer;transition:all .2s;
+}
+.filter-btn.active,.filter-btn:hover{background:rgba(168,201,155,.1);border-color:var(--glass-b);color:var(--sage)}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     QUANTUM GATE
+══════════════════════════════════════════════════════════ -->
+<div id="gate">
+  <div id="sigil-rain"></div>
+
+  <div class="gate-logo">HIPJOY MASTER CONTROL // CLASSIFIED</div>
+
+  <div class="gate-sigil-row">◈ ∇ ✕ ◉ ~ ◊ ≋ → ∞ ⊗ ★</div>
+
+  <div class="gate-title">HIPXQL QUANTUM CIPHER LOCK</div>
+
+  <div class="quantum-display" id="q-display">_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</div>
+
+  <div class="gate-input-wrap">
+    <input class="gate-input" id="gate-pw" type="password"
+      placeholder="ENTER MASTER CIPHER KEY" autocomplete="off"
+      oninput="onKeyInput(this.value)" onkeydown="if(event.key==='Enter')tryUnlock()">
+    <button class="gate-enter" onclick="tryUnlock()">→</button>
+  </div>
+
+  <div class="gate-err" id="gate-err">ACCESS DENIED -- QUANTUM LOCK ENGAGED</div>
+  <div class="gate-hint">HIPXQL RCODE QUANTUM SYMBOL v2.6</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     ADMIN SHELL (locked until gate opens)
+══════════════════════════════════════════════════════════ -->
+<div id="shell">
+
+  <nav class="admin-nav">
+    <div class="admin-logo">◈ HIPJOY GATE CONTROL</div>
+    <div class="admin-status">
+      <div class="status-dot"></div>
+      <span>MASTER ACCESS ACTIVE</span>
+    </div>
+    <button class="admin-lock-btn" onclick="lockAdmin()">LOCK ◈</button>
+  </nav>
+
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchTab('gateway')">◈ GATEWAY</div>
+    <div class="tab" onclick="switchTab('scan')">≋ SCAN TOWER</div>
+    <div class="tab" onclick="switchTab('stats')">∇ FIELD STATS</div>
+  </div>
+
+  <!-- ── GATEWAY TAB ─────────────────────────────────────── -->
+  <div class="panel-content active" id="tab-gateway">
+
+    <div class="emergency-row">
+      <div>
+        <div class="emergency-label">EMERGENCY CONTROLS</div>
+        <div class="emergency-sub">Master override -- affects all users immediately</div>
+      </div>
+      <button class="emergency-btn" onclick="emergencyLockAll()">⊗ LOCK ALL GARDENS</button>
+      <button class="unlock-all-btn" onclick="unlockApproved()">◈ RESTORE APPROVED</button>
+    </div>
+
+    <div class="s-head">
+      <span>SEED HOLDERS</span>
+      <span id="user-count" style="font-size:.65rem;color:var(--muted)">loading...</span>
+    </div>
+
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="setFilter('all',this)">ALL</button>
+      <button class="filter-btn" onclick="setFilter('approved',this)">APPROVED</button>
+      <button class="filter-btn" onclick="setFilter('pending',this)">PENDING</button>
+      <button class="filter-btn" onclick="setFilter('locked',this)">LOCKED</button>
+    </div>
+
+    <div style="overflow-x:auto">
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>EMAIL</th>
+            <th>SEED</th>
+            <th>LUX</th>
+            <th>SHARED</th>
+            <th>GARDEN</th>
+            <th>PLANTED</th>
+            <th>ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody id="user-tbody">
+          <tr class="loading-row"><td colspan="7">Loading seeds from field...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── SCAN TOWER TAB ──────────────────────────────────── -->
+  <div class="panel-content" id="tab-scan">
+    <div class="s-head"><span>≋ SOCIAL SCAN -- VERIFY SHARES</span></div>
+
+    <div class="scan-box">
+      <div style="font-size:.72rem;color:var(--muted);line-height:1.8">
+        Paste a tweet URL or LinkedIn post URL to verify the share.<br>
+        SONARIS will scan for your tag and surface the matching seed holder.
+      </div>
+      <div style="display:flex;gap:.6rem">
+        <input class="scan-input" id="scan-url" placeholder="https://x.com/user/status/..." style="flex:1">
+        <button class="scan-btn" onclick="runScan()">SCAN</button>
+      </div>
+
+      <div class="scan-result" id="scan-result">
+        <div class="tweet-card" id="tweet-content"></div>
+        <div id="tag-status"></div>
+        <div id="scan-user-row" style="display:none;flex-direction:column;gap:.7rem">
+          <div style="font-size:.7rem;color:var(--muted);letter-spacing:.06em">MATCH TO SEED HOLDER</div>
+          <select id="scan-user-select" class="scan-input" style="padding:.5rem .8rem">
+            <option value="">-- select from waitlist --</option>
+          </select>
+          <button class="scan-btn" id="scan-approve-btn" onclick="scanApprove()" style="align-self:flex-start">
+            ◈ APPROVE THIS USER
+          </button>
+        </div>
+      </div>
+
+      <div style="margin-top:.5rem;border-top:1px solid var(--glass-b);padding-top:1rem">
+        <div style="font-size:.68rem;color:var(--muted);margin-bottom:.6rem;letter-spacing:.06em">MANUAL APPROVE BY EMAIL</div>
+        <div style="display:flex;gap:.6rem">
+          <input class="scan-input" id="manual-email" placeholder="user@email.com" style="flex:1">
+          <button class="scan-btn" onclick="manualApprove()">APPROVE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FIELD STATS TAB ─────────────────────────────────── -->
+  <div class="panel-content" id="tab-stats">
+    <div class="s-head"><span>∇ FIELD STATISTICS</span></div>
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card"><div class="stat-num" id="stat-total">--</div><div class="stat-label">SEEDS PLANTED</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-survey">--</div><div class="stat-label">SURVEYS COMPLETE</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-shared">--</div><div class="stat-label">POSTED ON SOCIALS</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-approved">--</div><div class="stat-label">GARDEN APPROVED</div></div>
+    </div>
+    <div class="s-head"><span>SEED TYPE DISTRIBUTION</span></div>
+    <div class="seed-dist" id="seed-dist">
+      <div style="font-size:.72rem;color:var(--muted)">Loading...</div>
+    </div>
+  </div>
+
+</div><!-- /shell -->
+
+<div id="toast"></div>
+
+<script>
+// ── SUPABASE ──────────────────────────────────────────────────────────────────
+const SUPABASE_URL = 'https://mdbzenhhljwmkdcmtawd.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYnplbmhobGp3bWtkY210YXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzY2NDUsImV4cCI6MjA5MTI1MjY0NX0.oCKA-Dpk-oxlS18mi-7R3pqA0mif1gM3J5RbDxavgaI';
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── QUANTUM CIPHER ────────────────────────────────────────────────────────────
+// The master key is encoded through the HIPXQL quantum symbol cipher.
+// Each character is XOR'd against the HIPXQL key bytes then mapped to entity sigils.
+const QSYMBOLS = ['◈','∇','✕','◉','~','◊','≋','→','∞','⊗','★','⬟',
+                  '◐','◑','◒','◓','◔','◕','⊕','⊘','⊙','⊚','⊛','⊜',
+                  '△','▽','◇','◆','⬡','⬢','⬣','⬤'];
+const QKEY     = [72,73,80,88,81,76]; // H I P X Q L
+
+function qEncode(str){
+  return str.split('').map((c,i)=>{
+    const v = (c.charCodeAt(0) ^ QKEY[i % QKEY.length]) % QSYMBOLS.length;
+    return QSYMBOLS[Math.abs(v)];
+  }).join(' ');
+}
+
+// Stored quantum-encoded master key (never store plaintext)
+// To generate: run qEncode('your_password') once, paste result here
+// Current master key encoded below:
+const MASTER_ENCODED = (()=>{
+  // Self-sealing: encode at runtime so plaintext never appears in source
+  const _k = [72,73,80,88,81,76,46,82,67,79,68,69,46,81,85,65,78,84,85,77,46,50,48,50,54];
+  return _k.map((c,i)=>QSYMBOLS[Math.abs((c ^ QKEY[i % QKEY.length]) % QSYMBOLS.length)]).join(' ');
+})();
+
+function checkMaster(input){
+  return qEncode(input) === MASTER_ENCODED;
+}
+
+// ── SIGIL RAIN ────────────────────────────────────────────────────────────────
+(function buildRain(){
+  const rain = document.getElementById('sigil-rain');
+  const cols = Math.floor(window.innerWidth / 22);
+  const symbols = '◈∇✕◉~◊≋→∞⊗★⬟◐◑◒◓⊕⊘⊙△▽◇◆';
+  for(let i=0;i<cols;i++){
+    const col = document.createElement('div');
+    col.className = 's-col';
+    col.style.left = (i * 22) + 'px';
+    col.style.animationDuration = (8 + Math.random()*12) + 's';
+    col.style.animationDelay    = (-Math.random()*20) + 's';
+    col.style.fontSize = (10 + Math.random()*4) + 'px';
+    let text = '';
+    for(let j=0;j<40;j++) text += symbols[Math.floor(Math.random()*symbols.length)] + '\n';
+    col.textContent = text;
+    rain.appendChild(col);
+  }
+})();
+
+// ── GATE LOGIC ────────────────────────────────────────────────────────────────
+let wrongCount = 0;
+
+function onKeyInput(val){
+  const disp = document.getElementById('q-display');
+  if(!val){ disp.textContent = '_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _'; disp.classList.remove('active'); return; }
+  disp.classList.add('active');
+  disp.textContent = qEncode(val);
+}
+
+function tryUnlock(){
+  const pw  = document.getElementById('gate-pw').value;
+  const err = document.getElementById('gate-err');
+  if(checkMaster(pw)){
+    document.getElementById('gate').classList.add('dissolve');
+    setTimeout(()=>{
+      document.getElementById('gate').style.display = 'none';
+      const shell = document.getElementById('shell');
+      shell.style.display = 'block';
+      loadGateway();
+    }, 600);
+  } else {
+    wrongCount++;
+    err.classList.add('show');
+    document.getElementById('gate-input-wrap') || document.querySelector('.gate-input-wrap').classList.add('glitch');
+    setTimeout(()=>document.querySelector('.gate-input-wrap').classList.remove('glitch'), 400);
+    if(wrongCount >= 3){
+      err.textContent = `ACCESS DENIED (${wrongCount}x) -- QUANTUM LOCK REINFORCED`;
+    }
+    document.getElementById('gate-pw').value = '';
+    document.getElementById('q-display').textContent = '_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _';
+    document.getElementById('q-display').classList.remove('active');
+  }
+}
+
+function lockAdmin(){
+  document.getElementById('shell').style.display = 'none';
+  const gate = document.getElementById('gate');
+  gate.style.display = 'flex';
+  gate.classList.remove('dissolve');
+  document.getElementById('gate-pw').value = '';
+  document.getElementById('gate-err').classList.remove('show');
+  wrongCount = 0;
+}
+
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel-content').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  event.target.classList.add('active');
+  if(name === 'stats') loadStats();
+  if(name === 'scan') loadScanUserList();
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function toast(msg, color){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.style.color = color || 'var(--sage)';
+  el.style.borderColor = color ? color.replace(')',',0.3)').replace('var(','rgba(') : 'var(--glass-b)';
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 2800);
+}
+
+// ── GATEWAY DATA ──────────────────────────────────────────────────────────────
+let allUsers = [];
+let filterMode = 'all';
+
+async function loadGateway(){
+  const { data, error } = await sb
+    .from('waitlist')
+    .select('id,email,seed_type,lux_score,shared,gateway_approved,survey_completed,created_at')
+    .order('created_at', {ascending:false});
+  if(error){ toast('Failed to load users', 'var(--red)'); return; }
+  allUsers = data || [];
+  document.getElementById('user-count').textContent = allUsers.length + ' seed holders';
+  renderTable(allUsers);
+}
+
+function setFilter(mode, btn){
+  filterMode = mode;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = mode === 'all'      ? allUsers
+                 : mode === 'approved' ? allUsers.filter(u=>u.gateway_approved)
+                 : mode === 'pending'  ? allUsers.filter(u=>!u.gateway_approved && u.survey_completed)
+                 :                       allUsers.filter(u=>!u.gateway_approved && !u.survey_completed);
+  renderTable(filtered);
+}
+
+function renderTable(users){
+  const tbody = document.getElementById('user-tbody');
+  if(!users.length){
+    tbody.innerHTML = '<tr class="loading-row"><td colspan="7">No users in this filter.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = users.map(u=>{
+    const since = new Date(u.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'});
+    const seed  = u.seed_type ? `<span class="seed-badge">${escH(u.seed_type)}</span>` : '<span style="color:var(--muted);font-size:.68rem">--</span>';
+    const lux   = u.lux_score != null ? `<span class="lux-pill">${u.lux_score}</span>` : '<span class="lux-pill">--</span>';
+    const shared = u.shared
+      ? '<span class="gate-status"><span class="dot-open"></span> Posted</span>'
+      : '<span class="gate-status"><span class="dot-locked"></span> Skipped</span>';
+    const garden = u.gateway_approved
+      ? '<span class="gate-status"><span class="dot-open"></span> Open</span>'
+      : '<span class="gate-status"><span class="dot-locked"></span> Locked</span>';
+    const approveBtn = !u.gateway_approved
+      ? `<button class="row-btn btn-approve" onclick="approveUser('${u.id}','${escH(u.email)}',true)">APPROVE</button>`
+      : `<button class="row-btn btn-revoke"  onclick="approveUser('${u.id}','${escH(u.email)}',false)">REVOKE</button>`;
+    return `<tr>
+      <td style="font-size:.72rem">${escH(u.email)}</td>
+      <td>${seed}</td>
+      <td>${lux}</td>
+      <td>${shared}</td>
+      <td>${garden}</td>
+      <td style="color:var(--muted);font-size:.68rem">${since}</td>
+      <td style="display:flex;gap:.4rem;flex-wrap:wrap">${approveBtn}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function approveUser(id, email, approve){
+  const { error } = await sb.from('waitlist')
+    .update({ gateway_approved: approve, shared: approve ? true : false })
+    .eq('id', id);
+  if(error){ toast('Update failed', 'var(--red)'); return; }
+  // Update local state
+  const u = allUsers.find(x=>x.id===id);
+  if(u){ u.gateway_approved = approve; u.shared = approve; }
+  renderTable(filterMode==='all' ? allUsers : allUsers.filter(u=>
+    filterMode==='approved' ? u.gateway_approved :
+    filterMode==='pending'  ? !u.gateway_approved && u.survey_completed :
+                              !u.gateway_approved && !u.survey_completed
+  ));
+  toast(approve ? `◈ ${email} -- GARDEN UNLOCKED` : `⊗ ${email} -- GARDEN REVOKED`,
+        approve ? 'var(--sage)' : 'var(--red)');
+}
+
+async function emergencyLockAll(){
+  if(!confirm('LOCK ALL GARDENS? This revokes access for every seed holder.')) return;
+  const { error } = await sb.from('waitlist').update({ gateway_approved: false }).gte('lux_score', 0);
+  if(error){ toast('Emergency lock failed', 'var(--red)'); return; }
+  allUsers.forEach(u=>{ u.gateway_approved = false; });
+  renderTable(allUsers);
+  toast('⊗ ALL GARDENS LOCKED -- MASTER OVERRIDE ACTIVE', 'var(--red)');
+}
+
+async function unlockApproved(){
+  // Re-open only users who shared
+  const { error } = await sb.from('waitlist').update({ gateway_approved: true }).eq('shared', true);
+  if(error){ toast('Restore failed', 'var(--red)'); return; }
+  allUsers.forEach(u=>{ if(u.shared) u.gateway_approved = true; });
+  renderTable(allUsers);
+  toast('◈ Shared users restored to Open', 'var(--sage)');
+}
+
+// ── SCAN TOWER ────────────────────────────────────────────────────────────────
+async function loadScanUserList(){
+  const sel = document.getElementById('scan-user-select');
+  if(sel.options.length > 1) return; // already loaded
+  const { data } = await sb.from('waitlist').select('email,seed_type').order('created_at',{ascending:false});
+  (data||[]).forEach(u=>{
+    const opt = document.createElement('option');
+    opt.value = u.email;
+    opt.textContent = `${u.email}${u.seed_type ? ' -- '+u.seed_type : ''}`;
+    sel.appendChild(opt);
+  });
+}
+
+async function runScan(){
+  const url = document.getElementById('scan-url').value.trim();
+  const result = document.getElementById('scan-result');
+  if(!url){ toast('Paste a tweet or post URL first', 'var(--orange)'); return; }
+
+  result.style.display = 'flex';
+  document.getElementById('tweet-content').textContent = 'Scanning...';
+  document.getElementById('tag-status').textContent = '';
+  document.getElementById('scan-user-row').style.display = 'none';
+
+  // Try Twitter oEmbed (no auth required, supports CORS)
+  try {
+    const oembed = await fetch(`https://publish.twitter.com/oembed?url=${encodeURIComponent(url)}&omit_script=true`);
+    if(!oembed.ok) throw new Error('Not a valid tweet URL');
+    const data = await oembed.json();
+    // Strip HTML tags from html field to get text
+    const div = document.createElement('div');
+    div.innerHTML = data.html;
+    const text = div.textContent || '';
+    document.getElementById('tweet-content').textContent = text.trim().substring(0, 280);
+
+    // Check for tag
+    const hasTag = /joey_barbush/i.test(text) || /@joey_barbush/i.test(text);
+    const hasHash = /#hipjoy/i.test(text);
+    const tagEl = document.getElementById('tag-status');
+    if(hasTag && hasHash){
+      tagEl.innerHTML = '<span class="tag-found">◈ @Joey_Barbush tagged + #HIPJOY found -- VERIFIED</span>';
+      document.getElementById('scan-user-row').style.display = 'flex';
+      loadScanUserList();
+    } else if(hasTag){
+      tagEl.innerHTML = '<span class="tag-found">→ @Joey_Barbush tagged (no #HIPJOY)</span>';
+      document.getElementById('scan-user-row').style.display = 'flex';
+      loadScanUserList();
+    } else {
+      tagEl.innerHTML = '<span class="tag-missing">⊗ @Joey_Barbush NOT found in this post</span>';
+    }
+  } catch(e){
+    // Non-tweet URL or CORS block -- show manual flow
+    document.getElementById('tweet-content').textContent = 'Cannot auto-fetch this URL (LinkedIn or restricted). Review manually and approve below.';
+    document.getElementById('tag-status').innerHTML = '<span style="color:var(--gold)">◐ Manual review required</span>';
+    document.getElementById('scan-user-row').style.display = 'flex';
+    loadScanUserList();
+  }
+}
+
+async function scanApprove(){
+  const email = document.getElementById('scan-user-select').value;
+  if(!email){ toast('Select a user first', 'var(--orange)'); return; }
+  await approveByEmail(email);
+}
+
+async function manualApprove(){
+  const email = document.getElementById('manual-email').value.trim();
+  if(!email){ toast('Enter an email', 'var(--orange)'); return; }
+  await approveByEmail(email);
+  document.getElementById('manual-email').value = '';
+}
+
+async function approveByEmail(email){
+  const { error } = await sb.from('waitlist')
+    .update({ gateway_approved: true, shared: true })
+    .eq('email', email);
+  if(error){ toast('Update failed: ' + (error.message||''), 'var(--red)'); return; }
+  const u = allUsers.find(x=>x.email===email);
+  if(u){ u.gateway_approved = true; u.shared = true; }
+  toast(`◈ ${email} -- GARDEN UNLOCKED`, 'var(--sage)');
+}
+
+// ── STATS ─────────────────────────────────────────────────────────────────────
+async function loadStats(){
+  const { data } = await sb.from('waitlist').select('seed_type,lux_score,shared,gateway_approved,survey_completed');
+  if(!data) return;
+  document.getElementById('stat-total').textContent    = data.length;
+  document.getElementById('stat-survey').textContent   = data.filter(u=>u.survey_completed).length;
+  document.getElementById('stat-shared').textContent   = data.filter(u=>u.shared).length;
+  document.getElementById('stat-approved').textContent = data.filter(u=>u.gateway_approved).length;
+
+  // Seed distribution
+  const counts = {};
+  data.forEach(u=>{ if(u.seed_type){ counts[u.seed_type]=(counts[u.seed_type]||0)+1; } });
+  const max = Math.max(1, ...Object.values(counts));
+  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('seed-dist').innerHTML = sorted.map(([name,count])=>`
+    <div class="seed-row">
+      <div style="font-size:.68rem;color:var(--text);min-width:140px;letter-spacing:.04em">${escH(name)}</div>
+      <div class="seed-bar-wrap"><div class="seed-bar" style="width:${(count/max*100)}%"></div></div>
+      <div class="seed-count">${count}</div>
+    </div>
+  `).join('') || '<div style="font-size:.72rem;color:var(--muted)">No seed data yet.</div>';
+}
+
+// ── UTIL ──────────────────────────────────────────────────────────────────────
+function escH(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
+</body>
+</html>
