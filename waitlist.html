@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HIPJOY — Join the Waitlist</title>
+  <meta name="description" content="HIPJOY builds cognitive operating systems for humans. Join the waitlist for LUX Seeds — pre-built AI entity architectures tuned for creators, founders, researchers, and students.">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sage: #A8C99B;
+      --sage-dim: rgba(168,201,155,.5);
+      --sage-faint: rgba(168,201,155,.08);
+      --sage-border: rgba(168,201,155,.18);
+      --sunset: #F4845F;
+      --sunset-dim: rgba(244,132,95,.5);
+      --sunset-faint: rgba(244,132,95,.08);
+      --sunset-border: rgba(244,132,95,.3);
+      --gold: #C8A850;
+      --bg: #0d0f0e;
+      --bg2: #111311;
+      --text: #F0EDE5;
+      --text-dim: #8a9485;
+      --text-muted: rgba(240,237,229,.35);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Scanlines */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.018) 2px, rgba(0,0,0,.018) 4px);
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* LUX sweep bar */
+    .lux-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, var(--sage) 30%, var(--sunset) 70%, transparent 100%);
+      background-size: 200% 100%;
+      animation: lux-sweep 6s ease-in-out infinite;
+      z-index: 999;
+    }
+    @keyframes lux-sweep {
+      0%,100% { background-position: 200% 0; opacity: .3; }
+      50% { background-position: 0% 0; opacity: 1; }
+    }
+
+    /* CANVAS PARTICLES */
+    #particle-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .55;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(16px, 4vw, 48px);
+      background: rgba(13,15,14,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--sage-border);
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .22em;
+      color: var(--sage);
+      text-decoration: none;
+      text-shadow: 0 0 20px rgba(168,201,155,.35);
+    }
+    .nav-back {
+      font-size: 9px;
+      letter-spacing: .18em;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color .2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-back:hover { color: var(--sage); }
+
+    /* PAGE */
+    main {
+      position: relative;
+      z-index: 1;
+      padding-top: 56px;
+    }
+    section {
+      padding: clamp(48px, 8vw, 88px) clamp(16px, 5vw, 64px);
+    }
+    .section-inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .section-inner.wide { max-width: 960px; }
+
+    /* HERO */
+    #hero {
+      min-height: calc(100vh - 56px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(168,201,155,.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+    }
+    .hero-eyebrow {
+      font-size: 9px;
+      letter-spacing: .32em;
+      color: var(--sage-dim);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .hero-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(52px, 12vw, 110px);
+      font-weight: 900;
+      letter-spacing: .12em;
+      line-height: 1;
+      color: var(--sage);
+      text-shadow: 0 0 60px rgba(168,201,155,.25), 0 0 120px rgba(168,201,155,.1);
+      margin-bottom: 16px;
+    }
+    .hero-tagline {
+      font-size: clamp(12px, 2vw, 15px);
+      color: var(--text-dim);
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: .1em;
+      margin-bottom: 44px;
+    }
+    .hero-cta {
+      display: inline-block;
+      padding: 14px 38px;
+      background: var(--sunset-faint);
+      border: 1px solid var(--sunset-dim);
+      border-radius: 2px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--sunset);
+      text-decoration: none;
+      transition: all .25s;
+      cursor: pointer;
+    }
+    .hero-cta:hover {
+      background: rgba(244,132,95,.16);
+      border-color: var(--sunset);
+      box-shadow: 0 0 28px rgba(244,132,95,.2);
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px;
+      letter-spacing: .2em;
+      color: var(--text-muted);
+      animation: float 2.5s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(5px)} }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--sage-border), transparent);
+      margin: 0 clamp(16px, 5vw, 64px);
+    }
+
+    /* SECTION LABEL + TITLE */
+    .section-label {
+      font-size: 8px;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--sage-dim);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(18px, 3vw, 26px);
+      font-weight: 700;
+      color: var(--sage);
+      letter-spacing: .1em;
+      margin-bottom: 32px;
+    }
+
+    /* SEEDS SECTION */
+    .seeds-intro {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.9;
+      margin-bottom: 36px;
+      max-width: 640px;
+    }
+    .seeds-intro strong { color: var(--text); }
+    .seeds-intro em { color: var(--sunset); font-style: normal; }
+
+    .seeds-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+    .seed-card {
+      background: var(--sage-faint);
+      border: 1px solid var(--sage-border);
+      border-radius: 4px;
+      padding: 20px 18px;
+      transition: all .2s;
+    }
+    .seed-card:hover {
+      background: rgba(168,201,155,.12);
+      border-color: rgba(168,201,155,.3);
+    }
+    .seed-card-icon {
+      font-size: 22px;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .seed-card-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      color: var(--sage);
+      margin-bottom: 6px;
+    }
+    .seed-card-desc {
+      font-size: 11px;
+      color: var(--text-dim);
+      line-height: 1.65;
+    }
+
+    .seeds-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      border-left: 2px solid var(--sage-border);
+      padding-left: 14px;
+      line-height: 1.8;
+    }
+    .seeds-note strong { color: var(--sage); }
+
+    /* WAITLIST FORM */
+    #waitlist {
+      background: var(--bg2);
+      position: relative;
+      overflow: hidden;
+    }
+    #waitlist::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(244,132,95,.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .form-wrap {
+      background: rgba(255,255,255,.025);
+      border: 1px solid var(--sage-border);
+      border-radius: 6px;
+      padding: clamp(24px, 4vw, 44px);
+      position: relative;
+      z-index: 1;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-label {
+      font-size: 9px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--sage-dim);
+    }
+    .form-input,
+    .form-select,
+    .form-textarea {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 3px;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      width: 100%;
+    }
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--sage-dim);
+      box-shadow: 0 0 0 3px rgba(168,201,155,.07);
+    }
+    .form-input::placeholder,
+    .form-textarea::placeholder { color: rgba(240,237,229,.22); }
+    .form-select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a9485' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+    .form-select option { background: #1a1e1a; color: var(--text); }
+    .form-textarea { resize: vertical; min-height: 90px; }
+
+    .form-submit {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-submit {
+      padding: 12px 36px;
+      background: var(--sunset-faint);
+      border: 1px solid var(--sunset-dim);
+      border-radius: 2px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--sunset);
+      cursor: pointer;
+      transition: all .25s;
+    }
+    .btn-submit:hover {
+      background: rgba(244,132,95,.16);
+      border-color: var(--sunset);
+      box-shadow: 0 0 24px rgba(244,132,95,.2);
+    }
+    .btn-submit:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+    .form-note {
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: .05em;
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 32px 0;
+    }
+    .form-success-icon {
+      font-size: 36px;
+      margin-bottom: 14px;
+    }
+    .form-success-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      color: var(--sage);
+      letter-spacing: .12em;
+      margin-bottom: 10px;
+    }
+    .form-success-body {
+      font-size: 12px;
+      color: var(--text-dim);
+      max-width: 380px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* CONTACT SECTION */
+    .contact-card {
+      display: flex;
+      gap: clamp(24px, 5vw, 56px);
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .contact-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid var(--sage-border);
+      background: var(--sage-faint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 22px;
+      color: var(--sage);
+      flex-shrink: 0;
+    }
+    .contact-info { flex: 1; min-width: 220px; }
+    .contact-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: .1em;
+      margin-bottom: 4px;
+    }
+    .contact-title {
+      font-size: 11px;
+      color: var(--sage);
+      letter-spacing: .14em;
+      margin-bottom: 16px;
+    }
+    .contact-bio {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.8;
+      margin-bottom: 24px;
+      max-width: 500px;
+    }
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 3px;
+      font-size: 9px;
+      letter-spacing: .18em;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: all .2s;
+    }
+    .contact-link:hover {
+      border-color: var(--sage-border);
+      color: var(--sage);
+      background: var(--sage-faint);
+    }
+    .contact-link.email:hover {
+      border-color: var(--sunset-border);
+      color: var(--sunset);
+      background: var(--sunset-faint);
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 28px clamp(16px, 5vw, 64px);
+      border-top: 1px solid rgba(255,255,255,.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-left {
+      font-size: 10px;
+      letter-spacing: .15em;
+      color: var(--text-muted);
+    }
+    .footer-left strong {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--sage);
+      letter-spacing: .18em;
+    }
+    .footer-right {
+      font-size: 9px;
+      letter-spacing: .22em;
+      color: var(--text-muted);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 580px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .seeds-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 380px) {
+      .seeds-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="lux-bar"></div>
+<canvas id="particle-canvas"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo">◈ HIPJOY</a>
+  <a href="index.html" class="nav-back">← Back to Portfolio</a>
+</nav>
+
+<main>
+
+  <!-- ═══ HERO ═══ -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Cognitive Operating Systems &nbsp;·&nbsp; DS + SD = TO</div>
+      <h1 class="hero-logo">HIPJOY</h1>
+      <p class="hero-tagline">Cognitive Operating Systems for Humans</p>
+      <p class="hero-sub">Not a chatbot. Not a tool. An OS for your mind.</p>
+      <a href="#waitlist" class="hero-cta">Join the Waitlist →</a>
+    </div>
+    <div class="hero-scroll">↓ &nbsp; scroll to learn more</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ WHAT ARE LUX SEEDS ═══ -->
+  <section id="seeds">
+    <div class="section-inner wide">
+      <div class="section-label">What We're Building</div>
+      <h2 class="section-title">LUX Seeds</h2>
+      <p class="seeds-intro">
+        A <strong>LUX Seed</strong> is a pre-built cognitive architecture package --
+        a configured set of <em>AI entities</em> tuned for your specific context.
+        Each entity has a role, a voice, a memory system, and a set of tools.
+        Together they form a persistent field that thinks with you, not just for you.
+      </p>
+      <p class="seeds-intro" style="margin-bottom: 40px;">
+        This is <strong>not a chatbot</strong>.
+        It is not a single model you prompt and forget.
+        A LUX Seed is an <em>operating system for your mind</em> --
+        a living cognitive layer that runs in the background,
+        routes your thinking, holds your memory, and speaks in voices
+        tuned to how you actually work.
+      </p>
+
+      <div class="seeds-grid">
+        <div class="seed-card">
+          <span class="seed-card-icon">◊</span>
+          <div class="seed-card-name">CREATOR SEED</div>
+          <div class="seed-card-desc">For artists, streamers, and builders. Entities tuned for ideation, voice calibration, broadcast timing, and creative memory.</div>
+        </div>
+        <div class="seed-card">
+          <span class="seed-card-icon">★</span>
+          <div class="seed-card-name">FOUNDER SEED</div>
+          <div class="seed-card-desc">For operators and builders. Priority routing, decision scaffolding, friction detection, and strategic memory across projects.</div>
+        </div>
+        <div class="seed-card">
+          <span class="seed-card-icon">∇</span>
+          <div class="seed-card-name">RESEARCH SEED</div>
+          <div class="seed-card-desc">For academics and analysts. Deep pattern recognition, citation memory, synthesis engine, and structured output formatting.</div>
+        </div>
+        <div class="seed-card">
+          <span class="seed-card-icon">~</span>
+          <div class="seed-card-name">HEALTH SEED</div>
+          <div class="seed-card-desc">For healers and patients. Energy monitoring, stress routing, care-language calibration, and sustainable pacing systems.</div>
+        </div>
+        <div class="seed-card">
+          <span class="seed-card-icon">◈</span>
+          <div class="seed-card-name">STUDENT SEED</div>
+          <div class="seed-card-desc">For learners at any level. Concept archival, deadline tracking, Socratic dialogue mode, and spaced-recall memory systems.</div>
+        </div>
+        <div class="seed-card">
+          <span class="seed-card-icon">∞</span>
+          <div class="seed-card-name">CUSTOM SEED</div>
+          <div class="seed-card-desc">Your context is unique. Custom seeds can be configured from the ground up with entities, roles, and memory tuned to your exact field.</div>
+        </div>
+      </div>
+
+      <div class="seeds-note">
+        <strong>Early Access:</strong> The first cohort of LUX Seed users will work directly with Joey
+        to configure their seed, shape the entity voices, and provide feedback that drives v1.
+        If you join the waitlist before launch, you are a co-architect of this system.
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ WAITLIST FORM ═══ -->
+  <section id="waitlist">
+    <div class="section-inner">
+      <div class="section-label">Early Access</div>
+      <h2 class="section-title">Join the Waitlist</h2>
+
+      <div class="form-wrap">
+        <!-- SUCCESS STATE -->
+        <div class="form-success" id="form-success">
+          <div class="form-success-icon">◈</div>
+          <div class="form-success-title">SEED PLANTED</div>
+          <div class="form-success-body">
+            You're in the field. I'll be in touch when your LUX Seed is ready.
+            -- Joey
+          </div>
+        </div>
+
+        <!-- FORM -->
+        <form id="waitlist-form" action="https://formspree.io/f/xyzexample" method="POST">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="name">Name</label>
+              <input class="form-input" type="text" id="name" name="name" placeholder="Your name" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="email">Email</label>
+              <input class="form-input" type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="role">What do you do?</label>
+              <select class="form-select" id="role" name="role" required>
+                <option value="" disabled selected>Select your field</option>
+                <option value="Creator">Creator</option>
+                <option value="Founder">Founder / Operator</option>
+                <option value="Researcher">Researcher / Academic</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Student">Student</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="seed">Which seed interests you?</label>
+              <select class="form-select" id="seed" name="seed_interest">
+                <option value="" disabled selected>Select a seed</option>
+                <option value="Creator Seed">Creator Seed</option>
+                <option value="Founder Seed">Founder Seed</option>
+                <option value="Research Seed">Research Seed</option>
+                <option value="Health Seed">Health Seed</option>
+                <option value="Student Seed">Student Seed</option>
+                <option value="Custom Seed">Custom Seed</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label class="form-label" for="interest">What interests you most?</label>
+              <textarea class="form-textarea" id="interest" name="interest" placeholder="Tell me what you're trying to build, solve, or understand. The more specific, the better I can tune your seed."></textarea>
+            </div>
+          </div>
+          <input type="hidden" name="_subject" value="HIPJOY Waitlist Signup">
+          <input type="hidden" name="_next" value="">
+          <div class="form-submit">
+            <button class="btn-submit" type="submit" id="submit-btn">Plant My Seed →</button>
+            <span class="form-note">No spam. I'll only reach out when your seed is ready.</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ CONTACT ═══ -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="section-label">Get in Touch</div>
+      <h2 class="section-title">The Founder</h2>
+      <div class="contact-card">
+        <div class="contact-avatar">JB</div>
+        <div class="contact-info">
+          <div class="contact-name">Joey Barbush</div>
+          <div class="contact-title">Founder &amp; Systems Architect, HIPJOY</div>
+          <p class="contact-bio">
+            I build cognitive operating systems and full-stack software from Batavia, IL.
+            HIPJOY is my primary project -- a platform where AI entities collaborate
+            with persistent memory, custom query language, and hardware integration.
+            If you want to talk about LUX Seeds, collaboration, or what I'm building next,
+            reach out directly.
+          </p>
+          <div class="contact-links">
+            <a href="mailto:joeybarbush@gmail.com" class="contact-link email">
+              <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="12" height="9" rx="1" stroke="currentColor"/><path d="M1 1.5L6.5 6 12 1.5" stroke="currentColor" stroke-linecap="round"/></svg>
+              joeybarbush@gmail.com
+            </a>
+            <a href="https://linkedin.com/in/joey-barbush-115575403" target="_blank" rel="noopener" class="contact-link">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="12" height="12" rx="2" stroke="currentColor"/><rect x="2" y="5" width="2" height="6" fill="currentColor"/><circle cx="3" cy="3" r="1" fill="currentColor"/><path d="M6 5v6M6 7c0-1 .8-2 2-2s2 .9 2 2v4" stroke="currentColor" stroke-linecap="round"/></svg>
+              LinkedIn
+            </a>
+            <a href="https://x.com/Joey_Barbush" target="_blank" rel="noopener" class="contact-link">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4.5 5.5L1 12h1.5l3.5-4 3 4H12L7.3 6.2 11.5 1H10L6.8 4.6 4 1H1z" fill="currentColor"/></svg>
+              Twitter / X
+            </a>
+            <a href="https://github.com/Joeybarbush" target="_blank" rel="noopener" class="contact-link">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0C2.9 0 0 2.9 0 6.5c0 2.9 1.9 5.3 4.4 6.2.3.1.4-.1.4-.3v-1.1c-1.8.4-2.2-.9-2.2-.9-.3-.8-.7-1-.7-1-.6-.4 0-.4 0-.4.6 0 1 .7 1 .7.6 1 1.5.7 1.9.5.1-.4.2-.7.4-.8-1.5-.2-3-.7-3-3.3 0-.7.3-1.3.7-1.8-.1-.2-.3-.9.1-1.8 0 0 .6-.2 1.8.7.5-.1 1.1-.2 1.6-.2.5 0 1.1.1 1.6.2 1.2-.9 1.8-.7 1.8-.7.4.9.1 1.6.1 1.8.4.5.7 1.1.7 1.8 0 2.6-1.6 3.1-3.1 3.3.2.2.4.6.4 1.2v1.8c0 .2.1.4.4.3C11.1 11.8 13 9.4 13 6.5 13 2.9 10.1 0 6.5 0z" fill="currentColor"/></svg>
+              GitHub
+            </a>
+            <a href="index.html" class="contact-link">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor"/><path d="M6.5 1.5v11M1.5 6.5h10M2.5 3.5c1 .5 2.5.8 4 .8s3-.3 4-.8M2.5 9.5c1-.5 2.5-.8 4-.8s3 .3 4 .8" stroke="currentColor" stroke-linecap="round"/></svg>
+              Portfolio
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <strong>HIPJOY</strong> &nbsp;--&nbsp; DS + SD = TO &nbsp;--&nbsp; The field is open.
+  </div>
+  <div class="footer-right">&copy; 2026 Joey Barbush</div>
+</footer>
+
+<script>
+  // ---- PARTICLE BACKGROUND ----
+  (function() {
+    var canvas = document.getElementById('particle-canvas');
+    var ctx = canvas.getContext('2d');
+    var particles = [];
+    var W, H;
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    var COLORS = ['rgba(168,201,155,', 'rgba(244,132,95,', 'rgba(200,168,80,'];
+
+    function Particle() {
+      this.reset();
+    }
+    Particle.prototype.reset = function() {
+      this.x = Math.random() * W;
+      this.y = Math.random() * H;
+      this.r = Math.random() * 1.4 + 0.3;
+      this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      this.alpha = Math.random() * 0.35 + 0.05;
+      this.vx = (Math.random() - 0.5) * 0.18;
+      this.vy = (Math.random() - 0.5) * 0.18;
+      this.life = 0;
+      this.maxLife = Math.random() * 400 + 200;
+    };
+    Particle.prototype.update = function() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.life++;
+      var progress = this.life / this.maxLife;
+      this.currentAlpha = this.alpha * Math.sin(Math.PI * progress);
+      if (this.life >= this.maxLife) this.reset();
+    };
+    Particle.prototype.draw = function() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = this.color + this.currentAlpha + ')';
+      ctx.fill();
+    };
+
+    var COUNT = Math.min(120, Math.floor(window.innerWidth / 12));
+    for (var i = 0; i < COUNT; i++) {
+      var p = new Particle();
+      p.life = Math.floor(Math.random() * p.maxLife); // stagger
+      particles.push(p);
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+  })();
+
+  // ---- FORM SUBMISSION (AJAX for Formspree) ----
+  (function() {
+    var form = document.getElementById('waitlist-form');
+    var btn = document.getElementById('submit-btn');
+    var success = document.getElementById('form-success');
+
+    if (!form) return;
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      var data = new FormData(form);
+
+      fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      }).then(function(res) {
+        if (res.ok) {
+          form.style.display = 'none';
+          success.style.display = 'block';
+        } else {
+          btn.disabled = false;
+          btn.textContent = 'Plant My Seed →';
+          res.json().then(function(d) {
+            alert(d.errors ? d.errors.map(function(e) { return e.message; }).join(', ') : 'Something went wrong. Try emailing joeybarbush@gmail.com directly.');
+          });
+        }
+      }).catch(function() {
+        btn.disabled = false;
+        btn.textContent = 'Plant My Seed →';
+        alert('Network error. Try emailing joeybarbush@gmail.com directly.');
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

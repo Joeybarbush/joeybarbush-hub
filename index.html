@@ -104,6 +104,25 @@
       transition: color .2s;
     }
     .nav-links a:hover { color: var(--sage); }
+    .nav-waitlist-btn {
+      padding: 7px 18px;
+      border: 1px solid var(--sage-border);
+      border-radius: 2px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 8px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--sage);
+      text-decoration: none;
+      background: var(--sage-faint);
+      transition: all .25s;
+      white-space: nowrap;
+    }
+    .nav-waitlist-btn:hover {
+      background: rgba(168,201,155,.15);
+      border-color: var(--sage-dim);
+      box-shadow: 0 0 18px rgba(168,201,155,.15);
+    }
     .nav-field-btn {
       padding: 7px 18px;
       border: 1px solid var(--sunset-dim);
@@ -673,6 +692,7 @@
     <li><a href="#about">About</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#builds">Builds</a></li>
+    <li><a href="waitlist.html" class="nav-waitlist-btn">Join the Waitlist</a></li>
     <li><a href="field.html" class="nav-field-btn">Enter the Field →</a></li>
   </ul>
 </nav>
@@ -702,6 +722,7 @@
           <span class="hero-desktop-note">↳ Desktop recommended for the full spatial experience</span>
         </div>
         <a href="#builds" class="btn-secondary">See What I Build</a>
+        <a href="waitlist.html" class="btn-secondary" style="border-color:var(--sage-border);color:var(--sage);background:var(--sage-faint);">Join the Waitlist</a>
       </div>
     </div>
   </section>
