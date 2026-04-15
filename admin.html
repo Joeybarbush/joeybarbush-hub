@@ -334,11 +334,12 @@ nav.admin-nav{
       <table class="user-table">
         <thead>
           <tr>
-            <th>EMAIL</th>
+            <th>EMAIL / HANDLE</th>
             <th>SEED</th>
             <th>LUX</th>
             <th>SHARED</th>
             <th>GARDEN</th>
+            <th>💧</th>
             <th>PLANTED</th>
             <th>ACTIONS</th>
           </tr>
@@ -478,6 +479,8 @@ function tryUnlock(){
   const err = document.getElementById('gate-err');
   if(checkMaster(pw)){
     document.getElementById('gate').classList.add('dissolve');
+    // Auto sign-in as admin using the same key -- authenticated session unlocks full table access
+    sb.auth.signInWithPassword({ email:'joeybarbush@gmail.com', password: pw }).catch(()=>{});
     setTimeout(()=>{
       document.getElementById('gate').style.display = 'none';
       const shell = document.getElementById('shell');
@@ -499,6 +502,7 @@ function tryUnlock(){
 }
 
 function lockAdmin(){
+  sb.auth.signOut();
   document.getElementById('shell').style.display = 'none';
   const gate = document.getElementById('gate');
   gate.style.display = 'flex';
@@ -535,7 +539,7 @@ let filterMode = 'all';
 async function loadGateway(){
   const { data, error } = await sb
     .from('waitlist')
-    .select('id,email,seed_type,lux_score,shared,gateway_approved,survey_completed,created_at')
+    .select('id,email,display_name,seed_type,lux_score,shared,gateway_approved,survey_completed,water_count,created_at')
     .order('created_at', {ascending:false});
   if(error){ toast('Failed to load users', 'var(--red)'); return; }
   allUsers = data || [];
@@ -573,12 +577,14 @@ function renderTable(users){
     const approveBtn = !u.gateway_approved
       ? `<button class="row-btn btn-approve" onclick="approveUser('${u.id}','${escH(u.email)}',true)">APPROVE</button>`
       : `<button class="row-btn btn-revoke"  onclick="approveUser('${u.id}','${escH(u.email)}',false)">REVOKE</button>`;
+    const handle = u.display_name ? `<span style="color:var(--sage);font-size:.65rem">@${escH(u.display_name)}</span><br>` : '';
     return `<tr>
-      <td style="font-size:.72rem">${escH(u.email)}</td>
+      <td style="font-size:.72rem">${handle}${escH(u.email)}</td>
       <td>${seed}</td>
       <td>${lux}</td>
       <td>${shared}</td>
       <td>${garden}</td>
+      <td style="color:rgba(100,180,255,.7);font-size:.72rem">${u.water_count||0}</td>
       <td style="color:var(--muted);font-size:.68rem">${since}</td>
       <td style="display:flex;gap:.4rem;flex-wrap:wrap">${approveBtn}</td>
     </tr>`;

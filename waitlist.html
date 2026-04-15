@@ -506,14 +506,48 @@
     .library-eyebrow { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.26em; color:rgba(168,201,155,.42); text-transform:uppercase; text-align:center; margin-bottom:10px; }
     .library-title { font-family:'Orbitron',sans-serif; font-size:clamp(22px,3vw,32px); font-weight:700; text-align:center; color:#A8C99B; letter-spacing:.12em; margin-bottom:8px; }
     .library-sub { font-size:12px; color:rgba(240,237,229,.32); text-align:center; margin-bottom:52px; letter-spacing:.08em; }
-    .library-grid { display:flex; flex-wrap:wrap; gap:14px; justify-content:center; max-width:900px; margin:0 auto; }
-    .seed-orb { position:relative; width:72px; height:72px; border-radius:50%; cursor:pointer; transition:transform .2s; flex-shrink:0; }
-    .seed-orb:hover { transform:scale(1.2) translateY(-3px); z-index:2; }
-    .seed-orb-inner { width:100%; height:100%; border-radius:50%; border:1px solid rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; font-family:'Orbitron',sans-serif; font-weight:700; }
-    .seed-orb-tip { display:none; position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%); background:rgba(13,15,12,.96); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.1); border-radius:8px; padding:10px 14px; white-space:nowrap; font-size:11px; color:#F0EDE5; z-index:20; pointer-events:none; min-width:180px; text-align:center; }
-    .seed-orb:hover .seed-orb-tip { display:block; }
-    .seed-orb-name { font-family:'Orbitron',sans-serif; font-size:9px; letter-spacing:.15em; margin-bottom:3px; }
-    .seed-orb-meta { color:rgba(240,237,229,.45); font-size:10px; }
+    .library-grid { display:flex; flex-wrap:wrap; gap:16px; justify-content:center; max-width:960px; margin:0 auto; }
+    /* HIPX STAMP CARDS */
+    .hipx-stamp {
+      position:relative; width:148px; cursor:pointer; flex-shrink:0;
+      background:rgba(8,10,9,.85); border-radius:12px;
+      border:1px solid rgba(255,255,255,.07);
+      padding:18px 12px 14px;
+      display:flex; flex-direction:column; align-items:center; gap:8px;
+      transition:transform .25s,box-shadow .25s;
+      overflow:hidden;
+    }
+    .hipx-stamp::before {
+      content:''; position:absolute; inset:0; border-radius:12px;
+      background:linear-gradient(135deg,rgba(255,255,255,.03) 0%,transparent 60%);
+      pointer-events:none;
+    }
+    .hipx-stamp:hover { transform:translateY(-5px) scale(1.03); z-index:2; }
+    .stamp-sigil {
+      font-size:2.2rem; line-height:1;
+      filter:drop-shadow(0 0 10px var(--stamp-col));
+      transition:filter .2s;
+    }
+    .hipx-stamp:hover .stamp-sigil { filter:drop-shadow(0 0 18px var(--stamp-col)); }
+    .stamp-seed {
+      font-family:'Orbitron',sans-serif; font-size:7.5px; letter-spacing:.14em;
+      text-align:center; line-height:1.4; color:var(--stamp-col);
+    }
+    .stamp-divider { width:40px; height:1px; background:rgba(255,255,255,.08); }
+    .stamp-name {
+      font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.08em;
+      color:rgba(240,237,229,.5); text-align:center;
+    }
+    .stamp-watermark {
+      font-family:'Orbitron',sans-serif; font-size:6px; letter-spacing:.2em;
+      color:rgba(255,255,255,.1); text-align:center; margin-top:2px;
+    }
+    /* corner seal */
+    .stamp-seal {
+      position:absolute; top:7px; right:8px;
+      font-size:8px; color:rgba(255,255,255,.12);
+      font-family:'JetBrains Mono',monospace; letter-spacing:.06em;
+    }
     .library-empty { text-align:center; color:rgba(240,237,229,.28); font-size:12px; padding:40px; letter-spacing:.08em; }
     .library-live-dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:#A8C99B; animation:livePulse 2s ease-in-out infinite; margin-right:6px; vertical-align:middle; }
     @keyframes livePulse { 0%,100%{opacity:.35;transform:scale(1);} 50%{opacity:1;transform:scale(1.4);} }
@@ -1513,30 +1547,47 @@ function timeAgo(iso){
   if(s<86400) return Math.floor(s/3600)+'h ago';
   return Math.floor(s/86400)+'d ago';
 }
+// HIPX entity sigil map
+const SIGIL_MAP={
+  'LUMENARCH':'◉','REBEL':'✕','WELLSPRING':'~','SPIRALETH':'∞',
+  'GUARDIAN':'⊗','NEURO':'∇','NAVIX':'→','HIPPO':'◈',
+  'VOX':'◊','SONARIS':'≋','CONAVIGATOR':'★'
+};
+const ENTITY_FOR_SEED={
+  'LUX Seed':'LUMENARCH','Forge Seed':'REBEL','Engine Seed':'REBEL',
+  'Root Seed':'WELLSPRING','Wandering Seed':'SPIRALETH','Iron Seed':'GUARDIAN',
+  'Builder Seed':'NEURO','Spark Seed':'NAVIX','Grounded Seed':'HIPPO',
+  'Anchor Seed':'HIPPO','Searching Seed':'VOX','Curious Seed':'NEURO',
+  'Field Seed':'CONAVIGATOR','Orbit Seed':'NAVIX','Deep Seed':'HIPPO',
+  'Signal Seed':'SONARIS','Radiant Seed':'LUMENARCH','Flow Seed':'WELLSPRING',
+  'Edge Seed':'REBEL','Bloom Seed':'CONAVIGATOR'
+};
+
 async function loadSeedLibrary(){
   const grid=document.getElementById('library-grid');
   try {
     const {data,error}=await sb.from('waitlist')
-      .select('seed_type,lux_score,created_at,email')
+      .select('seed_type,display_name,created_at')
       .eq('survey_completed',true)
+      .eq('gateway_approved',true)
       .order('created_at',{ascending:false})
       .limit(80);
     if(error) throw error;
     if(!data||!data.length){grid.innerHTML='<div class="library-empty">No seeds yet. Be the first.</div>';return;}
     grid.innerHTML=data.map(row=>{
-      const name=(row.email||'').split('@')[0].replace(/[^a-zA-Z0-9]/g,'').slice(0,10)||'anon';
-      const type=row.seed_type||'Field Seed';
-      const lux=row.lux_score??'—';
-      const col=getSeedColor(type);
-      const ago=timeAgo(row.created_at);
-      return `<div class="seed-orb">
-        <div class="seed-orb-inner" style="background:radial-gradient(circle at 35% 30%,${col}33 0%,${col}11 55%,transparent 80%);box-shadow:0 0 18px ${col}44,inset 0 1px 0 rgba(255,255,255,.12)">
-          <span style="color:${col};font-size:11px">${name.slice(0,2).toUpperCase()}</span>
-        </div>
-        <div class="seed-orb-tip">
-          <div class="seed-orb-name" style="color:${col}">${type}</div>
-          <div class="seed-orb-meta">${name} · LUX ${lux} · ${ago}</div>
-        </div>
+      const type   = row.seed_type || 'Field Seed';
+      const handle = row.display_name || 'anon';
+      const col    = getSeedColor(type);
+      const entity = ENTITY_FOR_SEED[type] || 'CONAVIGATOR';
+      const sigil  = SIGIL_MAP[entity] || '★';
+      const num    = Math.floor(Math.random()*9000+1000); // stamp ID
+      return `<div class="hipx-stamp" style="--stamp-col:${col};box-shadow:0 4px 24px ${col}18,0 0 0 1px ${col}22">
+        <div class="stamp-seal">HX${num}</div>
+        <div class="stamp-sigil" style="color:${col}">${sigil}</div>
+        <div class="stamp-seed">${type.toUpperCase()}</div>
+        <div class="stamp-divider"></div>
+        <div class="stamp-name">@${handle}</div>
+        <div class="stamp-watermark">HIPJOY FIELD</div>
       </div>`;
     }).join('');
   } catch(e){
