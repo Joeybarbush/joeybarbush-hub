@@ -437,17 +437,62 @@
       .seeds-grid{grid-template-columns:1fr;}
     }
 
-    /* ── Consent gate ─────────────────────────── */
-    .consent-box { max-width:560px; margin:48px auto; padding:36px 32px; background:rgba(13,15,12,.88); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(168,201,155,.22); border-radius:12px; text-align:center; position:relative; overflow:hidden; }
-    .consent-box::before { content:''; position:absolute; top:0;left:0;right:0;height:1px; background:linear-gradient(90deg,transparent,rgba(168,201,155,.55),transparent); }
-    .consent-title { font-family:'Orbitron',sans-serif; font-size:12px; letter-spacing:.22em; color:#A8C99B; text-transform:uppercase; margin-bottom:14px; }
-    .consent-text { font-size:13px; color:rgba(240,237,229,.6); line-height:1.75; margin-bottom:24px; }
-    .consent-check-row { display:flex; align-items:flex-start; gap:12px; text-align:left; margin-bottom:28px; cursor:pointer; padding:14px 16px; background:rgba(168,201,155,.04); border:1px solid rgba(168,201,155,.1); border-radius:6px; }
-    .consent-check-row input[type=checkbox] { width:18px; height:18px; flex-shrink:0; margin-top:2px; accent-color:#A8C99B; cursor:pointer; }
-    .consent-check-row span { font-size:12px; line-height:1.7; color:rgba(240,237,229,.65); }
-    .consent-btn { padding:13px 36px; background:rgba(168,201,155,.08); border:1px solid rgba(168,201,155,.3); border-radius:4px; color:rgba(168,201,155,.45); font-family:'Orbitron',sans-serif; font-size:9px; letter-spacing:.2em; text-transform:uppercase; cursor:not-allowed; transition:all .3s; }
-    .consent-btn.active { color:#A8C99B; cursor:pointer; background:rgba(168,201,155,.12); border-color:rgba(168,201,155,.5); }
-    .consent-btn.active:hover { background:rgba(168,201,155,.2); box-shadow:0 0 24px rgba(168,201,155,.14); }
+    /* ── Share gate ───────────────────────────── */
+    .gate-box { max-width:560px; margin:0 auto; padding:36px 32px; background:rgba(13,15,12,.88); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(168,201,155,.22); border-radius:12px; text-align:center; position:relative; overflow:hidden; }
+    .gate-box::before { content:''; position:absolute; top:0;left:0;right:0;height:1px; background:linear-gradient(90deg,transparent,rgba(244,132,95,.6),transparent); }
+    .gate-eyebrow { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.26em; color:var(--sunset-dim); text-transform:uppercase; margin-bottom:12px; }
+    .gate-title { font-family:'Orbitron',sans-serif; font-size:18px; font-weight:700; letter-spacing:.14em; color:var(--text); margin-bottom:10px; }
+    .gate-text { font-size:13px; color:var(--text-dim); line-height:1.75; margin-bottom:26px; }
+
+    /* Tweet preview card */
+    .tweet-preview {
+      background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.1); border-radius:10px;
+      padding:18px 20px; margin-bottom:24px; text-align:left; position:relative;
+    }
+    .tweet-preview::before { content:'✕'; position:absolute; top:14px; right:16px; font-size:13px; color:rgba(255,255,255,.2); font-weight:700; }
+    .tweet-handle { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-dim); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+    .tweet-avatar { width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg,var(--sage),var(--sunset)); display:flex; align-items:center; justify-content:center; font-family:'Orbitron',sans-serif; font-size:9px; color:#0d0f0e; font-weight:700; flex-shrink:0; }
+    .tweet-text { font-size:14px; line-height:1.7; color:var(--text); white-space:pre-line; }
+    .tweet-tag { color:var(--sage); }
+    .tweet-hash { color:var(--sage-dim); }
+
+    .gate-tweet-btn {
+      display:inline-flex; align-items:center; gap:10px; padding:14px 32px;
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.15); border-radius:6px;
+      font-family:'Orbitron',sans-serif; font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+      color:var(--text); cursor:pointer; transition:all .3s; text-decoration:none; margin-bottom:16px; width:100%; justify-content:center;
+    }
+    .gate-tweet-btn:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.28); }
+    .gate-posted-btn {
+      display:inline-flex; align-items:center; gap:10px; padding:14px 32px;
+      background:rgba(168,201,155,.1); border:1px solid var(--sage); border-radius:6px;
+      font-family:'Orbitron',sans-serif; font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+      color:var(--sage); cursor:pointer; transition:all .3s; width:100%; justify-content:center;
+    }
+    .gate-posted-btn:hover { background:rgba(168,201,155,.2); box-shadow:0 0 28px rgba(168,201,155,.18); }
+
+    /* ── Account creation ─────────────────────── */
+    .auth-box { max-width:480px; margin:0 auto; padding:36px 32px; background:rgba(13,15,12,.88); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(168,201,155,.18); border-radius:12px; text-align:center; position:relative; overflow:hidden; }
+    .auth-box::before { content:''; position:absolute; top:0;left:0;right:0;height:1px; background:linear-gradient(90deg,transparent,rgba(168,201,155,.5),transparent); }
+    .auth-eyebrow { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.26em; color:var(--sage-dim); text-transform:uppercase; margin-bottom:10px; }
+    .auth-title { font-family:'Orbitron',sans-serif; font-size:18px; font-weight:700; letter-spacing:.12em; color:var(--text); margin-bottom:6px; }
+    .auth-sub { font-size:12px; color:var(--text-muted); margin-bottom:28px; }
+    .auth-email-display { padding:11px 16px; background:rgba(168,201,155,.04); border:1px solid rgba(168,201,155,.12); border-radius:4px; color:var(--text-dim); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.06em; margin-bottom:14px; text-align:left; }
+    .auth-input { width:100%; padding:13px 16px; background:rgba(168,201,155,.04); border:1px solid rgba(168,201,155,.15); border-radius:4px; color:var(--text); font-family:'Inter',sans-serif; font-size:14px; outline:none; transition:border-color .2s,box-shadow .2s; margin-bottom:14px; }
+    .auth-input:focus { border-color:var(--sage-dim); box-shadow:0 0 0 3px rgba(168,201,155,.07); }
+    .auth-input::placeholder { color:rgba(240,237,229,.22); }
+    .auth-err { color:#ff7070; font-size:12px; margin-bottom:12px; display:none; }
+    .auth-err.show { display:block; }
+    .auth-btn { width:100%; padding:15px; background:rgba(168,201,155,.1); border:1px solid var(--sage); border-radius:4px; font-family:'Orbitron',sans-serif; font-size:11px; letter-spacing:.26em; text-transform:uppercase; color:var(--sage); cursor:pointer; transition:all .3s; position:relative; overflow:hidden; }
+    .auth-btn:hover { background:rgba(168,201,155,.2); box-shadow:0 0 36px rgba(168,201,155,.2); }
+    .auth-btn:disabled { opacity:.5; cursor:not-allowed; }
+    .auth-btn.loading::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(168,201,155,.2),transparent); background-size:200% 100%; animation:shimmer 1.1s ease-in-out infinite; }
+    .auth-success { padding:20px; background:rgba(168,201,155,.06); border:1px solid var(--sage-border); border-radius:8px; margin-top:16px; }
+    .auth-success-icon { font-size:32px; margin-bottom:10px; display:block; }
+    .auth-success-title { font-family:'Orbitron',sans-serif; font-size:13px; letter-spacing:.18em; color:var(--sage); margin-bottom:8px; }
+    .auth-success-text { font-size:12px; color:var(--text-dim); line-height:1.7; margin-bottom:16px; }
+    .auth-success-link { display:inline-block; padding:11px 28px; background:var(--sage-faint); border:1px solid var(--sage-border); border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--sage); text-decoration:none; transition:all .25s; }
+    .auth-success-link:hover { background:rgba(168,201,155,.14); border-color:var(--sage); }
 
     /* ── Seed Library ─────────────────────────── */
     #seed-library-section { padding:72px clamp(16px,5vw,64px) 120px; display:none; }
@@ -485,7 +530,10 @@
 
 <nav>
   <a href="index.html" class="nav-logo">HIPJOY</a>
-  <a href="index.html" class="nav-back">← Portfolio</a>
+  <div style="display:flex;align-items:center;gap:22px">
+    <a href="profile.html" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--sage-dim);text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--sage)'" onmouseout="this.style.color='var(--sage-dim)'">Already planted? Sign in</a>
+    <a href="index.html" class="nav-back">← Portfolio</a>
+  </div>
 </nav>
 
 <!-- ═══ HERO ═══ -->
@@ -703,18 +751,52 @@
   </section>
 </div>
 
-<!-- ═══ CONSENT GATE ═══ -->
-<div class="step-reveal" id="step-consent-wrap">
+<!-- ═══ SHARE GATE ═══ -->
+<div class="step-reveal" id="step-share-wrap">
   <div class="step-divider"></div>
-  <section style="padding:0 clamp(16px,5vw,64px)">
-    <div class="consent-box">
-      <div class="consent-title">✦ Enter the Seed Library</div>
-      <div class="consent-text">Your seed is planted. Would you like to appear in the public HIPJOY Seed Library — a living garden of everyone who has planted before you?</div>
-      <label class="consent-check-row">
-        <input type="checkbox" id="consent-check">
-        <span>I consent to my seed name, type, and LUX score being visible in the HIPJOY Seed Library. My email and phone remain private.</span>
-      </label>
-      <button class="consent-btn" id="consent-btn">Enter the Library →</button>
+  <section style="padding:48px clamp(16px,5vw,64px)">
+    <div class="gate-box">
+      <div class="gate-eyebrow">One last thing</div>
+      <div class="gate-title">Share your seed to unlock your profile.</div>
+      <div class="gate-text">Post on X to open the gateway. Your profile — with your full LUX score, seed type, and survey signals — will be waiting on the other side.</div>
+
+      <div class="tweet-preview">
+        <div class="tweet-handle">
+          <div class="tweet-avatar">HJ</div>
+          <span>@you</span>
+        </div>
+        <div class="tweet-text" id="tweet-preview-text">Loading...</div>
+      </div>
+
+      <a class="gate-tweet-btn" id="gate-tweet-open" href="#" target="_blank" rel="noopener">
+        <span>✕</span> Open X — Post This
+      </a>
+      <button class="gate-posted-btn" id="gate-posted-btn">
+        ◈ I Posted It — Unlock My Profile
+      </button>
+    </div>
+  </section>
+</div>
+
+<!-- ═══ CREATE ACCOUNT ═══ -->
+<div class="step-reveal" id="step-account-wrap">
+  <div class="step-divider"></div>
+  <section style="padding:48px clamp(16px,5vw,64px)">
+    <div class="auth-box">
+      <div class="auth-eyebrow">Gateway unlocked</div>
+      <div class="auth-title">Create Your Profile</div>
+      <div class="auth-sub">Your email is already in the field. Just set a password.</div>
+      <div class="auth-email-display" id="auth-email-display">—</div>
+      <input type="password" id="auth-password" class="auth-input" placeholder="Choose a password (8+ characters)" autocomplete="new-password">
+      <input type="password" id="auth-password2" class="auth-input" placeholder="Confirm password" autocomplete="new-password">
+      <div class="auth-err" id="auth-err"></div>
+      <button class="auth-btn" id="auth-create-btn">Create Account</button>
+      <div class="auth-success" id="auth-success" style="display:none">
+        <span class="auth-success-icon">◈</span>
+        <div class="auth-success-title">Seed Profile Created</div>
+        <div class="auth-success-text" id="auth-success-text">Your account is live. Sign in anytime to view your full seed profile.</div>
+        <a href="profile.html" class="auth-success-link">View My Profile →</a>
+      </div>
     </div>
   </section>
 </div>
@@ -739,6 +821,9 @@ const { createClient } = window.supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let rowId = null;
+let userEmail = '';
+let currentSeedName = 'Field Seed';
+let currentLux = 0;
 
 // ─── HIPXQL Question Pool ─────────────────────────────────────────────
 const QS = {
@@ -1092,6 +1177,7 @@ document.getElementById('f-submit').addEventListener('click', async()=>{
     const { data, error } = await sb.from('waitlist').insert({email,phone:phone||null,role}).select().single();
     if(error && error.code!=='23505') throw error;
     if(data) rowId=data.id;
+    userEmail = email;
     fireConfetti();
     runTerminal();
   } catch(e){
@@ -1293,46 +1379,105 @@ async function showFinal(fromDecline=false){
 }
 
 function setupShare(seedType, lux){
-  const url=encodeURIComponent(window.location.href);
-  const txt=encodeURIComponent(`I just planted a ${seedType} in the HIPJOY field. LUX score: ${lux}. 14 AI entities, 1 routing engine, persistent identity. Join the LUX Seeds waitlist:`);
-  document.getElementById('share-x').href=`https://x.com/intent/tweet?text=${txt}&url=${url}`;
-  document.getElementById('share-li').href=`https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+  currentSeedName = seedType;
+  currentLux = lux;
+  const url = 'https://joeybarbush.github.io/joeybarbush-hub/waitlist.html';
+  const tweetBody = `I just planted my seed in the HIPJOY field \uD83C\uDF31\nSeed: ${seedType} | LUX: ${lux}\n@Joey_Barbush\nPlant yours: ${url}\n#HIPJOY #PlantYourSeed`;
+
+  // Update share buttons on final screen
+  document.getElementById('share-x').href = `https://x.com/intent/tweet?text=${encodeURIComponent(tweetBody)}`;
+  document.getElementById('share-li').href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
   document.getElementById('share-copy').addEventListener('click',()=>{
-    navigator.clipboard.writeText(window.location.href).then(()=>{
-      const b=document.getElementById('share-copy'); b.innerHTML='<span>✓</span> Copied!';
-      setTimeout(()=>{ b.innerHTML='<span>◈</span> Copy Link'; },2000);
+    navigator.clipboard.writeText(url).then(()=>{
+      const b=document.getElementById('share-copy'); b.innerHTML='<span>\u2713</span> Copied!';
+      setTimeout(()=>{ b.innerHTML='<span>\u25C8</span> Copy Link'; },2000);
     });
   });
-  // Show consent gate after final screen settles
-  setTimeout(showConsentGate, 1800);
+
+  // Show share gate after final settles
+  setTimeout(()=>showShareGate(tweetBody), 1800);
 }
 
-// ─── Consent gate ─────────────────────────────────────────────────────
-function showConsentGate(){
-  const w=document.getElementById('step-consent-wrap');
-  w.classList.add('open');
-  setTimeout(()=>w.scrollIntoView({behavior:'smooth',block:'start'}),200);
+// ─── Share gate ───────────────────────────────────────────────────────
+function showShareGate(tweetBody){
+  const wrap = document.getElementById('step-share-wrap');
+  wrap.classList.add('open');
+  setTimeout(()=>wrap.scrollIntoView({behavior:'smooth',block:'start'}),200);
+
+  // Render tweet preview with colored handles/hashtags
+  const preview = document.getElementById('tweet-preview-text');
+  if(preview){
+    preview.innerHTML = tweetBody
+      .replace(/@Joey_Barbush/g,'<span class="tweet-tag">@Joey_Barbush</span>')
+      .replace(/#(\w+)/g,'<span class="tweet-hash">#$1</span>');
+  }
+
+  // Wire tweet open button
+  const tweetBtn = document.getElementById('gate-tweet-open');
+  tweetBtn.href = `https://x.com/intent/tweet?text=${encodeURIComponent(tweetBody)}`;
+
+  // "I posted it" — honor system, unlock account creation
+  document.getElementById('gate-posted-btn').addEventListener('click', ()=>{
+    showAccountForm();
+  });
 }
-document.getElementById('consent-check').addEventListener('change',e=>{
-  document.getElementById('consent-btn').classList.toggle('active',e.target.checked);
-});
-document.getElementById('consent-btn').addEventListener('click',()=>{
-  if(!document.getElementById('consent-check').checked) return;
-  // Auto-open tweet composer
-  const typeEl=document.getElementById('final-seed-type');
-  const luxEl=document.getElementById('gauge-num');
-  const seedType=(typeEl?typeEl.textContent:'').replace('Your ','').trim()||'Field Seed';
-  const luxScore=luxEl?luxEl.textContent:'—';
-  const tweetText=encodeURIComponent(
-    `I just planted my seed in the HIPJOY field. 🌱\n\nSeed type: ${seedType}\nLUX Score: ${luxScore}\n\nPlant yours: joeybarbush.github.io/joeybarbush-hub/waitlist.html\n\n#HIPJOY #PlantYourSeed`
-  );
-  window.open(`https://x.com/intent/tweet?text=${tweetText}`,'_blank','noopener,noreferrer');
-  // Show library
-  const lib=document.getElementById('seed-library-section');
-  lib.classList.add('open');
-  setTimeout(()=>lib.scrollIntoView({behavior:'smooth',block:'start'}),300);
-  loadSeedLibrary();
-  setInterval(loadSeedLibrary,30000);
+
+// ─── Account creation ─────────────────────────────────────────────────
+function showAccountForm(){
+  const wrap = document.getElementById('step-account-wrap');
+  wrap.classList.add('open');
+  setTimeout(()=>wrap.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  const display = document.getElementById('auth-email-display');
+  if(display) display.textContent = userEmail || 'your@email.com';
+}
+
+document.getElementById('auth-create-btn').addEventListener('click', async()=>{
+  const pw1 = document.getElementById('auth-password').value;
+  const pw2 = document.getElementById('auth-password2').value;
+  const errEl = document.getElementById('auth-err');
+  const btn   = document.getElementById('auth-create-btn');
+  errEl.classList.remove('show');
+
+  if(pw1.length < 8){ errEl.textContent='Password must be at least 8 characters.'; errEl.classList.add('show'); return; }
+  if(pw1 !== pw2){ errEl.textContent='Passwords do not match.'; errEl.classList.add('show'); return; }
+
+  btn.classList.add('loading'); btn.textContent='Creating...'; btn.disabled=true;
+  try {
+    const { data, error } = await sb.auth.signUp({ email: userEmail, password: pw1 });
+    if(error) throw error;
+
+    // Link user_id to waitlist row
+    if(data?.user){
+      try { await sb.from('waitlist').update({ user_id: data.user.id }).eq('email', userEmail); } catch(e){}
+    }
+
+    btn.style.display='none';
+    const successDiv = document.getElementById('auth-success');
+    const successText = document.getElementById('auth-success-text');
+    // Supabase may require email confirmation depending on project settings
+    if(data?.session){
+      successText.textContent = 'Account created and confirmed. Your seed profile is live.';
+    } else {
+      successText.textContent = 'Almost there — check your email to confirm your account, then sign in at your profile.';
+    }
+    successDiv.style.display='block';
+
+    // Open seed library
+    setTimeout(()=>{
+      const lib=document.getElementById('seed-library-section');
+      lib.classList.add('open');
+      setTimeout(()=>lib.scrollIntoView({behavior:'smooth',block:'start'}),300);
+      loadSeedLibrary();
+      setInterval(loadSeedLibrary,30000);
+    }, 1200);
+
+  } catch(e){
+    btn.classList.remove('loading'); btn.textContent='Create Account'; btn.disabled=false;
+    errEl.textContent = (e.message&&e.message.includes('already'))
+      ? 'An account with this email already exists. Sign in at your profile.'
+      : (e.message||'Something went wrong. Try again.');
+    errEl.classList.add('show');
+  }
 });
 
 // ─── Seed Library ─────────────────────────────────────────────────────

@@ -26,12 +26,16 @@ CREATE TABLE IF NOT EXISTS waitlist (
   seed_type            TEXT,        -- assigned seed type (e.g. "Forge Seed")
 
   survey_completed     BOOLEAN     DEFAULT false,
-  created_at           TIMESTAMPTZ DEFAULT now()
+  created_at           TIMESTAMPTZ DEFAULT now(),
+
+  -- Auth link (populated after account creation)
+  user_id              UUID        REFERENCES auth.users(id)
 );
 
 -- If the table already exists, add the new columns (safe to run twice):
 ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS lux_score  INTEGER;
 ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS seed_type  TEXT;
+ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS user_id    UUID REFERENCES auth.users(id);
 
 -- Index for fast email lookups
 CREATE INDEX IF NOT EXISTS waitlist_email_idx ON waitlist (email);
@@ -57,8 +61,17 @@ CREATE POLICY "allow_count_select" ON waitlist
   FOR SELECT TO anon
   USING (true);
 
+-- Policy: authenticated users can view their own seed row
+CREATE POLICY "users_can_view_own_seed" ON waitlist
+  FOR SELECT TO authenticated
+  USING (user_id = auth.uid());
+
 -- Seed count view (optional — cleaner for front-end queries)
 CREATE OR REPLACE VIEW waitlist_count AS
   SELECT COUNT(*) AS total FROM waitlist;
 
 GRANT SELECT ON waitlist_count TO anon;
+
+-- Explicit table-level grants (required alongside RLS policies)
+GRANT INSERT, SELECT, UPDATE ON waitlist TO anon;
+GRANT SELECT, UPDATE ON waitlist TO authenticated;

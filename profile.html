@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Your Seed -- HIPJOY Field</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --sage:#A8C99B;
+  --sage-dim:rgba(168,201,155,.15);
+  --sage-glow:rgba(168,201,155,.35);
+  --orange:#E87A3A;
+  --bg:#0d0f0e;
+  --bg2:#111614;
+  --glass:rgba(255,255,255,.04);
+  --glass-border:rgba(168,201,155,.12);
+  --text:#d4e8d0;
+  --muted:#6a8a72;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 2rem;
+  background:rgba(13,15,14,.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--glass-border);
+}
+.nav-logo{font-family:Orbitron;font-size:.85rem;color:var(--sage);text-decoration:none;letter-spacing:.1em}
+.nav-links{display:flex;gap:1.4rem;list-style:none;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.75rem;letter-spacing:.05em;transition:color .2s}
+.nav-links a:hover{color:var(--sage)}
+.nav-btn{
+  padding:.4rem .9rem;border:1px solid var(--sage-glow);border-radius:20px;
+  color:var(--sage)!important;font-size:.72rem!important;
+  transition:background .2s!important;
+}
+.nav-btn:hover{background:var(--sage-dim)!important}
+.nav-signout{color:var(--muted)!important;cursor:pointer;background:none;border:none;font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.05em}
+.nav-signout:hover{color:#F4845F!important}
+
+/* LINEN */
+.lux-bar{height:2px;background:linear-gradient(90deg,transparent,var(--sage),transparent);opacity:.5;position:fixed;top:0;left:0;right:0;z-index:101}
+
+/* STAR FIELD */
+#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+/* LAYOUT */
+main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-width:860px;margin:0 auto}
+
+/* SIGN-IN PANEL */
+#signin-panel{
+  display:flex;flex-direction:column;align-items:center;gap:2rem;
+  padding:3rem 2rem;
+}
+.signin-title{font-family:Orbitron;font-size:1.8rem;color:var(--sage);text-align:center;letter-spacing:.08em}
+.signin-subtitle{color:var(--muted);font-size:.8rem;text-align:center;letter-spacing:.05em;line-height:1.7}
+.signin-box{
+  width:100%;max-width:420px;
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:16px;
+  padding:2rem;
+  display:flex;flex-direction:column;gap:1.1rem;
+}
+.field-label{font-size:.7rem;color:var(--muted);letter-spacing:.08em;margin-bottom:.3rem}
+.field-input{
+  width:100%;background:rgba(0,0,0,.3);border:1px solid var(--glass-border);
+  border-radius:8px;padding:.7rem 1rem;color:var(--text);font-family:'JetBrains Mono',monospace;
+  font-size:.85rem;outline:none;transition:border-color .2s;
+}
+.field-input:focus{border-color:var(--sage-glow)}
+.signin-btn{
+  width:100%;padding:.85rem;background:var(--sage-dim);border:1px solid var(--sage-glow);
+  border-radius:10px;color:var(--sage);font-family:Orbitron;font-size:.8rem;
+  letter-spacing:.1em;cursor:pointer;transition:background .2s;
+}
+.signin-btn:hover{background:rgba(168,201,155,.25)}
+.signin-err{color:#F4845F;font-size:.75rem;text-align:center;display:none}
+.signin-plant{font-size:.75rem;color:var(--muted);text-align:center}
+.signin-plant a{color:var(--sage);text-decoration:none}
+.signin-plant a:hover{text-decoration:underline}
+
+/* PROFILE PANEL */
+#profile-panel{display:none;flex-direction:column;gap:2.5rem;animation:fadeIn .6s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* HOLOGRAPHIC CARD */
+.holo-card{
+  position:relative;border-radius:20px;overflow:hidden;
+  padding:2.5rem 2rem;
+  background:linear-gradient(135deg,rgba(168,201,155,.08) 0%,rgba(0,0,0,.4) 50%,rgba(168,201,155,.06) 100%);
+  border:1px solid var(--card-color, var(--sage-glow));
+  box-shadow:0 0 40px rgba(168,201,155,.08), inset 0 1px 0 rgba(255,255,255,.05);
+  cursor:default;
+  transition:transform .1s;
+}
+.holo-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.03) 50%,transparent 60%);
+  animation:holoShine 4s ease-in-out infinite;
+}
+@keyframes holoShine{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}
+.holo-card-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;gap:1.5rem;align-items:center}
+@media(max-width:540px){.holo-card-inner{grid-template-columns:1fr}}
+
+.card-left{}
+.card-badge{font-size:.65rem;color:var(--muted);letter-spacing:.12em;margin-bottom:.4rem}
+.card-seed-name{
+  font-family:Orbitron;font-size:2rem;font-weight:900;
+  color:var(--card-color,var(--sage));
+  text-shadow:0 0 30px var(--card-color, var(--sage-glow));
+  line-height:1.1;margin-bottom:.5rem;
+}
+.card-entity{display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem}
+.card-sigil{font-size:1.4rem;color:var(--card-color,var(--sage))}
+.card-entity-name{font-family:Orbitron;font-size:.75rem;letter-spacing:.1em;color:var(--muted)}
+.card-meta{font-size:.72rem;color:var(--muted);letter-spacing:.06em;line-height:2}
+
+.card-right{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.lux-gauge{position:relative;width:110px;height:110px}
+.lux-gauge svg{width:110px;height:110px;transform:rotate(-90deg)}
+.lux-gauge-bg{fill:none;stroke:rgba(255,255,255,.06);stroke-width:8}
+.lux-gauge-fill{fill:none;stroke-width:8;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:283;transition:stroke-dashoffset 1.5s cubic-bezier(.3,0,.2,1)}
+.lux-center{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:Orbitron;
+}
+.lux-number{font-size:1.5rem;font-weight:900;color:var(--card-color,var(--sage))}
+.lux-label{font-size:.55rem;color:var(--muted);letter-spacing:.1em}
+
+/* SECTION HEADERS */
+.section-head{
+  font-family:Orbitron;font-size:.7rem;letter-spacing:.15em;color:var(--muted);
+  border-bottom:1px solid var(--glass-border);padding-bottom:.5rem;margin-bottom:1.2rem;
+}
+
+/* SIGNALS GRID */
+.signals-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:540px){.signals-grid{grid-template-columns:1fr}}
+.signal-card{
+  background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;
+  padding:1rem 1.2rem;
+}
+.signal-label{font-size:.62rem;color:var(--muted);letter-spacing:.1em;margin-bottom:.4rem}
+.signal-entity{font-family:Orbitron;font-size:.62rem;color:var(--sage);letter-spacing:.08em;margin-bottom:.5rem}
+.signal-text{font-size:.78rem;color:var(--text);line-height:1.6;font-style:italic}
+.signal-empty{color:var(--muted);font-size:.75rem;font-style:italic}
+
+/* SCORE BARS */
+.score-bars{display:flex;flex-direction:column;gap:.7rem}
+.score-row{display:flex;align-items:center;gap:.8rem}
+.score-name{font-size:.68rem;color:var(--muted);letter-spacing:.08em;width:36px;flex-shrink:0}
+.score-track{flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.score-fill{height:100%;border-radius:2px;width:0;transition:width 1.2s cubic-bezier(.3,0,.2,1)}
+.score-val{font-size:.68rem;color:var(--muted);width:30px;text-align:right;flex-shrink:0}
+
+/* CTA BUTTONS */
+.cta-row{display:flex;gap:1rem;flex-wrap:wrap}
+.cta-btn{
+  padding:.75rem 1.6rem;border-radius:10px;font-family:Orbitron;font-size:.75rem;
+  letter-spacing:.08em;text-decoration:none;cursor:pointer;border:none;transition:all .2s;
+}
+.cta-primary{background:var(--sage-dim);border:1px solid var(--sage-glow);color:var(--sage)}
+.cta-primary:hover{background:rgba(168,201,155,.25);box-shadow:0 0 20px var(--sage-glow)}
+.cta-secondary{background:rgba(232,122,58,.08);border:1px solid rgba(232,122,58,.3);color:var(--orange)}
+.cta-secondary:hover{background:rgba(232,122,58,.18)}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--glass-border);margin:.5rem 0}
+</style>
+</head>
+<body>
+<div class="lux-bar"></div>
+<canvas id="stars"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo">◈ JOEY BARBUSH</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="field.html">Field</a></li>
+    <li><a href="waitlist.html#seed-library-section">Garden</a></li>
+    <li id="nav-signout-wrap" style="display:none">
+      <button class="nav-signout" onclick="signOut()">Sign Out</button>
+    </li>
+    <li id="nav-signin-wrap">
+      <a href="waitlist.html" class="nav-btn">Plant Your Seed</a>
+    </li>
+  </ul>
+</nav>
+
+<main>
+  <!-- SIGN IN PANEL -->
+  <div id="signin-panel">
+    <div class="signin-title">Your Seed Awaits</div>
+    <div class="signin-subtitle">Sign in to view your HIPJOY field profile,<br>seed type, and entity alignment.</div>
+    <div class="signin-box">
+      <div>
+        <div class="field-label">EMAIL</div>
+        <input class="field-input" id="si-email" type="email" placeholder="field@hipjoy.io" autocomplete="email">
+      </div>
+      <div>
+        <div class="field-label">PASSWORD</div>
+        <input class="field-input" id="si-pw" type="password" placeholder="••••••••">
+      </div>
+      <div class="signin-err" id="si-err"></div>
+      <button class="signin-btn" id="si-btn" onclick="doSignIn()">ENTER THE FIELD</button>
+    </div>
+    <div class="signin-plant">Don't have an account? <a href="waitlist.html">Plant your seed first →</a></div>
+  </div>
+
+  <!-- PROFILE PANEL -->
+  <div id="profile-panel">
+
+    <!-- HOLOGRAPHIC CARD -->
+    <div id="holo-card" class="holo-card">
+      <div class="holo-card-inner">
+        <div class="card-left">
+          <div class="card-badge">HIPJOY FIELD MEMBER</div>
+          <div class="card-seed-name" id="card-seed-name">Field Seed</div>
+          <div class="card-entity">
+            <span class="card-sigil" id="card-sigil">★</span>
+            <span class="card-entity-name" id="card-entity-name">CONAVIGATOR</span>
+          </div>
+          <div class="card-meta">
+            <span id="card-email">--</span><br>
+            Member since <span id="card-since">--</span>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="lux-gauge">
+            <svg viewBox="0 0 100 100">
+              <circle class="lux-gauge-bg" cx="50" cy="50" r="45"/>
+              <circle class="lux-gauge-fill" id="gauge-fill" cx="50" cy="50" r="45"/>
+            </svg>
+            <div class="lux-center">
+              <div class="lux-number" id="gauge-num">0</div>
+              <div class="lux-label">LUX</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VECTOR SCORES -->
+    <div>
+      <div class="section-head">FIELD VECTORS</div>
+      <div class="score-bars">
+        <div class="score-row">
+          <div class="score-name">LUX</div>
+          <div class="score-track"><div class="score-fill" id="bar-lux" style="background:#C8A850"></div></div>
+          <div class="score-val" id="val-lux">--</div>
+        </div>
+        <div class="score-row">
+          <div class="score-name">GRIT</div>
+          <div class="score-track"><div class="score-fill" id="bar-grit" style="background:#E87A3A"></div></div>
+          <div class="score-val" id="val-grit">--</div>
+        </div>
+        <div class="score-row">
+          <div class="score-name">PHI</div>
+          <div class="score-track"><div class="score-fill" id="bar-phi" style="background:#9B4FDC"></div></div>
+          <div class="score-val" id="val-phi">--</div>
+        </div>
+        <div class="score-row">
+          <div class="score-name">TILT</div>
+          <div class="score-track"><div class="score-fill" id="bar-tilt" style="background:#00CED1"></div></div>
+          <div class="score-val" id="val-tilt">--</div>
+        </div>
+        <div class="score-row">
+          <div class="score-name">FIRE</div>
+          <div class="score-track"><div class="score-fill" id="bar-fire" style="background:#F4845F"></div></div>
+          <div class="score-val" id="val-fire">--</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIGNALS -->
+    <div>
+      <div class="section-head">YOUR SIGNALS</div>
+      <div class="signals-grid">
+        <div class="signal-card">
+          <div class="signal-label">SIGNAL 1</div>
+          <div class="signal-entity">∇ NEURO -- Most broken system</div>
+          <div class="signal-text" id="sig-1"><span class="signal-empty">Not answered</span></div>
+        </div>
+        <div class="signal-card">
+          <div class="signal-label">SIGNAL 2</div>
+          <div class="signal-entity">~ WELLSPRING -- How you recover</div>
+          <div class="signal-text" id="sig-2"><span class="signal-empty">Not answered</span></div>
+        </div>
+        <div class="signal-card">
+          <div class="signal-label">SIGNAL 3</div>
+          <div class="signal-entity">≋ SONARIS -- Your devices</div>
+          <div class="signal-text" id="sig-3"><span class="signal-empty">Not answered</span></div>
+        </div>
+        <div class="signal-card">
+          <div class="signal-label">SIGNAL 4</div>
+          <div class="signal-entity">✕ REBEL -- What tools get wrong</div>
+          <div class="signal-text" id="sig-4"><span class="signal-empty">Not answered</span></div>
+        </div>
+        <div class="signal-card" style="grid-column:1/-1">
+          <div class="signal-label">SIGNAL 5</div>
+          <div class="signal-entity">◊ VOX -- Message to your future self</div>
+          <div class="signal-text" id="sig-5"><span class="signal-empty">Not answered</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-row">
+      <a href="field.html" class="cta-btn cta-primary">Enter the Field →</a>
+      <a href="waitlist.html#seed-library-section" class="cta-btn cta-secondary">View the Garden</a>
+    </div>
+
+  </div><!-- /profile-panel -->
+</main>
+
+<script>
+// ── SUPABASE ──────────────────────────────────────────────────────────────────
+const SUPABASE_URL = 'https://mdbzenhhljwmkdcmtawd.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYnplbmhobGp3bWtkY210YXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzY2NDUsImV4cCI6MjA5MTI1MjY0NX0.oCKA-Dpk-oxlS18mi-7R3pqA0mif1gM3J5RbDxavgaI';
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── ENTITY ALIGNMENT ──────────────────────────────────────────────────────────
+const ENTITY_ALIGN = {
+  'LUX Seed':         { entity:'LUMENARCH',   sigil:'◉', color:'#C8A850' },
+  'Forge Seed':       { entity:'REBEL',       sigil:'✕', color:'#F4845F' },
+  'Engine Seed':      { entity:'REBEL',       sigil:'✕', color:'#F4845F' },
+  'Root Seed':        { entity:'WELLSPRING',  sigil:'~', color:'#A8C99B' },
+  'Wandering Seed':   { entity:'SPIRALETH',   sigil:'∞', color:'#9B4FDC' },
+  'Iron Seed':        { entity:'GUARDIAN',    sigil:'⊗', color:'#8899AA' },
+  'Builder Seed':     { entity:'NEURO',       sigil:'∇', color:'#00CED1' },
+  'Spark Seed':       { entity:'NAVIX',       sigil:'→', color:'#00B4A0' },
+  'Grounded Seed':    { entity:'HIPPO',       sigil:'◈', color:'#C8A850' },
+  'Anchor Seed':      { entity:'HIPPO',       sigil:'◈', color:'#C8A850' },
+  'Searching Seed':   { entity:'VOX',         sigil:'◊', color:'#E075A8' },
+  'Curious Seed':     { entity:'NEURO',       sigil:'∇', color:'#00CED1' },
+  'Field Seed':       { entity:'CONAVIGATOR', sigil:'★', color:'#A8C99B' },
+  'Orbit Seed':       { entity:'NAVIX',       sigil:'→', color:'#00B4A0' },
+  'Deep Seed':        { entity:'HIPPO',       sigil:'◈', color:'#C8A850' },
+  'Signal Seed':      { entity:'SONARIS',     sigil:'≋', color:'#A8C99B' },
+  'Radiant Seed':     { entity:'LUMENARCH',   sigil:'◉', color:'#C8A850' },
+  'Flow Seed':        { entity:'WELLSPRING',  sigil:'~', color:'#A8C99B' },
+  'Edge Seed':        { entity:'REBEL',       sigil:'✕', color:'#F4845F' },
+  'Bloom Seed':       { entity:'CONAVIGATOR', sigil:'★', color:'#A8C99B' },
+};
+
+function getAlign(seedName) {
+  return ENTITY_ALIGN[seedName] || { entity:'CONAVIGATOR', sigil:'★', color:'#A8C99B' };
+}
+
+// ── STARS ─────────────────────────────────────────────────────────────────────
+(function(){
+  const c = document.getElementById('stars');
+  const ctx = c.getContext('2d');
+  function resize(){ c.width=innerWidth; c.height=innerHeight; }
+  resize(); addEventListener('resize', resize);
+  const stars = Array.from({length:120},()=>({
+    x:Math.random()*innerWidth, y:Math.random()*innerHeight,
+    r:Math.random()*.8+.2, a:Math.random(), da:(Math.random()-.5)*.003
+  }));
+  (function tick(){
+    ctx.clearRect(0,0,c.width,c.height);
+    stars.forEach(s=>{
+      s.a = Math.max(.05,Math.min(1,s.a+s.da));
+      if(s.a<=.05||s.a>=1) s.da*=-1;
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(168,201,155,${s.a*.4})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(tick);
+  })();
+})();
+
+// ── AUTH ──────────────────────────────────────────────────────────────────────
+async function doSignIn() {
+  const email = document.getElementById('si-email').value.trim();
+  const pw    = document.getElementById('si-pw').value;
+  const err   = document.getElementById('si-err');
+  const btn   = document.getElementById('si-btn');
+  err.style.display = 'none';
+  if (!email || !pw) { showErr('Enter your email and password.'); return; }
+  btn.textContent = 'ENTERING...';
+  btn.disabled = true;
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
+  if (error) {
+    showErr(error.message || 'Sign in failed.');
+    btn.textContent = 'ENTER THE FIELD'; btn.disabled = false;
+    return;
+  }
+  loadProfile(data.user);
+}
+
+function showErr(msg) {
+  const err = document.getElementById('si-err');
+  err.textContent = msg;
+  err.style.display = 'block';
+}
+
+async function signOut() {
+  await sb.auth.signOut();
+  document.getElementById('profile-panel').style.display = 'none';
+  document.getElementById('signin-panel').style.display = 'flex';
+  document.getElementById('nav-signout-wrap').style.display = 'none';
+  document.getElementById('nav-signin-wrap').style.display = '';
+}
+
+// ── PROFILE LOADER ────────────────────────────────────────────────────────────
+async function loadProfile(user) {
+  // Fetch waitlist row
+  const { data: rows } = await sb
+    .from('waitlist')
+    .select('*')
+    .eq('email', user.email)
+    .limit(1);
+
+  const row = rows && rows[0];
+  const seedName  = (row && row.seed_type)  || 'Field Seed';
+  const lux       = (row && row.lux_score != null) ? row.lux_score : 0;
+  const since     = new Date(user.created_at || Date.now()).toLocaleDateString('en-US',{month:'short',year:'numeric'});
+
+  // Entity alignment
+  const align = getAlign(seedName);
+
+  // Inject card color CSS variable
+  document.getElementById('holo-card').style.setProperty('--card-color', align.color);
+
+  // Card fields
+  document.getElementById('card-seed-name').textContent  = seedName;
+  document.getElementById('card-seed-name').style.color  = align.color;
+  document.getElementById('card-seed-name').style.textShadow = `0 0 30px ${align.color}80`;
+  document.getElementById('card-sigil').textContent      = align.sigil;
+  document.getElementById('card-sigil').style.color      = align.color;
+  document.getElementById('card-entity-name').textContent = align.entity;
+  document.getElementById('card-email').textContent      = user.email;
+  document.getElementById('card-since').textContent      = since;
+
+  // LUX gauge (r=45, circ=283)
+  const offset = 283 - (lux / 100) * 283;
+  const gaugeFill = document.getElementById('gauge-fill');
+  gaugeFill.style.stroke = align.color;
+  setTimeout(() => { gaugeFill.style.strokeDashoffset = offset; }, 50);
+  animateNum('gauge-num', 0, lux, 1400, align.color);
+
+  // Score bars -- reconstruct from lux_score as proxy if vectors not stored
+  // Show lux_score proportionally; derive rough splits from seed type
+  const vectors = deriveVectors(seedName, lux);
+  animateBar('bar-lux',  'val-lux',  vectors.LUX);
+  animateBar('bar-grit', 'val-grit', vectors.GRIT);
+  animateBar('bar-phi',  'val-phi',  vectors.PHI);
+  animateBar('bar-tilt', 'val-tilt', vectors.TILT);
+  animateBar('bar-fire', 'val-fire', vectors.FIRE);
+
+  // Signals
+  setSignal('sig-1', row && row.q1_broken_system);
+  setSignal('sig-2', row && row.q2_recovery);
+  setSignal('sig-3', row && row.q3_devices);
+  setSignal('sig-4', row && row.q4_productivity_wrong);
+  setSignal('sig-5', row && row.q5_future_self);
+
+  // Show profile, hide sign-in
+  document.getElementById('signin-panel').style.display  = 'none';
+  document.getElementById('profile-panel').style.display = 'flex';
+  document.getElementById('nav-signout-wrap').style.display = '';
+  document.getElementById('nav-signin-wrap').style.display  = 'none';
+}
+
+function setSignal(id, val) {
+  const el = document.getElementById(id);
+  el.innerHTML = val
+    ? `"${escHtml(val)}"`
+    : '<span class="signal-empty">Not answered</span>';
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function animateNum(id, from, to, dur, color) {
+  const el = document.getElementById(id);
+  if(color) el.style.color = color;
+  const start = performance.now();
+  (function tick(now){
+    const t = Math.min(1,(now-start)/dur);
+    el.textContent = Math.round(from + (to-from)*t);
+    if(t<1) requestAnimationFrame(tick);
+  })(performance.now());
+}
+
+function animateBar(barId, valId, pct) {
+  const bar = document.getElementById(barId);
+  const val = document.getElementById(valId);
+  setTimeout(()=>{ bar.style.width = pct + '%'; }, 100);
+  animateNum(valId, 0, Math.round(pct), 1200, null);
+}
+
+// Derive rough vector estimates from seed type + overall lux
+function deriveVectors(seedName, lux) {
+  const base = lux;
+  const profiles = {
+    'LUX Seed':        { LUX:95, GRIT:60, PHI:70, TILT:55, FIRE:65 },
+    'Forge Seed':      { LUX:60, GRIT:90, PHI:55, TILT:80, FIRE:95 },
+    'Engine Seed':     { LUX:55, GRIT:85, PHI:50, TILT:85, FIRE:90 },
+    'Root Seed':       { LUX:65, GRIT:70, PHI:85, TILT:40, FIRE:55 },
+    'Wandering Seed':  { LUX:60, GRIT:45, PHI:90, TILT:70, FIRE:60 },
+    'Iron Seed':       { LUX:55, GRIT:95, PHI:45, TILT:65, FIRE:75 },
+    'Builder Seed':    { LUX:70, GRIT:75, PHI:65, TILT:90, FIRE:80 },
+    'Spark Seed':      { LUX:65, GRIT:60, PHI:60, TILT:95, FIRE:85 },
+    'Grounded Seed':   { LUX:70, GRIT:80, PHI:80, TILT:50, FIRE:50 },
+    'Anchor Seed':     { LUX:60, GRIT:85, PHI:75, TILT:45, FIRE:45 },
+    'Searching Seed':  { LUX:55, GRIT:50, PHI:80, TILT:60, FIRE:55 },
+    'Curious Seed':    { LUX:65, GRIT:55, PHI:85, TILT:80, FIRE:65 },
+    'Field Seed':      { LUX:65, GRIT:65, PHI:65, TILT:65, FIRE:65 },
+    'Radiant Seed':    { LUX:90, GRIT:70, PHI:75, TILT:65, FIRE:70 },
+    'Signal Seed':     { LUX:65, GRIT:65, PHI:60, TILT:90, FIRE:70 },
+    'Flow Seed':       { LUX:70, GRIT:60, PHI:85, TILT:55, FIRE:60 },
+    'Edge Seed':       { LUX:50, GRIT:90, PHI:50, TILT:85, FIRE:95 },
+    'Bloom Seed':      { LUX:75, GRIT:65, PHI:75, TILT:65, FIRE:70 },
+    'Deep Seed':       { LUX:65, GRIT:75, PHI:80, TILT:50, FIRE:55 },
+    'Orbit Seed':      { LUX:60, GRIT:60, PHI:70, TILT:90, FIRE:75 },
+  };
+  const p = profiles[seedName] || { LUX:65, GRIT:65, PHI:65, TILT:65, FIRE:65 };
+  // Scale all vectors by overall lux
+  const scale = base / 100;
+  return {
+    LUX:  Math.round(p.LUX  * scale),
+    GRIT: Math.round(p.GRIT * scale),
+    PHI:  Math.round(p.PHI  * scale),
+    TILT: Math.round(p.TILT * scale),
+    FIRE: Math.round(p.FIRE * scale),
+  };
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+(async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session && session.user) {
+    loadProfile(session.user);
+  }
+  // Allow Enter key in sign-in form
+  document.getElementById('si-pw').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSignIn();
+  });
+})();
+</script>
+</body>
+</html>
