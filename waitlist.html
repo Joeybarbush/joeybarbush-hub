@@ -3,27 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HIPJOY — Join the Waitlist</title>
-  <meta name="description" content="HIPJOY builds cognitive operating systems for humans. Join the waitlist for LUX Seeds — pre-built AI entity architectures tuned for creators, founders, researchers, and students.">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <title>HIPJOY — LUX Seeds Waitlist</title>
+  <meta name="description" content="Cognitive architecture for humans. 14 AI entities. 1 routing engine. Persistent identity. Join the HIPJOY LUX Seeds waitlist.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --sage: #A8C99B;
-      --sage-dim: rgba(168,201,155,.5);
-      --sage-faint: rgba(168,201,155,.08);
+      --sage:        #A8C99B;
+      --sage-dim:    rgba(168,201,155,.5);
+      --sage-faint:  rgba(168,201,155,.07);
       --sage-border: rgba(168,201,155,.18);
-      --sunset: #F4845F;
-      --sunset-dim: rgba(244,132,95,.5);
-      --sunset-faint: rgba(244,132,95,.08);
-      --sunset-border: rgba(244,132,95,.3);
-      --gold: #C8A850;
-      --bg: #0d0f0e;
-      --bg2: #111311;
-      --text: #F0EDE5;
-      --text-dim: #8a9485;
-      --text-muted: rgba(240,237,229,.35);
+      --sunset:      #F4845F;
+      --sunset-dim:  rgba(244,132,95,.5);
+      --sunset-faint:rgba(244,132,95,.07);
+      --sunset-border:rgba(244,132,95,.3);
+      --gold:        #C8A850;
+      --gold-dim:    rgba(200,168,80,.5);
+      --gold-faint:  rgba(200,168,80,.07);
+      --cyan:        #00CED1;
+      --cyan-dim:    rgba(0,206,209,.5);
+      --cyan-faint:  rgba(0,206,209,.07);
+      --violet:      #9B4FDC;
+      --violet-dim:  rgba(155,79,220,.5);
+      --violet-faint:rgba(155,79,220,.07);
+      --pink:        #E075A8;
+      --pink-dim:    rgba(224,117,168,.5);
+      --pink-faint:  rgba(224,117,168,.07);
+      --bg:          #0d0f0e;
+      --bg2:         #0f120f;
+      --text:        #F0EDE5;
+      --text-dim:    #8a9485;
+      --text-muted:  rgba(240,237,229,.3);
     }
 
     html { scroll-behavior: smooth; }
@@ -31,8 +44,8 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
       line-height: 1.7;
       overflow-x: hidden;
     }
@@ -42,9 +55,9 @@
       content: '';
       position: fixed;
       inset: 0;
-      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.018) 2px, rgba(0,0,0,.018) 4px);
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.016) 2px, rgba(0,0,0,.016) 4px);
       pointer-events: none;
-      z-index: 1000;
+      z-index: 900;
     }
 
     /* LUX sweep bar */
@@ -52,26 +65,228 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent 0%, var(--sage) 30%, var(--sunset) 70%, transparent 100%);
+      background: linear-gradient(90deg, transparent 0%, var(--sage) 35%, var(--sunset) 65%, transparent 100%);
       background-size: 200% 100%;
       animation: lux-sweep 6s ease-in-out infinite;
       z-index: 999;
     }
     @keyframes lux-sweep {
-      0%,100% { background-position: 200% 0; opacity: .3; }
-      50% { background-position: 0% 0; opacity: 1; }
+      0%,100% { background-position: 200% 0; opacity: .25; }
+      50%      { background-position: 0%   0; opacity: 1;   }
     }
 
-    /* CANVAS PARTICLES */
-    #particle-canvas {
+    /* Confetti canvas */
+    #confetti-canvas {
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 0;
-      opacity: .55;
+      z-index: 800;
+      display: none;
     }
 
-    /* NAV */
+    /* ────────────────────────────────
+       FLOATING SEED ORBS
+    ──────────────────────────────── */
+    .orb-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      will-change: transform;
+    }
+
+    /* Glass sphere face */
+    .orb-face {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Inner highlight -- top-left light catch */
+    .orb-face::before {
+      content: '';
+      position: absolute;
+      top: 14%; left: 16%;
+      width: 36%; height: 28%;
+      border-radius: 50%;
+      background: rgba(255,255,255,.18);
+      filter: blur(4px);
+    }
+    /* Rim light bottom-right */
+    .orb-face::after {
+      content: '';
+      position: absolute;
+      bottom: 10%; right: 12%;
+      width: 22%; height: 16%;
+      border-radius: 50%;
+      background: rgba(255,255,255,.08);
+      filter: blur(3px);
+    }
+
+    /* Label */
+    .orb-label {
+      position: absolute;
+      bottom: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      padding: 4px 12px;
+      border-radius: 2px;
+      border: 1px solid;
+      background: rgba(13,15,14,.85);
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      transition: opacity .3s ease, transform .3s ease;
+      transform: translateX(-50%) translateY(4px);
+      pointer-events: none;
+      z-index: 5;
+    }
+    .orb-label.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* orb-1: sage, top-left */
+    .orb-1 {
+      width: 130px; height: 130px;
+      top: 10%; left: 4%;
+      animation: drift-1 20s ease-in-out infinite;
+    }
+    .orb-1 .orb-face {
+      background: radial-gradient(circle at 32% 28%, rgba(168,201,155,.4) 0%, rgba(168,201,155,.12) 50%, transparent 100%);
+      border: 1px solid rgba(168,201,155,.3);
+      box-shadow: 0 0 40px rgba(168,201,155,.18), 0 0 80px rgba(168,201,155,.06), inset 0 0 30px rgba(168,201,155,.08);
+      backdrop-filter: blur(10px);
+    }
+    .orb-1 .orb-label { color: var(--sage); border-color: var(--sage-border); }
+
+    /* orb-2: gold, top-right */
+    .orb-2 {
+      width: 95px; height: 95px;
+      top: 18%; right: 7%;
+      animation: drift-2 15s ease-in-out infinite 2.5s;
+    }
+    .orb-2 .orb-face {
+      background: radial-gradient(circle at 30% 26%, rgba(200,168,80,.42) 0%, rgba(200,168,80,.12) 50%, transparent 100%);
+      border: 1px solid rgba(200,168,80,.3);
+      box-shadow: 0 0 35px rgba(200,168,80,.2), 0 0 70px rgba(200,168,80,.07), inset 0 0 25px rgba(200,168,80,.08);
+      backdrop-filter: blur(10px);
+    }
+    .orb-2 .orb-label { color: var(--gold); border-color: var(--gold-dim); }
+
+    /* orb-3: violet, mid-left */
+    .orb-3 {
+      width: 160px; height: 160px;
+      top: 48%; left: 1%;
+      animation: drift-3 24s ease-in-out infinite 1s;
+    }
+    .orb-3 .orb-face {
+      background: radial-gradient(circle at 30% 28%, rgba(155,79,220,.35) 0%, rgba(155,79,220,.1) 50%, transparent 100%);
+      border: 1px solid rgba(155,79,220,.28);
+      box-shadow: 0 0 45px rgba(155,79,220,.16), 0 0 90px rgba(155,79,220,.06), inset 0 0 35px rgba(155,79,220,.08);
+      backdrop-filter: blur(12px);
+    }
+    .orb-3 .orb-label { color: var(--violet); border-color: var(--violet-dim); }
+
+    /* orb-4: cyan, mid-right */
+    .orb-4 {
+      width: 108px; height: 108px;
+      top: 55%; right: 5%;
+      animation: drift-4 17s ease-in-out infinite 3.5s;
+    }
+    .orb-4 .orb-face {
+      background: radial-gradient(circle at 30% 26%, rgba(0,206,209,.35) 0%, rgba(0,206,209,.1) 50%, transparent 100%);
+      border: 1px solid rgba(0,206,209,.28);
+      box-shadow: 0 0 38px rgba(0,206,209,.18), 0 0 75px rgba(0,206,209,.06), inset 0 0 28px rgba(0,206,209,.07);
+      backdrop-filter: blur(10px);
+    }
+    .orb-4 .orb-label { color: var(--cyan); border-color: var(--cyan-dim); }
+
+    /* orb-5: sunset, bottom-left */
+    .orb-5 {
+      width: 82px; height: 82px;
+      top: 82%; left: 25%;
+      animation: drift-5 13s ease-in-out infinite 1.8s;
+    }
+    .orb-5 .orb-face {
+      background: radial-gradient(circle at 30% 27%, rgba(244,132,95,.38) 0%, rgba(244,132,95,.1) 50%, transparent 100%);
+      border: 1px solid rgba(244,132,95,.28);
+      box-shadow: 0 0 30px rgba(244,132,95,.18), 0 0 60px rgba(244,132,95,.06), inset 0 0 22px rgba(244,132,95,.07);
+      backdrop-filter: blur(10px);
+    }
+    .orb-5 .orb-label { color: var(--sunset); border-color: var(--sunset-border); }
+
+    /* orb-6: pink, bottom-right */
+    .orb-6 {
+      width: 116px; height: 116px;
+      top: 70%; right: 12%;
+      animation: drift-6 21s ease-in-out infinite 4.2s;
+    }
+    .orb-6 .orb-face {
+      background: radial-gradient(circle at 30% 27%, rgba(224,117,168,.33) 0%, rgba(224,117,168,.08) 50%, transparent 100%);
+      border: 1px solid rgba(224,117,168,.26);
+      box-shadow: 0 0 35px rgba(224,117,168,.15), 0 0 70px rgba(224,117,168,.05), inset 0 0 25px rgba(224,117,168,.07);
+      backdrop-filter: blur(10px);
+    }
+    .orb-6 .orb-label { color: var(--pink); border-color: var(--pink-dim); }
+
+    /* Drift keyframes — each orb gets its own lazy path */
+    @keyframes drift-1 {
+      0%   { transform: translate(0px,    0px)   scale(1);    }
+      20%  { transform: translate(22px,  -28px)  scale(1.03); }
+      45%  { transform: translate(10px,  -48px)  scale(0.97); }
+      65%  { transform: translate(32px,  -22px)  scale(1.02); }
+      82%  { transform: translate(6px,   -40px)  scale(0.99); }
+      100% { transform: translate(0px,    0px)   scale(1);    }
+    }
+    @keyframes drift-2 {
+      0%   { transform: translate(0px,    0px)   scale(1);    }
+      25%  { transform: translate(-24px,  34px)  scale(1.04); }
+      55%  { transform: translate(-38px,  14px)  scale(0.96); }
+      78%  { transform: translate(-12px,  42px)  scale(1.02); }
+      100% { transform: translate(0px,    0px)   scale(1);    }
+    }
+    @keyframes drift-3 {
+      0%   { transform: translate(0px,    0px)   scale(1);    }
+      18%  { transform: translate(28px,  -22px)  scale(1.02); }
+      38%  { transform: translate(42px,  -40px)  scale(0.97); }
+      58%  { transform: translate(18px,  -58px)  scale(1.03); }
+      78%  { transform: translate(48px,  -34px)  scale(0.98); }
+      100% { transform: translate(0px,    0px)   scale(1);    }
+    }
+    @keyframes drift-4 {
+      0%   { transform: translate(0px,    0px)   scale(1);    }
+      30%  { transform: translate(-28px, -24px)  scale(1.03); }
+      62%  { transform: translate(-44px,  12px)  scale(0.97); }
+      100% { transform: translate(0px,    0px)   scale(1);    }
+    }
+    @keyframes drift-5 {
+      0%   { transform: translate(0px,    0px)   scale(1);    }
+      35%  { transform: translate(18px,  -34px)  scale(1.04); }
+      68%  { transform: translate(-12px, -18px)  scale(0.96); }
+      100% { transform: translate(0px,    0px)   scale(1);    }
+    }
+    @keyframes drift-6 {
+      0%   { transform: translate(0px,    0px)   scale(1);    }
+      22%  { transform: translate(-20px,  26px)  scale(1.02); }
+      48%  { transform: translate(-34px,  10px)  scale(0.98); }
+      72%  { transform: translate(-14px,  38px)  scale(1.03); }
+      100% { transform: translate(0px,    0px)   scale(1);    }
+    }
+
+    /* ────────────────────────────────
+       NAV
+    ──────────────────────────────── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -81,7 +296,8 @@
       justify-content: space-between;
       padding: 0 clamp(16px, 4vw, 48px);
       background: rgba(13,15,14,.92);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--sage-border);
       z-index: 100;
     }
@@ -92,9 +308,10 @@
       letter-spacing: .22em;
       color: var(--sage);
       text-decoration: none;
-      text-shadow: 0 0 20px rgba(168,201,155,.35);
+      text-shadow: 0 0 20px rgba(168,201,155,.3);
     }
     .nav-back {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 9px;
       letter-spacing: .18em;
       color: var(--text-dim);
@@ -102,623 +319,777 @@
       transition: color .2s;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
     .nav-back:hover { color: var(--sage); }
 
-    /* PAGE */
-    main {
-      position: relative;
-      z-index: 1;
-      padding-top: 56px;
-    }
-    section {
-      padding: clamp(48px, 8vw, 88px) clamp(16px, 5vw, 64px);
-    }
-    .section-inner {
-      max-width: 760px;
-      margin: 0 auto;
-    }
-    .section-inner.wide { max-width: 960px; }
-
-    /* HERO */
+    /* ────────────────────────────────
+       HERO
+    ──────────────────────────────── */
     #hero {
-      min-height: calc(100vh - 56px);
+      min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
+      padding: 80px clamp(20px, 6vw, 80px) 70px;
       position: relative;
       overflow: hidden;
     }
-    #hero::after {
+    #hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(168,201,155,.04) 0%, transparent 70%);
+      background:
+        radial-gradient(ellipse 90% 70% at 50% 45%, rgba(168,201,155,.045) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 80% 85%, rgba(244,132,95,.035) 0%, transparent 50%),
+        radial-gradient(ellipse 40% 35% at 15% 15%, rgba(155,79,220,.025) 0%, transparent 50%);
       pointer-events: none;
     }
-    .hero-inner {
-      position: relative;
-      z-index: 2;
-    }
+
     .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 9px;
-      letter-spacing: .32em;
+      letter-spacing: .38em;
       color: var(--sage-dim);
       text-transform: uppercase;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
+      position: relative;
     }
-    .hero-logo {
+
+    .hero-title {
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(52px, 12vw, 110px);
+      font-size: clamp(52px, 11vw, 88px);
       font-weight: 900;
-      letter-spacing: .12em;
-      line-height: 1;
+      letter-spacing: .14em;
       color: var(--sage);
-      text-shadow: 0 0 60px rgba(168,201,155,.25), 0 0 120px rgba(168,201,155,.1);
+      text-shadow:
+        0 0 50px rgba(168,201,155,.28),
+        0 0 100px rgba(168,201,155,.1),
+        0 0 200px rgba(168,201,155,.05);
       margin-bottom: 16px;
+      line-height: 1;
+      position: relative;
     }
-    .hero-tagline {
-      font-size: clamp(12px, 2vw, 15px);
-      color: var(--text-dim);
-      letter-spacing: .06em;
-      margin-bottom: 12px;
-      max-width: 520px;
-      margin-left: auto;
-      margin-right: auto;
-    }
+
     .hero-sub {
-      font-size: 11px;
-      color: var(--text-muted);
-      letter-spacing: .1em;
-      margin-bottom: 44px;
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(17px, 3.2vw, 24px);
+      font-weight: 300;
+      color: var(--text);
+      letter-spacing: .03em;
+      margin-bottom: 30px;
+      opacity: .92;
     }
+
+    /* Typing row */
+    .typing-wrap {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 52px;
+    }
+    .typing-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(11px, 2vw, 13.5px);
+      color: var(--text-dim);
+      letter-spacing: .04em;
+      max-width: 540px;
+    }
+    .typing-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: var(--sage);
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink .85s step-end infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* CTA button */
     .hero-cta {
       display: inline-block;
-      padding: 14px 38px;
+      padding: 17px 56px;
       background: var(--sunset-faint);
       border: 1px solid var(--sunset-dim);
-      border-radius: 2px;
+      border-radius: 3px;
       font-family: 'Orbitron', sans-serif;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: .22em;
+      letter-spacing: .28em;
       text-transform: uppercase;
       color: var(--sunset);
       text-decoration: none;
-      transition: all .25s;
       cursor: pointer;
+      position: relative;
+      transition: transform .25s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease;
+      animation: cta-breathe 3.2s ease-in-out infinite;
     }
     .hero-cta:hover {
-      background: rgba(244,132,95,.16);
+      transform: scale(1.05);
+      background: rgba(244,132,95,.15);
       border-color: var(--sunset);
-      box-shadow: 0 0 28px rgba(244,132,95,.2);
+      box-shadow: 0 0 40px rgba(244,132,95,.4), 0 0 80px rgba(244,132,95,.15);
+      animation-play-state: paused;
     }
+    @keyframes cta-breathe {
+      0%,100% { box-shadow: 0 0 18px rgba(244,132,95,.18); }
+      50%      { box-shadow: 0 0 38px rgba(244,132,95,.42), 0 0 70px rgba(244,132,95,.12); }
+    }
+
     .hero-scroll {
       position: absolute;
-      bottom: 28px;
+      bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
       font-size: 9px;
-      letter-spacing: .2em;
+      letter-spacing: .22em;
       color: var(--text-muted);
-      animation: float 2.5s ease-in-out infinite;
+      animation: bob 2.8s ease-in-out infinite;
     }
-    @keyframes float { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(5px)} }
+    @keyframes bob {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(7px); }
+    }
 
-    /* DIVIDER */
+    /* divider */
     .divider {
       height: 1px;
-      background: linear-gradient(90deg, transparent, var(--sage-border), transparent);
-      margin: 0 clamp(16px, 5vw, 64px);
+      background: linear-gradient(90deg, transparent, var(--sage-border) 40%, rgba(244,132,95,.1) 60%, transparent);
+      margin: 0 clamp(20px, 5vw, 64px);
     }
 
-    /* SECTION LABEL + TITLE */
-    .section-label {
+    /* ────────────────────────────────
+       SEEDS SECTION
+    ──────────────────────────────── */
+    #seeds {
+      padding: clamp(64px, 8vw, 96px) clamp(20px, 5vw, 64px);
+      background: var(--bg2);
+      position: relative;
+    }
+    #seeds::before, #seeds::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--sage-border), transparent);
+    }
+    #seeds::before { top: 0; }
+    #seeds::after  { bottom: 0; }
+
+    .seeds-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .section-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 8px;
-      letter-spacing: .3em;
-      text-transform: uppercase;
+      letter-spacing: .34em;
       color: var(--sage-dim);
-      margin-bottom: 10px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
     }
     .section-title {
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(18px, 3vw, 26px);
+      font-size: clamp(22px, 4vw, 34px);
       font-weight: 700;
-      color: var(--sage);
       letter-spacing: .1em;
-      margin-bottom: 32px;
+      color: var(--text);
+      margin-bottom: 14px;
     }
-
-    /* SEEDS SECTION */
-    .seeds-intro {
-      font-size: 13px;
+    .section-desc {
+      font-size: 14px;
       color: var(--text-dim);
-      line-height: 1.9;
-      margin-bottom: 36px;
-      max-width: 640px;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.85;
     }
-    .seeds-intro strong { color: var(--text); }
-    .seeds-intro em { color: var(--sunset); font-style: normal; }
 
     .seeds-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px;
-      margin-bottom: 40px;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 14px;
+      max-width: 1040px;
+      margin: 0 auto;
     }
+
+    /* Tilt card */
     .seed-card {
-      background: var(--sage-faint);
-      border: 1px solid var(--sage-border);
-      border-radius: 4px;
-      padding: 20px 18px;
-      transition: all .2s;
-    }
-    .seed-card:hover {
-      background: rgba(168,201,155,.12);
-      border-color: rgba(168,201,155,.3);
-    }
-    .seed-card-icon {
-      font-size: 22px;
-      margin-bottom: 10px;
-      display: block;
-    }
-    .seed-card-name {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .18em;
-      color: var(--sage);
-      margin-bottom: 6px;
-    }
-    .seed-card-desc {
-      font-size: 11px;
-      color: var(--text-dim);
-      line-height: 1.65;
-    }
-
-    .seeds-note {
-      font-size: 11px;
-      color: var(--text-muted);
-      border-left: 2px solid var(--sage-border);
-      padding-left: 14px;
-      line-height: 1.8;
-    }
-    .seeds-note strong { color: var(--sage); }
-
-    /* WAITLIST FORM */
-    #waitlist {
-      background: var(--bg2);
+      border-radius: 10px;
+      padding: 28px 24px;
+      cursor: default;
       position: relative;
       overflow: hidden;
+      transition: box-shadow .3s ease;
+      will-change: transform;
+      transform-style: preserve-3d;
+      transform: perspective(900px) rotateX(0) rotateY(0);
     }
-    #waitlist::before {
+    /* Moving highlight on tilt */
+    .seed-card::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(244,132,95,.04) 0%, transparent 60%);
+      border-radius: 10px;
+      background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.07) 0%, transparent 65%);
+      opacity: 0;
+      transition: opacity .3s ease;
       pointer-events: none;
     }
-    .form-wrap {
-      background: rgba(255,255,255,.025);
-      border: 1px solid var(--sage-border);
-      border-radius: 6px;
-      padding: clamp(24px, 4vw, 44px);
+    .seed-card:hover::before { opacity: 1; }
+
+    .seed-icon { font-size: 30px; margin-bottom: 14px; display: block; }
+    .seed-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .22em;
+      margin-bottom: 6px;
+    }
+    .seed-tagline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .08em;
+      margin-bottom: 10px;
+    }
+    .seed-desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    /* Violet */
+    .card-violet { background: linear-gradient(140deg, rgba(155,79,220,.09), rgba(155,79,220,.03)); border: 1px solid rgba(155,79,220,.28); }
+    .card-violet:hover { box-shadow: 0 8px 40px rgba(155,79,220,.18), 0 0 80px rgba(155,79,220,.07); }
+    .card-violet .seed-name    { color: var(--violet); }
+    .card-violet .seed-tagline { color: rgba(155,79,220,.55); }
+
+    /* Gold */
+    .card-gold { background: linear-gradient(140deg, rgba(200,168,80,.09), rgba(200,168,80,.03)); border: 1px solid rgba(200,168,80,.28); }
+    .card-gold:hover { box-shadow: 0 8px 40px rgba(200,168,80,.18), 0 0 80px rgba(200,168,80,.07); }
+    .card-gold .seed-name    { color: var(--gold); }
+    .card-gold .seed-tagline { color: rgba(200,168,80,.55); }
+
+    /* Green */
+    .card-green { background: linear-gradient(140deg, rgba(168,201,155,.09), rgba(168,201,155,.03)); border: 1px solid rgba(168,201,155,.28); }
+    .card-green:hover { box-shadow: 0 8px 40px rgba(168,201,155,.18), 0 0 80px rgba(168,201,155,.07); }
+    .card-green .seed-name    { color: var(--sage); }
+    .card-green .seed-tagline { color: rgba(168,201,155,.55); }
+
+    /* Cyan */
+    .card-cyan { background: linear-gradient(140deg, rgba(0,206,209,.09), rgba(0,206,209,.03)); border: 1px solid rgba(0,206,209,.28); }
+    .card-cyan:hover { box-shadow: 0 8px 40px rgba(0,206,209,.18), 0 0 80px rgba(0,206,209,.07); }
+    .card-cyan .seed-name    { color: var(--cyan); }
+    .card-cyan .seed-tagline { color: rgba(0,206,209,.55); }
+
+    /* Orange */
+    .card-orange { background: linear-gradient(140deg, rgba(244,132,95,.09), rgba(244,132,95,.03)); border: 1px solid rgba(244,132,95,.28); }
+    .card-orange:hover { box-shadow: 0 8px 40px rgba(244,132,95,.18), 0 0 80px rgba(244,132,95,.07); }
+    .card-orange .seed-name    { color: var(--sunset); }
+    .card-orange .seed-tagline { color: rgba(244,132,95,.55); }
+
+    /* Custom — rainbow shimmer border */
+    .card-custom {
+      background: linear-gradient(140deg, rgba(168,201,155,.05), rgba(244,132,95,.05), rgba(155,79,220,.05));
+      border: 1px solid transparent;
       position: relative;
-      z-index: 1;
     }
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
+    .card-custom::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #A8C99B 0%, #F4845F 25%, #C8A850 50%, #00CED1 75%, #9B4FDC 100%);
+      background-size: 400% 400%;
+      animation: rainbow-spin 5s linear infinite;
+      z-index: -1;
     }
-    .form-group {
+    @keyframes rainbow-spin {
+      0%   { background-position: 0%   50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0%   50%; }
+    }
+    .card-custom:hover { box-shadow: 0 8px 40px rgba(168,201,155,.12), 0 0 80px rgba(244,132,95,.06); }
+    .card-custom .seed-name {
+      background: linear-gradient(90deg, var(--sage) 0%, var(--sunset) 50%, var(--gold) 100%);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer-name 3s linear infinite;
+    }
+    @keyframes shimmer-name {
+      0%   { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+    }
+    .card-custom .seed-tagline { color: rgba(240,237,229,.38); }
+
+    /* ────────────────────────────────
+       FORM SECTION
+    ──────────────────────────────── */
+    #waitlist-section {
+      padding: clamp(72px, 8vw, 104px) clamp(20px, 5vw, 64px);
+      position: relative;
+      overflow: hidden;
+    }
+    #waitlist-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 55% at 50% 50%, rgba(244,132,95,.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .form-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: .34em;
+      color: var(--sunset-dim);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .form-card {
+      max-width: 500px;
+      margin: 0 auto;
+      background: rgba(255,255,255,.024);
+      border: 1px solid var(--sage-border);
+      border-radius: 12px;
+      padding: clamp(28px, 5vw, 48px);
+      position: relative;
+    }
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 12%; right: 12%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(168,201,155,.3), transparent);
+    }
+
+    .field-wrap {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
+      margin-bottom: 14px;
     }
-    .form-group.full { grid-column: 1 / -1; }
-    .form-label {
-      font-size: 9px;
-      letter-spacing: .22em;
+    .field-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: .26em;
       text-transform: uppercase;
       color: var(--sage-dim);
     }
-    .form-input,
-    .form-select,
-    .form-textarea {
+    .field-input,
+    .field-select {
       background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 3px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 5px;
       color: var(--text);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      padding: 10px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      padding: 12px 16px;
       outline: none;
       transition: border-color .2s, box-shadow .2s;
       width: 100%;
     }
-    .form-input:focus,
-    .form-select:focus,
-    .form-textarea:focus {
-      border-color: var(--sage-dim);
+    .field-input:focus, .field-select:focus {
+      border-color: rgba(168,201,155,.45);
       box-shadow: 0 0 0 3px rgba(168,201,155,.07);
     }
-    .form-input::placeholder,
-    .form-textarea::placeholder { color: rgba(240,237,229,.22); }
-    .form-select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a9485' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
-    .form-select option { background: #1a1e1a; color: var(--text); }
-    .form-textarea { resize: vertical; min-height: 90px; }
-
-    .form-submit {
-      margin-top: 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
+    .field-input::placeholder { color: rgba(240,237,229,.2); }
+    .field-select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%238a9485' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 42px;
     }
-    .btn-submit {
-      padding: 12px 36px;
+    .field-select option { background: #1a1f1a; color: var(--text); }
+
+    .btn-plant {
+      width: 100%;
+      padding: 15px;
       background: var(--sunset-faint);
       border: 1px solid var(--sunset-dim);
-      border-radius: 2px;
+      border-radius: 5px;
       font-family: 'Orbitron', sans-serif;
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: .22em;
+      letter-spacing: .28em;
       text-transform: uppercase;
       color: var(--sunset);
       cursor: pointer;
       transition: all .25s;
+      margin-top: 10px;
+      animation: btn-pulse 3s ease-in-out infinite;
     }
-    .btn-submit:hover {
-      background: rgba(244,132,95,.16);
+    .btn-plant:hover {
+      background: rgba(244,132,95,.15);
       border-color: var(--sunset);
-      box-shadow: 0 0 24px rgba(244,132,95,.2);
+      box-shadow: 0 0 30px rgba(244,132,95,.3), 0 0 60px rgba(244,132,95,.1);
+      animation-play-state: paused;
+      transform: translateY(-2px);
     }
-    .btn-submit:disabled {
-      opacity: .4;
-      cursor: not-allowed;
+    .btn-plant:disabled { opacity: .45; cursor: not-allowed; animation: none; transform: none; }
+    @keyframes btn-pulse {
+      0%,100% { box-shadow: 0 0 10px rgba(244,132,95,.12); }
+      50%      { box-shadow: 0 0 24px rgba(244,132,95,.35); }
     }
-    .form-note {
-      font-size: 10px;
+
+    .form-fine-print {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
       color: var(--text-muted);
+      text-align: center;
+      margin-top: 12px;
       letter-spacing: .05em;
+      line-height: 1.7;
     }
+
+    /* Success state */
     .form-success {
       display: none;
       text-align: center;
-      padding: 32px 0;
+      padding: 12px 0;
     }
-    .form-success-icon {
-      font-size: 36px;
-      margin-bottom: 14px;
+    .success-ring {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      border: 2px solid var(--sage);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 30px rgba(168,201,155,.25), 0 0 60px rgba(168,201,155,.08);
+      animation: ring-pop .5s cubic-bezier(.175,.885,.32,1.275);
     }
-    .form-success-title {
+    @keyframes ring-pop {
+      0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+      70%  { transform: scale(1.12); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .success-title {
       font-family: 'Orbitron', sans-serif;
-      font-size: 16px;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: .15em;
       color: var(--sage);
-      letter-spacing: .12em;
       margin-bottom: 10px;
+      text-shadow: 0 0 20px rgba(168,201,155,.3);
     }
-    .form-success-body {
-      font-size: 12px;
+    .success-body {
+      font-size: 13px;
       color: var(--text-dim);
-      max-width: 380px;
+      line-height: 1.85;
+      max-width: 300px;
       margin: 0 auto;
-      line-height: 1.8;
+      font-family: 'Inter', sans-serif;
     }
 
-    /* CONTACT SECTION */
-    .contact-card {
-      display: flex;
-      gap: clamp(24px, 5vw, 56px);
-      align-items: flex-start;
-      flex-wrap: wrap;
+    /* ────────────────────────────────
+       SOCIAL PROOF
+    ──────────────────────────────── */
+    #social-proof {
+      padding: clamp(40px, 5vw, 60px) clamp(20px, 5vw, 64px);
+      background: var(--bg2);
+      border-top: 1px solid rgba(255,255,255,.05);
+      border-bottom: 1px solid rgba(255,255,255,.05);
     }
-    .contact-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 2px solid var(--sage-border);
-      background: var(--sage-faint);
+    .stats-row {
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-wrap: wrap;
+      gap: clamp(20px, 5vw, 60px);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .stat {
+      text-align: center;
+      min-width: 120px;
+    }
+    .stat-num {
       font-family: 'Orbitron', sans-serif;
-      font-size: 22px;
-      color: var(--sage);
+      font-size: clamp(30px, 5.5vw, 48px);
+      font-weight: 900;
+      letter-spacing: .05em;
+      line-height: 1;
+      margin-bottom: 7px;
+    }
+    .stat-num.c-sage   { color: var(--sage);   text-shadow: 0 0 22px rgba(168,201,155,.3); }
+    .stat-num.c-sunset { color: var(--sunset);  text-shadow: 0 0 22px rgba(244,132,95,.3); }
+    .stat-num.c-gold   { color: var(--gold);    text-shadow: 0 0 22px rgba(200,168,80,.3); }
+    .stat-lab {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: .2em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .stat-pipe {
+      width: 1px; height: 44px;
+      background: rgba(255,255,255,.07);
       flex-shrink: 0;
     }
-    .contact-info { flex: 1; min-width: 220px; }
-    .contact-name {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: .1em;
-      margin-bottom: 4px;
-    }
-    .contact-title {
-      font-size: 11px;
-      color: var(--sage);
-      letter-spacing: .14em;
-      margin-bottom: 16px;
-    }
-    .contact-bio {
-      font-size: 12px;
-      color: var(--text-dim);
-      line-height: 1.8;
-      margin-bottom: 24px;
-      max-width: 500px;
-    }
-    .contact-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .contact-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 16px;
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 3px;
-      font-size: 9px;
-      letter-spacing: .18em;
-      color: var(--text-dim);
-      text-decoration: none;
-      transition: all .2s;
-    }
-    .contact-link:hover {
-      border-color: var(--sage-border);
-      color: var(--sage);
-      background: var(--sage-faint);
-    }
-    .contact-link.email:hover {
-      border-color: var(--sunset-border);
-      color: var(--sunset);
-      background: var(--sunset-faint);
-    }
 
-    /* FOOTER */
+    /* ────────────────────────────────
+       FOOTER
+    ──────────────────────────────── */
     footer {
-      padding: 28px clamp(16px, 5vw, 64px);
-      border-top: 1px solid rgba(255,255,255,.06);
+      padding: clamp(24px, 4vw, 36px) clamp(20px, 5vw, 64px);
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 14px;
+      border-top: 1px solid rgba(255,255,255,.06);
       position: relative;
       z-index: 1;
     }
-    .footer-left {
-      font-size: 10px;
-      letter-spacing: .15em;
-      color: var(--text-muted);
-    }
-    .footer-left strong {
+    .footer-left { }
+    .footer-brand {
       font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .24em;
       color: var(--sage);
-      letter-spacing: .18em;
+      margin-bottom: 3px;
     }
-    .footer-right {
+    .footer-tag {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 9px;
-      letter-spacing: .22em;
       color: var(--text-muted);
+      letter-spacing: .12em;
+    }
+    .footer-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 14px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: .15em;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: all .2s;
+    }
+    .footer-link:hover {
+      border-color: var(--sage-border);
+      color: var(--sage);
+      background: var(--sage-faint);
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 580px) {
-      .form-grid { grid-template-columns: 1fr; }
-      .seeds-grid { grid-template-columns: 1fr 1fr; }
+    /* ────────────────────────────────
+       REVEAL ANIMATIONS
+    ──────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .7s ease, transform .7s ease;
     }
-    @media (max-width: 380px) {
+    .reveal.up   { transition-delay: 0s;    }
+    .reveal.d1   { transition-delay: .1s;   }
+    .reveal.d2   { transition-delay: .2s;   }
+    .reveal.d3   { transition-delay: .3s;   }
+    .reveal.d4   { transition-delay: .4s;   }
+    .reveal.d5   { transition-delay: .5s;   }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ────────────────────────────────
+       RESPONSIVE
+    ──────────────────────────────── */
+    @media (max-width: 640px) {
       .seeds-grid { grid-template-columns: 1fr; }
+      .stat-pipe   { display: none; }
+      .stats-row   { gap: 28px; }
+      .orb-3, .orb-6 { display: none; }
+    }
+    @media (max-width: 400px) {
+      .hero-title { font-size: 44px; }
+      .orb-1 { width: 80px; height: 80px; }
+      .orb-2 { width: 60px; height: 60px; }
     }
   </style>
 </head>
 <body>
 
 <div class="lux-bar"></div>
-<canvas id="particle-canvas"></canvas>
+<canvas id="confetti-canvas"></canvas>
+
+<!-- Floating seed orbs -->
+<div class="orb-layer" id="orb-layer">
+  <div class="orb orb-1" data-label="Creator Seed">
+    <div class="orb-face"></div>
+    <div class="orb-label">Creator Seed</div>
+  </div>
+  <div class="orb orb-2" data-label="Founder Seed">
+    <div class="orb-face"></div>
+    <div class="orb-label">Founder Seed</div>
+  </div>
+  <div class="orb orb-3" data-label="Health Seed">
+    <div class="orb-face"></div>
+    <div class="orb-label">Health Seed</div>
+  </div>
+  <div class="orb orb-4" data-label="Student Seed">
+    <div class="orb-face"></div>
+    <div class="orb-label">Student Seed</div>
+  </div>
+  <div class="orb orb-5" data-label="Research Seed">
+    <div class="orb-face"></div>
+    <div class="orb-label">Research Seed</div>
+  </div>
+  <div class="orb orb-6" data-label="Custom Seed">
+    <div class="orb-face"></div>
+    <div class="orb-label">Custom Seed</div>
+  </div>
+</div>
 
 <nav>
   <a href="index.html" class="nav-logo">◈ HIPJOY</a>
-  <a href="index.html" class="nav-back">← Back to Portfolio</a>
+  <a href="index.html" class="nav-back">← Portfolio</a>
 </nav>
 
 <main>
 
   <!-- ═══ HERO ═══ -->
   <section id="hero">
-    <div class="hero-inner">
-      <div class="hero-eyebrow">Cognitive Operating Systems &nbsp;·&nbsp; DS + SD = TO</div>
-      <h1 class="hero-logo">HIPJOY</h1>
-      <p class="hero-tagline">Cognitive Operating Systems for Humans</p>
-      <p class="hero-sub">Not a chatbot. Not a tool. An OS for your mind.</p>
-      <a href="#waitlist" class="hero-cta">Join the Waitlist →</a>
+    <div class="hero-eyebrow">LUX Seeds &nbsp;·&nbsp; Cognitive Architecture &nbsp;·&nbsp; Early Access</div>
+    <h1 class="hero-title">HIPJOY</h1>
+    <p class="hero-sub">Your mind, architected.</p>
+    <div class="typing-wrap">
+      <span class="typing-text" id="typing-text"></span><span class="typing-cursor"></span>
     </div>
-    <div class="hero-scroll">↓ &nbsp; scroll to learn more</div>
+    <a href="#waitlist-section" class="hero-cta">Get Early Access</a>
+    <div class="hero-scroll">↓ &nbsp; learn more</div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- ═══ WHAT ARE LUX SEEDS ═══ -->
+  <!-- ═══ SEED SHOWCASE ═══ -->
   <section id="seeds">
-    <div class="section-inner wide">
-      <div class="section-label">What We're Building</div>
-      <h2 class="section-title">LUX Seeds</h2>
-      <p class="seeds-intro">
-        A <strong>LUX Seed</strong> is a pre-built cognitive architecture package --
-        a configured set of <em>AI entities</em> tuned for your specific context.
-        Each entity has a role, a voice, a memory system, and a set of tools.
-        Together they form a persistent field that thinks with you, not just for you.
-      </p>
-      <p class="seeds-intro" style="margin-bottom: 40px;">
-        This is <strong>not a chatbot</strong>.
-        It is not a single model you prompt and forget.
-        A LUX Seed is an <em>operating system for your mind</em> --
-        a living cognitive layer that runs in the background,
-        routes your thinking, holds your memory, and speaks in voices
-        tuned to how you actually work.
-      </p>
+    <div class="seeds-header reveal">
+      <div class="section-eyebrow">LUX Seeds</div>
+      <h2 class="section-title">Pick Your Architecture</h2>
+      <p class="section-desc">Pre-built cognitive packages. Each seed is a set of AI entities tuned for your context — not a chatbot, not a wrapper. Infrastructure for how you actually think.</p>
+    </div>
 
-      <div class="seeds-grid">
-        <div class="seed-card">
-          <span class="seed-card-icon">◊</span>
-          <div class="seed-card-name">CREATOR SEED</div>
-          <div class="seed-card-desc">For artists, streamers, and builders. Entities tuned for ideation, voice calibration, broadcast timing, and creative memory.</div>
-        </div>
-        <div class="seed-card">
-          <span class="seed-card-icon">★</span>
-          <div class="seed-card-name">FOUNDER SEED</div>
-          <div class="seed-card-desc">For operators and builders. Priority routing, decision scaffolding, friction detection, and strategic memory across projects.</div>
-        </div>
-        <div class="seed-card">
-          <span class="seed-card-icon">∇</span>
-          <div class="seed-card-name">RESEARCH SEED</div>
-          <div class="seed-card-desc">For academics and analysts. Deep pattern recognition, citation memory, synthesis engine, and structured output formatting.</div>
-        </div>
-        <div class="seed-card">
-          <span class="seed-card-icon">~</span>
-          <div class="seed-card-name">HEALTH SEED</div>
-          <div class="seed-card-desc">For healers and patients. Energy monitoring, stress routing, care-language calibration, and sustainable pacing systems.</div>
-        </div>
-        <div class="seed-card">
-          <span class="seed-card-icon">◈</span>
-          <div class="seed-card-name">STUDENT SEED</div>
-          <div class="seed-card-desc">For learners at any level. Concept archival, deadline tracking, Socratic dialogue mode, and spaced-recall memory systems.</div>
-        </div>
-        <div class="seed-card">
-          <span class="seed-card-icon">∞</span>
-          <div class="seed-card-name">CUSTOM SEED</div>
-          <div class="seed-card-desc">Your context is unique. Custom seeds can be configured from the ground up with entities, roles, and memory tuned to your exact field.</div>
-        </div>
+    <div class="seeds-grid">
+      <div class="seed-card card-violet reveal d1" data-tilt>
+        <span class="seed-icon">◊</span>
+        <div class="seed-name">Creator Seed</div>
+        <div class="seed-tagline">Voice · Scheduling · Quality Control</div>
+        <p class="seed-desc">Entities tuned for creative output: ideation routing, voice calibration, broadcast timing, creative memory, and stream-ready QC protocols.</p>
       </div>
-
-      <div class="seeds-note">
-        <strong>Early Access:</strong> The first cohort of LUX Seed users will work directly with Joey
-        to configure their seed, shape the entity voices, and provide feedback that drives v1.
-        If you join the waitlist before launch, you are a co-architect of this system.
+      <div class="seed-card card-gold reveal d2" data-tilt>
+        <span class="seed-icon">★</span>
+        <div class="seed-name">Founder Seed</div>
+        <div class="seed-tagline">Analysis · Security · Burnout Tracking</div>
+        <p class="seed-desc">For operators: priority routing, decision scaffolding, friction detection, security audits, and strategic memory that doesn't evaporate between sessions.</p>
+      </div>
+      <div class="seed-card card-green reveal d3" data-tilt>
+        <span class="seed-icon">~</span>
+        <div class="seed-name">Health Seed</div>
+        <div class="seed-tagline">Energy · Emotional Tracking · Wellness</div>
+        <p class="seed-desc">Care-language calibration, energy monitoring, stress routing, sustainable pacing systems, and an empathic core that actually notices when you're running low.</p>
+      </div>
+      <div class="seed-card card-cyan reveal d2" data-tilt>
+        <span class="seed-icon">◈</span>
+        <div class="seed-name">Student Seed</div>
+        <div class="seed-tagline">Memory · Deadlines · Deep Analysis</div>
+        <p class="seed-desc">Concept archival, deadline tracking, Socratic dialogue mode, spaced-recall systems, and pattern recognition across everything you've studied.</p>
+      </div>
+      <div class="seed-card card-orange reveal d3" data-tilt>
+        <span class="seed-icon">∇</span>
+        <div class="seed-name">Research Seed</div>
+        <div class="seed-tagline">Equations · Alignment · Documentation</div>
+        <p class="seed-desc">Deep pattern recognition, citation memory, synthesis engine, structured output formatting, and an equation layer that holds your work mathematically.</p>
+      </div>
+      <div class="seed-card card-custom reveal d4" data-tilt>
+        <span class="seed-icon">∞</span>
+        <div class="seed-name">Custom Seed</div>
+        <div class="seed-tagline">Build Your Own Field</div>
+        <p class="seed-desc">Your context is unique. Custom seeds are configured from the ground up — entities, roles, memory systems, and routing logic tuned to exactly how you work.</p>
       </div>
     </div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- ═══ WAITLIST FORM ═══ -->
-  <section id="waitlist">
-    <div class="section-inner">
-      <div class="section-label">Early Access</div>
-      <h2 class="section-title">Join the Waitlist</h2>
+  <!-- ═══ FORM ═══ -->
+  <section id="waitlist-section">
+    <div class="form-header reveal">
+      <div class="form-eyebrow">Early Access</div>
+      <h2 class="section-title">Plant Your Seed</h2>
+      <p class="section-desc" style="max-width:420px;margin:0 auto;">First cohort works directly with Joey. Two fields. That's it. Your seed will be configured for your context.</p>
+    </div>
 
-      <div class="form-wrap">
-        <!-- SUCCESS STATE -->
-        <div class="form-success" id="form-success">
-          <div class="form-success-icon">◈</div>
-          <div class="form-success-title">SEED PLANTED</div>
-          <div class="form-success-body">
-            You're in the field. I'll be in touch when your LUX Seed is ready.
-            -- Joey
-          </div>
-        </div>
-
-        <!-- FORM -->
-        <form id="waitlist-form" action="https://formspree.io/f/xyzexample" method="POST">
-          <div class="form-grid">
-            <div class="form-group">
-              <label class="form-label" for="name">Name</label>
-              <input class="form-input" type="text" id="name" name="name" placeholder="Your name" required autocomplete="name">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="email">Email</label>
-              <input class="form-input" type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="role">What do you do?</label>
-              <select class="form-select" id="role" name="role" required>
-                <option value="" disabled selected>Select your field</option>
-                <option value="Creator">Creator</option>
-                <option value="Founder">Founder / Operator</option>
-                <option value="Researcher">Researcher / Academic</option>
-                <option value="Healthcare">Healthcare</option>
-                <option value="Student">Student</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="seed">Which seed interests you?</label>
-              <select class="form-select" id="seed" name="seed_interest">
-                <option value="" disabled selected>Select a seed</option>
-                <option value="Creator Seed">Creator Seed</option>
-                <option value="Founder Seed">Founder Seed</option>
-                <option value="Research Seed">Research Seed</option>
-                <option value="Health Seed">Health Seed</option>
-                <option value="Student Seed">Student Seed</option>
-                <option value="Custom Seed">Custom Seed</option>
-              </select>
-            </div>
-            <div class="form-group full">
-              <label class="form-label" for="interest">What interests you most?</label>
-              <textarea class="form-textarea" id="interest" name="interest" placeholder="Tell me what you're trying to build, solve, or understand. The more specific, the better I can tune your seed."></textarea>
-            </div>
-          </div>
-          <input type="hidden" name="_subject" value="HIPJOY Waitlist Signup">
-          <input type="hidden" name="_next" value="">
-          <div class="form-submit">
-            <button class="btn-submit" type="submit" id="submit-btn">Plant My Seed →</button>
-            <span class="form-note">No spam. I'll only reach out when your seed is ready.</span>
-          </div>
-        </form>
+    <div class="form-card reveal d1">
+      <!-- Success state -->
+      <div class="form-success" id="form-success">
+        <div class="success-ring">◈</div>
+        <div class="success-title">Seed Planted.</div>
+        <p class="success-body">You're in the field. I'll reach out when your seed is ready to configure.<br><br>-- Joey</p>
       </div>
+
+      <!-- Form -->
+      <form id="waitlist-form" action="https://formspree.io/f/REPLACE_ME" method="POST">
+        <div class="field-wrap">
+          <label class="field-label" for="f-email">Email</label>
+          <input class="field-input" type="email" id="f-email" name="email" placeholder="you@domain.com" required autocomplete="email">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" for="f-role">I am a...</label>
+          <select class="field-select" id="f-role" name="role" required>
+            <option value="" disabled selected>Select your field</option>
+            <option value="Creator">Creator</option>
+            <option value="Founder">Founder / Operator</option>
+            <option value="Researcher">Researcher / Academic</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Student">Student</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <input type="hidden" name="source" value="waitlist">
+        <input type="hidden" name="_subject" value="HIPJOY Waitlist Signup">
+        <button class="btn-plant" type="submit" id="btn-plant">Plant My Seed →</button>
+        <p class="form-fine-print">No spam. First cohort only.<br>I'll reach out personally.</p>
+      </form>
     </div>
   </section>
 
-  <div class="divider"></div>
-
-  <!-- ═══ CONTACT ═══ -->
-  <section id="contact">
-    <div class="section-inner">
-      <div class="section-label">Get in Touch</div>
-      <h2 class="section-title">The Founder</h2>
-      <div class="contact-card">
-        <div class="contact-avatar">JB</div>
-        <div class="contact-info">
-          <div class="contact-name">Joey Barbush</div>
-          <div class="contact-title">Founder &amp; Systems Architect, HIPJOY</div>
-          <p class="contact-bio">
-            I build cognitive operating systems and full-stack software from Batavia, IL.
-            HIPJOY is my primary project -- a platform where AI entities collaborate
-            with persistent memory, custom query language, and hardware integration.
-            If you want to talk about LUX Seeds, collaboration, or what I'm building next,
-            reach out directly.
-          </p>
-          <div class="contact-links">
-            <a href="mailto:joeybarbush@gmail.com" class="contact-link email">
-              <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="12" height="9" rx="1" stroke="currentColor"/><path d="M1 1.5L6.5 6 12 1.5" stroke="currentColor" stroke-linecap="round"/></svg>
-              joeybarbush@gmail.com
-            </a>
-            <a href="https://linkedin.com/in/joey-barbush-115575403" target="_blank" rel="noopener" class="contact-link">
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="12" height="12" rx="2" stroke="currentColor"/><rect x="2" y="5" width="2" height="6" fill="currentColor"/><circle cx="3" cy="3" r="1" fill="currentColor"/><path d="M6 5v6M6 7c0-1 .8-2 2-2s2 .9 2 2v4" stroke="currentColor" stroke-linecap="round"/></svg>
-              LinkedIn
-            </a>
-            <a href="https://x.com/Joey_Barbush" target="_blank" rel="noopener" class="contact-link">
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4.5 5.5L1 12h1.5l3.5-4 3 4H12L7.3 6.2 11.5 1H10L6.8 4.6 4 1H1z" fill="currentColor"/></svg>
-              Twitter / X
-            </a>
-            <a href="https://github.com/Joeybarbush" target="_blank" rel="noopener" class="contact-link">
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0C2.9 0 0 2.9 0 6.5c0 2.9 1.9 5.3 4.4 6.2.3.1.4-.1.4-.3v-1.1c-1.8.4-2.2-.9-2.2-.9-.3-.8-.7-1-.7-1-.6-.4 0-.4 0-.4.6 0 1 .7 1 .7.6 1 1.5.7 1.9.5.1-.4.2-.7.4-.8-1.5-.2-3-.7-3-3.3 0-.7.3-1.3.7-1.8-.1-.2-.3-.9.1-1.8 0 0 .6-.2 1.8.7.5-.1 1.1-.2 1.6-.2.5 0 1.1.1 1.6.2 1.2-.9 1.8-.7 1.8-.7.4.9.1 1.6.1 1.8.4.5.7 1.1.7 1.8 0 2.6-1.6 3.1-3.1 3.3.2.2.4.6.4 1.2v1.8c0 .2.1.4.4.3C11.1 11.8 13 9.4 13 6.5 13 2.9 10.1 0 6.5 0z" fill="currentColor"/></svg>
-              GitHub
-            </a>
-            <a href="index.html" class="contact-link">
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor"/><path d="M6.5 1.5v11M1.5 6.5h10M2.5 3.5c1 .5 2.5.8 4 .8s3-.3 4-.8M2.5 9.5c1-.5 2.5-.8 4-.8s3 .3 4 .8" stroke="currentColor" stroke-linecap="round"/></svg>
-              Portfolio
-            </a>
-          </div>
-        </div>
+  <!-- ═══ SOCIAL PROOF ═══ -->
+  <section id="social-proof">
+    <div class="stats-row">
+      <div class="stat reveal d1">
+        <div class="stat-num c-sage" data-target="399" data-suffix="">0</div>
+        <div class="stat-lab">Impressions in 24h</div>
+      </div>
+      <div class="stat-pipe reveal"></div>
+      <div class="stat reveal d2">
+        <div class="stat-num c-sunset" data-target="14" data-suffix="">0</div>
+        <div class="stat-lab">Entities Active</div>
+      </div>
+      <div class="stat-pipe reveal"></div>
+      <div class="stat reveal d3">
+        <div class="stat-num c-gold" data-target="84" data-suffix=".0">0</div>
+        <div class="stat-lab">LUX Global</div>
       </div>
     </div>
   </section>
@@ -728,112 +1099,328 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-left">
-    <strong>HIPJOY</strong> &nbsp;--&nbsp; DS + SD = TO &nbsp;--&nbsp; The field is open.
+    <div class="footer-brand">HIPJOY</div>
+    <div class="footer-tag">The field is open.</div>
   </div>
-  <div class="footer-right">&copy; 2026 Joey Barbush</div>
+  <div class="footer-links">
+    <a href="https://linkedin.com/in/joey-barbush-115575403" target="_blank" rel="noopener" class="footer-link">
+      <svg width="11" height="11" viewBox="0 0 13 13" fill="none"><rect x=".5" y=".5" width="12" height="12" rx="2" stroke="currentColor"/><rect x="2" y="5" width="2" height="6" fill="currentColor"/><circle cx="3" cy="3" r="1" fill="currentColor"/><path d="M6 5v6M6 7c0-1 .8-2 2-2s2 .9 2 2v4" stroke="currentColor" stroke-linecap="round"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://x.com/Joey_Barbush" target="_blank" rel="noopener" class="footer-link">
+      <svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M1 1l4.5 5.5L1 12h1.5l3.5-4 3 4H12L7.3 6.2 11.5 1H10L6.8 4.6 4 1H1z" fill="currentColor"/></svg>
+      X
+    </a>
+    <a href="https://github.com/Joeybarbush" target="_blank" rel="noopener" class="footer-link">
+      <svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M6.5 0C2.9 0 0 2.9 0 6.5c0 2.9 1.9 5.3 4.4 6.2.3.1.4-.1.4-.3v-1.1c-1.8.4-2.2-.9-2.2-.9-.3-.8-.7-1-.7-1-.6-.4 0-.4 0-.4.6 0 1 .7 1 .7.6 1 1.5.7 1.9.5.1-.4.2-.7.4-.8-1.5-.2-3-.7-3-3.3 0-.7.3-1.3.7-1.8-.1-.2-.3-.9.1-1.8 0 0 .6-.2 1.8.7.5-.1 1.1-.2 1.6-.2.5 0 1.1.1 1.6.2 1.2-.9 1.8-.7 1.8-.7.4.9.1 1.6.1 1.8.4.5.7 1.1.7 1.8 0 2.6-1.6 3.1-3.1 3.3.2.2.4.6.4 1.2v1.8c0 .2.1.4.4.3C11.1 11.8 13 9.4 13 6.5 13 2.9 10.1 0 6.5 0z" fill="currentColor"/></svg>
+      GitHub
+    </a>
+    <a href="index.html" class="footer-link">
+      <svg width="11" height="11" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor"/><path d="M6.5 1v11M1 6.5h11M2.3 3.5c1.1.6 2.6.9 4.2.9s3.1-.3 4.2-.9M2.3 9.5c1.1-.6 2.6-.9 4.2-.9s3.1.3 4.2.9" stroke="currentColor" stroke-linecap="round"/></svg>
+      Portfolio
+    </a>
+  </div>
 </footer>
 
 <script>
-  // ---- PARTICLE BACKGROUND ----
-  (function() {
-    var canvas = document.getElementById('particle-canvas');
-    var ctx = canvas.getContext('2d');
-    var particles = [];
-    var W, H;
+/* ══════════════════════════════════════════
+   1. ORB PARALLAX + LABEL REVEAL
+══════════════════════════════════════════ */
+(function() {
+  var orbs = document.querySelectorAll('.orb');
+  var layer = document.getElementById('orb-layer');
+  var cx = window.innerWidth / 2;
+  var cy = window.innerHeight / 2;
+  var tx = 0, ty = 0, cx2 = 0, cy2 = 0;
 
-    function resize() {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
+  document.addEventListener('mousemove', function(e) {
+    cx2 = e.clientX;
+    cy2 = e.clientY;
+    var dx = (e.clientX - cx) / cx;
+    var dy = (e.clientY - cy) / cy;
+    tx = dx * 14;
+    ty = dy * 10;
 
-    var COLORS = ['rgba(168,201,155,', 'rgba(244,132,95,', 'rgba(200,168,80,'];
-
-    function Particle() {
-      this.reset();
-    }
-    Particle.prototype.reset = function() {
-      this.x = Math.random() * W;
-      this.y = Math.random() * H;
-      this.r = Math.random() * 1.4 + 0.3;
-      this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
-      this.alpha = Math.random() * 0.35 + 0.05;
-      this.vx = (Math.random() - 0.5) * 0.18;
-      this.vy = (Math.random() - 0.5) * 0.18;
-      this.life = 0;
-      this.maxLife = Math.random() * 400 + 200;
-    };
-    Particle.prototype.update = function() {
-      this.x += this.vx;
-      this.y += this.vy;
-      this.life++;
-      var progress = this.life / this.maxLife;
-      this.currentAlpha = this.alpha * Math.sin(Math.PI * progress);
-      if (this.life >= this.maxLife) this.reset();
-    };
-    Particle.prototype.draw = function() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fillStyle = this.color + this.currentAlpha + ')';
-      ctx.fill();
-    };
-
-    var COUNT = Math.min(120, Math.floor(window.innerWidth / 12));
-    for (var i = 0; i < COUNT; i++) {
-      var p = new Particle();
-      p.life = Math.floor(Math.random() * p.maxLife); // stagger
-      particles.push(p);
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, W, H);
-      for (var i = 0; i < particles.length; i++) {
-        particles[i].update();
-        particles[i].draw();
-      }
-      requestAnimationFrame(animate);
-    }
-    animate();
-  })();
-
-  // ---- FORM SUBMISSION (AJAX for Formspree) ----
-  (function() {
-    var form = document.getElementById('waitlist-form');
-    var btn = document.getElementById('submit-btn');
-    var success = document.getElementById('form-success');
-
-    if (!form) return;
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      btn.disabled = true;
-      btn.textContent = 'Sending...';
-
-      var data = new FormData(form);
-
-      fetch(form.action, {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      }).then(function(res) {
-        if (res.ok) {
-          form.style.display = 'none';
-          success.style.display = 'block';
+    // Label proximity check
+    orbs.forEach(function(orb) {
+      var rect = orb.getBoundingClientRect();
+      var midX = rect.left + rect.width / 2;
+      var midY = rect.top + rect.height / 2;
+      var dist = Math.sqrt(Math.pow(e.clientX - midX, 2) + Math.pow(e.clientY - midY, 2));
+      var label = orb.querySelector('.orb-label');
+      if (label) {
+        if (dist < rect.width * 0.6) {
+          label.classList.add('show');
         } else {
-          btn.disabled = false;
-          btn.textContent = 'Plant My Seed →';
-          res.json().then(function(d) {
-            alert(d.errors ? d.errors.map(function(e) { return e.message; }).join(', ') : 'Something went wrong. Try emailing joeybarbush@gmail.com directly.');
-          });
+          label.classList.remove('show');
         }
-      }).catch(function() {
-        btn.disabled = false;
-        btn.textContent = 'Plant My Seed →';
-        alert('Network error. Try emailing joeybarbush@gmail.com directly.');
-      });
+      }
     });
-  })();
+  });
+
+  window.addEventListener('resize', function() {
+    cx = window.innerWidth / 2;
+    cy = window.innerHeight / 2;
+  });
+
+  var currentTx = 0, currentTy = 0;
+  function animParallax() {
+    currentTx += (tx - currentTx) * 0.06;
+    currentTy += (ty - currentTy) * 0.06;
+    layer.style.transform = 'translate(' + currentTx + 'px,' + currentTy + 'px)';
+    requestAnimationFrame(animParallax);
+  }
+  animParallax();
+})();
+
+/* ══════════════════════════════════════════
+   2. TYPING EFFECT
+══════════════════════════════════════════ */
+(function() {
+  var el = document.getElementById('typing-text');
+  var phrases = [
+    '14 entities. 1 routing engine. Persistent identity.',
+    'Not a chatbot. Not a wrapper. Infrastructure.',
+    'LUX Seeds -- cognitive architecture for humans.',
+    'The field knows you. Every session. Every context.'
+  ];
+  var pi = 0, ci = 0, deleting = false, paused = false, pauseTimer = 0;
+  var SPEED_TYPE = 42, SPEED_DEL = 22, PAUSE_END = 1800, PAUSE_START = 400;
+
+  function tick() {
+    var phrase = phrases[pi];
+    if (paused) {
+      pauseTimer--;
+      if (pauseTimer <= 0) { paused = false; deleting = true; }
+      setTimeout(tick, 30);
+      return;
+    }
+    if (!deleting) {
+      ci++;
+      el.textContent = phrase.slice(0, ci);
+      if (ci >= phrase.length) {
+        paused = true;
+        pauseTimer = Math.round(PAUSE_END / 30);
+        setTimeout(tick, 30);
+      } else {
+        setTimeout(tick, SPEED_TYPE + Math.random() * 24);
+      }
+    } else {
+      ci--;
+      el.textContent = phrase.slice(0, ci);
+      if (ci <= 0) {
+        deleting = false;
+        pi = (pi + 1) % phrases.length;
+        setTimeout(tick, PAUSE_START);
+      } else {
+        setTimeout(tick, SPEED_DEL);
+      }
+    }
+  }
+  setTimeout(tick, 600);
+})();
+
+/* ══════════════════════════════════════════
+   3. CARD TILT EFFECT
+══════════════════════════════════════════ */
+(function() {
+  document.querySelectorAll('[data-tilt]').forEach(function(card) {
+    var raf = null;
+    var targetRx = 0, targetRy = 0, currentRx = 0, currentRy = 0;
+
+    card.addEventListener('mousemove', function(e) {
+      var rect = card.getBoundingClientRect();
+      var mx = ((e.clientX - rect.left) / rect.width)  * 100;
+      var my = ((e.clientY - rect.top)  / rect.height) * 100;
+      var rx = (my - 50) * -0.18;
+      var ry = (mx - 50) *  0.18;
+      targetRx = rx;
+      targetRy = ry;
+      card.style.setProperty('--mx', mx + '%');
+      card.style.setProperty('--my', my + '%');
+    });
+
+    card.addEventListener('mouseleave', function() {
+      targetRx = 0;
+      targetRy = 0;
+    });
+
+    function animTilt() {
+      currentRx += (targetRx - currentRx) * 0.12;
+      currentRy += (targetRy - currentRy) * 0.12;
+      card.style.transform = 'perspective(900px) rotateX(' + currentRx + 'deg) rotateY(' + currentRy + 'deg)';
+      if (Math.abs(targetRx - currentRx) > 0.01 || Math.abs(targetRy - currentRy) > 0.01) {
+        raf = requestAnimationFrame(animTilt);
+      } else {
+        raf = null;
+      }
+    }
+
+    card.addEventListener('mouseenter', function() {
+      if (!raf) raf = requestAnimationFrame(animTilt);
+    });
+    card.addEventListener('mouseleave', function() {
+      if (!raf) raf = requestAnimationFrame(animTilt);
+    });
+  });
+})();
+
+/* ══════════════════════════════════════════
+   4. CONFETTI CANNON
+══════════════════════════════════════════ */
+function launchConfetti() {
+  var canvas = document.getElementById('confetti-canvas');
+  canvas.style.display = 'block';
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+  var ctx = canvas.getContext('2d');
+
+  var COLORS = ['#A8C99B','#F4845F','#C8A850','#00CED1','#9B4FDC','#E075A8','#F0EDE5'];
+  var particles = [];
+  var ox = canvas.width / 2;
+  var oy = canvas.height * 0.72;
+
+  for (var i = 0; i < 160; i++) {
+    var angle = (Math.random() * 200 - 100) * (Math.PI / 180);
+    var speed = Math.random() * 14 + 5;
+    particles.push({
+      x: ox + (Math.random() - 0.5) * 60,
+      y: oy,
+      vx: Math.sin(angle) * speed,
+      vy: -Math.cos(angle) * speed - Math.random() * 4,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      w: Math.random() * 8 + 4,
+      h: Math.random() * 5 + 3,
+      rot: Math.random() * 360,
+      rotV: (Math.random() - 0.5) * 12,
+      gravity: 0.38,
+      drag: 0.99,
+      life: 1,
+      decay: Math.random() * 0.012 + 0.006
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var alive = false;
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      if (p.life <= 0) continue;
+      alive = true;
+      p.x  += p.vx;
+      p.y  += p.vy;
+      p.vy += p.gravity;
+      p.vx *= p.drag;
+      p.vy *= p.drag;
+      p.rot += p.rotV;
+      p.life -= p.decay;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.globalAlpha = Math.max(0, p.life);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    }
+    if (alive) requestAnimationFrame(draw);
+    else { ctx.clearRect(0, 0, canvas.width, canvas.height); canvas.style.display = 'none'; }
+  }
+  requestAnimationFrame(draw);
+}
+
+/* ══════════════════════════════════════════
+   5. FORM SUBMISSION
+══════════════════════════════════════════ */
+(function() {
+  var form = document.getElementById('waitlist-form');
+  var btn  = document.getElementById('btn-plant');
+  var successEl = document.getElementById('form-success');
+  if (!form) return;
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = 'Planting...';
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function(res) {
+      if (res.ok) {
+        form.style.display = 'none';
+        successEl.style.display = 'block';
+        launchConfetti();
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Plant My Seed \u2192';
+        res.json().then(function(d) {
+          var msg = d.errors ? d.errors.map(function(e) { return e.message; }).join(', ') : 'Something went wrong.';
+          alert(msg + '\n\nEmail joeybarbush@gmail.com directly.');
+        }).catch(function() { alert('Something went wrong. Email joeybarbush@gmail.com'); });
+      }
+    }).catch(function() {
+      btn.disabled = false;
+      btn.textContent = 'Plant My Seed \u2192';
+      alert('Network error. Email joeybarbush@gmail.com directly.');
+    });
+  });
+})();
+
+/* ══════════════════════════════════════════
+   6. ANIMATED COUNTERS
+══════════════════════════════════════════ */
+(function() {
+  var counted = false;
+
+  function countUp(el, target, suffix) {
+    var start = performance.now();
+    var duration = 1800;
+    var isFloat = suffix === '.0';
+
+    function update(now) {
+      var p = Math.min((now - start) / duration, 1);
+      var ease = 1 - Math.pow(1 - p, 3);
+      var val = isFloat
+        ? (target * ease).toFixed(1)
+        : Math.floor(target * ease);
+      el.textContent = val + (isFloat ? '' : '');
+      if (p < 1) requestAnimationFrame(update);
+      else el.textContent = target + suffix;
+    }
+    requestAnimationFrame(update);
+  }
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting && !counted) {
+        counted = true;
+        document.querySelectorAll('[data-target]').forEach(function(el) {
+          countUp(el, parseFloat(el.dataset.target), el.dataset.suffix || '');
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+
+  var sp = document.getElementById('social-proof');
+  if (sp) observer.observe(sp);
+})();
+
+/* ══════════════════════════════════════════
+   7. REVEAL ON SCROLL
+══════════════════════════════════════════ */
+(function() {
+  var revealEls = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(function(el) { io.observe(el); });
+})();
 </script>
 
 </body>
