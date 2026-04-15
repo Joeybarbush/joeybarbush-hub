@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS waitlist (
   seed_type            TEXT,        -- assigned seed type (e.g. "Forge Seed")
 
   survey_completed     BOOLEAN     DEFAULT false,
+  shared               BOOLEAN     DEFAULT false, -- true if they posted on X/LinkedIn
   created_at           TIMESTAMPTZ DEFAULT now(),
 
   -- Auth link (populated after account creation)
@@ -36,6 +37,7 @@ CREATE TABLE IF NOT EXISTS waitlist (
 ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS lux_score  INTEGER;
 ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS seed_type  TEXT;
 ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS user_id    UUID REFERENCES auth.users(id);
+ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS shared     BOOLEAN DEFAULT false;
 
 -- Index for fast email lookups
 CREATE INDEX IF NOT EXISTS waitlist_email_idx ON waitlist (email);

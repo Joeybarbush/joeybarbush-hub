@@ -470,6 +470,12 @@
       color:var(--sage); cursor:pointer; transition:all .3s; width:100%; justify-content:center;
     }
     .gate-posted-btn:hover { background:rgba(168,201,155,.2); box-shadow:0 0 28px rgba(168,201,155,.18); }
+    .gate-skip-btn {
+      background:none; border:none; color:rgba(168,201,155,.45); font-family:'JetBrains Mono',monospace;
+      font-size:11px; letter-spacing:.08em; cursor:pointer; margin-top:10px; transition:color .2s;
+      width:100%;
+    }
+    .gate-skip-btn:hover { color:rgba(168,201,155,.75); }
 
     /* ── Account creation ─────────────────────── */
     .auth-box { max-width:480px; margin:0 auto; padding:36px 32px; background:rgba(13,15,12,.88); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(168,201,155,.18); border-radius:12px; text-align:center; position:relative; overflow:hidden; }
@@ -774,6 +780,9 @@
       <button class="gate-posted-btn" id="gate-posted-btn">
         ◈ I Posted It — Unlock My Profile
       </button>
+      <button class="gate-skip-btn" id="gate-skip-btn">
+        Skip — just create my account →
+      </button>
     </div>
   </section>
 </div>
@@ -824,6 +833,7 @@ let rowId = null;
 let userEmail = '';
 let currentSeedName = 'Field Seed';
 let currentLux = 0;
+let hasShared = false;
 
 // ─── HIPXQL Question Pool ─────────────────────────────────────────────
 const QS = {
@@ -1416,8 +1426,15 @@ function showShareGate(tweetBody){
   const tweetBtn = document.getElementById('gate-tweet-open');
   tweetBtn.href = `https://x.com/intent/tweet?text=${encodeURIComponent(tweetBody)}`;
 
-  // "I posted it" — honor system, unlock account creation
+  // "I posted it" — honor system, mark shared + unlock account creation
   document.getElementById('gate-posted-btn').addEventListener('click', ()=>{
+    hasShared = true;
+    showAccountForm();
+  });
+
+  // "Skip" — go straight to account, garden stays locked
+  document.getElementById('gate-skip-btn').addEventListener('click', ()=>{
+    hasShared = false;
     showAccountForm();
   });
 }
@@ -1429,6 +1446,9 @@ function showAccountForm(){
   setTimeout(()=>wrap.scrollIntoView({behavior:'smooth',block:'start'}),100);
   const display = document.getElementById('auth-email-display');
   if(display) display.textContent = userEmail || 'your@email.com';
+  // Update eyebrow based on share status
+  const eyebrow = wrap.querySelector('.auth-eyebrow');
+  if(eyebrow) eyebrow.textContent = hasShared ? 'Gateway unlocked' : 'Almost there';
 }
 
 document.getElementById('auth-create-btn').addEventListener('click', async()=>{
@@ -1446,9 +1466,9 @@ document.getElementById('auth-create-btn').addEventListener('click', async()=>{
     const { data, error } = await sb.auth.signUp({ email: userEmail, password: pw1 });
     if(error) throw error;
 
-    // Link user_id to waitlist row
+    // Link user_id + shared flag to waitlist row
     if(data?.user){
-      try { await sb.from('waitlist').update({ user_id: data.user.id }).eq('email', userEmail); } catch(e){}
+      try { await sb.from('waitlist').update({ user_id: data.user.id, shared: hasShared }).eq('email', userEmail); } catch(e){}
     }
 
     btn.style.display='none';

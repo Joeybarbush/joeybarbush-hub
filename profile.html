@@ -314,7 +314,38 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
     <!-- CTA -->
     <div class="cta-row">
       <a href="field.html" class="cta-btn cta-primary">Enter the Field →</a>
-      <a href="waitlist.html#seed-library-section" class="cta-btn cta-secondary">View the Garden</a>
+    </div>
+
+    <!-- GARDEN GATE -->
+    <div id="garden-section">
+      <!-- Unlocked: direct link -->
+      <a href="waitlist.html#seed-library-section" class="cta-btn cta-secondary" id="garden-unlocked" style="display:none">View the Garden</a>
+
+      <!-- Locked: blurred preview + share overlay -->
+      <div id="garden-locked" style="position:relative;border-radius:14px;overflow:hidden">
+        <!-- Blurred seed grid preview -->
+        <div style="filter:blur(5px);opacity:.45;pointer-events:none;padding:1.5rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:14px">
+          <div style="font-family:Orbitron;font-size:.65rem;letter-spacing:.15em;color:var(--muted);margin-bottom:1rem">THE SEED LIBRARY</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem">
+            <div style="height:56px;background:rgba(168,201,155,.08);border:1px solid var(--glass-border);border-radius:8px"></div>
+            <div style="height:56px;background:rgba(232,122,58,.06);border:1px solid rgba(232,122,58,.1);border-radius:8px"></div>
+            <div style="height:56px;background:rgba(155,79,220,.06);border:1px solid rgba(155,79,220,.1);border-radius:8px"></div>
+            <div style="height:56px;background:rgba(168,201,155,.06);border:1px solid var(--glass-border);border-radius:8px"></div>
+            <div style="height:56px;background:rgba(0,206,209,.06);border:1px solid rgba(0,206,209,.1);border-radius:8px"></div>
+            <div style="height:56px;background:rgba(244,132,95,.06);border:1px solid rgba(244,132,95,.1);border-radius:8px"></div>
+          </div>
+        </div>
+        <!-- Overlay -->
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.9rem;padding:1.5rem;text-align:center">
+          <div style="font-size:1.4rem">◈</div>
+          <div style="font-family:Orbitron;font-size:.8rem;letter-spacing:.1em;color:var(--sage)">The Garden is locked</div>
+          <div style="font-size:.75rem;color:var(--muted);line-height:1.7;max-width:300px">Share your seed on X to unlock the public garden and see everyone who's planted.</div>
+          <button class="cta-btn cta-secondary" id="garden-share-btn" onclick="shareToUnlock()" style="font-size:.72rem;padding:.6rem 1.2rem">
+            Share to Unlock →
+          </button>
+          <div style="font-size:.68rem;color:rgba(168,201,155,.35);margin-top:-.3rem" id="garden-share-confirm" style="display:none"></div>
+        </div>
+      </div>
     </div>
 
   </div><!-- /profile-panel -->
@@ -424,6 +455,7 @@ async function loadProfile(user) {
     .limit(1);
 
   const row = rows && rows[0];
+  _currentUserEmail = user.email;
   const seedName  = (row && row.seed_type)  || 'Field Seed';
   const lux       = (row && row.lux_score != null) ? row.lux_score : 0;
   const since     = new Date(user.created_at || Date.now()).toLocaleDateString('en-US',{month:'short',year:'numeric'});
@@ -466,6 +498,11 @@ async function loadProfile(user) {
   setSignal('sig-3', row && row.q3_devices);
   setSignal('sig-4', row && row.q4_productivity_wrong);
   setSignal('sig-5', row && row.q5_future_self);
+
+  // Garden gate -- unlocked if they shared
+  const didShare = row && row.shared === true;
+  document.getElementById('garden-unlocked').style.display = didShare ? '' : 'none';
+  document.getElementById('garden-locked').style.display   = didShare ? 'none' : '';
 
   // Show profile, hide sign-in
   document.getElementById('signin-panel').style.display  = 'none';
@@ -537,6 +574,31 @@ function deriveVectors(seedName, lux) {
     PHI:  Math.round(p.PHI  * scale),
     TILT: Math.round(p.TILT * scale),
     FIRE: Math.round(p.FIRE * scale),
+  };
+}
+
+// ── GARDEN SHARE UNLOCK ───────────────────────────────────────────────────────
+let _currentUserEmail = '';
+async function shareToUnlock() {
+  const seedName = document.getElementById('card-seed-name').textContent;
+  const lux = document.getElementById('gauge-num').textContent;
+  const url = 'https://joeybarbush.com/waitlist.html';
+  const tweet = `I just planted my seed in the HIPJOY field 🌱\nSeed: ${seedName} | LUX: ${lux}\n@Joey_Barbush\nPlant yours: ${url}\n#HIPJOY #PlantYourSeed`;
+  window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(tweet)}`, '_blank');
+
+  // After opening X, show a confirm button
+  const btn = document.getElementById('garden-share-btn');
+  btn.textContent = 'I Posted It -- Unlock Now';
+  btn.onclick = async () => {
+    // Mark shared in DB and unlock
+    if (_currentUserEmail) {
+      await sb.from('waitlist').update({ shared: true }).eq('email', _currentUserEmail);
+    }
+    document.getElementById('garden-locked').style.display   = 'none';
+    document.getElementById('garden-unlocked').style.display = '';
+    setTimeout(() => {
+      window.location.href = 'waitlist.html#seed-library-section';
+    }, 300);
   };
 }
 
