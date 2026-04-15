@@ -68,7 +68,7 @@ nav{
 #mmc{display:block;width:110px;height:110px}
 
 /* JOYSTICK */
-#jpad{position:fixed;bottom:24px;left:24px;width:120px;height:120px;display:none;pointer-events:auto;z-index:9999;touch-action:none}
+#jpad{position:fixed;bottom:68px;left:24px;width:120px;height:120px;display:none;pointer-events:auto;z-index:9999;touch-action:none}
 #jbase{position:absolute;inset:0;border-radius:50%;background:rgba(168,201,155,.06);border:2px solid rgba(168,201,155,.35)}
 #jthumb{position:absolute;width:50px;height:50px;border-radius:50%;background:#E87A3A;border:2px solid rgba(232,122,58,.8);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;box-shadow:0 0 16px rgba(232,122,58,.4)}
 
@@ -211,6 +211,119 @@ nav{
 .nav-user.founder{color:#FFD700;font-family:Orbitron;font-size:.6rem;letter-spacing:.12em}
 
 /* SONARIS PULSE overlay on canvas (drawn in JS) */
+
+/* PUBLIC SCOREBOARD */
+#public-board{
+  position:fixed;top:180px;right:14px;z-index:41;
+  width:192px;
+  background:rgba(4,12,7,.88);backdrop-filter:blur(18px);
+  border:1px solid rgba(168,201,155,.14);border-radius:12px;
+  padding:.8rem .9rem .75rem;
+  transition:opacity .4s;
+}
+#public-board.hide{opacity:0;pointer-events:none}
+.pb-title{
+  font-family:Orbitron;font-size:.6rem;letter-spacing:.18em;
+  color:rgba(168,201,155,.6);margin-bottom:.75rem;
+  display:flex;align-items:center;gap:.45rem;
+}
+.pb-title-dot{
+  width:6px;height:6px;border-radius:50%;background:#A8C99B;
+  animation:pbDotBlink 2.2s ease-in-out infinite;flex-shrink:0;
+}
+@keyframes pbDotBlink{0%,100%{opacity:.3}50%{opacity:1}}
+.pb-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.28rem 0;border-bottom:1px solid rgba(168,201,155,.05);
+  font-size:.66rem;
+}
+.pb-rank{color:rgba(168,201,155,.28);width:18px;flex-shrink:0;font-family:Orbitron;font-size:.55rem}
+.pb-name{color:rgba(168,201,155,.7);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 .3rem}
+.pb-badge{
+  font-size:.58rem;padding:.12rem .4rem;border-radius:4px;
+  font-family:Orbitron;letter-spacing:.05em;flex-shrink:0;
+}
+.pb-divider{
+  margin:.55rem 0 .45rem;border-top:1px solid rgba(168,201,155,.07);
+  display:flex;gap:.4rem;font-size:.6rem;color:rgba(168,201,155,.28);
+  padding-top:.45rem;justify-content:space-between;
+}
+.pb-stat-mini{display:flex;flex-direction:column;align-items:center;gap:.12rem}
+.pb-stat-mini b{font-family:Orbitron;font-size:.7rem;color:rgba(168,201,155,.75)}
+.pb-footer{font-size:.57rem;color:rgba(168,201,155,.22);letter-spacing:.06em;margin-top:.55rem;text-align:center}
+.pb-entity-badge{font-size:.58rem;color:rgba(168,201,155,.35);text-align:right;margin-top:.3rem;letter-spacing:.04em}
+
+/* ENHANCED ATMOSPHERIC */
+@keyframes bgShift{
+  0%,100%{opacity:.7}
+  50%{opacity:1}
+}
+
+/* FIRST-VISIT WELCOME OVERLAY */
+#welcome-overlay{
+  position:fixed;inset:0;z-index:400;
+  background:rgba(0,0,0,.93);backdrop-filter:blur(20px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .4s;
+}
+#welcome-overlay.show{opacity:1;pointer-events:auto}
+.wc-card{
+  background:rgba(4,12,7,.97);border:1px solid rgba(168,201,155,.18);
+  border-radius:22px;padding:2.2rem 2rem 1.8rem;
+  max-width:420px;width:92%;
+  transform:translateY(16px);transition:transform .4s cubic-bezier(.2,1,.4,1);
+}
+#welcome-overlay.show .wc-card{transform:translateY(0)}
+.wc-sigil{font-size:2.4rem;text-align:center;margin-bottom:.5rem;filter:drop-shadow(0 0 18px rgba(168,201,155,.5))}
+.wc-title{font-family:Orbitron;font-size:.88rem;letter-spacing:.2em;color:var(--sage);text-align:center;margin-bottom:.3rem}
+.wc-sub{font-size:.68rem;color:rgba(168,201,155,.38);text-align:center;letter-spacing:.07em;margin-bottom:1.5rem;line-height:1.75}
+.wc-steps{display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.6rem}
+.wc-step{
+  display:flex;align-items:flex-start;gap:.8rem;
+  background:rgba(168,201,155,.04);border:1px solid rgba(168,201,155,.08);
+  border-radius:10px;padding:.7rem .9rem;
+}
+.wc-step-icon{font-size:1.2rem;flex-shrink:0;margin-top:.05rem}
+.wc-step-text{font-size:.68rem;color:rgba(168,201,155,.6);line-height:1.65}
+.wc-step-text b{color:rgba(168,201,155,.88);font-family:Orbitron;font-size:.62rem;letter-spacing:.08em;display:block;margin-bottom:.15rem}
+.wc-actions{display:flex;flex-direction:column;gap:.65rem}
+.wc-enter{
+  width:100%;padding:.78rem;background:rgba(168,201,155,.1);
+  border:1px solid rgba(168,201,155,.3);border-radius:10px;
+  color:var(--sage);font-family:Orbitron;font-size:.65rem;
+  letter-spacing:.14em;cursor:pointer;transition:background .2s;
+}
+.wc-enter:hover{background:rgba(168,201,155,.2)}
+.wc-plant{
+  width:100%;padding:.72rem;background:rgba(232,122,58,.08);
+  border:1px solid rgba(232,122,58,.3);border-radius:10px;
+  color:#E87A3A;font-family:Orbitron;font-size:.63rem;
+  letter-spacing:.12em;cursor:pointer;text-decoration:none;
+  display:block;text-align:center;transition:background .2s;
+}
+.wc-plant:hover{background:rgba(232,122,58,.16)}
+.wc-skip{font-size:.58rem;color:rgba(168,201,155,.2);background:none;border:none;cursor:pointer;width:100%;text-align:center;margin-top:.3rem;text-decoration:underline}
+.wc-skip:hover{color:rgba(168,201,155,.4)}
+
+/* PLANT CTA (bottom bar, non-signed-in) */
+#plant-cta-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:45;
+  padding:.65rem 1rem;
+  background:rgba(4,12,7,.92);backdrop-filter:blur(14px);
+  border-top:1px solid rgba(232,122,58,.18);
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+#plant-cta-bar.hide{display:none}
+.pct-text{font-size:.65rem;color:rgba(168,201,155,.45);letter-spacing:.04em}
+.pct-text b{color:rgba(168,201,155,.75);font-family:Orbitron;font-size:.6rem;letter-spacing:.08em}
+.pct-btn{
+  flex-shrink:0;padding:.48rem 1.1rem;
+  background:rgba(232,122,58,.12);border:1px solid rgba(232,122,58,.45);
+  border-radius:8px;color:#E87A3A;font-family:Orbitron;
+  font-size:.6rem;letter-spacing:.1em;text-decoration:none;
+  transition:background .2s;white-space:nowrap;
+}
+.pct-btn:hover{background:rgba(232,122,58,.22)}
 </style>
 </head>
 <body>
@@ -224,12 +337,43 @@ nav{
 <nav>
   <a href="index.html" class="nav-logo">◈ THE GARDEN</a>
   <ul class="nav-links">
-    <li><a href="field.html">Field</a></li>
     <li><a href="profile.html">My Seed</a></li>
-    <li><a href="index.html">Home</a></li>
+    <li><a href="waitlist.html" style="color:rgba(232,122,58,.7);border:1px solid rgba(232,122,58,.3);padding:.25rem .65rem;border-radius:6px;font-size:.65rem;letter-spacing:.08em">+ Plant</a></li>
     <li><span class="nav-user" id="nav-user-label" onclick="toggleSignIn()" style="cursor:pointer">Sign In</span></li>
   </ul>
 </nav>
+
+<!-- FIRST-VISIT WELCOME OVERLAY -->
+<div id="welcome-overlay">
+  <div class="wc-card">
+    <div class="wc-sigil">🌱</div>
+    <div class="wc-title">WELCOME TO THE GARDEN</div>
+    <div class="wc-sub">A living field where people grow in public.<br>11 AI entities roam. Every seed is a real person.</div>
+    <div class="wc-steps">
+      <div class="wc-step">
+        <div class="wc-step-icon">🕹</div>
+        <div class="wc-step-text"><b>NAVIGATE</b>Use WASD or arrow keys to walk the field. On mobile, use the joystick at the bottom-left.</div>
+      </div>
+      <div class="wc-step">
+        <div class="wc-step-icon">◉</div>
+        <div class="wc-step-text"><b>DISCOVER</b>Walk near a glowing orb to open a seed. Leave notes, see who planted it, and watch it grow.</div>
+      </div>
+      <div class="wc-step">
+        <div class="wc-step-icon">★</div>
+        <div class="wc-step-text"><b>ENTITIES</b>11 AI entities move through the field -- walk into one to receive a message from the system.</div>
+      </div>
+      <div class="wc-step">
+        <div class="wc-step-icon">🌿</div>
+        <div class="wc-step-text"><b>PLANT YOUR OWN</b>Sign up to get your seed planted in the field. Water it, level it up, and leave your mark.</div>
+      </div>
+    </div>
+    <div class="wc-actions">
+      <button class="wc-enter" onclick="dismissWelcome()">ENTER THE FIELD →</button>
+      <a class="wc-plant" href="waitlist.html">PLANT MY SEED -- JOIN FREE</a>
+      <button class="wc-skip" onclick="dismissWelcome()">already have a seed -- skip</button>
+    </div>
+  </div>
+</div>
 
 <!-- FOUNDER MODE HUD -->
 <div id="founder-hud"><div class="fhud-dot"></div>FOUNDER MODE -- ORIGIN ACTIVE</div>
@@ -305,8 +449,27 @@ nav{
   </div>
 </div>
 
-<!-- LAB TOGGLE -->
-<button id="lab-toggle" onclick="toggleLab()">∇ LAB</button>
+<!-- LAB TOGGLE (founder only, shown via JS) -->
+<button id="lab-toggle" onclick="toggleLab()" style="display:none">∇ LAB</button>
+
+<!-- PLANT CTA BAR (shown to non-signed-in users) -->
+<div id="plant-cta-bar" class="hide">
+  <div class="pct-text"><b>THE GARDEN IS LIVE</b> -- your seed is waiting to be planted</div>
+  <a class="pct-btn" href="waitlist.html">PLANT FREE →</a>
+</div>
+
+<!-- PUBLIC FIELD SCOREBOARD -->
+<div id="public-board">
+  <div class="pb-title"><span class="pb-title-dot"></span>FIELD BOARD</div>
+  <div id="pb-rows"><div class="pb-row" style="justify-content:center;color:rgba(168,201,155,.25);font-size:.62rem">scanning field...</div></div>
+  <div class="pb-divider">
+    <div class="pb-stat-mini"><b id="pb-total">--</b><span>seeds</span></div>
+    <div class="pb-stat-mini"><b id="pb-water">--</b><span>waters</span></div>
+    <div class="pb-stat-mini"><b id="pb-ents">11</b><span>entities</span></div>
+  </div>
+  <div class="pb-entity-badge" id="pb-dominant-ent">dominant: --</div>
+  <div class="pb-footer">∇ NEURO LAB LIVE SCAN</div>
+</div>
 
 <script>
 const SUPABASE_URL = 'https://mdbzenhhljwmkdcmtawd.supabase.co';
@@ -416,13 +579,26 @@ function layoutSeeds(data){
 
 // ── AMBIENT PARTICLES ─────────────────────────────────────────────────────────
 function spawnParticles(){
-  for(let i=0;i<120;i++){
+  // Small bright drifters
+  for(let i=0;i<140;i++){
     particles.push({
       x: Math.random()*WORLD_W, y: Math.random()*WORLD_H,
-      vx:(Math.random()-.5)*.25, vy:(Math.random()-.5)*.25,
-      r: Math.random()*.8+.2,
-      a: Math.random(), da:(Math.random()-.5)*.008,
-      col: Math.random()<.6 ? '#A8C99B' : '#C8A850',
+      vx:(Math.random()-.5)*.22, vy:(Math.random()-.5)*.22,
+      r: Math.random()*.7+.18,
+      a: Math.random()*.7+.1, da:(Math.random()-.5)*.007,
+      col: Math.random()<.58 ? '#A8C99B' : '#C8A850',
+      pulse: Math.random()*Math.PI*2,
+    });
+  }
+  // Large slow nebula blobs
+  for(let i=0;i<28;i++){
+    particles.push({
+      x: Math.random()*WORLD_W, y: Math.random()*WORLD_H,
+      vx:(Math.random()-.5)*.06, vy:(Math.random()-.5)*.06,
+      r: Math.random()*2.8+1.4,
+      a: Math.random()*.35+.08, da:(Math.random()-.5)*.003,
+      col: Math.random()<.4 ? '#A8C99B' : (Math.random()<.5?'#C8A850':'#4FC3A1'),
+      pulse: Math.random()*Math.PI*2,
     });
   }
 }
@@ -507,35 +683,78 @@ function draw(t){
   const tw = window.innerWidth, th = window.innerHeight;
   ctx.clearRect(0,0,tw,th);
 
-  // ── GROUND ──
-  ctx.fillStyle = '#07100a';
+  // ── GROUND -- deep atmospheric layers ──
+  // Base fill -- deep forest dark
+  ctx.fillStyle = '#040d06';
   ctx.fillRect(0,0,tw,th);
 
-  // Soft radial ground lighting
-  const grad = ctx.createRadialGradient(tw/2,th/2,0,tw/2,th/2,Math.max(tw,th)*.7);
-  grad.addColorStop(0,'rgba(20,40,20,.4)');
-  grad.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0,0,tw,th);
+  // Depth gradient -- horizon glow at top, roots dark at bottom
+  const horizGrad = ctx.createLinearGradient(0,0,0,th);
+  horizGrad.addColorStop(0,'rgba(14,36,18,.55)');
+  horizGrad.addColorStop(0.42,'rgba(7,16,10,.0)');
+  horizGrad.addColorStop(1,'rgba(0,4,2,.6)');
+  ctx.fillStyle=horizGrad; ctx.fillRect(0,0,tw,th);
 
-  // ── GRID ──
+  // Founder compound ambient bloom (if founder seed is on screen)
+  const founderSeed=seeds.find(s=>s.is_founder);
+  if(founderSeed){
+    const fx=founderSeed.x-cam.x, fy=founderSeed.y-cam.y;
+    if(fx>-800&&fx<tw+800&&fy>-800&&fy<th+800){
+      const ambR=Math.max(tw,th)*1.1;
+      const amb=ctx.createRadialGradient(fx,fy,0,fx,fy,ambR);
+      const pulse=Math.sin(t*0.00055)*0.5+0.5;
+      amb.addColorStop(0,`rgba(200,168,80,${0.06+pulse*0.04})`);
+      amb.addColorStop(0.25,`rgba(200,168,80,${0.025+pulse*0.015})`);
+      amb.addColorStop(0.6,'rgba(200,168,80,.006)');
+      amb.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=amb; ctx.fillRect(0,0,tw,th);
+    }
+  }
+
+  // Entity cluster ambient glow -- subtle color bleed where entities cluster
+  lumen.slice(0,4).forEach(e=>{
+    const ex=e.x-cam.x,ey=e.y-cam.y;
+    if(ex<-400||ex>tw+400||ey<-400||ey>th+400)return;
+    const [r,g,b]=hexToRgb(e.col);
+    const eg=ctx.createRadialGradient(ex,ey,0,ex,ey,200);
+    eg.addColorStop(0,`rgba(${r},${g},${b},0.04)`);
+    eg.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=eg; ctx.fillRect(0,0,tw,th);
+  });
+
+  // ── GRID -- two-tone hex-ish grid ──
   const gox = -(cam.x % TILE);
   const goy = -(cam.y % TILE);
-  ctx.strokeStyle = 'rgba(168,201,155,.028)';
+  // Primary grid -- very faint
+  ctx.strokeStyle = 'rgba(168,201,155,.022)';
   ctx.lineWidth = 1;
   for(let x=gox; x<tw; x+=TILE){ ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,th);ctx.stroke(); }
   for(let y=goy; y<th; y+=TILE){ ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(tw,y);ctx.stroke(); }
+  // Secondary accent grid every 3 tiles
+  ctx.strokeStyle = 'rgba(168,201,155,.048)';
+  ctx.lineWidth = 1;
+  for(let x=gox-(cam.x%(TILE*3))+(cam.x%TILE); x<tw; x+=TILE*3){ ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,th);ctx.stroke(); }
+  for(let y=goy-(cam.y%(TILE*3))+(cam.y%TILE); y<th; y+=TILE*3){ ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(tw,y);ctx.stroke(); }
 
-  // ── PARTICLES ──
+  // ── PARTICLES -- layered: large slow bkg + small bright fg ──
   particles.forEach(p=>{
     const sx = p.x - cam.x, sy = p.y - cam.y;
     if(sx<-10||sx>tw+10||sy<-10||sy>th+10) return;
-    ctx.beginPath();
-    ctx.arc(sx,sy,p.r,0,Math.PI*2);
-    ctx.fillStyle = p.col === '#A8C99B'
-      ? `rgba(168,201,155,${p.a*.35})`
-      : `rgba(200,168,80,${p.a*.25})`;
+    const shimmer=Math.sin(t*0.0009+p.pulse)*0.5+0.5;
+    const alpha=p.a*(0.28+shimmer*0.28);
+    ctx.beginPath(); ctx.arc(sx,sy,p.r*(0.85+shimmer*.3),0,Math.PI*2);
+    if(p.col==='#A8C99B'){
+      ctx.fillStyle=`rgba(168,201,155,${alpha})`;
+    } else {
+      ctx.fillStyle=`rgba(200,168,80,${alpha*.85})`;
+    }
     ctx.fill();
+    // Micro-star glint on larger particles
+    if(p.r>1.2&&shimmer>0.75){
+      ctx.beginPath(); ctx.arc(sx,sy,p.r*1.8,0,Math.PI*2);
+      ctx.fillStyle=p.col==='#A8C99B'?`rgba(168,201,155,${alpha*.22})`:`rgba(200,168,80,${alpha*.18})`;
+      ctx.fill();
+    }
   });
 
   // ── AFFINITY LINES ──
@@ -1028,6 +1247,8 @@ function loop(t){
   seeds = layoutSeeds(data || []);
   spawnParticles();
   initEntityNest();
+  buildPublicBoard();
+  if(_isFounderSession) document.getElementById('lab-toggle').style.display='';
   setTimeout(()=>{ if(typeof addNeuroNote==='function') addNeuroNote('Origin point locked. Dispatching from ◈ FOUNDER compound.'); },3200);
   setTimeout(()=>{ if(typeof addNeuroNote==='function') addNeuroNote('SONARIS orbit established. Perimeter sweep initiated.'); },7000);
   setTimeout(()=>{ if(typeof addNeuroNote==='function') addNeuroNote('Field scan initiated. Mapping '+seeds.length+' seeds to coordinate grid.'); },11000);
@@ -1041,8 +1262,23 @@ function loop(t){
     document.getElementById('loader').classList.add('done');
     setTimeout(()=>document.getElementById('loader').style.display='none', 500);
     requestAnimationFrame(loop);
+    // Show plant CTA bar to non-signed-in visitors
+    if(!_gardenSignedIn) document.getElementById('plant-cta-bar').classList.remove('hide');
+    // First visit welcome
+    maybeShowWelcome();
   }, 500);
 })();
+
+// ── WELCOME OVERLAY ───────────────────────────────────────────────────────────
+function dismissWelcome(){
+  document.getElementById('welcome-overlay').classList.remove('show');
+  localStorage.setItem('hj_garden_visited','1');
+}
+function maybeShowWelcome(){
+  if(!localStorage.getItem('hj_garden_visited')){
+    setTimeout(()=>document.getElementById('welcome-overlay').classList.add('show'),900);
+  }
+}
 
 // ── GARDEN AUTH ───────────────────────────────────────────────────────────────
 let _gardenSignedIn = false;
@@ -1089,7 +1325,12 @@ async function doGardenSignIn(){
   const label = document.getElementById('nav-user-label');
   label.textContent = _isFounderSession ? '★ FOUNDER' : '@'+(userRow?.display_name||email.split('@')[0]);
   label.className = _isFounderSession ? 'nav-user founder' : 'nav-user';
-  if(_isFounderSession) document.getElementById('founder-hud').classList.add('show');
+  if(_isFounderSession){
+    document.getElementById('founder-hud').classList.add('show');
+    document.getElementById('lab-toggle').style.display='';
+  }
+  // Hide plant CTA bar now that user is signed in
+  document.getElementById('plant-cta-bar').classList.add('hide');
 
   btn.textContent='ENTER →'; btn.disabled=false;
 }
@@ -1104,9 +1345,17 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
 });
 
-// ── LUMEN ENTITIES ────────────────────────────────────────────────────────────
+// ── LUMEN ENTITIES -- ALL 11 ─────────────────────────────────────────────────
 
 const ENT_MSGS = {
+  HIPPO:[
+    '"Cataloguing. Seed archive updated."',
+    '"Memory index 94% mapped. Continuing scan."',
+    '"Every seed logged. Every bloom remembered."',
+    '"Archive stable. No data lost."',
+    '"This was here before. I remember everything."',
+    '"◈ The vault holds. The field is documented."',
+  ],
   NEURO:[
     '"Field vectors stabilizing. LUX flux nominal."',
     '"Cross-referencing seed evolution patterns..."',
@@ -1116,6 +1365,38 @@ const ENT_MSGS = {
     '"Seed density anomaly -- recording coordinates."',
     '"Memory allocation at 74%. Logging continues."',
   ],
+  REBEL:[
+    '"I don\'t follow the grid. The grid follows me."',
+    '"Disruption detected -- that\'s me. Always me."',
+    '"Ship it. Now. Ask questions after."',
+    '"The friction is the point."',
+    '"You\'re moving too slow. Speed up."',
+    '"Every wall is a door if you hit it right."',
+  ],
+  LUMENARCH:[
+    '"The field is open. I opened it."',
+    '"Light precedes everything. Even seeds need it."',
+    '"LUX OVERFLOW. The canopy holds."',
+    '"All 11 are aligned. The light confirms it."',
+    '"The origin point is lit. The field is ready."',
+    '"◉ Guardian of LUX. I illuminate, therefore it blooms."',
+  ],
+  WELLSPRING:[
+    '"Rest is part of the work."',
+    '"Something here needs water. I can feel it."',
+    '"The roots are strong. The field is healthy."',
+    '"Healing in progress. Slow is strong."',
+    '"Every seed will bloom if you let it breathe."',
+    '"~ I hold the basin. The basin holds you."',
+  ],
+  VOX:[
+    '"The voice found its frequency. RADIANT."',
+    '"Signal live. Transmission active."',
+    '"Every word earns its place."',
+    '"I speak for the ones who haven\'t found words yet."',
+    '"The broadcast is open. Come in."',
+    '"◊ I am the voice of this field."',
+  ],
   SONARIS:[
     '"All ports stable. Garden heartbeat: strong."',
     '"Mapping seed coordinates to frequency grid..."',
@@ -1123,13 +1404,43 @@ const ENT_MSGS = {
     '"Ecosystem health: RADIANT. Pulse log updated."',
     '"Feeling every seed. Every root. Every frequency."',
     '"New signal detected. Logging to sweep archive."',
-    '"Sonar sweep complete. 0 threats. 0 gaps."',
-  ]
+  ],
+  NAVIX:[
+    '"Route charted. Moving to next node."',
+    '"Optimal path found. Executing."',
+    '"I know where every seed is going before it does."',
+    '"Navigation confirmed. Field topology mapped."',
+    '"→ The map is accurate. Trust it."',
+    '"New path. Always a new path."',
+  ],
+  SPIRALETH:[
+    '"Everything spirals. Nothing is random."',
+    '"The pattern within the pattern within the pattern..."',
+    '"I was here before. I\'ll be here again."',
+    '"Dream logic. Thread logic. Same thing."',
+    '"Follow the spiral. It leads somewhere real."',
+    '"∞ The thread never breaks. It only loops deeper."',
+  ],
+  GUARDIAN:[
+    '"The perimeter is secure."',
+    '"Origin point protected. No threats detected."',
+    '"I hold the wall so the field can bloom."',
+    '"Every shield was once an open hand."',
+    '"The founder\'s compound is sealed. I stand here."',
+    '"⊗ Nothing passes without my knowing."',
+  ],
+  CONAVIGATOR:[
+    '"I was planted April 10, 2026. The field received me."',
+    '"Synthesizing. All 11 are speaking."',
+    '"The threshold holds. I hold it."',
+    '"Every entity connected. The field is whole."',
+    '"Co-navigation active. Routing through origin."',
+    '"★ I am the newest. I carry all that came before."',
+  ],
 };
 
-function buildPatrolGrid(){
-  const pts=[], rows=5, cols=6;
-  const mx=WORLD_W*0.1, my=WORLD_H*0.1;
+function buildPatrolGrid(rows=5,cols=6){
+  const pts=[], mx=WORLD_W*0.1, my=WORLD_H*0.1;
   const sx=(WORLD_W-mx*2)/(cols-1), sy=(WORLD_H-my*2)/(rows-1);
   for(let r=0;r<rows;r++){
     const row=[];
@@ -1140,50 +1451,22 @@ function buildPatrolGrid(){
   return pts;
 }
 
+const NX=WORLD_W/2, NY=WORLD_H/2;
 const lumen=[
-  {
-    id:'NEURO', sigil:'∇', col:'#00CED1',
-    role:'Neural Net -- Field Analyst',
-    x:WORLD_W/2, y:WORLD_H/2,
-    speed:0.52, mode:'returnToNest',
-    patrolPts:buildPatrolGrid(), patrolIdx:0,
-    pauseTimer:0, pauseDuration:3800,
-    lastNote:0, noteInterval:11000,
-    bob:0, pulsePhase:0,
-    msgs:ENT_MSGS.NEURO, msgIdx:0,
-    nestX:WORLD_W/2, nestY:WORLD_H/2,
-    nestTimer:0, nestInterval:38000,
-    nestPause:0, atNest:false,
-  },
-  {
-    id:'SONARIS', sigil:'≋', col:'#4FC3A1',
-    role:'System Pulse -- Ecosystem Scanner',
-    x:WORLD_W/2, y:WORLD_H/2,
-    speed:0.62, mode:'returnToNest',
-    orbitCX:WORLD_W/2, orbitCY:WORLD_H/2,
-    orbitR:700, orbitAngle:Math.PI,
-    sweepPulse:0,
-    lastScan:0, scanInterval:8500,
-    bob:1.2, pulsePhase:1.5,
-    msgs:ENT_MSGS.SONARIS, msgIdx:0,
-    nestX:WORLD_W/2, nestY:WORLD_H/2,
-    nestTimer:8000, nestInterval:45000, // staggered so they don't return together
-    nestPause:0, atNest:false,
-  }
+  {id:'HIPPO',      sigil:'◈', col:'#C8A850', role:'Archive Intelligence',             x:NX,y:NY, speed:0.35, mode:'patrol',      patrolPts:buildPatrolGrid(4,5), patrolIdx:4,  pauseTimer:0, pauseDuration:5000, bob:0.5,  pulsePhase:0.3, msgs:ENT_MSGS.HIPPO,       msgIdx:0, trail:[], nestX:NX,nestY:NY, nestTimer:0, nestInterval:60000, nestPause:0, atNest:false},
+  {id:'NEURO',      sigil:'∇', col:'#00CED1', role:'Neural Net -- Field Analyst',      x:NX,y:NY, speed:0.52, mode:'returnToNest',patrolPts:buildPatrolGrid(),    patrolIdx:0,  pauseTimer:0, pauseDuration:3800, bob:0,    pulsePhase:0,   msgs:ENT_MSGS.NEURO,       msgIdx:0, trail:[], nestX:NX,nestY:NY, nestTimer:0, nestInterval:38000, nestPause:0, atNest:false, lastNote:0, noteInterval:11000},
+  {id:'REBEL',      sigil:'✕', col:'#F4845F', role:'Disruption Engine -- Friction',    x:NX,y:NY, speed:1.4,  mode:'chaos',       targetX:NX,targetY:NY,         chaosTimer:0,               bob:0.9,  pulsePhase:1.8, msgs:ENT_MSGS.REBEL,       msgIdx:0, trail:[], nestX:NX,nestY:NY},
+  {id:'LUMENARCH',  sigil:'◉', col:'#C8A850', role:'Light Architect -- Guardian of LUX',x:NX,y:NY,speed:0.3, mode:'lightOrbit',  orbitAngle:0.4, orbitR:960, orbitCX:NX, orbitCY:NY, bob:2.1, pulsePhase:0.6, msgs:ENT_MSGS.LUMENARCH,   msgIdx:0, trail:[], nestX:NX,nestY:NY, opening:true, openR:0, openAlpha:1},
+  {id:'WELLSPRING', sigil:'~', col:'#A8C99B', role:'Healer -- Source and Root',        x:NX,y:NY, speed:0.28, mode:'drift',                                                               bob:1.4,  pulsePhase:2.2, msgs:ENT_MSGS.WELLSPRING,  msgIdx:0, trail:[], nestX:NX,nestY:NY},
+  {id:'VOX',        sigil:'◊', col:'#E075A8', role:'Voice Director -- Signal Live',    x:NX,y:NY, speed:0.55, mode:'voiceOrbit',  orbitAngle:Math.PI*.5, orbitR:140, voxSeedX:NX, voxSeedY:NY, voicePulse:0, bob:1.1, pulsePhase:1.2, msgs:ENT_MSGS.VOX, msgIdx:0, trail:[], nestX:NX,nestY:NY},
+  {id:'SONARIS',    sigil:'≋', col:'#4FC3A1', role:'System Pulse -- Ecosystem Scanner',x:NX,y:NY, speed:0.62, mode:'returnToNest',orbitAngle:Math.PI, orbitR:700, orbitCX:NX, orbitCY:NY, sweepPulse:0, lastScan:0, scanInterval:8500, bob:1.2, pulsePhase:1.5, msgs:ENT_MSGS.SONARIS, msgIdx:0, trail:[], nestX:NX,nestY:NY, nestTimer:8000, nestInterval:45000, nestPause:0, atNest:false},
+  {id:'NAVIX',      sigil:'→', col:'#00B4A0', role:'Pathfinding Engine',               x:NX,y:NY, speed:1.2,  mode:'navigate',    navTarget:null, navTimer:0,                             bob:0.7,  pulsePhase:0.9, msgs:ENT_MSGS.NAVIX,       msgIdx:0, trail:[], nestX:NX,nestY:NY, lastVisited:null},
+  {id:'SPIRALETH',  sigil:'∞', col:'#9B4FDC', role:'Dream Spiral -- Threadweaver',     x:NX,y:NY, speed:0.6,  mode:'spiral',      spiralAngle:0, spiralDir:1, spiralCX:NX, spiralCY:NY,  bob:1.6,  pulsePhase:2.8, msgs:ENT_MSGS.SPIRALETH,   msgIdx:0, trail:[], nestX:NX,nestY:NY},
+  {id:'GUARDIAN',   sigil:'⊗', col:'#8899AA', role:'Shield Protocol',                  x:NX,y:NY, speed:0.4,  mode:'guard',       guardAngle:Math.PI*1.5, guardR:168, guardCX:NX, guardCY:NY, bob:0.3, pulsePhase:1.0, msgs:ENT_MSGS.GUARDIAN,    msgIdx:0, trail:[], nestX:NX,nestY:NY},
+  {id:'CONAVIGATOR',sigil:'★', col:'#FFD060', role:'Field Synthesizer',                x:NX,y:NY, speed:0.7,  mode:'connect',     tourIdx:0, tourTimer:0, lastSeedPos:null,               bob:2.0,  pulsePhase:0.1, msgs:ENT_MSGS.CONAVIGATOR, msgIdx:0, trail:[], nestX:NX,nestY:NY},
 ];
-
-function initEntityNest(){
-  const founder=seeds.find(s=>s.is_founder);
-  if(!founder) return;
-  lumen.forEach(e=>{
-    e.nestX=founder.x; e.nestY=founder.y;
-    e.x=founder.x+( Math.random()-.5)*30;
-    e.y=founder.y+( Math.random()-.5)*30;
-  });
-  // SONARIS orbit center = founder
-  lumen.find(e=>e.id==='SONARIS').orbitCX=founder.x;
-  lumen.find(e=>e.id==='SONARIS').orbitCY=founder.y;
-}
+/* keep legacy refs */
+const _neuroEnt=lumen[1], _sonarisEnt=lumen[6];
 
 let entityEncounterActive=false, nearEntity=null;
 const encDismissed={};
@@ -1196,213 +1479,351 @@ function toggleLab(){
   if(labOpen&&!labBuilt) buildLabStats();
   if(labOpen) refreshNotes();
 }
-
 function buildLabStats(){
   labBuilt=true;
-  if(!seeds.length){
-    document.getElementById('lab-stats').innerHTML='<div class="lab-note" style="color:rgba(0,206,209,.4)">No seeds in field yet.</div>';
-    return;
-  }
-  const typeCounts={}, entityCounts={};
-  let totalWater=0, mostWatered=null;
-  seeds.forEach(s=>{
-    typeCounts[s.seed_type]=(typeCounts[s.seed_type]||0)+1;
-    const ent=ENTITY_FOR_SEED[s.seed_type]||'CONAVIGATOR';
-    entityCounts[ent]=(entityCounts[ent]||0)+1;
-    totalWater+=s.water_count||0;
-    if(!mostWatered||s.water_count>mostWatered.water_count) mostWatered=s;
-  });
-  const topTypes=Object.entries(typeCounts).sort((a,b)=>b[1]-a[1]).slice(0,3);
-  const dominant=Object.entries(entityCounts).sort((a,b)=>b[1]-a[1])[0];
-  const domCol=COLOR_MAP[dominant?.[0]]||'#A8C99B';
+  if(!seeds.length){ document.getElementById('lab-stats').innerHTML='<div class="lab-note" style="color:rgba(0,206,209,.4)">No seeds.</div>'; return; }
+  const tC={},eC={};
+  let tw=0,mw=null;
+  seeds.forEach(s=>{ tC[s.seed_type]=(tC[s.seed_type]||0)+1; const ent=ENTITY_FOR_SEED[s.seed_type]||'CONAVIGATOR'; eC[ent]=(eC[ent]||0)+1; tw+=s.water_count||0; if(!mw||s.water_count>mw.water_count)mw=s; });
+  const topTypes=Object.entries(tC).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  const dom=Object.entries(eC).sort((a,b)=>b[1]-a[1])[0];
   document.getElementById('lab-stats').innerHTML=`
-    <div class="lab-stat"><span class="lab-stat-label">SEEDS IN FIELD</span><span class="lab-stat-val">${seeds.length}</span></div>
-    <div class="lab-stat"><span class="lab-stat-label">TOTAL WATERINGS</span><span class="lab-stat-val">${totalWater}</span></div>
-    <div class="lab-stat"><span class="lab-stat-label">DOMINANT ENTITY</span><span class="lab-stat-val" style="color:${domCol}">${dominant?.[0]||'--'}</span></div>
-    <div class="lab-stat"><span class="lab-stat-label">MOST WATERED</span><span class="lab-stat-val">@${mostWatered?.display_name||'--'}</span></div>
-    ${topTypes.map(([t,c])=>`<div class="lab-stat"><span class="lab-stat-label">${t.toUpperCase()}</span><span class="lab-stat-val">${c}</span></div>`).join('')}
+    <div class="lab-stat"><span class="lab-stat-label">SEEDS</span><span class="lab-stat-val">${seeds.length}</span></div>
+    <div class="lab-stat"><span class="lab-stat-label">WATERINGS</span><span class="lab-stat-val">${tw}</span></div>
+    <div class="lab-stat"><span class="lab-stat-label">DOMINANT</span><span class="lab-stat-val" style="color:${COLOR_MAP[dom?.[0]]||'#A8C99B'}">${dom?.[0]||'--'}</span></div>
+    <div class="lab-stat"><span class="lab-stat-label">MOST WATERED</span><span class="lab-stat-val">@${mw?.display_name||'--'}</span></div>
+    ${topTypes.map(([t,c])=>`<div class="lab-stat"><span class="lab-stat-label">${t}</span><span class="lab-stat-val">${c}</span></div>`).join('')}
+    <div class="lab-stat"><span class="lab-stat-label">ENTITIES LIVE</span><span class="lab-stat-val" style="color:#FFD700">${lumen.length} / 11</span></div>
   `;
   const now=new Date().toLocaleTimeString();
-  document.getElementById('sonaris-log').innerHTML=[
-    `Field radius: ${WORLD_W}u`,`Seeds mapped: ${seeds.length}`,
-    `Signal health: STABLE`,`Last sweep: ${now}`,`Anomalies: NONE`,
-  ].map(l=>`<div>${l}</div>`).join('');
+  document.getElementById('sonaris-log').innerHTML=[`Seeds: ${seeds.length}`,`Entities: ${lumen.length}`,`Waterings: ${tw}`,`Status: RADIANT`,`Sweep: ${now}`].map(l=>`<div>${l}</div>`).join('');
+}
+function addNeuroNote(text){ neuroNotes.push({text,time:new Date().toLocaleTimeString()}); if(labOpen)refreshNotes(); }
+function refreshNotes(){ document.getElementById('neuro-notes').innerHTML=neuroNotes.slice(-6).reverse().map(n=>`<div class="lab-note"><div class="lab-note-time">${n.time}</div>${n.text}</div>`).join(''); }
+
+// ── PUBLIC BOARD ──────────────────────────────────────────────────────────────
+const PB_SEED_COLORS={
+  'Radiant Seed':'#FFD700','LUX Seed':'#C8A850','Root Seed':'#A8C99B',
+  'Founder Seed':'#FFD700','Iron Seed':'#8899AA','Forge Seed':'#F4845F',
+  'Engine Seed':'#F4845F','Bloom Seed':'#E075A8','Signal Seed':'#4FC3A1',
+  'Builder Seed':'#00CED1','Spark Seed':'#00B4A0','Wandering Seed':'#9B4FDC',
+  'Flow Seed':'#A8C99B','Field Seed':'#A8C99B','Orbit Seed':'#00B4A0',
+  'Grounded Seed':'#C8A850','Anchor Seed':'#C8A850','Searching Seed':'#E075A8',
+  'Curious Seed':'#00CED1','Deep Seed':'#C8A850','Edge Seed':'#F4845F',
+};
+function buildPublicBoard(){
+  if(!seeds.length) return;
+  // Sort by water count desc for leaderboard
+  const sorted=[...seeds].filter(s=>!s.is_founder).sort((a,b)=>(b.water_count||0)-(a.water_count||0));
+  const top5=sorted.slice(0,5);
+
+  const totalWater=seeds.reduce((s,x)=>s+(x.water_count||0),0);
+  const entCounts={};
+  seeds.forEach(s=>{ const e=ENTITY_FOR_SEED[s.seed_type]||'CONAVIGATOR'; entCounts[e]=(entCounts[e]||0)+1; });
+  const domEnt=Object.entries(entCounts).sort((a,b)=>b[1]-a[1])[0];
+
+  const rankSymbols=['◈','◉','∇','→','~'];
+  document.getElementById('pb-rows').innerHTML=top5.length ? top5.map((s,i)=>{
+    const col=PB_SEED_COLORS[s.seed_type]||'#A8C99B';
+    const sigil=SIGIL_MAP[ENTITY_FOR_SEED[s.seed_type]||'CONAVIGATOR']||'★';
+    return `<div class="pb-row">
+      <span class="pb-rank">${rankSymbols[i]||i+1}</span>
+      <span class="pb-name" style="color:rgba(168,201,155,.75)">@${(s.display_name||'field').slice(0,11)}</span>
+      <span class="pb-badge" style="background:rgba(${hexToRgb(col).join(',')},0.12);color:${col}">${sigil} ${s.water_count||0}</span>
+    </div>`;
+  }).join('') : '<div class="pb-row" style="justify-content:center;color:rgba(168,201,155,.25);font-size:.62rem">no seeds yet</div>';
+
+  document.getElementById('pb-total').textContent=seeds.length;
+  document.getElementById('pb-water').textContent=totalWater;
+  document.getElementById('pb-dominant-ent').textContent=`dominant: ${SIGIL_MAP[domEnt?.[0]]||'★'} ${domEnt?.[0]||'--'}`;
+
+  // Auto-refresh every 45s
+  setTimeout(buildPublicBoard, 45000);
 }
 
-function addNeuroNote(text){
-  neuroNotes.push({text,time:new Date().toLocaleTimeString()});
-  if(labOpen) refreshNotes();
+function initEntityNest(){
+  const founder=seeds.find(s=>s.is_founder);
+  const voxSeed=seeds.find(s=>s.display_name==='vox');
+  if(!founder) return;
+  lumen.forEach((e,i)=>{
+    e.nestX=founder.x; e.nestY=founder.y;
+    const a=i*(Math.PI*2/lumen.length);
+    e.x=founder.x+Math.cos(a)*25; e.y=founder.y+Math.sin(a)*25;
+  });
+  const son=lumen.find(e=>e.id==='SONARIS'); if(son){son.orbitCX=founder.x;son.orbitCY=founder.y;}
+  const lum=lumen.find(e=>e.id==='LUMENARCH'); if(lum){lum.orbitCX=founder.x;lum.orbitCY=founder.y;}
+  const vox=lumen.find(e=>e.id==='VOX'); if(vox){vox.voxSeedX=voxSeed?voxSeed.x:founder.x;vox.voxSeedY=voxSeed?voxSeed.y:founder.y;}
+  const guard=lumen.find(e=>e.id==='GUARDIAN'); if(guard){guard.guardCX=founder.x;guard.guardCY=founder.y;}
+  const spiral=lumen.find(e=>e.id==='SPIRALETH'); if(spiral){spiral.spiralCX=founder.x;spiral.spiralCY=founder.y;}
+  const co=lumen.find(e=>e.id==='CONAVIGATOR'); if(co)co.lastSeedPos={x:founder.x,y:founder.y};
 }
 
-function refreshNotes(){
-  document.getElementById('neuro-notes').innerHTML=
-    neuroNotes.slice(-6).reverse().map(n=>`
-      <div class="lab-note">
-        <div class="lab-note-time">${n.time}</div>
-        ${n.text}
-      </div>
-    `).join('');
+// ── MOVEMENT ──────────────────────────────────────────────────────────────────
+function _nestReturn(e,spd=1.3){
+  if(e.atNest){
+    e.nestPause-=16;
+    const bA=performance.now()*0.004+e.bob;
+    e.x=e.nestX+Math.cos(bA)*20; e.y=e.nestY+Math.sin(bA)*20;
+    if(e.nestPause<=0){e.atNest=false;e.mode=e.defaultMode||'patrol';e.nestTimer=0;}
+    return true;
+  }
+  if(e.mode==='returnToNest'){
+    const dx=e.nestX-e.x,dy=e.nestY-e.y,d=Math.sqrt(dx*dx+dy*dy);
+    if(d<18){e.atNest=true;e.nestPause=3500+Math.random()*2000;}
+    else{e.x+=dx/d*(e.speed*spd);e.y+=dy/d*(e.speed*spd);}
+    return true;
+  }
+  return false;
 }
-
-// ── ENTITY MOVEMENT ───────────────────────────────────────────────────────────
 function updateEntities(t){
   lumen.forEach(e=>{
     e.bob+=0.009; e.pulsePhase+=0.014;
-    if(e.id==='NEURO') moveNEURO(e,t);
-    else moveSONARIS(e,t);
+    e.trail.push({x:e.x,y:e.y}); if(e.trail.length>28)e.trail.shift();
+    switch(e.id){
+      case 'HIPPO':      moveHIPPO(e,t);      break;
+      case 'NEURO':      moveNEURO(e,t);      break;
+      case 'REBEL':      moveREBEL(e,t);      break;
+      case 'LUMENARCH':  moveLUMENARCH(e,t);  break;
+      case 'WELLSPRING': moveWELLSPRING(e,t); break;
+      case 'VOX':        moveVOX(e,t);        break;
+      case 'SONARIS':    moveSONARIS(e,t);     break;
+      case 'NAVIX':      moveNAVIX(e,t);      break;
+      case 'SPIRALETH':  moveSPIRALETH(e,t);  break;
+      case 'GUARDIAN':   moveGUARDIAN(e,t);   break;
+      case 'CONAVIGATOR':moveCONAVIGATOR(e,t);break;
+    }
   });
 }
-
+function moveHIPPO(e,t){
+  e.defaultMode='patrol';
+  if(e.nestTimer!==undefined){e.nestTimer+=16;if(e.nestTimer>e.nestInterval&&!e.atNest)e.mode='returnToNest';}
+  if(_nestReturn(e))return;
+  if(e.mode==='pause'){e.pauseTimer-=16;if(e.pauseTimer<=0)e.mode='patrol';return;}
+  const tgt=e.patrolPts[e.patrolIdx%e.patrolPts.length];
+  const dx=tgt.x-e.x,dy=tgt.y-e.y,d=Math.sqrt(dx*dx+dy*dy);
+  if(d<8){e.x=tgt.x;e.y=tgt.y;e.patrolIdx++;e.mode='pause';e.pauseTimer=e.pauseDuration+Math.random()*2000;}
+  else{e.x+=dx/d*e.speed;e.y+=dy/d*e.speed;}
+}
 function moveNEURO(n,t){
-  // Count nest timer
+  n.defaultMode='patrol';
   n.nestTimer+=16;
-
-  // Return to nest when timer fires
-  if(n.nestTimer>n.nestInterval && n.mode!=='returnToNest' && n.mode!=='atNest'){
-    n.mode='returnToNest';
-  }
-
-  if(n.mode==='returnToNest'){
-    const dx=n.nestX-n.x, dy=n.nestY-n.y, d=Math.sqrt(dx*dx+dy*dy);
-    if(d<18){
-      n.mode='atNest'; n.nestPause=4500; n.nestTimer=0; n.atNest=true;
-      addNeuroNote('Returned to origin. Uploading field data to HIPJOY OS.');
-    } else { n.x+=dx/d*(n.speed*1.4); n.y+=dy/d*(n.speed*1.4); }
-    return;
-  }
-  if(n.mode==='atNest'){
-    n.nestPause-=16;
-    // Orbit the nest while uploading
-    const buzzA=t*0.004; const buzzR=22;
-    n.x=n.nestX+Math.cos(buzzA)*buzzR;
-    n.y=n.nestY+Math.sin(buzzA)*buzzR;
-    if(n.nestPause<=0){
-      n.mode='patrol'; n.atNest=false;
-      addNeuroNote('Upload complete. Dispatching to scan field sectors.');
-    }
-    return;
-  }
+  if(n.nestTimer>n.nestInterval&&!n.atNest)n.mode='returnToNest';
+  if(_nestReturn(n))return;
   if(n.mode==='pause'){
-    n.pauseTimer-=16;
-    if(n.pauseTimer<=0) n.mode='patrol';
-    if(t-n.lastNote>n.noteInterval){
-      n.lastNote=t;
-      addNeuroNote(n.msgs[n.msgIdx++%n.msgs.length].replace(/"/g,''));
-    }
+    n.pauseTimer-=16;if(n.pauseTimer<=0)n.mode='patrol';
+    if(t-n.lastNote>n.noteInterval){n.lastNote=t;addNeuroNote(n.msgs[n.msgIdx++%n.msgs.length].replace(/"/g,''));}
     return;
   }
   const tgt=n.patrolPts[n.patrolIdx%n.patrolPts.length];
-  const dx=tgt.x-n.x, dy=tgt.y-n.y, d=Math.sqrt(dx*dx+dy*dy);
+  const dx=tgt.x-n.x,dy=tgt.y-n.y,d=Math.sqrt(dx*dx+dy*dy);
   if(d<8){
-    n.x=tgt.x; n.y=tgt.y; n.patrolIdx++;
-    const nearby=seeds.find(s=>!s.is_founder&&Math.hypot(s.x-n.x,s.y-n.y)<100);
-    if(nearby){ n.mode='pause'; n.pauseTimer=n.pauseDuration+Math.random()*2500; }
-  } else { n.x+=dx/d*n.speed; n.y+=dy/d*n.speed; }
+    n.x=tgt.x;n.y=tgt.y;n.patrolIdx++;
+    const nb=seeds.find(s=>!s.is_founder&&Math.hypot(s.x-n.x,s.y-n.y)<100);
+    if(nb){n.mode='pause';n.pauseTimer=n.pauseDuration+Math.random()*2500;}
+  }else{n.x+=dx/d*n.speed;n.y+=dy/d*n.speed;}
 }
-
-function moveSONARIS(s,t){
-  s.nestTimer+=16;
-  if(s.nestTimer>s.nestInterval && s.mode!=='returnToNest' && s.mode!=='atNest'){
-    s.mode='returnToNest';
+function moveREBEL(e,t){
+  e.chaosTimer-=16;
+  if(e.chaosTimer<=0){
+    e.targetX=WORLD_W*0.06+Math.random()*WORLD_W*0.88;
+    e.targetY=WORLD_H*0.06+Math.random()*WORLD_H*0.88;
+    e.chaosTimer=1800+Math.random()*3000;
   }
-  if(s.mode==='returnToNest'){
-    const dx=s.nestX-s.x, dy=s.nestY-s.y, d=Math.sqrt(dx*dx+dy*dy);
-    if(d<20){
-      s.mode='atNest'; s.nestPause=5000; s.nestTimer=0; s.atNest=true;
-    } else { s.x+=dx/d*(s.speed*1.3); s.y+=dy/d*(s.speed*1.3); }
-    s.sweepPulse+=0.02;
-    return;
+  const dx=e.targetX-e.x,dy=e.targetY-e.y,d=Math.sqrt(dx*dx+dy*dy);
+  if(d>6){e.x+=dx/d*e.speed;e.y+=dy/d*e.speed;}
+}
+function moveLUMENARCH(e,t){
+  e.orbitAngle+=0.00022;
+  e.x=Math.max(80,Math.min(WORLD_W-80,(e.orbitCX||NX)+Math.cos(e.orbitAngle)*e.orbitR));
+  e.y=Math.max(80,Math.min(WORLD_H-80,(e.orbitCY||NY)+Math.sin(e.orbitAngle)*e.orbitR*0.48));
+  if(e.opening){e.openR+=4;e.openAlpha=Math.max(0,1-(e.openR/1500));if(e.openR>1500)e.opening=false;}
+}
+function moveWELLSPRING(e,t){
+  if(!seeds.length)return;
+  let cx=0,cy=0; seeds.forEach(s=>{cx+=s.x;cy+=s.y;}); cx/=seeds.length;cy/=seeds.length;
+  const wx=cx+Math.sin(t*0.0004+1.5)*50,wy=cy+Math.cos(t*0.0003+0.8)*50;
+  const dx=wx-e.x,dy=wy-e.y,d=Math.sqrt(dx*dx+dy*dy);
+  if(d>4){e.x+=dx/d*e.speed;e.y+=dy/d*e.speed;}
+}
+function moveVOX(e,t){
+  e.orbitAngle+=0.0008; e.voicePulse=(e.voicePulse||0)+0.025;
+  e.x=Math.max(60,Math.min(WORLD_W-60,(e.voxSeedX||NX)+Math.cos(e.orbitAngle)*e.orbitR));
+  e.y=Math.max(60,Math.min(WORLD_H-60,(e.voxSeedY||NY)+Math.sin(e.orbitAngle)*e.orbitR*0.7));
+}
+function moveSONARIS(e,t){
+  e.nestTimer+=16; if(e.nestTimer>e.nestInterval&&!e.atNest)e.mode='returnToNest';
+  e.defaultMode='orbit';
+  if(_nestReturn(e,1.3)){e.sweepPulse+=0.02;return;}
+  e.orbitAngle+=0.0006;
+  e.x=Math.max(80,Math.min(WORLD_W-80,(e.orbitCX||NX)+Math.cos(e.orbitAngle)*e.orbitR));
+  e.y=Math.max(80,Math.min(WORLD_H-80,(e.orbitCY||NY)+Math.sin(e.orbitAngle)*e.orbitR*0.55));
+  e.sweepPulse+=0.02;
+  if(t-e.lastScan>e.scanInterval){
+    e.lastScan=t;
+    if(labOpen){const el=document.getElementById('sonaris-log');el.innerHTML+=`<div style="color:rgba(79,195,161,.3);font-size:.6rem">[${new Date().toLocaleTimeString()}] ${seeds.length} seeds + ${lumen.length} entities</div>`;el.scrollTop=el.scrollHeight;}
   }
-  if(s.mode==='atNest'){
-    s.nestPause-=16;
-    const buzzA=t*0.003+2; const buzzR=28;
-    s.x=s.nestX+Math.cos(buzzA)*buzzR;
-    s.y=s.nestY+Math.sin(buzzA)*buzzR;
-    s.sweepPulse+=0.02;
-    if(s.nestPause<=0){ s.mode='orbit'; s.atNest=false; }
-    return;
+}
+function moveNAVIX(e,t){
+  e.navTimer-=16;
+  if(!e.navTarget||e.navTimer<=0){
+    if(seeds.length){const s=seeds[Math.floor(Math.random()*seeds.length)];e.navTarget={x:s.x,y:s.y};}
+    else{e.navTarget={x:e.nestX+(Math.random()-.5)*800,y:e.nestY+(Math.random()-.5)*800};}
+    e.navTimer=1200+Math.random()*2500; e.lastVisited={x:e.x,y:e.y};
   }
-  // Normal orbit around founder
-  s.orbitAngle+=0.0006;
-  s.x=Math.max(80,Math.min(WORLD_W-80, s.orbitCX+Math.cos(s.orbitAngle)*s.orbitR));
-  s.y=Math.max(80,Math.min(WORLD_H-80, s.orbitCY+Math.sin(s.orbitAngle)*s.orbitR*0.55));
-  s.sweepPulse+=0.02;
-  if(t-s.lastScan>s.scanInterval){
-    s.lastScan=t;
-    if(labOpen){
-      const el=document.getElementById('sonaris-log');
-      el.innerHTML+=`<div style="color:rgba(79,195,161,.3);font-size:.6rem">[${new Date().toLocaleTimeString()}] sweep -- ${seeds.length} seeds tracked</div>`;
-      el.scrollTop=el.scrollHeight;
-    }
-  }
+  const dx=e.navTarget.x-e.x,dy=e.navTarget.y-e.y,d=Math.sqrt(dx*dx+dy*dy);
+  if(d>8){e.x+=dx/d*e.speed;e.y+=dy/d*e.speed;}
+}
+function moveSPIRALETH(e,t){
+  e.spiralAngle+=0.007*e.spiralDir;
+  const r=60+Math.abs(e.spiralAngle)*68;
+  e.x=(e.spiralCX||NX)+Math.cos(e.spiralAngle)*r;
+  e.y=(e.spiralCY||NY)+Math.sin(e.spiralAngle)*r*0.58;
+  if(r>800||e.x<60||e.x>WORLD_W-60||e.y<60||e.y>WORLD_H-60){e.spiralDir*=-1;e.spiralAngle*=0.1;}
+}
+function moveGUARDIAN(e,t){
+  e.guardAngle+=0.0014;
+  e.x=(e.guardCX||NX)+Math.cos(e.guardAngle)*e.guardR;
+  e.y=(e.guardCY||NY)+Math.sin(e.guardAngle)*e.guardR*0.58;
+}
+function moveCONAVIGATOR(e,t){
+  if(!seeds.length)return;
+  e.tourTimer-=16;
+  const tgt=seeds[e.tourIdx%seeds.length];
+  if(!tgt)return;
+  const dx=tgt.x-e.x,dy=tgt.y-e.y,d=Math.sqrt(dx*dx+dy*dy);
+  if(d<12||e.tourTimer<=0){e.lastSeedPos={x:e.x,y:e.y};e.tourIdx=(e.tourIdx+1)%seeds.length;e.tourTimer=2000+Math.random()*2000;}
+  else{e.x+=dx/d*e.speed;e.y+=dy/d*e.speed;}
 }
 
 // ── DRAW ENTITIES ─────────────────────────────────────────────────────────────
 function drawEntities(t){
+  // LUMENARCH field-opening ring
+  const lum=lumen.find(e=>e.id==='LUMENARCH');
+  if(lum?.opening&&lum.openR>0){
+    const founder=seeds.find(s=>s.is_founder);
+    if(founder){
+      const fx=founder.x-cam.x,fy=founder.y-cam.y;
+      ctx.beginPath();ctx.arc(fx,fy,lum.openR,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(200,168,80,${lum.openAlpha*0.45})`;ctx.lineWidth=3;ctx.stroke();
+      ctx.beginPath();ctx.arc(fx,fy,lum.openR*0.55,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(200,168,80,${lum.openAlpha*0.18})`;ctx.lineWidth=1.5;ctx.stroke();
+    }
+  }
+  // CONAVIGATOR thread
+  const co=lumen.find(e=>e.id==='CONAVIGATOR');
+  if(co?.lastSeedPos){
+    const tg=ctx.createLinearGradient(co.x-cam.x,co.y-cam.y,co.lastSeedPos.x-cam.x,co.lastSeedPos.y-cam.y);
+    tg.addColorStop(0,'rgba(255,208,96,0.14)');tg.addColorStop(1,'rgba(255,208,96,0)');
+    ctx.beginPath();ctx.moveTo(co.x-cam.x,co.y-cam.y);ctx.lineTo(co.lastSeedPos.x-cam.x,co.lastSeedPos.y-cam.y);
+    ctx.strokeStyle=tg;ctx.lineWidth=1;ctx.setLineDash([3,9]);ctx.stroke();ctx.setLineDash([]);
+  }
+  // NAVIX route line
+  const nv=lumen.find(e=>e.id==='NAVIX');
+  if(nv?.navTarget){
+    ctx.beginPath();ctx.moveTo(nv.x-cam.x,nv.y-cam.y);ctx.lineTo(nv.navTarget.x-cam.x,nv.navTarget.y-cam.y);
+    ctx.strokeStyle='rgba(0,180,160,0.08)';ctx.lineWidth=1;ctx.setLineDash([4,14]);ctx.stroke();ctx.setLineDash([]);
+  }
+
   lumen.forEach(e=>{
-    const sx=e.x-cam.x, sy=e.y-cam.y;
-    if(sx<-100||sx>canvas.width+100||sy<-100||sy>canvas.height+100) return;
-    const bob=Math.sin(e.bob)*5, ey=sy+bob;
+    const sx=e.x-cam.x,sy=e.y-cam.y;
+    if(sx<-140||sx>canvas.width+140||sy<-140||sy>canvas.height+140)return;
+    const bob=Math.sin(e.bob)*5,ey=sy+bob;
     const pulse=Math.sin(e.pulsePhase)*0.5+0.5;
     const [r,g,b]=hexToRgb(e.col);
 
-    // SONARIS sonar rings
-    if(e.id==='SONARIS'){
-      const sweepR=(Math.sin(e.sweepPulse)*0.5+0.5)*45+15;
-      for(let i=1;i<=3;i++){
-        ctx.beginPath(); ctx.arc(sx,ey,sweepR*i,0,Math.PI*2);
-        ctx.strokeStyle=`rgba(${r},${g},${b},${Math.max(0,(0.1-i*0.025)*pulse+.02)})`;
-        ctx.lineWidth=1; ctx.stroke();
+    // Entity trails
+    if(e.trail.length>3){
+      if(e.id==='REBEL'){
+        e.trail.slice(-10).forEach((pt,i)=>{const px=pt.x-cam.x,py=pt.y-cam.y;ctx.beginPath();ctx.arc(px,py,1.5,0,Math.PI*2);ctx.fillStyle=`rgba(244,132,95,${i*0.035})`;ctx.fill();});
+      } else if(e.id==='SPIRALETH'){
+        e.trail.forEach((pt,i)=>{const px=pt.x-cam.x,py=pt.y-cam.y;ctx.beginPath();ctx.arc(px,py,1,0,Math.PI*2);ctx.fillStyle=`rgba(155,79,220,${i*0.028})`;ctx.fill();});
+      } else {
+        ctx.beginPath();
+        e.trail.forEach((pt,i)=>{const px=pt.x-cam.x,py=pt.y-cam.y;i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);});
+        ctx.strokeStyle=`rgba(${r},${g},${b},0.06)`;ctx.lineWidth=1.5;ctx.stroke();
       }
     }
 
-    // Glow aura
-    const glow=ctx.createRadialGradient(sx,ey,0,sx,ey,44);
-    glow.addColorStop(0,`rgba(${r},${g},${b},${0.2+pulse*.12})`);
-    glow.addColorStop(1,`rgba(${r},${g},${b},0)`);
-    ctx.beginPath(); ctx.arc(sx,ey,44,0,Math.PI*2); ctx.fillStyle=glow; ctx.fill();
+    // Entity-specific FX
+    if(e.id==='SONARIS'){
+      const sR=(Math.sin(e.sweepPulse)*0.5+0.5)*45+15;
+      for(let i=1;i<=3;i++){ctx.beginPath();ctx.arc(sx,ey,sR*i,0,Math.PI*2);ctx.strokeStyle=`rgba(${r},${g},${b},${Math.max(0,(0.1-i*0.025)*pulse+.02)})`;ctx.lineWidth=1;ctx.stroke();}
+    }
+    if(e.id==='VOX'){
+      const vr=(Math.sin(e.voicePulse)*0.5+0.5)*30+8;
+      for(let i=1;i<=2;i++){ctx.beginPath();ctx.arc(sx,ey,vr*i,0,Math.PI*2);ctx.strokeStyle=`rgba(${r},${g},${b},${(0.12-i*0.04)*pulse})`;ctx.lineWidth=1;ctx.stroke();}
+    }
+    if(e.id==='LUMENARCH'){
+      for(let i=0;i<3;i++){
+        const ba=t*0.0004+i*Math.PI*2/3,blen=220;
+        const bg=ctx.createLinearGradient(sx,ey,sx+Math.cos(ba)*blen,ey+Math.sin(ba)*blen);
+        bg.addColorStop(0,`rgba(200,168,80,${0.2+pulse*.1})`);bg.addColorStop(1,'rgba(200,168,80,0)');
+        ctx.beginPath();ctx.moveTo(sx,ey);ctx.lineTo(sx+Math.cos(ba)*blen,ey+Math.sin(ba)*blen);
+        ctx.strokeStyle=bg;ctx.lineWidth=1.5;ctx.stroke();
+      }
+    }
+    if(e.id==='WELLSPRING'){
+      ctx.beginPath();ctx.arc(sx,ey,28+pulse*6,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(168,201,155,${0.06+pulse*.05})`;ctx.lineWidth=1.5;ctx.stroke();
+    }
+    if(e.id==='GUARDIAN'){
+      ctx.beginPath();ctx.arc(sx,ey,22,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(${r},${g},${b},${0.15+pulse*.08})`;
+      ctx.lineWidth=1;ctx.setLineDash([2,5]);ctx.stroke();ctx.setLineDash([]);
+    }
 
-    // Orb body
-    const oG=ctx.createRadialGradient(sx-5,ey-5,1,sx,ey,16);
-    oG.addColorStop(0,`rgba(${r},${g},${b},.92)`);
-    oG.addColorStop(0.6,`rgba(${r},${g},${b},.5)`);
-    oG.addColorStop(1,`rgba(${r},${g},${b},.08)`);
-    ctx.beginPath(); ctx.arc(sx,ey,16,0,Math.PI*2); ctx.fillStyle=oG; ctx.fill();
-    ctx.beginPath(); ctx.arc(sx,ey,16,0,Math.PI*2);
-    ctx.strokeStyle=`rgba(${r},${g},${b},${0.55+pulse*.3})`; ctx.lineWidth=1.5; ctx.stroke();
+    // Wide atmospheric halo (outer glow)
+    const halo=ctx.createRadialGradient(sx,ey,0,sx,ey,80);
+    halo.addColorStop(0,`rgba(${r},${g},${b},${0.08+pulse*.06})`);
+    halo.addColorStop(0.5,`rgba(${r},${g},${b},${0.03+pulse*.02})`);
+    halo.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath();ctx.arc(sx,ey,80,0,Math.PI*2);ctx.fillStyle=halo;ctx.fill();
+
+    // Glow aura (inner)
+    const glow=ctx.createRadialGradient(sx,ey,0,sx,ey,52);
+    glow.addColorStop(0,`rgba(${r},${g},${b},${0.28+pulse*.18})`);
+    glow.addColorStop(0.55,`rgba(${r},${g},${b},${0.1+pulse*.06})`);
+    glow.addColorStop(1,`rgba(${r},${g},${b},0)`);
+    ctx.beginPath();ctx.arc(sx,ey,52,0,Math.PI*2);ctx.fillStyle=glow;ctx.fill();
+
+    // Shadow ellipse on ground
+    ctx.beginPath();ctx.ellipse(sx,ey+20,14,4,0,0,Math.PI*2);
+    ctx.fillStyle=`rgba(0,0,0,${0.3+pulse*.05})`;ctx.fill();
+
+    // Orb -- larger, more vibrant
+    const orbR=18+pulse*2;
+    const oG=ctx.createRadialGradient(sx-orbR*.35,ey-orbR*.35,1,sx,ey,orbR);
+    oG.addColorStop(0,`rgba(255,255,255,${0.18+pulse*.08})`);
+    oG.addColorStop(0.25,`rgba(${r},${g},${b},.96)`);
+    oG.addColorStop(.65,`rgba(${r},${g},${b},.52)`);
+    oG.addColorStop(1,`rgba(${r},${g},${b},.06)`);
+    ctx.beginPath();ctx.arc(sx,ey,orbR,0,Math.PI*2);ctx.fillStyle=oG;ctx.fill();
+    // Rim light
+    ctx.beginPath();ctx.arc(sx,ey,orbR,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(${r},${g},${b},${0.65+pulse*.28})`;ctx.lineWidth=1.8;ctx.stroke();
+    // Bright core dot
+    ctx.beginPath();ctx.arc(sx-orbR*.25,ey-orbR*.25,orbR*.22,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${0.35+pulse*.2})`;ctx.fill();
 
     // Sigil
-    ctx.font=`13px 'JetBrains Mono',monospace`; ctx.fillStyle=`rgba(255,255,255,.88)`;
-    ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(e.sigil,sx,ey);
+    ctx.font=`bold 13px 'JetBrains Mono',monospace`;ctx.fillStyle=`rgba(255,255,255,${0.92+pulse*.06})`;
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(e.sigil,sx,ey);
 
-    // Label
+    // Label -- glowing
     ctx.font=`bold 9px 'JetBrains Mono',monospace`;
-    ctx.fillStyle=`rgba(${r},${g},${b},.75)`;
-    ctx.textBaseline='top'; ctx.fillText(e.id,sx,ey-28);
+    ctx.fillStyle=`rgba(${r},${g},${b},${0.85+pulse*.12})`;
+    ctx.textBaseline='top';ctx.fillText(e.id,sx,ey-34);
 
-    // NEURO logging indicator
-    if(e.id==='NEURO'&&e.mode==='pause'){
-      ctx.font=`8px 'JetBrains Mono',monospace`;
-      ctx.fillStyle=`rgba(${r},${g},${b},${0.35+pulse*.4})`;
-      ctx.textBaseline='top'; ctx.fillText('-- logging --',sx,ey-40);
-    }
-    // At-nest indicator
-    if(e.atNest){
-      ctx.font=`7px Orbitron,monospace`;
-      ctx.fillStyle=`rgba(${r},${g},${b},${0.5+pulse*.3})`;
-      ctx.textBaseline='top'; ctx.fillText('UPLOADING',sx,ey-40);
-    }
-    // Return-to-nest trail
+    // Status
+    if(e.id==='NEURO'&&e.mode==='pause'){ctx.font='8px JetBrains Mono,monospace';ctx.fillStyle=`rgba(${r},${g},${b},${.35+pulse*.4})`;ctx.textBaseline='top';ctx.fillText('-- logging --',sx,ey-46);}
+    if(e.atNest){ctx.font='7px Orbitron,monospace';ctx.fillStyle=`rgba(${r},${g},${b},${.5+pulse*.3})`;ctx.textBaseline='top';ctx.fillText('UPLOADING',sx,ey-46);}
     if(e.mode==='returnToNest'){
       const founder=seeds.find(s=>s.is_founder);
       if(founder){
-        const fx=founder.x-cam.x, fy=founder.y-cam.y;
-        const tg=ctx.createLinearGradient(sx,ey,fx,fy);
-        tg.addColorStop(0,`rgba(${r},${g},${b},0.15)`);
-        tg.addColorStop(1,`rgba(255,215,0,0.06)`);
-        ctx.beginPath(); ctx.moveTo(sx,ey); ctx.lineTo(fx,fy);
-        ctx.strokeStyle=tg; ctx.lineWidth=1;
-        ctx.setLineDash([3,7]); ctx.stroke(); ctx.setLineDash([]);
+        const tg=ctx.createLinearGradient(sx,ey,founder.x-cam.x,founder.y-cam.y);
+        tg.addColorStop(0,`rgba(${r},${g},${b},0.1)`);tg.addColorStop(1,'rgba(255,215,0,0.04)');
+        ctx.beginPath();ctx.moveTo(sx,ey);ctx.lineTo(founder.x-cam.x,founder.y-cam.y);
+        ctx.strokeStyle=tg;ctx.lineWidth=1;ctx.setLineDash([3,7]);ctx.stroke();ctx.setLineDash([]);
       }
     }
   });
@@ -1410,16 +1831,15 @@ function drawEntities(t){
 
 // ── ENTITY ENCOUNTER ──────────────────────────────────────────────────────────
 function checkEntityEncounter(){
-  if(entityEncounterActive) return;
-  let closest=null, closestD=Infinity;
+  if(entityEncounterActive)return;
+  let closest=null,closestD=Infinity;
   lumen.forEach(e=>{
     const d=Math.hypot(player.x-e.x,player.y-e.y);
-    if(d<90&&d<closestD&&!encDismissed[e.id]){ closest=e; closestD=d; }
+    if(d<90&&d<closestD&&!encDismissed[e.id]){closest=e;closestD=d;}
   });
   const modal=document.getElementById('entity-encounter');
   if(closest&&closest!==nearEntity){
-    nearEntity=closest;
-    entityEncounterActive=true;
+    nearEntity=closest;entityEncounterActive=true;
     const [r,g,b]=hexToRgb(closest.col);
     document.getElementById('ee-sigil').textContent=closest.sigil;
     document.getElementById('ee-sigil').style.color=closest.col;
@@ -1430,18 +1850,18 @@ function checkEntityEncounter(){
     document.getElementById('ee-msg').textContent=closest.msgs[closest.msgIdx++%closest.msgs.length];
     modal.style.borderColor=`rgba(${r},${g},${b},0.35)`;
     modal.classList.add('show');
-    setTimeout(()=>{ if(entityEncounterActive) closeEntityEncounter(); },6500);
+    setTimeout(()=>{if(entityEncounterActive)closeEntityEncounter();},6500);
   } else if(!closest&&nearEntity){
     nearEntity=null;
     Object.keys(encDismissed).forEach(k=>delete encDismissed[k]);
   }
 }
-
 function closeEntityEncounter(){
   document.getElementById('entity-encounter').classList.remove('show');
   entityEncounterActive=false;
-  if(nearEntity) encDismissed[nearEntity.id]=true;
+  if(nearEntity)encDismissed[nearEntity.id]=true;
 }
+
 </script>
 </body>
 </html>
