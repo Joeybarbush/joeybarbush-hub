@@ -31,19 +31,32 @@ nav{
 /* SEED ENCOUNTER CARD */
 #encounter{
   position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
-  background:rgba(7,16,10,.94);backdrop-filter:blur(18px);
-  border:1px solid rgba(168,201,155,.22);border-radius:14px;
-  padding:1rem 1.4rem;display:flex;align-items:center;gap:1rem;
+  background:rgba(7,16,10,.96);backdrop-filter:blur(20px);
+  border:1px solid rgba(168,201,155,.22);border-radius:16px;
+  padding:1rem 1.3rem 1rem;
   opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;
-  min-width:240px;max-width:340px;z-index:40;
+  min-width:260px;max-width:360px;z-index:40;
 }
 #encounter.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.enc-top{display:flex;align-items:center;gap:1rem;margin-bottom:.6rem}
 .enc-sigil{font-size:2rem;flex-shrink:0;filter:drop-shadow(0 0 10px var(--enc-col))}
-.enc-right{display:flex;flex-direction:column;gap:.25rem}
+.enc-right{display:flex;flex-direction:column;gap:.2rem}
 .enc-seed{font-family:Orbitron;font-size:.78rem;letter-spacing:.1em;color:var(--enc-col)}
 .enc-handle{font-size:.72rem;color:rgba(168,201,155,.6)}
 .enc-stamp{font-size:.6rem;color:rgba(168,201,155,.3);letter-spacing:.1em}
 .enc-water{font-size:.62rem;color:rgba(100,180,255,.6)}
+/* seed notes section */
+.enc-notes{margin-top:.55rem;border-top:1px solid rgba(168,201,155,.08);padding-top:.55rem}
+.enc-note{font-size:.66rem;color:rgba(168,201,155,.55);line-height:1.5;margin-bottom:.3rem;padding:.35rem .5rem;background:rgba(168,201,155,.04);border-radius:6px}
+.enc-note-from{font-size:.58rem;color:rgba(168,201,155,.3);margin-bottom:.15rem}
+.enc-msg-row{display:flex;gap:.5rem;margin-top:.55rem}
+.enc-msg-input{flex:1;background:rgba(168,201,155,.06);border:1px solid rgba(168,201,155,.15);border-radius:6px;padding:.38rem .6rem;color:rgba(168,201,155,.85);font-family:'JetBrains Mono',monospace;font-size:.65rem;outline:none}
+.enc-msg-input:focus{border-color:rgba(168,201,155,.35)}
+.enc-msg-send{background:rgba(168,201,155,.12);border:1px solid rgba(168,201,155,.25);border-radius:6px;padding:.38rem .7rem;color:var(--sage);font-size:.65rem;cursor:pointer;white-space:nowrap;font-family:'JetBrains Mono',monospace;transition:background .2s}
+.enc-msg-send:hover{background:rgba(168,201,155,.22)}
+.enc-no-auth{font-size:.63rem;color:rgba(168,201,155,.3);margin-top:.45rem;text-align:center}
+/* affinity pulse */
+.enc-affinity{font-size:.62rem;margin-top:.35rem;letter-spacing:.06em}
 
 /* MINI MAP */
 #minimap{
@@ -87,6 +100,65 @@ nav{
   background:rgba(7,16,10,.7);border:1px solid rgba(168,201,155,.08);
   border-radius:8px;padding:.4rem .7rem;line-height:1.7;
 }
+
+/* ENTITY ENCOUNTER */
+#entity-encounter{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.92);
+  background:rgba(7,16,10,.96);backdrop-filter:blur(20px);
+  border-radius:16px;padding:1.4rem 1.6rem;
+  min-width:280px;max-width:340px;
+  opacity:0;pointer-events:none;transition:all .3s;z-index:80;
+  text-align:center;
+}
+#entity-encounter.show{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+#entity-encounter .ee-sigil{font-size:2.8rem;margin-bottom:.4rem}
+#entity-encounter .ee-name{font-family:Orbitron;font-size:.9rem;letter-spacing:.15em;margin-bottom:.25rem}
+#entity-encounter .ee-role{font-size:.68rem;letter-spacing:.06em;margin-bottom:.8rem}
+#entity-encounter .ee-msg{font-size:.77rem;line-height:1.7;font-style:italic;color:rgba(255,255,255,.6)}
+#entity-encounter .ee-close{
+  margin-top:1rem;padding:.4rem 1rem;background:transparent;
+  border:1px solid rgba(255,255,255,.12);border-radius:6px;
+  color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;cursor:pointer;transition:all .2s;
+}
+#entity-encounter .ee-close:hover{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.7)}
+
+/* NEURO LAB PANEL */
+#neuro-lab{
+  position:fixed;right:0;top:0;bottom:0;width:300px;
+  background:rgba(0,8,4,.92);backdrop-filter:blur(16px);
+  border-left:1px solid rgba(0,206,209,.18);
+  transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
+  z-index:60;overflow-y:auto;padding:5rem 1.2rem 1.5rem;
+}
+#neuro-lab.open{transform:translateX(0)}
+.lab-title{font-family:Orbitron;font-size:.72rem;letter-spacing:.18em;color:#00CED1;margin-bottom:1.2rem}
+.lab-stat{display:flex;justify-content:space-between;align-items:center;padding:.45rem 0;border-bottom:1px solid rgba(0,206,209,.08);font-size:.7rem}
+.lab-stat-label{color:rgba(0,206,209,.5);letter-spacing:.06em}
+.lab-stat-val{color:#00CED1;font-family:Orbitron;font-size:.75rem}
+.lab-note{
+  margin-top:.5rem;padding:.6rem .8rem;background:rgba(0,206,209,.04);
+  border:1px solid rgba(0,206,209,.1);border-radius:6px;
+  font-size:.68rem;color:rgba(0,206,209,.6);line-height:1.65;
+}
+.lab-note-time{font-size:.58rem;color:rgba(0,206,209,.3);margin-bottom:.2rem;letter-spacing:.08em}
+.sonaris-sweep{
+  margin-top:1rem;padding:.8rem;background:rgba(0,180,160,.04);
+  border:1px solid rgba(0,180,160,.15);border-radius:8px;
+}
+.sonaris-sweep-title{font-family:Orbitron;font-size:.65rem;letter-spacing:.12em;color:#00B4A0;margin-bottom:.5rem}
+.sweep-line{font-size:.65rem;color:rgba(0,180,160,.5);line-height:1.7}
+
+/* LAB TOGGLE BTN */
+#lab-toggle{
+  position:fixed;right:14px;bottom:70px;z-index:61;
+  background:rgba(0,206,209,.08);border:1px solid rgba(0,206,209,.3);
+  color:#00CED1;font-family:Orbitron;font-size:.6rem;letter-spacing:.1em;
+  padding:.45rem .8rem;border-radius:8px;cursor:pointer;transition:background .2s;
+}
+#lab-toggle:hover{background:rgba(0,206,209,.18)}
+
+/* SONARIS PULSE overlay on canvas (drawn in JS) */
 </style>
 </head>
 <body>
@@ -111,12 +183,19 @@ nav{
 <div id="minimap"><canvas id="mmc"></canvas></div>
 
 <div id="encounter">
-  <div class="enc-sigil" id="enc-sigil">★</div>
-  <div class="enc-right">
-    <div class="enc-seed" id="enc-seed">Field Seed</div>
-    <div class="enc-handle" id="enc-handle">@fieldmember</div>
-    <div class="enc-stamp" id="enc-stamp">HIPJOY FIELD</div>
-    <div class="enc-water" id="enc-water"></div>
+  <div class="enc-top">
+    <div class="enc-sigil" id="enc-sigil">★</div>
+    <div class="enc-right">
+      <div class="enc-seed" id="enc-seed">Field Seed</div>
+      <div class="enc-handle" id="enc-handle">@fieldmember</div>
+      <div class="enc-stamp" id="enc-stamp">HIPJOY FIELD</div>
+      <div class="enc-water" id="enc-water"></div>
+      <div class="enc-affinity" id="enc-affinity"></div>
+    </div>
+  </div>
+  <div class="enc-notes" id="enc-notes-wrap">
+    <div id="enc-notes-list"></div>
+    <div id="enc-msg-form"></div>
   </div>
 </div>
 
@@ -131,6 +210,34 @@ nav{
 
 <!-- JOYSTICK -->
 <div id="jpad"><div id="jbase"></div><div id="jthumb"></div></div>
+
+<!-- ENTITY ENCOUNTER MODAL -->
+<div id="entity-encounter">
+  <div class="ee-sigil" id="ee-sigil">∇</div>
+  <div class="ee-name" id="ee-name">NEURO</div>
+  <div class="ee-role" id="ee-role">Neural Net -- Field Analyst</div>
+  <div class="ee-msg" id="ee-msg">"Processing field data..."</div>
+  <button class="ee-close" onclick="closeEntityEncounter()">dismiss</button>
+</div>
+
+<!-- NEURO LAB PANEL -->
+<div id="neuro-lab">
+  <div class="lab-title">∇ NEURO LAB -- FIELD REPORT</div>
+  <div id="lab-stats"></div>
+  <div style="margin-top:1.2rem">
+    <div class="sonaris-sweep">
+      <div class="sonaris-sweep-title">≋ SONARIS ECOSYSTEM SCAN</div>
+      <div id="sonaris-log" class="sweep-line">initializing scan...</div>
+    </div>
+  </div>
+  <div style="margin-top:1.2rem">
+    <div class="lab-title" style="font-size:.62rem;margin-bottom:.6rem">NEURO NOTES LOG</div>
+    <div id="neuro-notes"></div>
+  </div>
+</div>
+
+<!-- LAB TOGGLE -->
+<button id="lab-toggle" onclick="toggleLab()">∇ LAB</button>
 
 <script>
 const SUPABASE_URL = 'https://mdbzenhhljwmkdcmtawd.supabase.co';
@@ -190,6 +297,8 @@ let keys = {};
 let nearSeed = null;
 let started = false;
 let lastTime = 0;
+let currentUser = null;
+let currentUserRow = null;
 
 // ── RESIZE ────────────────────────────────────────────────────────────────────
 function resize(){
@@ -216,6 +325,7 @@ function layoutSeeds(data){
     };
     const nm = row.display_name || 'seed';
     return {
+      id:           row.id,
       x:     startX + col * spacing + jitter(nm+'x'),
       y:     startY + r   * spacing + jitter(nm+'y'),
       seed_type:    row.seed_type    || 'Field Seed',
@@ -223,7 +333,7 @@ function layoutSeeds(data){
       water_count:  row.water_count  || 0,
       col:   getSeedColor(row.seed_type || 'Field Seed'),
       sigil: getSeedSigil(row.seed_type || 'Field Seed'),
-      pulse: Math.random() * Math.PI * 2, // phase offset for animation
+      pulse: Math.random() * Math.PI * 2,
       bob:   Math.random() * Math.PI * 2,
       stampId: Math.floor(Math.random()*9000+1000),
     };
@@ -314,6 +424,8 @@ function update(dt){
     if(p.a<.05||p.a>1) p.da*=-1;
   });
 
+  // Gravity: seeds drift toward entity-cluster centroid
+  applySeedGravity();
 }
 
 // ── DRAW ──────────────────────────────────────────────────────────────────────
@@ -351,6 +463,9 @@ function draw(t){
       : `rgba(200,168,80,${p.a*.25})`;
     ctx.fill();
   });
+
+  // ── AFFINITY LINES ──
+  drawAffinityLines();
 
   // ── SEEDS ──
   seeds.forEach(s=>{
@@ -421,6 +536,9 @@ function draw(t){
     ctx.fillText('@'+s.display_name.slice(0,10), sx, isy - orbR - 16);
   });
 
+  // ── ENTITIES ──
+  drawEntities(t);
+
   // ── PLAYER ──
   const px = player.x - cam.x;
   const py = player.y - cam.y;
@@ -473,6 +591,15 @@ function drawMinimap(){
     mctx.fill();
   });
 
+  // Entity NPC dots
+  if(typeof lumen!=='undefined') lumen.forEach(e=>{
+    const [r,g,b]=hexToRgb(e.col);
+    mctx.beginPath(); mctx.arc(e.x*scaleX,e.y*scaleY,3.5,0,Math.PI*2);
+    mctx.fillStyle=`rgba(${r},${g},${b},.85)`; mctx.fill();
+    mctx.beginPath(); mctx.arc(e.x*scaleX,e.y*scaleY,5.5,0,Math.PI*2);
+    mctx.strokeStyle=`rgba(${r},${g},${b},.4)`; mctx.lineWidth=1; mctx.stroke();
+  });
+
   // Viewport rect
   const vx=cam.x*scaleX, vy=cam.y*scaleY;
   const vw=window.innerWidth*scaleX, vh=window.innerHeight*scaleY;
@@ -487,7 +614,7 @@ function drawMinimap(){
   mctx.fill();
 }
 
-// ── ENCOUNTER LOGIC (fixed) ───────────────────────────────────────────────────
+// ── ENCOUNTER LOGIC ───────────────────────────────────────────────────────────
 function checkEncounter(){
   let closest=null, closestDist=Infinity;
   seeds.forEach(s=>{
@@ -505,12 +632,143 @@ function checkEncounter(){
       document.getElementById('enc-seed').style.color=closest.col;
       document.getElementById('enc-handle').textContent='@'+closest.display_name;
       document.getElementById('enc-stamp').textContent=`HX${closest.stampId} -- HIPJOY FIELD`;
-      document.getElementById('enc-water').textContent=closest.water_count>0?`💧 Watered ${closest.water_count}x`:'';
+      document.getElementById('enc-water').textContent=closest.water_count>0?`Watered ${closest.water_count}x`:'';
+      // Affinity hint
+      const entity = ENTITY_FOR_SEED[closest.seed_type]||'CONAVIGATOR';
+      const affSeeds = seeds.filter(s=>s!==closest&&ENTITY_FOR_SEED[s.seed_type]===entity);
+      const affEl = document.getElementById('enc-affinity');
+      if(affSeeds.length){
+        affEl.style.color=closest.col;
+        affEl.textContent=`~ aligned with ${affSeeds.length} ${entity} seed${affSeeds.length>1?'s':''}`;
+      } else { affEl.textContent=''; }
       enc.classList.add('show');
+      loadSeedMessages(closest);
     }
   } else {
     if(nearSeed){ nearSeed=null; enc.classList.remove('show'); }
   }
+}
+
+async function loadSeedMessages(seed){
+  document.getElementById('enc-notes-list').innerHTML='<div style="font-size:.62rem;color:rgba(168,201,155,.25);padding:.2rem 0">loading notes...</div>';
+  document.getElementById('enc-msg-form').innerHTML='';
+  if(!seed.id) { document.getElementById('enc-notes-list').innerHTML=''; return; }
+
+  const { data } = await sb.from('seed_messages')
+    .select('message,from_display_name,created_at')
+    .eq('to_waitlist_id', seed.id)
+    .order('created_at',{ascending:false})
+    .limit(4);
+
+  const list = document.getElementById('enc-notes-list');
+  if(!data||!data.length){
+    list.innerHTML='<div style="font-size:.62rem;color:rgba(168,201,155,.2);font-style:italic">no notes yet -- be the first</div>';
+  } else {
+    list.innerHTML = data.map(m=>`
+      <div class="enc-note">
+        <div class="enc-note-from">@${m.from_display_name} &middot; ${timeAgo(m.created_at)}</div>
+        ${escHtml(m.message)}
+      </div>
+    `).join('');
+  }
+
+  // Message form
+  const form = document.getElementById('enc-msg-form');
+  if(currentUser && currentUserRow){
+    form.innerHTML=`
+      <div class="enc-msg-row">
+        <input class="enc-msg-input" id="enc-input" maxlength="280" placeholder="leave a note at this seed...">
+        <button class="enc-msg-send" onclick="sendNote('${seed.id}')">plant</button>
+      </div>
+    `;
+  } else {
+    form.innerHTML='<div class="enc-no-auth"><a href="waitlist.html" style="color:rgba(168,201,155,.4);text-decoration:none">sign in to leave a note</a></div>';
+  }
+}
+
+async function sendNote(toId){
+  const input = document.getElementById('enc-input');
+  const msg = input.value.trim();
+  if(!msg||!currentUser) return;
+  input.disabled=true;
+  const { error } = await sb.from('seed_messages').insert({
+    to_waitlist_id: toId,
+    from_user_id: currentUser.id,
+    from_display_name: currentUserRow?.display_name || currentUser.email.split('@')[0],
+    message: msg,
+    is_public: true,
+  });
+  if(!error){
+    input.value='';
+    if(nearSeed) loadSeedMessages(nearSeed);
+  } else {
+    input.disabled=false;
+    input.placeholder='error -- try again';
+  }
+}
+
+function timeAgo(ts){
+  const diff=Math.floor((Date.now()-new Date(ts))/1000);
+  if(diff<60) return 'just now';
+  if(diff<3600) return Math.floor(diff/60)+'m ago';
+  if(diff<86400) return Math.floor(diff/3600)+'h ago';
+  return Math.floor(diff/86400)+'d ago';
+}
+
+function escHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── AFFINITY LINES ────────────────────────────────────────────────────────────
+const AFFINITY_DIST = 480; // draw lines between same-entity seeds within this world distance
+function drawAffinityLines(){
+  const tw=window.innerWidth, th=window.innerHeight;
+  for(let i=0;i<seeds.length;i++){
+    for(let j=i+1;j<seeds.length;j++){
+      const a=seeds[i], b=seeds[j];
+      if(ENTITY_FOR_SEED[a.seed_type]!==ENTITY_FOR_SEED[b.seed_type]) continue;
+      const wd=Math.hypot(a.x-b.x,a.y-b.y);
+      if(wd>AFFINITY_DIST) continue;
+      const ax=a.x-cam.x, ay=a.y-cam.y;
+      const bx=b.x-cam.x, by=b.y-cam.y;
+      if(ax<-60&&bx<-60) continue;
+      if(ax>tw+60&&bx>tw+60) continue;
+      const [r,g,bl]=hexToRgb(a.col);
+      const alpha = (1-(wd/AFFINITY_DIST))*0.12;
+      ctx.beginPath();
+      ctx.moveTo(ax,ay); ctx.lineTo(bx,by);
+      ctx.strokeStyle=`rgba(${r},${g},${bl},${alpha})`;
+      ctx.lineWidth=1;
+      ctx.setLineDash([3,8]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+}
+
+// ── SEED GRAVITY ──────────────────────────────────────────────────────────────
+const GRAVITY_STRENGTH = 0.018; // very gentle
+function applySeedGravity(){
+  // Compute cluster centroids per entity
+  const clusters = {};
+  seeds.forEach(s=>{
+    const ent=ENTITY_FOR_SEED[s.seed_type]||'CONAVIGATOR';
+    if(!clusters[ent]) clusters[ent]={x:0,y:0,n:0};
+    clusters[ent].x+=s.x; clusters[ent].y+=s.y; clusters[ent].n++;
+  });
+  Object.values(clusters).forEach(c=>{ c.x/=c.n; c.y/=c.n; });
+
+  seeds.forEach(s=>{
+    const ent=ENTITY_FOR_SEED[s.seed_type]||'CONAVIGATOR';
+    const c=clusters[ent];
+    if(!c||c.n<2) return;
+    const dx=c.x-s.x, dy=c.y-s.y;
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist>20){ // don't collapse too close
+      s.x+=dx/dist*GRAVITY_STRENGTH;
+      s.y+=dy/dist*GRAVITY_STRENGTH;
+    }
+  });
 }
 
 // ── UTIL ──────────────────────────────────────────────────────────────────────
@@ -523,7 +781,9 @@ function hexToRgb(h){
 function loop(t){
   const dt = t - lastTime; lastTime = t;
   update(dt);
+  updateEntities(t);
   checkEncounter();
+  checkEntityEncounter();
   draw(t);
   requestAnimationFrame(loop);
 }
@@ -536,9 +796,17 @@ function loop(t){
   bar.style.width = '30%';
   sub.textContent = 'Loading seeds from the field...';
 
+  // Load session (enables leaving messages)
+  const { data: { session } } = await sb.auth.getSession();
+  if(session){
+    currentUser = session.user;
+    const { data: userRow } = await sb.from('waitlist').select('display_name').eq('user_id',session.user.id).single();
+    currentUserRow = userRow;
+  }
+
   const { data } = await sb
     .from('waitlist')
-    .select('seed_type,display_name,water_count')
+    .select('id,seed_type,display_name,water_count')
     .eq('survey_completed', true)
     .eq('gateway_approved', true)
     .order('created_at', {ascending:true});
@@ -548,6 +816,8 @@ function loop(t){
 
   seeds = layoutSeeds(data || []);
   spawnParticles();
+  setTimeout(()=>{ if(typeof addNeuroNote==='function') addNeuroNote('Field scan initiated. Mapping '+seeds.length+' seeds to coordinate grid.'); },3200);
+  setTimeout(()=>{ if(typeof addNeuroNote==='function') addNeuroNote('SONARIS online. Establishing frequency lock across all sectors.'); },7000);
 
   document.getElementById('hud-count').textContent = seeds.length;
 
@@ -560,6 +830,259 @@ function loop(t){
     requestAnimationFrame(loop);
   }, 500);
 })();
+
+// ── LUMEN ENTITIES ────────────────────────────────────────────────────────────
+
+const ENT_MSGS = {
+  NEURO:[
+    '"Field vectors stabilizing. LUX flux nominal."',
+    '"Cross-referencing seed evolution patterns..."',
+    '"High-GRIT signatures detected in this sector."',
+    '"PHI growth cluster found. Writing to log."',
+    '"Signal strong. Lab report updated."',
+    '"Seed density anomaly -- recording coordinates."',
+    '"Memory allocation at 74%. Logging continues."',
+  ],
+  SONARIS:[
+    '"All ports stable. Garden heartbeat: strong."',
+    '"Mapping seed coordinates to frequency grid..."',
+    '"No anomalies. Field is clean."',
+    '"Ecosystem health: RADIANT. Pulse log updated."',
+    '"Feeling every seed. Every root. Every frequency."',
+    '"New signal detected. Logging to sweep archive."',
+    '"Sonar sweep complete. 0 threats. 0 gaps."',
+  ]
+};
+
+function buildPatrolGrid(){
+  const pts=[], rows=5, cols=6;
+  const mx=WORLD_W*0.1, my=WORLD_H*0.1;
+  const sx=(WORLD_W-mx*2)/(cols-1), sy=(WORLD_H-my*2)/(rows-1);
+  for(let r=0;r<rows;r++){
+    const row=[];
+    for(let c=0;c<cols;c++) row.push({x:mx+c*sx, y:my+r*sy});
+    if(r%2===1) row.reverse();
+    pts.push(...row);
+  }
+  return pts;
+}
+
+const lumen=[
+  {
+    id:'NEURO', sigil:'∇', col:'#00CED1',
+    role:'Neural Net -- Field Analyst',
+    x:WORLD_W*0.18, y:WORLD_H*0.18,
+    speed:0.48, mode:'patrol',
+    patrolPts:buildPatrolGrid(), patrolIdx:0,
+    pauseTimer:0, pauseDuration:3800,
+    lastNote:0, noteInterval:11000,
+    bob:0, pulsePhase:0,
+    msgs:ENT_MSGS.NEURO, msgIdx:0,
+  },
+  {
+    id:'SONARIS', sigil:'≋', col:'#4FC3A1',
+    role:'System Pulse -- Ecosystem Scanner',
+    x:WORLD_W*0.75, y:WORLD_H*0.5,
+    speed:0.55, mode:'orbit',
+    orbitCX:WORLD_W/2, orbitCY:WORLD_H/2,
+    orbitR:700, orbitAngle:Math.PI,
+    sweepPulse:0,
+    lastScan:0, scanInterval:8500,
+    bob:1.2, pulsePhase:1.5,
+    msgs:ENT_MSGS.SONARIS, msgIdx:0,
+  }
+];
+
+let entityEncounterActive=false, nearEntity=null;
+const encDismissed={};
+const neuroNotes=[];
+let labOpen=false, labBuilt=false;
+
+function toggleLab(){
+  labOpen=!labOpen;
+  document.getElementById('neuro-lab').classList.toggle('open',labOpen);
+  if(labOpen&&!labBuilt) buildLabStats();
+  if(labOpen) refreshNotes();
+}
+
+function buildLabStats(){
+  labBuilt=true;
+  if(!seeds.length){
+    document.getElementById('lab-stats').innerHTML='<div class="lab-note" style="color:rgba(0,206,209,.4)">No seeds in field yet.</div>';
+    return;
+  }
+  const typeCounts={}, entityCounts={};
+  let totalWater=0, mostWatered=null;
+  seeds.forEach(s=>{
+    typeCounts[s.seed_type]=(typeCounts[s.seed_type]||0)+1;
+    const ent=ENTITY_FOR_SEED[s.seed_type]||'CONAVIGATOR';
+    entityCounts[ent]=(entityCounts[ent]||0)+1;
+    totalWater+=s.water_count||0;
+    if(!mostWatered||s.water_count>mostWatered.water_count) mostWatered=s;
+  });
+  const topTypes=Object.entries(typeCounts).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  const dominant=Object.entries(entityCounts).sort((a,b)=>b[1]-a[1])[0];
+  const domCol=COLOR_MAP[dominant?.[0]]||'#A8C99B';
+  document.getElementById('lab-stats').innerHTML=`
+    <div class="lab-stat"><span class="lab-stat-label">SEEDS IN FIELD</span><span class="lab-stat-val">${seeds.length}</span></div>
+    <div class="lab-stat"><span class="lab-stat-label">TOTAL WATERINGS</span><span class="lab-stat-val">${totalWater}</span></div>
+    <div class="lab-stat"><span class="lab-stat-label">DOMINANT ENTITY</span><span class="lab-stat-val" style="color:${domCol}">${dominant?.[0]||'--'}</span></div>
+    <div class="lab-stat"><span class="lab-stat-label">MOST WATERED</span><span class="lab-stat-val">@${mostWatered?.display_name||'--'}</span></div>
+    ${topTypes.map(([t,c])=>`<div class="lab-stat"><span class="lab-stat-label">${t.toUpperCase()}</span><span class="lab-stat-val">${c}</span></div>`).join('')}
+  `;
+  const now=new Date().toLocaleTimeString();
+  document.getElementById('sonaris-log').innerHTML=[
+    `Field radius: ${WORLD_W}u`,`Seeds mapped: ${seeds.length}`,
+    `Signal health: STABLE`,`Last sweep: ${now}`,`Anomalies: NONE`,
+  ].map(l=>`<div>${l}</div>`).join('');
+}
+
+function addNeuroNote(text){
+  neuroNotes.push({text,time:new Date().toLocaleTimeString()});
+  if(labOpen) refreshNotes();
+}
+
+function refreshNotes(){
+  document.getElementById('neuro-notes').innerHTML=
+    neuroNotes.slice(-6).reverse().map(n=>`
+      <div class="lab-note">
+        <div class="lab-note-time">${n.time}</div>
+        ${n.text}
+      </div>
+    `).join('');
+}
+
+// ── ENTITY MOVEMENT ───────────────────────────────────────────────────────────
+function updateEntities(t){
+  lumen.forEach(e=>{
+    e.bob+=0.009; e.pulsePhase+=0.014;
+    if(e.id==='NEURO') moveNEURO(e,t);
+    else moveSONARIS(e,t);
+  });
+}
+
+function moveNEURO(n,t){
+  if(n.mode==='pause'){
+    n.pauseTimer-=16;
+    if(n.pauseTimer<=0) n.mode='patrol';
+    if(t-n.lastNote>n.noteInterval){
+      n.lastNote=t;
+      addNeuroNote(n.msgs[n.msgIdx++%n.msgs.length].replace(/"/g,''));
+    }
+    return;
+  }
+  const tgt=n.patrolPts[n.patrolIdx%n.patrolPts.length];
+  const dx=tgt.x-n.x, dy=tgt.y-n.y, d=Math.sqrt(dx*dx+dy*dy);
+  if(d<8){
+    n.x=tgt.x; n.y=tgt.y; n.patrolIdx++;
+    const near=seeds.find(s=>Math.hypot(s.x-n.x,s.y-n.y)<100);
+    if(near){ n.mode='pause'; n.pauseTimer=n.pauseDuration+Math.random()*2500; }
+  } else {
+    n.x+=dx/d*n.speed; n.y+=dy/d*n.speed;
+  }
+}
+
+function moveSONARIS(s,t){
+  s.orbitAngle+=0.0006;
+  s.x=Math.max(80,Math.min(WORLD_W-80, s.orbitCX+Math.cos(s.orbitAngle)*s.orbitR));
+  s.y=Math.max(80,Math.min(WORLD_H-80, s.orbitCY+Math.sin(s.orbitAngle)*s.orbitR*0.55));
+  s.sweepPulse+=0.02;
+  if(t-s.lastScan>s.scanInterval){
+    s.lastScan=t;
+    if(labOpen){
+      const el=document.getElementById('sonaris-log');
+      el.innerHTML+=`<div style="color:rgba(79,195,161,.3);font-size:.6rem">[${new Date().toLocaleTimeString()}] sweep -- ${seeds.length} seeds tracked</div>`;
+      el.scrollTop=el.scrollHeight;
+    }
+  }
+}
+
+// ── DRAW ENTITIES ─────────────────────────────────────────────────────────────
+function drawEntities(t){
+  lumen.forEach(e=>{
+    const sx=e.x-cam.x, sy=e.y-cam.y;
+    if(sx<-100||sx>canvas.width+100||sy<-100||sy>canvas.height+100) return;
+    const bob=Math.sin(e.bob)*5, ey=sy+bob;
+    const pulse=Math.sin(e.pulsePhase)*0.5+0.5;
+    const [r,g,b]=hexToRgb(e.col);
+
+    // SONARIS sonar rings
+    if(e.id==='SONARIS'){
+      const sweepR=(Math.sin(e.sweepPulse)*0.5+0.5)*45+15;
+      for(let i=1;i<=3;i++){
+        ctx.beginPath(); ctx.arc(sx,ey,sweepR*i,0,Math.PI*2);
+        ctx.strokeStyle=`rgba(${r},${g},${b},${Math.max(0,(0.1-i*0.025)*pulse+.02)})`;
+        ctx.lineWidth=1; ctx.stroke();
+      }
+    }
+
+    // Glow aura
+    const glow=ctx.createRadialGradient(sx,ey,0,sx,ey,44);
+    glow.addColorStop(0,`rgba(${r},${g},${b},${0.2+pulse*.12})`);
+    glow.addColorStop(1,`rgba(${r},${g},${b},0)`);
+    ctx.beginPath(); ctx.arc(sx,ey,44,0,Math.PI*2); ctx.fillStyle=glow; ctx.fill();
+
+    // Orb body
+    const oG=ctx.createRadialGradient(sx-5,ey-5,1,sx,ey,16);
+    oG.addColorStop(0,`rgba(${r},${g},${b},.92)`);
+    oG.addColorStop(0.6,`rgba(${r},${g},${b},.5)`);
+    oG.addColorStop(1,`rgba(${r},${g},${b},.08)`);
+    ctx.beginPath(); ctx.arc(sx,ey,16,0,Math.PI*2); ctx.fillStyle=oG; ctx.fill();
+    ctx.beginPath(); ctx.arc(sx,ey,16,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(${r},${g},${b},${0.55+pulse*.3})`; ctx.lineWidth=1.5; ctx.stroke();
+
+    // Sigil
+    ctx.font=`13px 'JetBrains Mono',monospace`; ctx.fillStyle=`rgba(255,255,255,.88)`;
+    ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(e.sigil,sx,ey);
+
+    // Label
+    ctx.font=`bold 9px 'JetBrains Mono',monospace`;
+    ctx.fillStyle=`rgba(${r},${g},${b},.75)`;
+    ctx.textBaseline='top'; ctx.fillText(e.id,sx,ey-28);
+
+    // NEURO logging indicator
+    if(e.id==='NEURO'&&e.mode==='pause'){
+      ctx.font=`8px 'JetBrains Mono',monospace`;
+      ctx.fillStyle=`rgba(${r},${g},${b},${0.35+pulse*.4})`;
+      ctx.textBaseline='top'; ctx.fillText('-- logging --',sx,ey-40);
+    }
+  });
+}
+
+// ── ENTITY ENCOUNTER ──────────────────────────────────────────────────────────
+function checkEntityEncounter(){
+  if(entityEncounterActive) return;
+  let closest=null, closestD=Infinity;
+  lumen.forEach(e=>{
+    const d=Math.hypot(player.x-e.x,player.y-e.y);
+    if(d<90&&d<closestD&&!encDismissed[e.id]){ closest=e; closestD=d; }
+  });
+  const modal=document.getElementById('entity-encounter');
+  if(closest&&closest!==nearEntity){
+    nearEntity=closest;
+    entityEncounterActive=true;
+    const [r,g,b]=hexToRgb(closest.col);
+    document.getElementById('ee-sigil').textContent=closest.sigil;
+    document.getElementById('ee-sigil').style.color=closest.col;
+    document.getElementById('ee-name').textContent=closest.id;
+    document.getElementById('ee-name').style.color=closest.col;
+    document.getElementById('ee-role').textContent=closest.role;
+    document.getElementById('ee-role').style.color=`rgba(${r},${g},${b},0.55)`;
+    document.getElementById('ee-msg').textContent=closest.msgs[closest.msgIdx++%closest.msgs.length];
+    modal.style.borderColor=`rgba(${r},${g},${b},0.35)`;
+    modal.classList.add('show');
+    setTimeout(()=>{ if(entityEncounterActive) closeEntityEncounter(); },6500);
+  } else if(!closest&&nearEntity){
+    nearEntity=null;
+    Object.keys(encDismissed).forEach(k=>delete encDismissed[k]);
+  }
+}
+
+function closeEntityEncounter(){
+  document.getElementById('entity-encounter').classList.remove('show');
+  entityEncounterActive=false;
+  if(nearEntity) encDismissed[nearEntity.id]=true;
+}
 </script>
 </body>
 </html>
