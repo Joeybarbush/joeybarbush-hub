@@ -21,9 +21,17 @@ CREATE TABLE IF NOT EXISTS waitlist (
   q4_productivity_wrong TEXT,       -- REBEL: what productivity tools get wrong
   q5_future_self       TEXT,        -- VOX: message to their future self
 
+  -- HIPXQL adaptive engine results
+  lux_score            INTEGER,     -- 0-100 field coherence score
+  seed_type            TEXT,        -- assigned seed type (e.g. "Forge Seed")
+
   survey_completed     BOOLEAN     DEFAULT false,
   created_at           TIMESTAMPTZ DEFAULT now()
 );
+
+-- If the table already exists, add the new columns (safe to run twice):
+ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS lux_score  INTEGER;
+ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS seed_type  TEXT;
 
 -- Index for fast email lookups
 CREATE INDEX IF NOT EXISTS waitlist_email_idx ON waitlist (email);
