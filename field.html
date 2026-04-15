@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { width: 100%; height: 100%; overflow: hidden; background: #0d0f0e; font-family: 'JetBrains Mono', monospace; color: #c8ccd8; user-select: none; -webkit-user-select: none; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #0d0f0e; font-family: 'JetBrains Mono', monospace; color: #F0EDE5; user-select: none; -webkit-user-select: none; }
     #world { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: block; }
 
     /* Scanlines */
@@ -22,14 +22,13 @@
     #location .lbl { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.22em; color:rgba(168,201,155,.45); text-transform:uppercase; }
     #location .zname { font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; letter-spacing:.18em; color:#A8C99B; margin-top:3px; text-transform:uppercase; text-shadow:0 0 16px rgba(168,201,155,.4); transition:color .4s; }
 
-    /* Controls hint */
-    #hint { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); font-size:9px; letter-spacing:.2em; color:rgba(200,200,220,.3); text-transform:uppercase; pointer-events:none; z-index:15; transition:opacity 1.2s; }
-    #hint.gone { opacity:0; }
+    /* Room hint — always visible */
+    #hint { position:fixed; bottom:14px; left:50%; transform:translateX(-50%); font-size:8.5px; letter-spacing:.2em; color:rgba(168,201,155,.28); text-transform:uppercase; pointer-events:none; z-index:15; white-space:nowrap; }
 
-    /* Minimap */
-    #mm-wrap { position:fixed; bottom:20px; right:20px; pointer-events:none; z-index:15; }
-    #minimap { display:block; width:150px; height:100px; border:1px solid rgba(168,201,155,.25); border-radius:3px; background:rgba(13,15,12,.88); }
-    #mm-label { font-size:8px; letter-spacing:.22em; color:rgba(168,201,155,.35); text-transform:uppercase; text-align:center; margin-top:4px; }
+    /* Minimap — fixed top-right, always visible */
+    #mm-wrap { position:fixed; top:20px; right:20px; pointer-events:none; z-index:15; }
+    #minimap { display:block; width:150px; height:150px; border:1px solid rgba(168,201,155,.3); border-radius:4px; background:rgba(13,15,12,.75); }
+    #mm-label { font-size:8px; letter-spacing:.22em; color:rgba(168,201,155,.38); text-transform:uppercase; text-align:center; margin-top:4px; }
 
     /* Panels */
     .panel { position:fixed; top:0; right:0; width:min(460px,100vw); height:100vh; background:rgba(10,14,11,.93); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-left:1px solid rgba(168,201,155,.15); padding:36px 28px 36px; overflow-y:auto; transform:translateX(100%); transition:transform .55s cubic-bezier(.16,1,.3,1); z-index:100; pointer-events:auto; }
@@ -38,43 +37,133 @@
     .panel::-webkit-scrollbar-track { background:transparent; }
     .panel::-webkit-scrollbar-thumb { background:rgba(168,201,155,.18); border-radius:2px; }
     .pcls { position:absolute; top:18px; right:18px; width:30px; height:30px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:3px; cursor:pointer; font-size:12px; color:rgba(200,200,220,.5); transition:all .2s; }
-    .pcls:hover { background:rgba(255,255,255,.08); color:#c8ccd8; }
+    .pcls:hover { background:rgba(255,255,255,.08); color:#F0EDE5; }
     .p-sigil { font-size:44px; display:block; margin-bottom:14px; line-height:1; }
     .p-zone { font-family:'Orbitron',sans-serif; font-size:9px; letter-spacing:.25em; text-transform:uppercase; margin-bottom:7px; }
     .p-title { font-family:'Orbitron',sans-serif; font-size:20px; font-weight:700; line-height:1.2; margin-bottom:5px; }
-    .p-sub { font-size:10px; letter-spacing:.14em; color:rgba(200,200,220,.35); text-transform:uppercase; margin-bottom:26px; }
+    .p-sub { font-size:10px; letter-spacing:.14em; color:rgba(240,237,229,.35); text-transform:uppercase; margin-bottom:26px; }
     .p-sec { margin-bottom:22px; }
-    .p-sec-lbl { font-size:8px; letter-spacing:.22em; text-transform:uppercase; color:rgba(200,200,220,.35); border-bottom:1px solid rgba(255,255,255,.05); padding-bottom:6px; margin-bottom:10px; }
+    .p-sec-lbl { font-size:8px; letter-spacing:.22em; text-transform:uppercase; color:rgba(240,237,229,.35); border-bottom:1px solid rgba(255,255,255,.05); padding-bottom:6px; margin-bottom:10px; }
     .p-text { font-size:12px; line-height:1.75; color:#9a9eb4; }
     .p-stat { display:flex; align-items:flex-start; gap:8px; padding:5px 0; font-size:11px; color:#a0a4b8; border-bottom:1px solid rgba(255,255,255,.03); }
     .p-stat::before { content:'—'; opacity:.3; flex-shrink:0; }
     .p-lnk { display:flex; align-items:center; gap:10px; padding:9px 13px; background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.06); border-radius:3px; text-decoration:none; color:#b0b4c8; font-size:11px; margin-bottom:7px; transition:all .2s; }
-    .p-lnk:hover { background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.1); color:#d0d4e0; }
+    .p-lnk:hover { background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.1); color:#F0EDE5; }
     .p-lnk .ico { font-size:10px; letter-spacing:.08em; opacity:.4; flex-shrink:0; width:18px; }
     .p-tag { display:inline-block; padding:2px 8px; border-radius:2px; font-size:9px; letter-spacing:.1em; margin:2px; }
     .p-formula { padding:12px 16px; border-radius:3px; font-family:'Orbitron',sans-serif; font-size:18px; text-align:center; letter-spacing:.12em; margin-top:8px; }
 
-    /* Mobile joystick */
-    #jpad { position:fixed; bottom:24px; left:24px; width:110px; height:110px; display:none; pointer-events:auto; z-index:15; touch-action:none; }
-    #jbase { position:absolute; inset:0; border-radius:50%; background:rgba(168,201,155,.07); border:1px solid rgba(168,201,155,.18); }
-    #jthumb { position:absolute; width:42px; height:42px; border-radius:50%; background:rgba(168,201,155,.25); border:1px solid rgba(168,201,155,.5); top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; transition:background .15s; }
-    @media (pointer:coarse) { #jpad{display:block;} #hint{display:none;} }
+    /* Mobile joystick — always block on coarse pointer */
+    #jpad { position:fixed; bottom:24px; left:24px; width:110px; height:110px; display:none; pointer-events:auto; z-index:16; touch-action:none; }
+    #jbase { position:absolute; inset:0; border-radius:50%; background:rgba(168,201,155,.08); border:1.5px solid rgba(168,201,155,.28); }
+    #jthumb { position:absolute; width:44px; height:44px; border-radius:50%; background:rgba(168,201,155,.28); border:1.5px solid rgba(168,201,155,.6); top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; box-shadow:0 0 14px rgba(168,201,155,.22); }
+    @media (pointer:coarse) { #jpad { display:block; } }
 
-    /* Mobile panel improvements */
+    /* Mobile: panels slide from bottom, minimap stays top-right */
     @media (max-width:520px) {
-      .panel { padding:20px 14px 80px; width:100vw; }
+      .panel { top:auto; bottom:0; right:0; width:100vw; height:72vh; border-left:none; border-top:1px solid rgba(168,201,155,.2); border-radius:12px 12px 0 0; padding:20px 14px 80px; transform:translateY(100%); }
+      .panel.open { transform:translateY(0); }
       .pcls { width:44px; height:44px; top:14px; right:14px; font-size:14px; }
       .p-title { font-size:16px; }
       .p-sigil { font-size:32px; margin-bottom:10px; }
       .p-formula { font-size:15px; }
-      #mm-wrap { bottom:148px; right:12px; }
-      #minimap { width:110px; height:74px; }
+      #mm-wrap { top:12px; right:12px; }
+      #minimap { width:120px; height:120px; }
+      #hint { bottom:8px; font-size:7.5px; }
     }
     @media (max-width:380px) {
-      .panel { padding:16px 10px 80px; }
+      .panel { padding:16px 10px 80px; height:76vh; }
       .p-text { font-size:11px; }
       .p-stat { font-size:10px; }
+      #minimap { width:100px; height:100px; }
     }
+
+    /* Entity hologram overlay */
+    #hologram {
+      position:fixed;
+      bottom:90px;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:18;
+      pointer-events:none;
+      text-align:center;
+      opacity:0;
+      transition:opacity .5s ease;
+    }
+    #hologram.visible { opacity:1; }
+    .holo-sigil {
+      font-size:52px;
+      display:block;
+      line-height:1.1;
+      margin-bottom:10px;
+      will-change:transform;
+    }
+    .holo-bubble {
+      background:rgba(10,14,11,.9);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      border:1px solid rgba(168,201,155,.25);
+      border-radius:8px;
+      padding:14px 20px;
+      max-width:290px;
+      transition:opacity .7s ease;
+    }
+    .holo-bubble.fade-out { opacity:0; }
+    .holo-entity {
+      font-family:'Orbitron',sans-serif;
+      font-size:9px;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      margin-bottom:7px;
+    }
+    .holo-msg { font-size:11px; line-height:1.7; font-style:italic; color:rgba(240,237,229,.8); }
+
+    @keyframes holoIn {
+      0%   { opacity:0; transform:scale(.88) translateY(6px); filter:blur(5px); }
+      25%  { opacity:.5; filter:blur(2px); }
+      45%  { opacity:.2; }
+      65%  { opacity:.9; filter:blur(.5px); }
+      100% { opacity:1; transform:scale(1) translateY(0); filter:blur(0); }
+    }
+    @keyframes holoPulse {
+      0%,100% { transform:scale(1); }
+      50% { transform:scale(1.07); }
+    }
+    #hologram.visible .holo-sigil { animation: holoIn .75s ease forwards, holoPulse 2.6s ease-in-out .75s infinite; }
+    #hologram.visible .holo-bubble { animation: holoIn .75s .1s ease both; }
+
+    /* Mobile hologram: top area (panel covers bottom) */
+    @media (max-width:520px) {
+      #hologram { bottom:auto; top:78px; }
+    }
+
+    /* Tutorial overlay */
+    #tutorial {
+      position:fixed; inset:0; z-index:190;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(13,15,12,.72);
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
+      transition:opacity .65s ease;
+    }
+    #tutorial.gone { opacity:0; pointer-events:none; }
+    .tut-box {
+      background:rgba(13,15,12,.94);
+      backdrop-filter:blur(18px);
+      border:1px solid rgba(168,201,155,.28);
+      border-radius:10px;
+      padding:32px 40px;
+      text-align:center;
+      max-width:320px;
+    }
+    .tut-sigil { font-size:38px; display:block; color:#A8C99B; text-shadow:0 0 28px rgba(168,201,155,.45); margin-bottom:14px; }
+    .tut-title { font-family:'Orbitron',sans-serif; font-size:10px; letter-spacing:.24em; color:#A8C99B; text-transform:uppercase; margin-bottom:18px; }
+    .tut-line { font-size:12px; line-height:1.85; color:rgba(240,237,229,.7); margin-bottom:6px; }
+    .tut-line strong { color:#F0EDE5; }
+    .tut-dismiss { font-size:8px; letter-spacing:.22em; color:rgba(168,201,155,.32); text-transform:uppercase; margin-top:22px; }
+    .tut-desktop { display:block; }
+    .tut-mobile  { display:none; }
+    @media (pointer:coarse) { .tut-desktop { display:none; } .tut-mobile { display:block; } }
 
     /* Intro */
     #intro { position:fixed; inset:0; background:#0d0f0e; z-index:200; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; }
@@ -96,6 +185,24 @@
   <div class="i-note">WASD / Arrow keys to move &nbsp;·&nbsp; Walk into zones to explore</div>
 </div>
 
+<!-- Tutorial overlay (behind intro, appears after intro fades) -->
+<div id="tutorial">
+  <div class="tut-box">
+    <span class="tut-sigil">◈</span>
+    <div class="tut-title">Welcome to the Field</div>
+    <div class="tut-desktop">
+      <div class="tut-line"><strong>WASD</strong> or <strong>↑ ↓ ← →</strong> to move</div>
+      <div class="tut-line">Visit each glowing zone to meet the entities.</div>
+    </div>
+    <div class="tut-mobile">
+      <div class="tut-line">Use the <strong>joystick</strong> to move.</div>
+      <div class="tut-line">Walk into glowing zones to explore.</div>
+    </div>
+    <div class="tut-dismiss tut-desktop">Press any key to continue</div>
+    <div class="tut-dismiss tut-mobile">Touch the joystick to begin</div>
+  </div>
+</div>
+
 <div id="scanlines"></div>
 <div id="lux-bar"></div>
 <canvas id="world"></canvas>
@@ -105,12 +212,23 @@
   <div class="lbl">Current Zone</div>
   <div class="zname" id="zname">THE FIELD</div>
 </div>
-<div id="hint">WASD / Arrow keys to move &nbsp;·&nbsp; Walk into glowing zones</div>
 
-<!-- Minimap -->
+<!-- Room hint — stays visible -->
+<div id="hint">Rooms: Vault &nbsp;·&nbsp; Lattice &nbsp;·&nbsp; Broadcast &nbsp;·&nbsp; Compass &nbsp;·&nbsp; Forge</div>
+
+<!-- Minimap — top-right, always on -->
 <div id="mm-wrap">
-  <canvas id="minimap" width="150" height="100"></canvas>
+  <canvas id="minimap" width="150" height="150"></canvas>
   <div id="mm-label">◈ FIELD MAP</div>
+</div>
+
+<!-- Entity hologram -->
+<div id="hologram">
+  <span class="holo-sigil" id="holo-sigil"></span>
+  <div class="holo-bubble" id="holo-bubble">
+    <div class="holo-entity" id="holo-entity"></div>
+    <div class="holo-msg" id="holo-msg"></div>
+  </div>
 </div>
 
 <!-- Mobile joystick -->
@@ -160,7 +278,7 @@
 
   <div class="p-sec">
     <div class="p-sec-lbl">Explore the Field</div>
-    <div class="p-text" style="color:rgba(200,200,220,.35);font-size:10px">Walk to the glowing zones around you. Each one holds a different layer of the system.</div>
+    <div class="p-text" style="color:rgba(240,237,229,.35);font-size:10px">Walk to the glowing zones around you. Each one holds a different layer of the system.</div>
   </div>
 </div>
 
@@ -333,6 +451,39 @@
   </div>
 </div>
 
+<!-- GARDEN -->
+<div class="panel" id="panel-garden">
+  <div class="pcls" onclick="CP('panel-garden')">✕</div>
+  <span class="p-sigil" style="color:#2ECC71">✦</span>
+  <div class="p-zone" style="color:rgba(46,204,113,.55)">Zone 06 — WELLSPRING</div>
+  <div class="p-title" style="color:#2ECC71">THE GARDEN</div>
+  <div class="p-sub">Seeds · Growth · Origin</div>
+
+  <div class="p-sec">
+    <div class="p-sec-lbl">WELLSPRING's Function</div>
+    <div class="p-text">WELLSPRING is the growth entity — the place where intention becomes action. Seeds planted here take root across the entire field. Every LUX Seeds early access member plants something real here.</div>
+  </div>
+
+  <div class="p-sec">
+    <div class="p-sec-lbl">Plant Your Seed</div>
+    <div class="p-text" style="margin-bottom:16px">Join the LUX Seeds waitlist. Be among the first humans to run a full cognitive OS — 14 entities, persistent memory, and a field that actually knows you.</div>
+    <a href="waitlist.html" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 24px;background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.4);border-radius:5px;text-decoration:none;color:#2ECC71;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;transition:all .3s;">
+      ✦ &nbsp;Plant Your Seed
+    </a>
+  </div>
+
+  <div class="p-sec">
+    <div class="p-sec-lbl">What Gets Planted</div>
+    <div class="p-stat">Your voice — how you think and communicate</div>
+    <div class="p-stat">Your rhythm — energy, schedule, attention patterns</div>
+    <div class="p-stat">Your field — the cognitive OS calibrated to you</div>
+  </div>
+
+  <div class="p-sec">
+    <div style="padding:12px 16px;background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.2);border-radius:3px;font-size:10px;color:rgba(46,204,113,.75);letter-spacing:.14em;text-align:center">✦ LUX SEEDS — GERMINATING NOW</div>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════════════════════════
      WORLD ENGINE
 ═══════════════════════════════════════════════════════ -->
@@ -351,7 +502,19 @@ const ZONES = [
   { id:'broadcast', name:'THE BROADCAST',  entity:'VOX',          sigil:'◎', x:2860,y:1100, w:460,h:400, col:'#9B4FDC', rgb:'155,79,220',  pid:'panel-broadcast', er:245 },
   { id:'compass',   name:'THE COMPASS',    entity:'NAVIX',        sigil:'◇', x:340, y:1860, w:460,h:400, col:'#00B4A0', rgb:'0,180,160',   pid:'panel-compass',   er:245 },
   { id:'forge',     name:'THE FORGE',      entity:'CODEBREAKER',  sigil:'⬟', x:2860,y:1860, w:460,h:400, col:'#FF6B35', rgb:'255,107,53',  pid:'panel-forge',     er:245 },
+  { id:'garden',    name:'THE GARDEN',     entity:'WELLSPRING',   sigil:'✦', x:1600,y:1860, w:460,h:400, col:'#2ECC71', rgb:'46,204,113',  pid:'panel-garden',    er:245 },
 ];
+
+// Entity hologram messages
+const ZONE_HOLOGRAMS = {
+  vault:     { entity:'HIPPO ◈',       col:'#A8C99B', rgb:'168,201,155', msg:'Welcome to the Vault. Everything that matters lives here. What would you like to remember?' },
+  lattice:   { entity:'NEURO ∇',       col:'#00CED1', rgb:'0,206,209',   msg:"You've entered the Lattice. This is where signals become equations. What are you measuring?" },
+  broadcast: { entity:'VOX ◊',         col:'#9B4FDC', rgb:'155,79,220',  msg:'The Broadcast tower. Every word that leaves this field passes through me. What do you want to say?' },
+  compass:   { entity:'NAVIX →',       col:'#00B4A0', rgb:'0,180,160',   msg:'Navigation locked. I track every fire, every deadline, every open door. Where are you headed?' },
+  forge:     { entity:'CODEBREAKER ×', col:'#FF6B35', rgb:'255,107,53',  msg:'The Forge. Where old patterns break and new ones are hammered into shape. What needs rebuilding?' },
+  hub:       { entity:'THE FIELD',     col:'#A8C99B', rgb:'168,201,155', msg:"You're at the center. 14 entities orbit this point. The field routes from here." },
+  garden:    { entity:'WELLSPRING ~',  col:'#2ECC71', rgb:'46,204,113',  msg:'Welcome to the Garden. This is where seeds are planted. Ready to grow?' },
+};
 
 const player = { x:1600, y:1100, spd:310, r:13 };
 const cam    = { x:0, y:0 };
@@ -360,8 +523,9 @@ const parts  = [];
 const sigils = [];
 const stars  = [];
 
-let curZone = null, openPanel = null, manualClose = false;
+let curZone = null, openPanel = null;
 let started = false, lastT = 0;
+let tutorialDone = false;
 
 // Joystick
 let jActive = false, jDir = {x:0,y:0};
@@ -370,8 +534,58 @@ const jthumb = document.getElementById('jthumb');
 let jCx = 0, jCy = 0;
 const JR = 38;
 
+// Hologram elements
+const holoEl      = document.getElementById('hologram');
+const holoSigilEl = document.getElementById('holo-sigil');
+const holoEntityEl= document.getElementById('holo-entity');
+const holoMsgEl   = document.getElementById('holo-msg');
+const holoBubbleEl= document.getElementById('holo-bubble');
+let holoSpeechTimer = null;
+
+// Tutorial
+const tutEl = document.getElementById('tutorial');
+
 function hexToRgb(h){
   return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+}
+
+// ─── Tutorial ─────────────────────────────────────────────
+function dismissTutorial(){
+  if(tutorialDone) return;
+  tutorialDone = true;
+  tutEl.classList.add('gone');
+  setTimeout(()=>{ tutEl.style.display='none'; }, 700);
+}
+
+// ─── Hologram ─────────────────────────────────────────────
+function showHologram(zone){
+  const h = ZONE_HOLOGRAMS[zone.id];
+  if(!h) return;
+  clearTimeout(holoSpeechTimer);
+
+  holoSigilEl.textContent = zone.sigil;
+  holoSigilEl.style.color = h.col;
+  holoSigilEl.style.textShadow = `0 0 22px ${h.col}, 0 0 44px ${h.col}88`;
+  holoEntityEl.textContent = h.entity;
+  holoEntityEl.style.color = h.col;
+  holoBubbleEl.style.borderColor = `rgba(${h.rgb},.3)`;
+  holoMsgEl.textContent = h.msg;
+
+  holoBubbleEl.classList.remove('fade-out');
+  // Force reflow so animation restarts
+  holoEl.classList.remove('visible');
+  void holoEl.offsetWidth;
+  holoEl.classList.add('visible');
+
+  holoSpeechTimer = setTimeout(()=>{
+    holoBubbleEl.classList.add('fade-out');
+  }, 4000);
+}
+
+function hideHologram(){
+  clearTimeout(holoSpeechTimer);
+  holoEl.classList.remove('visible');
+  holoBubbleEl.classList.remove('fade-out');
 }
 
 // ─── Init ─────────────────────────────────────────────────
@@ -413,6 +627,7 @@ window.addEventListener('resize', resize);
 window.addEventListener('keydown', e=>{
   keys[e.code] = true;
   if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code)) e.preventDefault();
+  if(started) dismissTutorial();
 });
 window.addEventListener('keyup', e=>{ keys[e.code]=false; });
 
@@ -422,6 +637,7 @@ jpad.addEventListener('touchstart', e=>{
   jCx = rc.left+rc.width/2; jCy = rc.top+rc.height/2;
   jActive = true;
   moveJoy(e.touches[0]);
+  if(started) dismissTutorial();
 },{passive:false});
 window.addEventListener('touchmove', e=>{
   if(!jActive) return; e.preventDefault(); moveJoy(e.touches[0]);
@@ -462,7 +678,7 @@ function update(dt){
   cam.x = Math.max(0,Math.min(WW-canvas.width, cam.x));
   cam.y = Math.max(0,Math.min(WH-canvas.height, cam.y));
 
-  // Particles
+  // Particles (capped at 130)
   if(moving && parts.length<130){
     parts.push({
       x:player.x+(Math.random()-.5)*9,
@@ -501,14 +717,18 @@ function zoneCheck(){
   const nid = near?near.id:null;
   if(nid===curZone) return;
 
-  // Close old
+  // Close old panel
   if(openPanel){ document.getElementById(openPanel).classList.remove('open'); openPanel=null; }
+
+  // Hide hologram when zone changes
+  hideHologram();
 
   curZone=nid;
   if(near){
     document.getElementById('zname').textContent=near.name;
     document.getElementById(near.pid).classList.add('open');
     openPanel=near.pid;
+    showHologram(near);
   } else {
     document.getElementById('zname').textContent='THE FIELD';
   }
@@ -586,17 +806,24 @@ function drawZone(z){
   const hw=z.w/2, hh=z.h/2;
   const bx=z.x-hw, by=z.y-hh;
   const pulse=.5+.5*Math.sin(t*1.1+z.x*.0008);
+  const isActive = curZone===z.id;
   const [r,g,b]=hexToRgb(z.col);
 
-  // Glow fill
+  // Glow fill — orange tint if active
   const grd=ctx.createRadialGradient(z.x,z.y,0,z.x,z.y,Math.max(hw,hh)*1.2);
-  grd.addColorStop(0,`rgba(${r},${g},${b},.07)`);
+  if(isActive){
+    grd.addColorStop(0,'rgba(244,132,95,.12)');
+    grd.addColorStop(.5,`rgba(${r},${g},${b},.07)`);
+  } else {
+    grd.addColorStop(0,`rgba(${r},${g},${b},.07)`);
+  }
   grd.addColorStop(1,`rgba(${r},${g},${b},0)`);
   ctx.fillStyle=grd; ctx.fillRect(bx-30,by-30,z.w+60,z.h+60);
 
-  // Border
-  ctx.strokeStyle=`rgba(${r},${g},${b},${.28+.18*pulse})`;
-  ctx.lineWidth=1.5;
+  // Border — brighter when active
+  const borderAlpha = isActive ? (.5+.2*pulse) : (.28+.18*pulse);
+  ctx.strokeStyle = isActive ? `rgba(244,132,95,${borderAlpha})` : `rgba(${r},${g},${b},${borderAlpha})`;
+  ctx.lineWidth=isActive?2:1.5;
   ctx.strokeRect(bx,by,z.w,z.h);
 
   // Corner marks
@@ -626,6 +853,27 @@ function drawZone(z){
   ctx.textBaseline='middle';
   ctx.fillText(z.sigil, z.x, z.y);
   ctx.textBaseline='alphabetic';
+
+  // Garden seed particles
+  if(z.id==='garden'){
+    const [gr,gg,gb]=[46,204,113];
+    const seedN=14;
+    for(let i=0;i<seedN;i++){
+      const ph=(i/seedN)*Math.PI*2;
+      const spd=0.22+((i*7)%5)*0.09;
+      const lt=((t*spd+ph/(Math.PI*2))%1);
+      const sx=z.x+(Math.sin(ph*3.1+1.3)*0.42)*(z.w*0.46);
+      const baseY=z.y+z.h*0.35;
+      const sy=baseY-lt*z.h*0.72;
+      const drift=Math.sin(t*0.55+ph*2.1)*16;
+      const a=lt<0.12?(lt/0.12):(lt>0.72?((1-lt)/0.28):1);
+      const sr=1.8+(1-lt)*1.8;
+      ctx.beginPath();
+      ctx.arc(sx+drift,sy,sr,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${gr},${gg},${gb},${a*0.55})`;
+      ctx.fill();
+    }
+  }
 
   // Proximity ring
   const pd=Math.hypot(player.x-z.x, player.y-z.y);
@@ -668,7 +916,7 @@ function drawPlayer(){
   const pulse=Math.sin(t*3)*.25+.75;
   const px=player.x, py=player.y, pr=player.r;
 
-  // Outer halos
+  // Outer halos (sage green trail)
   for(let i=4;i>=1;i--){
     ctx.beginPath(); ctx.arc(px,py,pr*(1+i*.65),0,Math.PI*2);
     ctx.fillStyle=`rgba(168,201,155,${.03*(5-i)*pulse})`;
@@ -689,9 +937,9 @@ function drawPlayer(){
 }
 
 function drawMinimap(){
-  const mw=150,mh=100;
+  const mw = mm.width, mh = mm.height;
   mctx.clearRect(0,0,mw,mh);
-  mctx.fillStyle='rgba(13,15,12,.92)'; mctx.fillRect(0,0,mw,mh);
+  mctx.fillStyle='rgba(13,15,12,.82)'; mctx.fillRect(0,0,mw,mh);
 
   const sx=mw/WW, sy=mh/WH;
 
@@ -704,24 +952,29 @@ function drawMinimap(){
   });
   mctx.setLineDash([]);
 
-  // Zones
+  // Zone outlines
   ZONES.forEach(z=>{
     const [r,g,b]=hexToRgb(z.col);
-    mctx.fillStyle=`rgba(${r},${g},${b},.18)`;
+    const isActive = curZone===z.id;
+    mctx.fillStyle=`rgba(${r},${g},${b},${isActive?.28:.14})`;
     mctx.fillRect((z.x-z.w/2)*sx,(z.y-z.h/2)*sy,z.w*sx,z.h*sy);
-    mctx.strokeStyle=`rgba(${r},${g},${b},.5)`;
-    mctx.lineWidth=.5;
+    mctx.strokeStyle = isActive ? `rgba(244,132,95,.8)` : `rgba(${r},${g},${b},.55)`;
+    mctx.lineWidth=isActive?1.5:.5;
     mctx.strokeRect((z.x-z.w/2)*sx,(z.y-z.h/2)*sy,z.w*sx,z.h*sy);
   });
 
   // Viewport rect
-  mctx.strokeStyle='rgba(168,201,155,.18)'; mctx.lineWidth=.5;
+  mctx.strokeStyle='rgba(168,201,155,.22)'; mctx.lineWidth=.5;
   mctx.strokeRect(cam.x*sx,cam.y*sy,canvas.width*sx,canvas.height*sy);
 
   // Player dot
   const t=Date.now()*.001;
   const pulse=Math.sin(t*4)*.25+.75;
-  mctx.beginPath(); mctx.arc(player.x*sx,player.y*sy,3.5,0,Math.PI*2);
+  // Outer glow
+  mctx.beginPath(); mctx.arc(player.x*sx,player.y*sy,5.5,0,Math.PI*2);
+  mctx.fillStyle=`rgba(168,201,155,${.25*pulse})`; mctx.fill();
+  // Core dot
+  mctx.beginPath(); mctx.arc(player.x*sx,player.y*sy,3,0,Math.PI*2);
   mctx.fillStyle=`rgba(168,201,155,${pulse})`; mctx.fill();
 }
 
@@ -737,7 +990,11 @@ function loop(ts){
 function CP(id){
   const el=document.getElementById(id);
   if(el) el.classList.remove('open');
-  if(openPanel===id){ openPanel=null; curZone=null; document.getElementById('zname').textContent='THE FIELD'; }
+  if(openPanel===id){
+    openPanel=null;
+    // Keep curZone so zoneCheck doesn't immediately re-open
+    hideHologram();
+  }
 }
 window.CP=CP;
 
@@ -747,7 +1004,7 @@ document.getElementById('enter-btn').addEventListener('click',()=>{
   intro.classList.add('fade');
   setTimeout(()=>intro.style.display='none',950);
   started=true;
-  setTimeout(()=>document.getElementById('hint').classList.add('gone'),6000);
+  // Tutorial now visible behind fading intro — dismisses on first input
 });
 
 init();
