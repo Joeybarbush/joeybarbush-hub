@@ -547,6 +547,143 @@
     .skill-chip:hover { background: rgba(168,201,155,.08); border-color: rgba(168,201,155,.25); color: var(--sage); }
     .skill-chip.gold { background: rgba(168,201,155,.08); border-color: rgba(168,201,155,.25); color: rgba(168,201,155,.9); }
 
+    /* VOX STUDIO */
+    #vox-studio { background: var(--bg); }
+    .vox-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .vox-sigil {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      color: #E075A8;
+      text-shadow: 0 0 30px rgba(224,117,168,.35);
+      line-height: 1;
+    }
+    .vox-title-block {}
+    .vox-entity-label {
+      font-size: 8px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: rgba(224,117,168,.5);
+      margin-bottom: 4px;
+    }
+    .vox-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(16px,2.5vw,22px);
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: .1em;
+    }
+    .vox-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    @media (max-width: 760px) { .vox-split { grid-template-columns: 1fr; } }
+    .vox-info {}
+    .vox-desc {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+    .vox-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .vox-tag {
+      padding: 3px 10px;
+      border-radius: 2px;
+      font-size: 8px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      background: rgba(224,117,168,.07);
+      border: 1px solid rgba(224,117,168,.22);
+      color: rgba(224,117,168,.8);
+    }
+    .vox-figma-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 24px;
+      border: 1px solid rgba(224,117,168,.4);
+      border-radius: 3px;
+      font-size: 9px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: #E075A8;
+      text-decoration: none;
+      background: rgba(224,117,168,.06);
+      transition: all .25s;
+    }
+    .vox-figma-link:hover {
+      background: rgba(224,117,168,.14);
+      border-color: #E075A8;
+      box-shadow: 0 0 24px rgba(224,117,168,.2);
+    }
+    .vox-preview {
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(224,117,168,.18);
+      box-shadow: 0 0 40px rgba(224,117,168,.07), 0 16px 48px rgba(0,0,0,.4);
+      background: rgba(13,15,14,.8);
+      aspect-ratio: 4/3;
+      display: flex;
+      flex-direction: column;
+    }
+    .vox-preview-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      background: rgba(224,117,168,.05);
+      border-bottom: 1px solid rgba(224,117,168,.1);
+      flex-shrink: 0;
+    }
+    .vox-preview-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+    .vox-preview-bar-label {
+      font-size: 8px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(224,117,168,.4);
+      margin-left: 4px;
+    }
+    .vox-preview iframe {
+      width: 100%;
+      flex: 1;
+      border: none;
+      display: block;
+    }
+    .vox-preview-placeholder {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 24px;
+      text-align: center;
+    }
+    .vox-preview-placeholder-icon {
+      font-size: 36px;
+      opacity: .35;
+    }
+    .vox-preview-placeholder-text {
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(224,117,168,.35);
+      line-height: 1.6;
+    }
+
     /* FIELD CTA */
     #field-cta {
       text-align: center;
@@ -694,7 +831,7 @@
     <li><a href="#builds">Builds</a></li>
     <li><a href="garden.html">Garden</a></li>
     <li><a href="field.html" class="nav-field-btn">Field →</a></li>
-    <li><a href="waitlist.html" class="nav-waitlist-btn">Plant Your Seed</a></li>
+    <li><a href="waitlist.html" class="nav-waitlist-btn">HIPJOY Signup</a></li>
     <li><a href="profile.html" style="color:var(--muted,#6a8a72);font-size:.75rem;text-decoration:none;letter-spacing:.05em">Sign In</a></li>
   </ul>
 </nav>
@@ -724,7 +861,7 @@
           <span class="hero-desktop-note">↳ Desktop recommended for the full spatial experience</span>
         </div>
         <a href="#builds" class="btn-secondary">See What I Build</a>
-        <a href="waitlist.html" class="btn-secondary" style="border-color:var(--sage-border);color:var(--sage);background:var(--sage-faint);">Join the Waitlist</a>
+        <a href="waitlist.html" class="btn-secondary" style="border-color:var(--sage-border);color:var(--sage);background:var(--sage-faint);">HIPJOY Signup</a>
       </div>
     </div>
   </section>
@@ -885,6 +1022,65 @@
           <div class="build-stat" style="color:#9B4FDC">React Native · Expo</div>
         </div>
 
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ VOX SMALL BUSINESS STUDIO ═══ -->
+  <section id="vox-studio">
+    <div class="section-inner">
+      <div class="section-label">// 04 — vox studio</div>
+      <div class="vox-header reveal">
+        <div class="vox-sigil">◊</div>
+        <div class="vox-title-block">
+          <div class="vox-entity-label">VOX · Voice Director · Small Business Studio</div>
+          <div class="vox-title">VOX Brand Work</div>
+        </div>
+      </div>
+
+      <div class="vox-split">
+        <div class="vox-info reveal">
+          <p class="vox-desc">
+            VOX is HIPJOY's voice and brand entity — the signal director.
+            Running her for a small business client: full visual identity,
+            brand system, and UI concepts designed in Figma from the ground up.
+            This is what it looks like when a cognitive OS entity does real client work.
+          </p>
+          <div class="vox-tags">
+            <span class="vox-tag">Figma</span>
+            <span class="vox-tag">Brand Identity</span>
+            <span class="vox-tag">Small Business</span>
+            <span class="vox-tag">VOX Entity</span>
+            <span class="vox-tag">Visual Design</span>
+          </div>
+          <a href="FIGMA_URL_HERE" target="_blank" rel="noopener" class="vox-figma-link" id="vox-figma-btn">
+            ◊ View in Figma →
+          </a>
+        </div>
+
+        <div class="vox-preview reveal">
+          <div class="vox-preview-bar">
+            <div class="vox-preview-dot" style="background:rgba(244,132,95,.5)"></div>
+            <div class="vox-preview-dot" style="background:rgba(200,168,80,.4)"></div>
+            <div class="vox-preview-dot" style="background:rgba(224,117,168,.5)"></div>
+            <span class="vox-preview-bar-label">VOX — Figma Design</span>
+          </div>
+          <!-- Replace iframe src with your Figma embed URL:
+               Format: https://www.figma.com/embed?embed_host=share&url=YOUR_FIGMA_URL -->
+          <div class="vox-preview-placeholder" id="vox-placeholder">
+            <div class="vox-preview-placeholder-icon">◊</div>
+            <div class="vox-preview-placeholder-text">
+              Figma design coming soon<br>
+              <span style="opacity:.5;font-size:9px">Drop the Figma URL to embed live</span>
+            </div>
+          </div>
+          <!-- Once you have the URL, replace the placeholder div above with:
+          <iframe src="https://www.figma.com/embed?embed_host=share&url=YOUR_FIGMA_SHARE_URL"
+            allowfullscreen loading="lazy"></iframe>
+          -->
+        </div>
       </div>
     </div>
   </section>
