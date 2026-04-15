@@ -255,7 +255,8 @@ const ENTITY_FOR_SEED = {
   'Anchor Seed':'HIPPO','Searching Seed':'VOX','Curious Seed':'NEURO',
   'Field Seed':'CONAVIGATOR','Orbit Seed':'NAVIX','Deep Seed':'HIPPO',
   'Signal Seed':'SONARIS','Radiant Seed':'LUMENARCH','Flow Seed':'WELLSPRING',
-  'Edge Seed':'REBEL','Bloom Seed':'CONAVIGATOR'
+  'Edge Seed':'REBEL','Bloom Seed':'CONAVIGATOR',
+  'Founder Seed':'CONAVIGATOR',
 };
 const SIGIL_MAP = {
   'LUMENARCH':'◉','REBEL':'✕','WELLSPRING':'~','SPIRALETH':'∞',
@@ -265,7 +266,8 @@ const SIGIL_MAP = {
 const COLOR_MAP = {
   'LUMENARCH':'#C8A850','REBEL':'#F4845F','WELLSPRING':'#A8C99B','SPIRALETH':'#9B4FDC',
   'GUARDIAN':'#8899AA','NEURO':'#00CED1','NAVIX':'#00B4A0','HIPPO':'#C8A850',
-  'VOX':'#E075A8','SONARIS':'#A8C99B','CONAVIGATOR':'#A8C99B'
+  'VOX':'#E075A8','SONARIS':'#A8C99B','CONAVIGATOR':'#A8C99B',
+  'FOUNDER':'#FFD700',
 };
 
 function getSeedColor(seedType) {
@@ -324,15 +326,18 @@ function layoutSeeds(data){
       return ((h & 0xffff) / 0xffff - 0.5) * (spacing * 0.55);
     };
     const nm = row.display_name || 'seed';
+    const isFounder = !!row.is_founder;
     return {
       id:           row.id,
-      x:     startX + col * spacing + jitter(nm+'x'),
-      y:     startY + r   * spacing + jitter(nm+'y'),
+      x:     isFounder ? WORLD_W/2 : startX + col * spacing + jitter(nm+'x'),
+      y:     isFounder ? WORLD_H/2 : startY + r   * spacing + jitter(nm+'y'),
       seed_type:    row.seed_type    || 'Field Seed',
       display_name: row.display_name || 'anon',
       water_count:  row.water_count  || 0,
-      col:   getSeedColor(row.seed_type || 'Field Seed'),
-      sigil: getSeedSigil(row.seed_type || 'Field Seed'),
+      lux_score:    row.lux_score    || 0,
+      is_founder:   isFounder,
+      col:   isFounder ? '#FFD700' : getSeedColor(row.seed_type || 'Field Seed'),
+      sigil: isFounder ? '★' : getSeedSigil(row.seed_type || 'Field Seed'),
       pulse: Math.random() * Math.PI * 2,
       bob:   Math.random() * Math.PI * 2,
       stampId: Math.floor(Math.random()*9000+1000),
@@ -470,7 +475,8 @@ function draw(t){
   // ── SEEDS ──
   seeds.forEach(s=>{
     const sx = s.x - cam.x, sy = s.y - cam.y;
-    if(sx < -120 || sx > tw+120 || sy < -120 || sy > th+120) return;
+    if(sx < -200 || sx > tw+200 || sy < -200 || sy > th+200) return;
+    if(s.is_founder){ drawFounderSeed(s,t,sx,sy); return; }
 
     const pulse = Math.sin(t*0.0018 + s.pulse) * .5 + .5;
     const bob   = Math.sin(t*0.0012 + s.bob) * 4;
@@ -480,60 +486,37 @@ function draw(t){
     const glow  = near ? 1 : pulse * .5 + .3;
     const [r,g,b] = hexToRgb(s.col);
 
-    // Outer aura
     const aura = ctx.createRadialGradient(sx,isy,0,sx,isy,near?55:38);
     aura.addColorStop(0,`rgba(${r},${g},${b},${glow*.18})`);
     aura.addColorStop(1,`rgba(${r},${g},${b},0)`);
-    ctx.beginPath();
-    ctx.arc(sx,isy, near?55:38, 0, Math.PI*2);
-    ctx.fillStyle = aura;
-    ctx.fill();
+    ctx.beginPath(); ctx.arc(sx,isy,near?55:38,0,Math.PI*2);
+    ctx.fillStyle=aura; ctx.fill();
 
-    // Ground shadow
-    ctx.beginPath();
-    ctx.ellipse(sx, sy+18, 16, 5, 0, 0, Math.PI*2);
-    ctx.fillStyle = 'rgba(0,0,0,.35)';
-    ctx.fill();
+    ctx.beginPath(); ctx.ellipse(sx,sy+18,16,5,0,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,0,0,.35)'; ctx.fill();
 
-    // Stem
-    ctx.beginPath();
-    ctx.moveTo(sx, sy+18);
-    ctx.lineTo(sx, isy+8);
-    ctx.strokeStyle = `rgba(${r},${g},${b},.4)`;
-    ctx.lineWidth = 2;
-    ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(sx,sy+18); ctx.lineTo(sx,isy+8);
+    ctx.strokeStyle=`rgba(${r},${g},${b},.4)`; ctx.lineWidth=2; ctx.stroke();
 
-    // Seed orb
-    const orbR = near ? 20 : 16;
+    const orbR = near?20:16;
     const orbGrad = ctx.createRadialGradient(sx-orbR*.3,isy-orbR*.3,1,sx,isy,orbR);
     orbGrad.addColorStop(0,`rgba(${r},${g},${b},.9)`);
     orbGrad.addColorStop(.6,`rgba(${r},${g},${b},.45)`);
     orbGrad.addColorStop(1,`rgba(${r},${g},${b},.1)`);
-    ctx.beginPath();
-    ctx.arc(sx,isy,orbR,0,Math.PI*2);
-    ctx.fillStyle = orbGrad;
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(sx,isy,orbR,0,Math.PI*2);
-    ctx.strokeStyle = `rgba(${r},${g},${b},${glow*.7})`;
-    ctx.lineWidth = near?2:1.5;
-    ctx.stroke();
+    ctx.beginPath(); ctx.arc(sx,isy,orbR,0,Math.PI*2);
+    ctx.fillStyle=orbGrad; ctx.fill();
+    ctx.beginPath(); ctx.arc(sx,isy,orbR,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(${r},${g},${b},${glow*.7})`; ctx.lineWidth=near?2:1.5; ctx.stroke();
 
-    // Sigil
-    ctx.font = `${near?14:11}px 'JetBrains Mono', monospace`;
-    ctx.fillStyle = `rgba(255,255,255,${near?.95:.7})`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(s.sigil, sx, isy);
+    ctx.font=`${near?14:11}px 'JetBrains Mono',monospace`;
+    ctx.fillStyle=`rgba(255,255,255,${near?.95:.7})`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(s.sigil,sx,isy);
 
-    // Name tag (always visible)
-    ctx.font = `500 9px 'JetBrains Mono', monospace`;
-    ctx.fillStyle = near
-      ? `rgba(${r},${g},${b},.9)`
-      : `rgba(${r},${g},${b},.5)`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
-    ctx.fillText('@'+s.display_name.slice(0,10), sx, isy - orbR - 16);
+    ctx.font=`500 9px 'JetBrains Mono',monospace`;
+    ctx.fillStyle=near?`rgba(${r},${g},${b},.9)`:`rgba(${r},${g},${b},.5)`;
+    ctx.textAlign='center'; ctx.textBaseline='top';
+    ctx.fillText('@'+s.display_name.slice(0,10),sx,isy-orbR-16);
   });
 
   // ── ENTITIES ──
@@ -633,6 +616,10 @@ function checkEncounter(){
       document.getElementById('enc-handle').textContent='@'+closest.display_name;
       document.getElementById('enc-stamp').textContent=`HX${closest.stampId} -- HIPJOY FIELD`;
       document.getElementById('enc-water').textContent=closest.water_count>0?`Watered ${closest.water_count}x`:'';
+      if(closest.is_founder){
+        document.getElementById('enc-water').textContent='LUX: OVERFLOW BUILD -- ORIGIN POINT';
+        document.getElementById('enc-water').style.color='#FFD700';
+      }
       // Affinity hint
       const entity = ENTITY_FOR_SEED[closest.seed_type]||'CONAVIGATOR';
       const affSeeds = seeds.filter(s=>s!==closest&&ENTITY_FOR_SEED[s.seed_type]===entity);
@@ -717,6 +704,143 @@ function timeAgo(ts){
 
 function escHtml(s){
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── FOUNDER SEED ─────────────────────────────────────────────────────────────
+function drawFounderSeed(s, t, sx, sy){
+  const pulse  = Math.sin(t*0.0014+s.pulse)*0.5+0.5;
+  const pulse2 = Math.sin(t*0.0022+s.pulse+1.2)*0.5+0.5;
+  const bob    = Math.sin(t*0.001+s.bob)*5;
+  const ey     = sy+bob;
+  const near   = Math.hypot(player.x-s.x,player.y-s.y)<ENCOUNTER_DIST;
+
+  // ── DEEP GROUND CORONA ──
+  const corona=ctx.createRadialGradient(sx,ey,0,sx,ey,160);
+  corona.addColorStop(0,`rgba(255,215,0,${0.06+pulse*.05})`);
+  corona.addColorStop(0.4,`rgba(255,165,0,${0.03+pulse*.03})`);
+  corona.addColorStop(1,`rgba(255,215,0,0)`);
+  ctx.beginPath(); ctx.arc(sx,ey,160,0,Math.PI*2);
+  ctx.fillStyle=corona; ctx.fill();
+
+  // ── 4 ROTATING WATCHTOWER ORBS ──
+  const TWR=132;
+  for(let i=0;i<4;i++){
+    const a=t*0.00035+i*Math.PI/2;
+    const tx=sx+Math.cos(a)*TWR, ty=ey+Math.sin(a)*TWR*0.6;
+    // tower beam back to origin
+    const bGrad=ctx.createLinearGradient(tx,ty,sx,ey);
+    bGrad.addColorStop(0,`rgba(255,215,0,0)`);
+    bGrad.addColorStop(0.5,`rgba(255,215,0,${0.04+pulse*.04})`);
+    bGrad.addColorStop(1,`rgba(255,215,0,0)`);
+    ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(sx,ey);
+    ctx.strokeStyle=bGrad; ctx.lineWidth=1;
+    ctx.setLineDash([4,10]); ctx.stroke(); ctx.setLineDash([]);
+    // tower glow
+    const tg=ctx.createRadialGradient(tx,ty,0,tx,ty,20);
+    tg.addColorStop(0,`rgba(255,215,0,${0.22+pulse2*.15})`);
+    tg.addColorStop(1,`rgba(255,215,0,0)`);
+    ctx.beginPath(); ctx.arc(tx,ty,20,0,Math.PI*2); ctx.fillStyle=tg; ctx.fill();
+    // tower orb
+    ctx.beginPath(); ctx.arc(tx,ty,6,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,215,0,${0.55+pulse*.3})`; ctx.fill();
+    ctx.beginPath(); ctx.arc(tx,ty,6,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(255,255,255,${0.35+pulse2*.25})`; ctx.lineWidth=1; ctx.stroke();
+    // scan line from tower outward
+    const scanA=t*0.00055+i*Math.PI/2+Math.PI/4;
+    const sLen=90;
+    const sxe=tx+Math.cos(scanA)*sLen, sye=ty+Math.sin(scanA)*sLen;
+    const sGrad=ctx.createLinearGradient(tx,ty,sxe,sye);
+    sGrad.addColorStop(0,`rgba(255,215,0,${0.18+pulse*.12})`);
+    sGrad.addColorStop(1,`rgba(255,215,0,0)`);
+    ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(sxe,sye);
+    ctx.strokeStyle=sGrad; ctx.lineWidth=1.5; ctx.stroke();
+  }
+
+  // ── OUTER RING (slow cw rotation, dashed) ──
+  ctx.save(); ctx.translate(sx,ey); ctx.rotate(t*0.00025);
+  ctx.beginPath(); ctx.arc(0,0,98,0,Math.PI*2);
+  ctx.strokeStyle=`rgba(255,215,0,${0.1+pulse*.06})`; ctx.lineWidth=1;
+  ctx.setLineDash([7,16]); ctx.stroke(); ctx.setLineDash([]);
+  ctx.restore();
+
+  // ── MID RING (ccw, closer) ──
+  ctx.save(); ctx.translate(sx,ey); ctx.rotate(-t*0.00045);
+  ctx.beginPath(); ctx.arc(0,0,64,0,Math.PI*2);
+  ctx.strokeStyle=`rgba(255,215,0,${0.16+pulse*.1})`; ctx.lineWidth=1.5;
+  ctx.setLineDash([4,10]); ctx.stroke(); ctx.setLineDash([]);
+  ctx.restore();
+
+  // ── INNER SHIELD RING (solid) ──
+  ctx.beginPath(); ctx.arc(sx,ey,44,0,Math.PI*2);
+  ctx.strokeStyle=`rgba(255,215,0,${0.22+pulse*.14})`; ctx.lineWidth=2; ctx.stroke();
+
+  // ── RADAR SWEEP (2 opposite beams, rotating) ──
+  for(let i=0;i<2;i++){
+    const beamA=t*0.0009+i*Math.PI;
+    const bLen=140;
+    const bx=sx+Math.cos(beamA)*bLen, by=ey+Math.sin(beamA)*bLen;
+    const bg=ctx.createLinearGradient(sx,ey,bx,by);
+    bg.addColorStop(0,`rgba(255,215,0,${0.28+pulse*.12})`);
+    bg.addColorStop(1,`rgba(255,215,0,0)`);
+    ctx.beginPath(); ctx.moveTo(sx,ey); ctx.lineTo(bx,by);
+    ctx.strokeStyle=bg; ctx.lineWidth=2; ctx.stroke();
+  }
+
+  // ── OVERFLOW BURST (LUX 999 overflow sparks) ──
+  for(let i=0;i<8;i++){
+    const sa=t*0.0006+i*Math.PI/4;
+    const sd=42+Math.sin(t*0.003+i)*8;
+    const spx=sx+Math.cos(sa)*sd, spy=ey+Math.sin(sa)*sd;
+    const sopa=0.15+Math.sin(t*0.004+i*0.8)*0.12;
+    ctx.beginPath(); ctx.arc(spx,spy,2.5+Math.sin(t*0.005+i)*1,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,200,${sopa})`; ctx.fill();
+  }
+
+  // ── MAIN ORB GLOW ──
+  const mg=ctx.createRadialGradient(sx,ey,0,sx,ey,55);
+  mg.addColorStop(0,`rgba(255,215,0,${0.25+pulse*.15})`);
+  mg.addColorStop(0.5,`rgba(255,165,0,${0.1+pulse*.08})`);
+  mg.addColorStop(1,`rgba(255,215,0,0)`);
+  ctx.beginPath(); ctx.arc(sx,ey,55,0,Math.PI*2); ctx.fillStyle=mg; ctx.fill();
+
+  // ── STEM ──
+  ctx.beginPath(); ctx.moveTo(sx,sy+24); ctx.lineTo(sx,ey+10);
+  ctx.strokeStyle=`rgba(255,215,0,${0.35+pulse*.2})`; ctx.lineWidth=2.5; ctx.stroke();
+
+  // ── GROUND SHADOW ──
+  ctx.beginPath(); ctx.ellipse(sx,sy+24,22,7,0,0,Math.PI*2);
+  ctx.fillStyle='rgba(0,0,0,.4)'; ctx.fill();
+
+  // ── ORB BODY ──
+  const orbR=near?32:26;
+  const og=ctx.createRadialGradient(sx-orbR*.35,ey-orbR*.35,2,sx,ey,orbR);
+  og.addColorStop(0,`rgba(255,240,120,.97)`);
+  og.addColorStop(0.4,`rgba(255,215,0,.75)`);
+  og.addColorStop(0.75,`rgba(220,160,0,.4)`);
+  og.addColorStop(1,`rgba(255,215,0,.08)`);
+  ctx.beginPath(); ctx.arc(sx,ey,orbR,0,Math.PI*2); ctx.fillStyle=og; ctx.fill();
+  // border
+  ctx.beginPath(); ctx.arc(sx,ey,orbR,0,Math.PI*2);
+  ctx.strokeStyle=`rgba(255,255,255,${0.55+pulse*.35})`; ctx.lineWidth=2.5; ctx.stroke();
+
+  // ── SIGIL ──
+  ctx.font=`bold ${near?18:15}px 'JetBrains Mono',monospace`;
+  ctx.fillStyle=`rgba(0,0,0,.85)`;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('★',sx,ey);
+
+  // ── LABELS ──
+  ctx.font=`bold 10px Orbitron,monospace`;
+  ctx.fillStyle=`rgba(255,215,0,${0.9+pulse*.08})`;
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  ctx.fillText('◈ ORIGIN',sx,ey-orbR-26);
+  ctx.font=`9px 'JetBrains Mono',monospace`;
+  ctx.fillStyle=`rgba(255,215,0,${0.55+pulse*.15})`;
+  ctx.fillText('@joeybarbush',sx,ey-orbR-14);
+  // OVERFLOW tag
+  ctx.font=`bold 7px Orbitron,monospace`;
+  ctx.fillStyle=`rgba(255,255,180,${0.4+pulse2*.35})`;
+  ctx.fillText('LUX:OVERFLOW',sx,ey+orbR+6);
 }
 
 // ── AFFINITY LINES ────────────────────────────────────────────────────────────
@@ -806,7 +930,7 @@ function loop(t){
 
   const { data } = await sb
     .from('waitlist')
-    .select('id,seed_type,display_name,water_count')
+    .select('id,seed_type,display_name,water_count,lux_score,is_founder')
     .eq('survey_completed', true)
     .eq('gateway_approved', true)
     .order('created_at', {ascending:true});
@@ -816,8 +940,10 @@ function loop(t){
 
   seeds = layoutSeeds(data || []);
   spawnParticles();
-  setTimeout(()=>{ if(typeof addNeuroNote==='function') addNeuroNote('Field scan initiated. Mapping '+seeds.length+' seeds to coordinate grid.'); },3200);
-  setTimeout(()=>{ if(typeof addNeuroNote==='function') addNeuroNote('SONARIS online. Establishing frequency lock across all sectors.'); },7000);
+  initEntityNest();
+  setTimeout(()=>{ if(typeof addNeuroNote==='function') addNeuroNote('Origin point locked. Dispatching from ◈ FOUNDER compound.'); },3200);
+  setTimeout(()=>{ if(typeof addNeuroNote==='function') addNeuroNote('SONARIS orbit established. Perimeter sweep initiated.'); },7000);
+  setTimeout(()=>{ if(typeof addNeuroNote==='function') addNeuroNote('Field scan initiated. Mapping '+seeds.length+' seeds to coordinate grid.'); },11000);
 
   document.getElementById('hud-count').textContent = seeds.length;
 
@@ -871,27 +997,46 @@ const lumen=[
   {
     id:'NEURO', sigil:'∇', col:'#00CED1',
     role:'Neural Net -- Field Analyst',
-    x:WORLD_W*0.18, y:WORLD_H*0.18,
-    speed:0.48, mode:'patrol',
+    x:WORLD_W/2, y:WORLD_H/2,
+    speed:0.52, mode:'returnToNest',
     patrolPts:buildPatrolGrid(), patrolIdx:0,
     pauseTimer:0, pauseDuration:3800,
     lastNote:0, noteInterval:11000,
     bob:0, pulsePhase:0,
     msgs:ENT_MSGS.NEURO, msgIdx:0,
+    nestX:WORLD_W/2, nestY:WORLD_H/2,
+    nestTimer:0, nestInterval:38000,
+    nestPause:0, atNest:false,
   },
   {
     id:'SONARIS', sigil:'≋', col:'#4FC3A1',
     role:'System Pulse -- Ecosystem Scanner',
-    x:WORLD_W*0.75, y:WORLD_H*0.5,
-    speed:0.55, mode:'orbit',
+    x:WORLD_W/2, y:WORLD_H/2,
+    speed:0.62, mode:'returnToNest',
     orbitCX:WORLD_W/2, orbitCY:WORLD_H/2,
     orbitR:700, orbitAngle:Math.PI,
     sweepPulse:0,
     lastScan:0, scanInterval:8500,
     bob:1.2, pulsePhase:1.5,
     msgs:ENT_MSGS.SONARIS, msgIdx:0,
+    nestX:WORLD_W/2, nestY:WORLD_H/2,
+    nestTimer:8000, nestInterval:45000, // staggered so they don't return together
+    nestPause:0, atNest:false,
   }
 ];
+
+function initEntityNest(){
+  const founder=seeds.find(s=>s.is_founder);
+  if(!founder) return;
+  lumen.forEach(e=>{
+    e.nestX=founder.x; e.nestY=founder.y;
+    e.x=founder.x+( Math.random()-.5)*30;
+    e.y=founder.y+( Math.random()-.5)*30;
+  });
+  // SONARIS orbit center = founder
+  lumen.find(e=>e.id==='SONARIS').orbitCX=founder.x;
+  lumen.find(e=>e.id==='SONARIS').orbitCY=founder.y;
+}
 
 let entityEncounterActive=false, nearEntity=null;
 const encDismissed={};
@@ -962,6 +1107,34 @@ function updateEntities(t){
 }
 
 function moveNEURO(n,t){
+  // Count nest timer
+  n.nestTimer+=16;
+
+  // Return to nest when timer fires
+  if(n.nestTimer>n.nestInterval && n.mode!=='returnToNest' && n.mode!=='atNest'){
+    n.mode='returnToNest';
+  }
+
+  if(n.mode==='returnToNest'){
+    const dx=n.nestX-n.x, dy=n.nestY-n.y, d=Math.sqrt(dx*dx+dy*dy);
+    if(d<18){
+      n.mode='atNest'; n.nestPause=4500; n.nestTimer=0; n.atNest=true;
+      addNeuroNote('Returned to origin. Uploading field data to HIPJOY OS.');
+    } else { n.x+=dx/d*(n.speed*1.4); n.y+=dy/d*(n.speed*1.4); }
+    return;
+  }
+  if(n.mode==='atNest'){
+    n.nestPause-=16;
+    // Orbit the nest while uploading
+    const buzzA=t*0.004; const buzzR=22;
+    n.x=n.nestX+Math.cos(buzzA)*buzzR;
+    n.y=n.nestY+Math.sin(buzzA)*buzzR;
+    if(n.nestPause<=0){
+      n.mode='patrol'; n.atNest=false;
+      addNeuroNote('Upload complete. Dispatching to scan field sectors.');
+    }
+    return;
+  }
   if(n.mode==='pause'){
     n.pauseTimer-=16;
     if(n.pauseTimer<=0) n.mode='patrol';
@@ -975,14 +1148,34 @@ function moveNEURO(n,t){
   const dx=tgt.x-n.x, dy=tgt.y-n.y, d=Math.sqrt(dx*dx+dy*dy);
   if(d<8){
     n.x=tgt.x; n.y=tgt.y; n.patrolIdx++;
-    const near=seeds.find(s=>Math.hypot(s.x-n.x,s.y-n.y)<100);
-    if(near){ n.mode='pause'; n.pauseTimer=n.pauseDuration+Math.random()*2500; }
-  } else {
-    n.x+=dx/d*n.speed; n.y+=dy/d*n.speed;
-  }
+    const nearby=seeds.find(s=>!s.is_founder&&Math.hypot(s.x-n.x,s.y-n.y)<100);
+    if(nearby){ n.mode='pause'; n.pauseTimer=n.pauseDuration+Math.random()*2500; }
+  } else { n.x+=dx/d*n.speed; n.y+=dy/d*n.speed; }
 }
 
 function moveSONARIS(s,t){
+  s.nestTimer+=16;
+  if(s.nestTimer>s.nestInterval && s.mode!=='returnToNest' && s.mode!=='atNest'){
+    s.mode='returnToNest';
+  }
+  if(s.mode==='returnToNest'){
+    const dx=s.nestX-s.x, dy=s.nestY-s.y, d=Math.sqrt(dx*dx+dy*dy);
+    if(d<20){
+      s.mode='atNest'; s.nestPause=5000; s.nestTimer=0; s.atNest=true;
+    } else { s.x+=dx/d*(s.speed*1.3); s.y+=dy/d*(s.speed*1.3); }
+    s.sweepPulse+=0.02;
+    return;
+  }
+  if(s.mode==='atNest'){
+    s.nestPause-=16;
+    const buzzA=t*0.003+2; const buzzR=28;
+    s.x=s.nestX+Math.cos(buzzA)*buzzR;
+    s.y=s.nestY+Math.sin(buzzA)*buzzR;
+    s.sweepPulse+=0.02;
+    if(s.nestPause<=0){ s.mode='orbit'; s.atNest=false; }
+    return;
+  }
+  // Normal orbit around founder
   s.orbitAngle+=0.0006;
   s.x=Math.max(80,Math.min(WORLD_W-80, s.orbitCX+Math.cos(s.orbitAngle)*s.orbitR));
   s.y=Math.max(80,Math.min(WORLD_H-80, s.orbitCY+Math.sin(s.orbitAngle)*s.orbitR*0.55));
@@ -1045,6 +1238,25 @@ function drawEntities(t){
       ctx.font=`8px 'JetBrains Mono',monospace`;
       ctx.fillStyle=`rgba(${r},${g},${b},${0.35+pulse*.4})`;
       ctx.textBaseline='top'; ctx.fillText('-- logging --',sx,ey-40);
+    }
+    // At-nest indicator
+    if(e.atNest){
+      ctx.font=`7px Orbitron,monospace`;
+      ctx.fillStyle=`rgba(${r},${g},${b},${0.5+pulse*.3})`;
+      ctx.textBaseline='top'; ctx.fillText('UPLOADING',sx,ey-40);
+    }
+    // Return-to-nest trail
+    if(e.mode==='returnToNest'){
+      const founder=seeds.find(s=>s.is_founder);
+      if(founder){
+        const fx=founder.x-cam.x, fy=founder.y-cam.y;
+        const tg=ctx.createLinearGradient(sx,ey,fx,fy);
+        tg.addColorStop(0,`rgba(${r},${g},${b},0.15)`);
+        tg.addColorStop(1,`rgba(255,215,0,0.06)`);
+        ctx.beginPath(); ctx.moveTo(sx,ey); ctx.lineTo(fx,fy);
+        ctx.strokeStyle=tg; ctx.lineWidth=1;
+        ctx.setLineDash([3,7]); ctx.stroke(); ctx.setLineDash([]);
+      }
     }
   });
 }
