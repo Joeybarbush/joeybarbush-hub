@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HIPJOY — LUX Seeds Early Access</title>
-  <meta name="description" content="Cognitive architecture for humans. 14 AI entities. 1 routing engine. Persistent identity. Join the HIPJOY LUX Seeds waitlist.">
+  <title>HIPJOY — LUX Seeds Beta</title>
+  <meta name="description" content="Cognitive architecture for humans. 14 AI entities. 1 routing engine. Persistent identity. Join the HIPJOY LUX Seeds beta.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -460,12 +460,12 @@
 
 <!-- ═══ HERO ═══ -->
 <section id="hero">
-  <div class="hero-eyebrow">LUX Seeds — Early Access Program</div>
+  <div class="hero-eyebrow">LUX Seeds — Beta</div>
   <h1 class="hero-title">HIPJOY</h1>
   <p class="hero-tagline">Your mind, architected.</p>
   <div class="hero-sub">14 entities · 1 routing engine · Persistent identity</div>
   <div class="hero-type-wrap" id="type-display"><span class="type-cursor"></span></div>
-  <a href="#form-section" class="hero-cta">Get Early Access <span>→</span></a>
+  <a href="#form-section" class="hero-cta">Join Beta <span>→</span></a>
 
   <div class="social-bar">
     <div class="sb-item">
@@ -526,7 +526,7 @@
 <!-- ═══ FORM ═══ -->
 <section id="form-section">
   <div class="form-eyebrow">Plant your seed</div>
-  <h2 class="form-title">Request Early Access</h2>
+  <h2 class="form-title">Request Beta Access</h2>
   <div class="seed-form-wrap">
     <div class="fg">
       <label class="fl" for="f-email">Email address</label>
@@ -619,7 +619,7 @@
     <div class="decline-inner">
       <span class="decline-sigil">∞</span>
       <h3 class="decline-title">The field respects that.</h3>
-      <p class="decline-text">Your seed is planted. We'll be in touch when early access opens. The field doesn't require anything from you right now.</p>
+      <p class="decline-text">Your seed is planted. We'll be in touch when beta opens. The field doesn't require anything from you right now.</p>
       <div class="decline-links">
         <a href="https://x.com/Joey_Barbush" target="_blank" rel="noopener" class="decline-link">X / Twitter</a>
         <a href="https://github.com/Joeybarbush" target="_blank" rel="noopener" class="decline-link">GitHub</a>
@@ -1028,6 +1028,7 @@ loadSeedCount(document.getElementById('sb-count'));
 // ─── Form submit ──────────────────────────────────────────────────────
 document.getElementById('f-submit').addEventListener('click', async()=>{
   const email=document.getElementById('f-email').value.trim();
+  const name =document.getElementById('f-name').value.trim();
   const phone=document.getElementById('f-phone').value.trim();
   const role =document.getElementById('f-role').value;
   const errEl=document.getElementById('f-error');
@@ -1037,15 +1038,27 @@ document.getElementById('f-submit').addEventListener('click', async()=>{
   if(!role){errEl.textContent='Tell the field who you are.';errEl.classList.add('show');return;}
   btn.classList.add('loading'); btn.textContent='Planting...'; btn.disabled=true;
   try {
-    const { data, error } = await sb.from('waitlist').insert({email,phone:phone||null,role}).select().single();
-    if(error && error.code!=='23505') throw error;
+    // Create / sign in auth account via magic link
+    const { error: authErr } = await sb.auth.signInWithOtp({
+      email,
+      options: {
+        data: { display_name: name||null, phone: phone||null, role },
+        shouldCreateUser: true,
+      }
+    });
+    if(authErr) throw authErr;
+    // Also upsert waitlist row with extra profile data
+    const { data, error: dbErr } = await sb.from('waitlist')
+      .upsert({email, phone:phone||null, role, display_name:name||null}, {onConflict:'email'})
+      .select().single();
+    if(dbErr && dbErr.code!=='23505') throw dbErr;
     if(data) rowId=data.id;
     fireConfetti();
     runTerminal();
   } catch(e){
     btn.classList.remove('loading'); btn.textContent='Plant My Seed'; btn.disabled=false;
-    errEl.textContent = (e.message&&e.message.toLowerCase().includes('duplicate'))
-      ?'This seed is already planted. Check your email for next steps.'
+    errEl.textContent = (e.message&&e.message.toLowerCase().includes('rate'))
+      ?'Too many attempts — wait a moment and try again.'
       :'Connection issue — check your network and try again.';
     errEl.classList.add('show');
   }
