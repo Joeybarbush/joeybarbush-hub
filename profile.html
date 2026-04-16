@@ -338,6 +338,114 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
 }
 .settings-save:hover{background:rgba(168,201,155,.25)}
 .settings-ok{font-size:.7rem;color:var(--sage);display:none;letter-spacing:.06em}
+
+/* CI SECTION */
+.ci-wrap{
+  display:flex;align-items:center;gap:1.2rem;
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:14px;padding:1.2rem 1.4rem;
+}
+.ci-ring{position:relative;width:80px;height:80px;flex-shrink:0}
+.ci-ring svg{width:80px;height:80px;transform:rotate(-90deg)}
+.ci-ring circle{fill:none;stroke-width:6}
+.ci-ring .ci-bg{stroke:rgba(255,255,255,.06)}
+.ci-ring .ci-fg{stroke:var(--card-color,var(--sage));stroke-linecap:round;transition:stroke-dashoffset .8s ease}
+.ci-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ci-val-num{font-family:Orbitron;font-size:1.1rem;font-weight:900;color:var(--card-color,var(--sage))}
+.ci-val-label{font-size:.5rem;color:var(--muted);letter-spacing:.1em}
+.ci-info{display:flex;flex-direction:column;gap:.25rem}
+.ci-title{font-family:Orbitron;font-size:.68rem;letter-spacing:.12em;color:var(--sage)}
+.ci-formula{font-size:.62rem;color:var(--muted);letter-spacing:.04em}
+.ci-dims{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.2rem}
+.ci-dim{font-size:.62rem;color:var(--muted)}
+.ci-dim b{color:var(--card-color,var(--sage));font-family:Orbitron}
+.ci-stage-badge{
+  display:inline-block;font-family:Orbitron;font-size:.6rem;letter-spacing:.1em;
+  padding:.2rem .6rem;border-radius:4px;margin-top:.35rem;
+  background:rgba(168,201,155,.06);border:1px solid rgba(168,201,155,.15);
+  color:var(--card-color,var(--sage));
+}
+
+/* TAGS */
+.tags-section{margin-bottom:.5rem}
+.tags-display{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.5rem}
+.seed-tag{
+  font-size:.68rem;padding:.2rem .6rem;border-radius:14px;
+  background:rgba(168,201,155,.06);border:1px solid rgba(168,201,155,.14);
+  color:rgba(168,201,155,.7);letter-spacing:.04em;
+}
+.seed-tag .tag-x{cursor:pointer;margin-left:.3rem;color:rgba(168,201,155,.3);font-size:.7rem}
+.seed-tag .tag-x:hover{color:#F4845F}
+.tag-add-row{display:flex;gap:.5rem;align-items:center}
+.tag-input{
+  flex:1;background:rgba(0,0,0,.3);border:1px solid var(--glass-border);
+  border-radius:8px;padding:.45rem .7rem;color:var(--text);
+  font-family:'JetBrains Mono',monospace;font-size:.75rem;outline:none;
+}
+.tag-input:focus{border-color:var(--sage-glow)}
+.tag-add-btn{
+  padding:.45rem .8rem;background:var(--sage-dim);border:1px solid var(--sage-glow);
+  border-radius:8px;color:var(--sage);font-family:Orbitron;font-size:.6rem;
+  letter-spacing:.08em;cursor:pointer;transition:background .2s;white-space:nowrap;
+}
+.tag-add-btn:hover{background:rgba(168,201,155,.25)}
+.tag-limit{font-size:.6rem;color:var(--muted);margin-top:.25rem}
+
+/* BIO */
+.bio-wrap{margin-bottom:.5rem}
+.bio-display{font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.7;font-style:italic}
+.bio-input{
+  width:100%;background:rgba(0,0,0,.3);border:1px solid var(--glass-border);
+  border-radius:8px;padding:.6rem .9rem;color:var(--text);
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;outline:none;
+  resize:none;min-height:60px;transition:border-color .2s;
+}
+.bio-input:focus{border-color:var(--sage-glow)}
+
+/* PUBLIC ROOM VIEW */
+#public-room-panel{display:none;flex-direction:column;gap:2rem;animation:fadeIn .6s ease}
+.pr-back{font-size:.72rem;color:var(--muted);text-decoration:none;letter-spacing:.06em}
+.pr-back:hover{color:var(--sage)}
+.pr-water-btn{
+  padding:.6rem 1.4rem;border-radius:10px;
+  background:rgba(0,130,200,.1);border:1px solid rgba(100,180,255,.3);
+  color:rgba(140,200,255,.9);font-family:Orbitron;font-size:.7rem;letter-spacing:.1em;
+  cursor:pointer;transition:background .2s;
+}
+.pr-water-btn:hover{background:rgba(0,130,200,.2)}
+.pr-water-btn:disabled{opacity:.4;cursor:default}
+.pr-note-row{display:flex;gap:.5rem}
+.pr-note-input{
+  flex:1;background:rgba(0,0,0,.3);border:1px solid var(--glass-border);
+  border-radius:8px;padding:.5rem .8rem;color:var(--text);
+  font-family:'JetBrains Mono',monospace;font-size:.75rem;outline:none;
+}
+.pr-note-send{
+  padding:.5rem .9rem;background:var(--sage-dim);border:1px solid var(--sage-glow);
+  border-radius:8px;color:var(--sage);font-family:Orbitron;font-size:.6rem;
+  letter-spacing:.08em;cursor:pointer;transition:background .2s;
+}
+.pr-note-send:hover{background:rgba(168,201,155,.25)}
+
+/* SHARE BOOST SECTION */
+.share-boost-wrap{
+  background:rgba(232,122,58,.04);border:1px solid rgba(232,122,58,.2);
+  border-radius:14px;padding:1.2rem 1.4rem;text-align:center;
+}
+.share-boost-title{font-family:Orbitron;font-size:.7rem;letter-spacing:.12em;color:var(--orange);margin-bottom:.3rem}
+.share-boost-sub{font-size:.68rem;color:var(--muted);margin-bottom:.8rem;line-height:1.6}
+.share-boost-btns{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap}
+.share-boost-btn{
+  padding:.5rem 1rem;border-radius:8px;font-family:Orbitron;font-size:.62rem;
+  letter-spacing:.08em;cursor:pointer;transition:background .2s;border:none;text-decoration:none;
+}
+.sb-x{background:rgba(29,161,242,.08);border:1px solid rgba(29,161,242,.3);color:#1da1f2}
+.sb-x:hover{background:rgba(29,161,242,.18)}
+.sb-li{background:rgba(10,102,194,.08);border:1px solid rgba(10,102,194,.3);color:#0a66c2}
+.sb-li:hover{background:rgba(10,102,194,.18)}
+.sb-copy{background:var(--sage-dim);border:1px solid var(--sage-glow);color:var(--sage)}
+.sb-copy:hover{background:rgba(168,201,155,.25)}
+.share-boost-count{font-size:.62rem;color:var(--muted);margin-top:.6rem;letter-spacing:.06em}
 </style>
 </head>
 <body>
@@ -361,6 +469,70 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
 </nav>
 
 <main>
+  <!-- PUBLIC ROOM VIEW (for ?seed=name visitors) -->
+  <div id="public-room-panel">
+    <a href="garden.html" class="pr-back">&larr; Back to the Garden</a>
+
+    <div id="pr-holo-card" class="holo-card">
+      <div class="holo-card-inner">
+        <div class="card-left">
+          <div class="card-badge">SEED ROOM</div>
+          <div class="card-seed-name" id="pr-seed-name">Field Seed</div>
+          <div class="card-handle" id="pr-handle">@fieldmember</div>
+          <div class="card-entity">
+            <span class="card-sigil" id="pr-sigil">★</span>
+            <span class="card-entity-name" id="pr-entity">CONAVIGATOR</span>
+          </div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:.4rem" id="pr-bio-display"></div>
+        </div>
+        <div class="card-right">
+          <div class="lux-gauge">
+            <svg viewBox="0 0 100 100"><circle class="lux-gauge-bg" cx="50" cy="50" r="45"/><circle class="lux-gauge-fill" id="pr-gauge-fill" cx="50" cy="50" r="45"/></svg>
+            <div class="lux-center"><div class="lux-number" id="pr-gauge-num">0</div><div class="lux-label">LUX</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CI for public view -->
+    <div class="ci-wrap" id="pr-ci-wrap">
+      <div class="ci-ring">
+        <svg viewBox="0 0 80 80"><circle class="ci-bg" cx="40" cy="40" r="34"/><circle class="ci-fg" id="pr-ci-arc" cx="40" cy="40" r="34" stroke-dasharray="213.6" stroke-dashoffset="213.6"/></svg>
+        <div class="ci-val"><div class="ci-val-num" id="pr-ci-num">0.0</div><div class="ci-val-label">CI</div></div>
+      </div>
+      <div class="ci-info">
+        <div class="ci-title">CRYSTALLIZATION INDEX</div>
+        <div class="ci-dims" id="pr-ci-dims"></div>
+        <div class="ci-stage-badge" id="pr-ci-stage">DORMANT</div>
+      </div>
+    </div>
+
+    <!-- Tags (read-only) -->
+    <div class="tags-display" id="pr-tags" style="margin-bottom:.5rem"></div>
+
+    <!-- Vectors -->
+    <div>
+      <div class="section-head">VECTORS</div>
+      <div class="score-bars" id="pr-vectors"></div>
+    </div>
+
+    <!-- Notes -->
+    <div>
+      <div class="section-head">FIELD NOTES</div>
+      <div id="pr-notes" style="display:flex;flex-direction:column;gap:.5rem"></div>
+    </div>
+
+    <!-- Actions: water + leave note -->
+    <div style="display:flex;flex-direction:column;gap:.8rem">
+      <button class="pr-water-btn" id="pr-water-btn" onclick="publicWater()">~ WATER THIS SEED</button>
+      <div class="pr-note-row" id="pr-note-row" style="display:none">
+        <input class="pr-note-input" id="pr-note-input" maxlength="280" placeholder="leave a note on this seed...">
+        <button class="pr-note-send" onclick="publicSendNote()">PLANT</button>
+      </div>
+      <div style="font-size:.65rem;color:var(--muted);text-align:center" id="pr-auth-hint"></div>
+    </div>
+  </div>
+
   <!-- SIGN IN PANEL -->
   <div id="signin-panel">
     <div class="signin-title">Your Seed Awaits</div>
@@ -412,6 +584,56 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- CRYSTALLIZATION INDEX -->
+    <div id="ci-section">
+      <div class="section-head">◉ CRYSTALLIZATION INDEX</div>
+      <div class="ci-wrap">
+        <div class="ci-ring">
+          <svg viewBox="0 0 80 80"><circle class="ci-bg" cx="40" cy="40" r="34"/><circle class="ci-fg" id="ci-arc" cx="40" cy="40" r="34" stroke-dasharray="213.6" stroke-dashoffset="213.6"/></svg>
+          <div class="ci-val"><div class="ci-val-num" id="ci-num">0.0</div><div class="ci-val-label">CI</div></div>
+        </div>
+        <div class="ci-info">
+          <div class="ci-title">CRYSTALLIZATION INDEX</div>
+          <div class="ci-formula">CI = Stability &times; Sovereignty &times; ln(Memory+1) &times; Coherence</div>
+          <div class="ci-dims" id="ci-dims"></div>
+          <div class="ci-stage-badge" id="ci-stage-badge">DORMANT</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAGS -->
+    <div class="tags-section" id="tags-section">
+      <div class="section-head">SEED TAGS</div>
+      <div class="tags-display" id="tags-display"></div>
+      <div class="tag-add-row" id="tag-add-row">
+        <input class="tag-input" id="tag-input" placeholder="add a tag..." maxlength="30">
+        <button class="tag-add-btn" onclick="addTag()">+ TAG</button>
+      </div>
+      <div class="tag-limit" id="tag-limit"></div>
+    </div>
+
+    <!-- BIO -->
+    <div class="bio-wrap" id="bio-section">
+      <div class="section-head">SEED BIO</div>
+      <textarea class="bio-input" id="bio-input" maxlength="140" placeholder="describe your seed in 140 chars..."></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.4rem">
+        <span style="font-size:.6rem;color:var(--muted)" id="bio-chars">0/140</span>
+        <button class="tag-add-btn" onclick="saveBio()">SAVE BIO</button>
+      </div>
+    </div>
+
+    <!-- SHARE TO BOOST -->
+    <div class="share-boost-wrap" id="share-boost-section">
+      <div class="share-boost-title">SHARE TO BOOST</div>
+      <div class="share-boost-sub">Share your seed on social to earn +2 LUX and +1 water per share</div>
+      <div class="share-boost-btns">
+        <button class="share-boost-btn sb-x" onclick="shareBoostX()">Share on X</button>
+        <button class="share-boost-btn sb-li" onclick="shareBoostLinkedIn()">LinkedIn</button>
+        <button class="share-boost-btn sb-copy" onclick="shareBoostCopy()">Copy Link</button>
+      </div>
+      <div class="share-boost-count" id="share-boost-count"></div>
     </div>
 
     <!-- WATER YOUR SEED -->
@@ -666,7 +888,7 @@ async function loadProfile(user) {
   // Fetch waitlist row
   const { data: rows } = await sb
     .from('waitlist')
-    .select('id,email,seed_type,lux_score,display_name,water_count,shared,gateway_approved,vectors,q1_think,q2_struggle,q3_tool,q4_invest,q5_field,created_at')
+    .select('id,email,seed_type,lux_score,display_name,water_count,shared,gateway_approved,vectors,q1_think,q2_struggle,q3_tool,q4_invest,q5_field,created_at,share_boosts,bio,ci_score,seed_stage')
     .eq('email', user.email)
     .limit(1);
 
@@ -741,6 +963,12 @@ async function loadProfile(user) {
   setTimeout(loadExistingTasks, 400);
   document.getElementById('nav-signout-wrap').style.display = '';
   document.getElementById('nav-signin-wrap').style.display  = 'none';
+
+  // Load CI, tags, bio, share boost
+  setTimeout(updateCIDisplay, 600);
+  setTimeout(loadTags, 300);
+  setTimeout(loadBio, 300);
+  updateShareBoostDisplay(row?.share_boosts || 0);
 }
 
 function setSignal(id, val) {
@@ -1073,6 +1301,9 @@ async function completeTask(taskId, vector, boost, el){
     },i*50);
   }
 
+  // Update CI after task completion
+  setTimeout(updateCIDisplay, 500);
+
   // Show share card after all tasks done
   if(done >= cards.length){
     setTimeout(()=> renderShareCard(), 800);
@@ -1333,8 +1564,340 @@ async function shareToUnlock() {
   };
 }
 
+// ── CRYSTALLIZATION INDEX ─────────────────────────────────────────────────────
+function computeCI(vectors, luxScore, waterCount, notesCount, tasksCompleted) {
+  const vals = [vectors?.LUX||0, vectors?.GRIT||0, vectors?.PHI||0, vectors?.TILT||0, vectors?.FIRE||0];
+  const avg = vals.reduce((s,v) => s+v, 0) / 5;
+  const stddev = Math.sqrt(vals.reduce((s,v) => s + (v-avg)**2, 0) / 5);
+  const Stability = Math.min(1, avg / 100);
+  const Sovereignty = Math.min(1, (luxScore||0) / 100);
+  const Memory = (waterCount||0) + (notesCount||0) + (tasksCompleted||0);
+  const Coherence = Math.max(0.1, 1 - (stddev / 50));
+  const ci = Stability * Sovereignty * Math.log(Memory + 1) * Coherence;
+  return { ci: Math.round(ci*100)/100, Stability: Math.round(Stability*100)/100, Sovereignty: Math.round(Sovereignty*100)/100, Memory, Coherence: Math.round(Coherence*100)/100 };
+}
+function ciToStage(ci) {
+  if(ci >= 5.0) return 'radiant';
+  if(ci >= 3.0) return 'blooming';
+  if(ci >= 1.5) return 'growing';
+  if(ci >= 0.5) return 'sprouting';
+  return 'dormant';
+}
+const STAGE_COLORS = { dormant:'rgba(168,201,155,.5)', sprouting:'#A8C99B', growing:'#00CED1', blooming:'#C8A850', radiant:'#FFD700' };
+const STAGE_LABELS = { dormant:'DORMANT', sprouting:'SPROUTING', growing:'GROWING', blooming:'BLOOMING', radiant:'RADIANT' };
+
+async function updateCIDisplay() {
+  if(!_rowId) return;
+  const { count: nc } = await sb.from('seed_messages').select('*',{count:'exact',head:true}).eq('to_waitlist_id',_rowId);
+  const { count: tc } = await sb.from('field_tasks').select('*',{count:'exact',head:true}).eq('waitlist_id',_rowId).eq('completed',true);
+  const ciData = computeCI(_vectors, parseInt(document.getElementById('gauge-num').textContent)||0, _waterCount, nc||0, tc||0);
+  const stage = ciToStage(ciData.ci);
+
+  // Update DB
+  sb.from('waitlist').update({ ci_score: ciData.ci, seed_stage: stage }).eq('id', _rowId).then(()=>{});
+
+  // Update UI
+  const ciMax = 8;
+  const ciPct = Math.min(1, ciData.ci / ciMax);
+  document.getElementById('ci-arc').setAttribute('stroke-dashoffset', 213.6 * (1 - ciPct));
+  document.getElementById('ci-num').textContent = ciData.ci.toFixed(1);
+  document.getElementById('ci-dims').innerHTML = [
+    `<span class="ci-dim">Stability:<b>${ciData.Stability}</b></span>`,
+    `<span class="ci-dim">Sovereignty:<b>${ciData.Sovereignty}</b></span>`,
+    `<span class="ci-dim">Memory:<b>${ciData.Memory}</b></span>`,
+    `<span class="ci-dim">Coherence:<b>${ciData.Coherence}</b></span>`,
+  ].join('');
+  const badge = document.getElementById('ci-stage-badge');
+  badge.textContent = STAGE_LABELS[stage];
+  badge.style.color = STAGE_COLORS[stage];
+  badge.style.borderColor = STAGE_COLORS[stage];
+}
+
+// ── TAGS ──────────────────────────────────────────────────────────────────────
+let _tags = [];
+async function loadTags() {
+  if(!_rowId) return;
+  const { data } = await sb.from('seed_tags').select('id,tag').eq('waitlist_id', _rowId);
+  _tags = data || [];
+  renderTags();
+}
+
+function renderTags() {
+  const display = document.getElementById('tags-display');
+  display.innerHTML = _tags.map(t =>
+    `<span class="seed-tag">${escHtml(t.tag)}<span class="tag-x" onclick="removeTag('${t.id}')">&times;</span></span>`
+  ).join('');
+  document.getElementById('tag-limit').textContent = `${_tags.length}/5 tags`;
+  if(_tags.length >= 5) {
+    document.getElementById('tag-add-row').style.display = 'none';
+  } else {
+    document.getElementById('tag-add-row').style.display = 'flex';
+  }
+}
+
+async function addTag() {
+  if(!_rowId || _tags.length >= 5) return;
+  const input = document.getElementById('tag-input');
+  const tag = input.value.trim().toLowerCase().replace(/[^a-z0-9\-_ ]/g,'').slice(0,30);
+  if(!tag) return;
+  if(_tags.some(t => t.tag === tag)) { input.value = ''; return; }
+  const { data, error } = await sb.from('seed_tags').insert({ waitlist_id: _rowId, tag }).select().single();
+  if(!error && data) {
+    _tags.push(data);
+    renderTags();
+    input.value = '';
+  }
+}
+
+async function removeTag(tagId) {
+  await sb.from('seed_tags').delete().eq('id', tagId);
+  _tags = _tags.filter(t => t.id !== tagId);
+  renderTags();
+}
+
+// ── BIO ──────────────────────────────────────────────────────────────────────
+async function loadBio() {
+  if(!_rowId) return;
+  const { data } = await sb.from('waitlist').select('bio').eq('id', _rowId).single();
+  const bio = data?.bio || '';
+  document.getElementById('bio-input').value = bio;
+  document.getElementById('bio-chars').textContent = `${bio.length}/140`;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const bioInput = document.getElementById('bio-input');
+  if(bioInput) bioInput.addEventListener('input', () => {
+    document.getElementById('bio-chars').textContent = `${bioInput.value.length}/140`;
+  });
+  const tagInput = document.getElementById('tag-input');
+  if(tagInput) tagInput.addEventListener('keydown', e => {
+    if(e.key === 'Enter') addTag();
+  });
+});
+
+async function saveBio() {
+  if(!_currentUserEmail) return;
+  const bio = document.getElementById('bio-input').value.trim().slice(0,140);
+  await sb.from('waitlist').update({ bio }).eq('email', _currentUserEmail);
+  toast('Bio saved');
+}
+
+// ── SHARE TO BOOST ───────────────────────────────────────────────────────────
+let _shareBoosts = 0;
+function updateShareBoostDisplay(count) {
+  _shareBoosts = count;
+  const el = document.getElementById('share-boost-count');
+  if(el) el.textContent = count > 0 ? `${count} boost${count===1?'':'s'} earned from sharing` : 'Share to earn your first boost';
+}
+
+async function applyShareBoost() {
+  if(!_currentUserEmail) return;
+  // +2 LUX, +1 water
+  const newWater = _waterCount + 1;
+  _vectors.LUX = Math.min(100, (_vectors.LUX||0) + 2);
+  await sb.from('waitlist').update({
+    share_boosts: _shareBoosts + 1,
+    water_count: newWater,
+    vectors: _vectors,
+  }).eq('email', _currentUserEmail);
+  updateWaterDisplay(newWater);
+  updateShareBoostDisplay(_shareBoosts + 1);
+  await recalcSeed();
+  await updateCIDisplay();
+  toast('+2 LUX, +1 water from sharing');
+}
+
+function shareBoostX() {
+  const seedName = document.getElementById('card-seed-name').textContent;
+  const lux = document.getElementById('gauge-num').textContent;
+  const ci = document.getElementById('ci-num')?.textContent || '0';
+  const handle = document.getElementById('card-handle').textContent;
+  const stage = document.getElementById('ci-stage-badge')?.textContent || 'DORMANT';
+  const text = `My seed is ${stage} in the HIPJOY field\n${seedName} | LUX ${lux} | CI ${ci}\n${handle}\nPlant yours: https://joeybarbush.com/waitlist.html\n@Joey_Barbush #HIPJOY`;
+  window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+  applyShareBoost();
+}
+
+function shareBoostLinkedIn() {
+  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://joeybarbush.com/waitlist.html')}`, '_blank');
+  applyShareBoost();
+}
+
+function shareBoostCopy() {
+  const handle = document.getElementById('card-handle')?.textContent || '';
+  const url = `https://joeybarbush.com/profile.html?seed=${encodeURIComponent(handle.replace('@',''))}`;
+  navigator.clipboard.writeText(url).then(() => {
+    toast('Link copied');
+    applyShareBoost();
+  });
+}
+
+// ── PUBLIC SEED ROOM ─────────────────────────────────────────────────────────
+let _publicSeedRow = null;
+
+async function loadPublicRoom(seedName) {
+  // Hide other panels
+  document.getElementById('signin-panel').style.display = 'none';
+  document.getElementById('profile-panel').style.display = 'none';
+  document.getElementById('public-room-panel').style.display = 'flex';
+  document.title = `@${seedName} -- HIPJOY Seed Room`;
+
+  // Fetch seed by display name
+  const { data: rows } = await sb.from('waitlist')
+    .select('id,display_name,seed_type,lux_score,water_count,vectors,bio,seed_stage,ci_score,is_founder,share_boosts')
+    .eq('display_name', seedName)
+    .limit(1);
+  const row = rows && rows[0];
+  if(!row) {
+    document.getElementById('public-room-panel').innerHTML = `
+      <a href="garden.html" class="pr-back">&larr; Back to the Garden</a>
+      <div style="text-align:center;padding:3rem;color:var(--muted)">
+        <div style="font-size:2rem;margin-bottom:1rem">◈</div>
+        <div style="font-family:Orbitron;font-size:.85rem;letter-spacing:.1em;margin-bottom:.5rem">SEED NOT FOUND</div>
+        <div style="font-size:.75rem">No seed with handle @${escHtml(seedName)} exists in the field.</div>
+      </div>`;
+    return;
+  }
+  _publicSeedRow = row;
+
+  const align = getAlign(row.seed_type || 'Field Seed');
+  const vectors = row.vectors || {};
+  const lux = row.lux_score || 0;
+
+  // Card
+  const card = document.getElementById('pr-holo-card');
+  card.style.setProperty('--card-color', align.color);
+  document.getElementById('pr-seed-name').textContent = row.seed_type || 'Field Seed';
+  document.getElementById('pr-seed-name').style.color = align.color;
+  document.getElementById('pr-handle').textContent = '@' + (row.display_name || 'anon');
+  document.getElementById('pr-sigil').textContent = align.sigil;
+  document.getElementById('pr-sigil').style.color = align.color;
+  document.getElementById('pr-entity').textContent = align.entity;
+  document.getElementById('pr-bio-display').textContent = row.bio || '';
+
+  // LUX gauge
+  const offset = 283 - (lux / 100) * 283;
+  const gf = document.getElementById('pr-gauge-fill');
+  gf.style.stroke = align.color;
+  setTimeout(() => { gf.style.strokeDashoffset = offset; }, 50);
+  animateNum('pr-gauge-num', 0, lux, 1200, align.color);
+
+  // CI
+  const { count: nc } = await sb.from('seed_messages').select('*',{count:'exact',head:true}).eq('to_waitlist_id',row.id);
+  const { count: tc } = await sb.from('field_tasks').select('*',{count:'exact',head:true}).eq('waitlist_id',row.id).eq('completed',true);
+  const ciData = computeCI(vectors, lux, row.water_count, nc||0, tc||0);
+  const stage = ciToStage(ciData.ci);
+  const ciPct = Math.min(1, ciData.ci / 8);
+  document.getElementById('pr-ci-arc').style.stroke = STAGE_COLORS[stage];
+  document.getElementById('pr-ci-arc').setAttribute('stroke-dashoffset', 213.6 * (1 - ciPct));
+  document.getElementById('pr-ci-num').textContent = ciData.ci.toFixed(1);
+  document.getElementById('pr-ci-num').style.color = STAGE_COLORS[stage];
+  document.getElementById('pr-ci-dims').innerHTML = [
+    `<span class="ci-dim">S:<b>${ciData.Stability}</b></span>`,
+    `<span class="ci-dim">V:<b>${ciData.Sovereignty}</b></span>`,
+    `<span class="ci-dim">M:<b>${ciData.Memory}</b></span>`,
+    `<span class="ci-dim">C:<b>${ciData.Coherence}</b></span>`,
+  ].join('');
+  document.getElementById('pr-ci-stage').textContent = STAGE_LABELS[stage];
+  document.getElementById('pr-ci-stage').style.color = STAGE_COLORS[stage];
+  document.getElementById('pr-ci-stage').style.borderColor = STAGE_COLORS[stage];
+
+  // Tags
+  const { data: tags } = await sb.from('seed_tags').select('tag').eq('waitlist_id', row.id);
+  const tagsEl = document.getElementById('pr-tags');
+  if(tags && tags.length) {
+    tagsEl.innerHTML = tags.map(t => `<span class="seed-tag">${escHtml(t.tag)}</span>`).join('');
+  } else { tagsEl.innerHTML = ''; }
+
+  // Vectors
+  const vecNames = ['LUX','GRIT','PHI','TILT','FIRE'];
+  const vecCols = { LUX:'#C8A850', GRIT:'#E87A3A', PHI:'#9B4FDC', TILT:'#00CED1', FIRE:'#F4845F' };
+  document.getElementById('pr-vectors').innerHTML = vecNames.map(v => {
+    const val = vectors[v] || 0;
+    return `<div class="score-row"><div class="score-name">${v}</div><div class="score-track"><div class="score-fill" style="background:${vecCols[v]};width:${val}%"></div></div><div class="score-val">${val}</div></div>`;
+  }).join('');
+
+  // Notes
+  const { data: notes } = await sb.from('seed_messages')
+    .select('message,from_display_name,created_at')
+    .eq('to_waitlist_id', row.id)
+    .order('created_at',{ascending:false}).limit(6);
+  const notesEl = document.getElementById('pr-notes');
+  if(notes && notes.length) {
+    notesEl.innerHTML = notes.map(n => `<div style="background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;padding:.7rem .9rem"><div style="font-size:.6rem;color:var(--muted);margin-bottom:.2rem">@${escHtml(n.from_display_name)} &middot; ${timeAgo(n.created_at)}</div><div style="font-size:.78rem;color:var(--text);line-height:1.6">${escHtml(n.message)}</div></div>`).join('');
+  } else {
+    notesEl.innerHTML = '<div style="font-size:.75rem;color:var(--muted);font-style:italic">No notes yet -- be the first to leave one.</div>';
+  }
+
+  // Auth state for actions
+  const { data: { session } } = await sb.auth.getSession();
+  if(session) {
+    document.getElementById('pr-note-row').style.display = 'flex';
+    document.getElementById('pr-auth-hint').textContent = '';
+  } else {
+    document.getElementById('pr-water-btn').disabled = true;
+    document.getElementById('pr-water-btn').textContent = 'SIGN IN TO WATER';
+    document.getElementById('pr-auth-hint').innerHTML = '<a href="waitlist.html" style="color:var(--sage);text-decoration:none">Plant your seed to interact &rarr;</a>';
+  }
+}
+
+function timeAgo(ts){
+  const diff=Math.floor((Date.now()-new Date(ts))/1000);
+  if(diff<60) return 'just now';
+  if(diff<3600) return Math.floor(diff/60)+'m ago';
+  if(diff<86400) return Math.floor(diff/3600)+'h ago';
+  return Math.floor(diff/86400)+'d ago';
+}
+
+async function publicWater() {
+  if(!_publicSeedRow) return;
+  const btn = document.getElementById('pr-water-btn');
+  btn.disabled = true; btn.textContent = 'watering...';
+  await sb.from('waitlist').update({ water_count: (_publicSeedRow.water_count||0) + 1 }).eq('id', _publicSeedRow.id);
+  _publicSeedRow.water_count = (_publicSeedRow.water_count||0) + 1;
+  btn.textContent = '~ WATERED';
+  // Track
+  const { data: { session } } = await sb.auth.getSession();
+  if(session) {
+    sb.from('seed_visits').insert({ visitor_user_id: session.user.id, visited_waitlist_id: _publicSeedRow.id }).then(()=>{});
+  }
+}
+
+async function publicSendNote() {
+  if(!_publicSeedRow) return;
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session) return;
+  const input = document.getElementById('pr-note-input');
+  const msg = input.value.trim();
+  if(!msg) return;
+  // Get sender display name
+  const { data: senderRow } = await sb.from('waitlist').select('display_name').eq('user_id', session.user.id).single();
+  const fromName = senderRow?.display_name || session.user.email.split('@')[0];
+  const { error } = await sb.from('seed_messages').insert({
+    to_waitlist_id: _publicSeedRow.id,
+    from_user_id: session.user.id,
+    from_display_name: fromName,
+    message: msg,
+    is_public: true,
+  });
+  if(!error) {
+    input.value = '';
+    toast('Note planted');
+    // Reload notes
+    loadPublicRoom(_publicSeedRow.display_name);
+  }
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
 (async function init() {
+  // Check for public room view
+  const params = new URLSearchParams(window.location.search);
+  const seedParam = params.get('seed');
+  if(seedParam) {
+    loadPublicRoom(seedParam);
+    return;
+  }
+
   const { data: { session } } = await sb.auth.getSession();
   if (session && session.user) {
     loadProfile(session.user);
