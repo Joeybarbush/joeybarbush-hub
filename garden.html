@@ -259,6 +259,98 @@ nav{
   50%{opacity:1}
 }
 
+/* GLASS WINDOW PANEL */
+#glass-window{
+  position:fixed;inset:0;z-index:100;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(18px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .35s;
+}
+#glass-window.show{opacity:1;pointer-events:auto}
+.gw-card{
+  background:rgba(4,12,7,.96);
+  border:1px solid rgba(168,201,155,.18);border-radius:20px;
+  padding:1.6rem 1.5rem 1.4rem;max-width:420px;width:94%;
+  max-height:85vh;overflow-y:auto;
+  transform:translateY(16px) scale(.96);transition:transform .35s cubic-bezier(.2,1,.4,1);
+  position:relative;
+}
+#glass-window.show .gw-card{transform:translateY(0) scale(1)}
+.gw-close{position:absolute;top:.8rem;right:1rem;background:none;border:none;color:rgba(168,201,155,.3);cursor:pointer;font-size:1.1rem;z-index:2}
+.gw-close:hover{color:rgba(168,201,155,.6)}
+.gw-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+.gw-sigil{font-size:2.4rem;filter:drop-shadow(0 0 12px var(--gw-col,#A8C99B))}
+.gw-info{display:flex;flex-direction:column;gap:.18rem}
+.gw-name{font-family:Orbitron;font-size:.82rem;letter-spacing:.12em;color:var(--gw-col,#A8C99B)}
+.gw-seed-type{font-size:.68rem;color:rgba(168,201,155,.5);letter-spacing:.06em}
+.gw-stage-badge{
+  display:inline-block;font-size:.58rem;letter-spacing:.1em;
+  padding:.18rem .55rem;border-radius:4px;font-family:Orbitron;
+  background:rgba(168,201,155,.08);border:1px solid rgba(168,201,155,.18);
+  color:var(--gw-col,#A8C99B);margin-top:.2rem;
+}
+.gw-bio{font-size:.68rem;color:rgba(168,201,155,.45);line-height:1.65;margin-bottom:.8rem;font-style:italic}
+
+/* CI Gauge */
+.gw-ci-wrap{display:flex;align-items:center;gap:.8rem;margin-bottom:.9rem;padding:.6rem .7rem;background:rgba(168,201,155,.03);border:1px solid rgba(168,201,155,.08);border-radius:10px}
+.gw-ci-ring{position:relative;width:56px;height:56px;flex-shrink:0}
+.gw-ci-ring svg{width:56px;height:56px;transform:rotate(-90deg)}
+.gw-ci-ring circle{fill:none;stroke-width:4}
+.gw-ci-ring .ci-bg{stroke:rgba(168,201,155,.08)}
+.gw-ci-ring .ci-fg{stroke:var(--gw-col,#A8C99B);stroke-linecap:round;transition:stroke-dashoffset .6s ease}
+.gw-ci-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Orbitron;font-size:.7rem;color:var(--gw-col,#A8C99B)}
+.gw-ci-info{display:flex;flex-direction:column;gap:.15rem}
+.gw-ci-label{font-family:Orbitron;font-size:.58rem;letter-spacing:.12em;color:rgba(168,201,155,.5)}
+.gw-ci-formula{font-size:.56rem;color:rgba(168,201,155,.25);letter-spacing:.04em}
+.gw-ci-dims{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.2rem}
+.gw-ci-dim{font-size:.55rem;color:rgba(168,201,155,.35)}
+.gw-ci-dim b{color:var(--gw-col,#A8C99B);font-family:Orbitron}
+
+/* Vector Bars */
+.gw-vectors{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
+.gw-vec-row{display:flex;align-items:center;gap:.5rem}
+.gw-vec-label{width:34px;font-size:.6rem;color:rgba(168,201,155,.4);letter-spacing:.06em;text-align:right;font-family:Orbitron}
+.gw-vec-bar{flex:1;height:5px;background:rgba(168,201,155,.06);border-radius:3px;overflow:hidden}
+.gw-vec-fill{height:100%;border-radius:3px;transition:width .5s ease}
+.gw-vec-val{width:26px;font-size:.58rem;color:rgba(168,201,155,.45);text-align:right;font-family:Orbitron}
+
+/* Tags */
+.gw-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.8rem}
+.gw-tag{
+  font-size:.58rem;padding:.15rem .5rem;border-radius:12px;
+  background:rgba(168,201,155,.06);border:1px solid rgba(168,201,155,.14);
+  color:rgba(168,201,155,.6);letter-spacing:.04em;
+}
+
+/* Notes in glass window */
+.gw-notes{margin-bottom:.8rem}
+.gw-notes-title{font-family:Orbitron;font-size:.58rem;letter-spacing:.12em;color:rgba(168,201,155,.4);margin-bottom:.45rem}
+.gw-note{
+  font-size:.64rem;color:rgba(168,201,155,.5);line-height:1.55;
+  padding:.35rem .5rem;background:rgba(168,201,155,.03);
+  border-radius:6px;margin-bottom:.25rem;
+}
+.gw-note-from{font-size:.55rem;color:rgba(168,201,155,.25);margin-bottom:.1rem}
+
+/* Actions */
+.gw-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+.gw-water-btn{
+  flex:1;padding:.55rem;background:rgba(100,180,255,.08);
+  border:1px solid rgba(100,180,255,.3);border-radius:8px;
+  color:rgba(100,180,255,.8);font-family:Orbitron;font-size:.58rem;
+  letter-spacing:.1em;cursor:pointer;transition:background .2s;text-align:center;
+}
+.gw-water-btn:hover{background:rgba(100,180,255,.16)}
+.gw-water-btn:disabled{opacity:.4;cursor:default}
+.gw-visit-btn{
+  flex:1;padding:.55rem;background:rgba(168,201,155,.08);
+  border:1px solid rgba(168,201,155,.25);border-radius:8px;
+  color:var(--sage);font-family:Orbitron;font-size:.58rem;
+  letter-spacing:.1em;cursor:pointer;transition:background .2s;
+  text-align:center;text-decoration:none;display:block;
+}
+.gw-visit-btn:hover{background:rgba(168,201,155,.16)}
+
 /* FIRST-VISIT WELCOME OVERLAY */
 #welcome-overlay{
   position:fixed;inset:0;z-index:400;
@@ -419,6 +511,43 @@ nav{
 <div id="controls-hint">
   WASD / arrows to move<br>
   Walk near a seed to view it
+</div>
+
+<!-- GLASS WINDOW PANEL -->
+<div id="glass-window">
+  <div class="gw-card">
+    <button class="gw-close" onclick="closeGlassWindow()">&times;</button>
+    <div class="gw-header">
+      <div class="gw-sigil" id="gw-sigil">★</div>
+      <div class="gw-info">
+        <div class="gw-name" id="gw-name">seed</div>
+        <div class="gw-seed-type" id="gw-seed-type">Field Seed</div>
+        <div class="gw-stage-badge" id="gw-stage">DORMANT</div>
+      </div>
+    </div>
+    <div class="gw-bio" id="gw-bio"></div>
+    <div class="gw-ci-wrap">
+      <div class="gw-ci-ring">
+        <svg viewBox="0 0 56 56"><circle class="ci-bg" cx="28" cy="28" r="24"/><circle class="ci-fg" id="gw-ci-arc" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="150.8"/></svg>
+        <div class="gw-ci-val" id="gw-ci-val">0.0</div>
+      </div>
+      <div class="gw-ci-info">
+        <div class="gw-ci-label">CRYSTALLIZATION INDEX</div>
+        <div class="gw-ci-formula">CI = S &times; V &times; ln(M+1) &times; C</div>
+        <div class="gw-ci-dims" id="gw-ci-dims"></div>
+      </div>
+    </div>
+    <div class="gw-vectors" id="gw-vectors"></div>
+    <div class="gw-tags" id="gw-tags"></div>
+    <div class="gw-notes" id="gw-notes-section">
+      <div class="gw-notes-title">FIELD NOTES</div>
+      <div id="gw-notes-list"></div>
+    </div>
+    <div class="gw-actions">
+      <button class="gw-water-btn" id="gw-water-btn" onclick="waterFromGlass()">~ WATER THIS SEED</button>
+      <a class="gw-visit-btn" id="gw-visit-link" href="#">VISIT ROOM &rarr;</a>
+    </div>
+  </div>
 </div>
 
 <!-- JOYSTICK -->
@@ -1940,6 +2069,233 @@ function closeEntityEncounter(){
   entityEncounterActive=false;
   if(nearEntity)encDismissed[nearEntity.id]=true;
 }
+
+// ── CRYSTALLIZATION INDEX ─────────────────────────────────────────────────────
+function computeCI(vectors, luxScore, waterCount, notesCount, tasksCompleted) {
+  const vals = [vectors?.LUX||0, vectors?.GRIT||0, vectors?.PHI||0, vectors?.TILT||0, vectors?.FIRE||0];
+  const avg = vals.reduce((s,v) => s+v, 0) / 5;
+  const stddev = Math.sqrt(vals.reduce((s,v) => s + (v-avg)**2, 0) / 5);
+  const Stability = Math.min(1, avg / 100);
+  const Sovereignty = Math.min(1, (luxScore||0) / 100);
+  const Memory = (waterCount||0) + (notesCount||0) + (tasksCompleted||0);
+  const Coherence = Math.max(0.1, 1 - (stddev / 50));
+  const ci = Stability * Sovereignty * Math.log(Memory + 1) * Coherence;
+  return { ci: Math.round(ci*100)/100, Stability: Math.round(Stability*100)/100, Sovereignty: Math.round(Sovereignty*100)/100, Memory, Coherence: Math.round(Coherence*100)/100 };
+}
+function ciToStage(ci) {
+  if(ci >= 5.0) return 'radiant';
+  if(ci >= 3.0) return 'blooming';
+  if(ci >= 1.5) return 'growing';
+  if(ci >= 0.5) return 'sprouting';
+  return 'dormant';
+}
+const STAGE_COLORS = { dormant:'rgba(168,201,155,.4)', sprouting:'#A8C99B', growing:'#00CED1', blooming:'#C8A850', radiant:'#FFD700' };
+const STAGE_LABELS = { dormant:'DORMANT', sprouting:'SPROUTING', growing:'GROWING', blooming:'BLOOMING', radiant:'RADIANT' };
+
+// ── SEED STAGE DRAW HELPERS ──────────────────────────────────────────────────
+function getSeedStageParams(stage) {
+  switch(stage) {
+    case 'sprouting': return { orbR:22, glowR:58, particles:2, intensity:.7 };
+    case 'growing':   return { orbR:26, glowR:70, particles:4, intensity:.85 };
+    case 'blooming':  return { orbR:30, glowR:85, particles:6, intensity:.95 };
+    case 'radiant':   return { orbR:34, glowR:105, particles:8, intensity:1.0 };
+    default:          return { orbR:18, glowR:45, particles:0, intensity:.5 };
+  }
+}
+
+function drawSeedStageParticles(sx, sy, t, count, col, stage) {
+  if(count <= 0) return;
+  const [r,g,b] = hexToRgb(col);
+  for(let i = 0; i < count; i++) {
+    const a = t * 0.002 + i * (Math.PI * 2 / count);
+    const dist = stage === 'radiant' ? 38 + Math.sin(t*0.003+i)*8 : 28 + Math.sin(t*0.002+i)*5;
+    const px = sx + Math.cos(a) * dist;
+    const py = sy + Math.sin(a) * dist;
+    const alpha = 0.3 + Math.sin(t*0.004+i*1.2)*0.2;
+    const pr = (stage === 'blooming' || stage === 'radiant') ? 3 : 2;
+    ctx.beginPath(); ctx.arc(px,py,pr,0,Math.PI*2);
+    ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
+    ctx.fill();
+  }
+  if(stage === 'radiant') {
+    for(let i = 0; i < 4; i++) {
+      const ra = t * 0.0008 + i * Math.PI / 2;
+      const rLen = 55 + Math.sin(t*0.003+i)*15;
+      const rx = sx + Math.cos(ra)*rLen, ry = sy + Math.sin(ra)*rLen;
+      const rg = ctx.createLinearGradient(sx,sy,rx,ry);
+      rg.addColorStop(0,`rgba(${r},${g},${b},0.2)`);
+      rg.addColorStop(1,`rgba(${r},${g},${b},0)`);
+      ctx.beginPath(); ctx.moveTo(sx,sy); ctx.lineTo(rx,ry);
+      ctx.strokeStyle=rg; ctx.lineWidth=1.5; ctx.stroke();
+    }
+  }
+}
+
+// ── GLASS WINDOW ─────────────────────────────────────────────────────────────
+let glassWindowSeed = null;
+let glassWindowOpen = false;
+
+async function openGlassWindow(seed) {
+  if(!seed || !seed.id) return;
+  glassWindowSeed = seed;
+  glassWindowOpen = true;
+  const panel = document.getElementById('glass-window');
+  const col = seed.col || '#A8C99B';
+  panel.style.setProperty('--gw-col', col);
+
+  const { data: row } = await sb.from('waitlist')
+    .select('id,display_name,seed_type,lux_score,water_count,vectors,bio,seed_stage,ci_score,is_founder')
+    .eq('id', seed.id).single();
+
+  const vectors = row?.vectors || {};
+  const bio = row?.bio || '';
+
+  const { count: notesCount } = await sb.from('seed_messages').select('*',{count:'exact',head:true}).eq('to_waitlist_id',seed.id);
+  const { count: tasksCount } = await sb.from('field_tasks').select('*',{count:'exact',head:true}).eq('waitlist_id',seed.id).eq('completed',true);
+  const ciData = computeCI(vectors, row?.lux_score, row?.water_count, notesCount||0, tasksCount||0);
+  const stage = ciToStage(ciData.ci);
+
+  sb.from('waitlist').update({ ci_score: ciData.ci, seed_stage: stage }).eq('id', seed.id).then(()=>{});
+
+  document.getElementById('gw-sigil').textContent = seed.sigil;
+  document.getElementById('gw-sigil').style.color = col;
+  document.getElementById('gw-name').textContent = '@' + (row?.display_name || 'anon');
+  document.getElementById('gw-name').style.color = col;
+  document.getElementById('gw-seed-type').textContent = row?.seed_type || 'Field Seed';
+  const stageBadge = document.getElementById('gw-stage');
+  stageBadge.textContent = STAGE_LABELS[stage];
+  stageBadge.style.borderColor = STAGE_COLORS[stage];
+  stageBadge.style.color = STAGE_COLORS[stage];
+
+  const bioEl = document.getElementById('gw-bio');
+  bioEl.textContent = bio || 'This seed hasn\'t written a bio yet.';
+
+  // CI Gauge
+  const ciMax = 8;
+  const ciPct = Math.min(1, ciData.ci / ciMax);
+  const ciArc = document.getElementById('gw-ci-arc');
+  ciArc.style.stroke = STAGE_COLORS[stage];
+  ciArc.setAttribute('stroke-dashoffset', 150.8 * (1 - ciPct));
+  document.getElementById('gw-ci-val').textContent = ciData.ci.toFixed(1);
+  document.getElementById('gw-ci-val').style.color = STAGE_COLORS[stage];
+  document.getElementById('gw-ci-dims').innerHTML = [
+    `<span class="gw-ci-dim">S:<b>${ciData.Stability}</b></span>`,
+    `<span class="gw-ci-dim">V:<b>${ciData.Sovereignty}</b></span>`,
+    `<span class="gw-ci-dim">M:<b>${ciData.Memory}</b></span>`,
+    `<span class="gw-ci-dim">C:<b>${ciData.Coherence}</b></span>`,
+  ].join('');
+
+  // Vectors
+  const vecNames = ['LUX','GRIT','PHI','TILT','FIRE'];
+  const vecColors = { LUX:'#C8A850', GRIT:'#8899AA', PHI:'#9B4FDC', TILT:'#00B4A0', FIRE:'#F4845F' };
+  document.getElementById('gw-vectors').innerHTML = vecNames.map(v => {
+    const val = vectors[v] || 0;
+    return `<div class="gw-vec-row"><span class="gw-vec-label">${v}</span><div class="gw-vec-bar"><div class="gw-vec-fill" style="width:${val}%;background:${vecColors[v]}"></div></div><span class="gw-vec-val">${val}</span></div>`;
+  }).join('');
+
+  // Tags
+  const { data: tags } = await sb.from('seed_tags').select('tag').eq('waitlist_id', seed.id);
+  const tagsEl = document.getElementById('gw-tags');
+  if(tags && tags.length) {
+    tagsEl.innerHTML = tags.map(t => `<span class="gw-tag">${escHtml(t.tag)}</span>`).join('');
+    tagsEl.style.display = '';
+  } else { tagsEl.innerHTML = ''; tagsEl.style.display = 'none'; }
+
+  // Notes
+  const { data: notes } = await sb.from('seed_messages')
+    .select('message,from_display_name,created_at')
+    .eq('to_waitlist_id', seed.id)
+    .order('created_at',{ascending:false}).limit(4);
+  const notesList = document.getElementById('gw-notes-list');
+  if(notes && notes.length) {
+    notesList.innerHTML = notes.map(n => `<div class="gw-note"><div class="gw-note-from">@${escHtml(n.from_display_name)} &middot; ${timeAgo(n.created_at)}</div>${escHtml(n.message)}</div>`).join('');
+  } else {
+    notesList.innerHTML = '<div style="font-size:.6rem;color:rgba(168,201,155,.2);font-style:italic">no notes yet</div>';
+  }
+
+  // Water button
+  const waterBtn = document.getElementById('gw-water-btn');
+  if(currentUser) {
+    waterBtn.disabled = false;
+    waterBtn.textContent = '~ WATER THIS SEED';
+    const today = new Date().toISOString().slice(0,10);
+    const { count: watered } = await sb.from('seed_visits')
+      .select('*',{count:'exact',head:true})
+      .eq('visitor_user_id', currentUser.id)
+      .eq('visited_waitlist_id', seed.id)
+      .gte('created_at', today+'T00:00:00Z');
+    if(watered && watered > 0) { waterBtn.disabled = true; waterBtn.textContent = '~ WATERED TODAY'; }
+  } else { waterBtn.disabled = true; waterBtn.textContent = 'SIGN IN TO WATER'; }
+
+  document.getElementById('gw-visit-link').href = 'profile.html?seed=' + encodeURIComponent(row?.display_name || '');
+
+  if(currentUser) sb.from('seed_visits').insert({ visitor_user_id: currentUser.id, visited_waitlist_id: seed.id }).then(()=>{});
+
+  panel.classList.add('show');
+}
+
+function closeGlassWindow() {
+  document.getElementById('glass-window').classList.remove('show');
+  glassWindowOpen = false;
+  glassWindowSeed = null;
+}
+
+async function waterFromGlass() {
+  if(!currentUser || !glassWindowSeed) return;
+  const btn = document.getElementById('gw-water-btn');
+  btn.disabled = true; btn.textContent = 'watering...';
+  await sb.from('waitlist').update({ water_count: (glassWindowSeed.water_count||0) + 1 }).eq('id', glassWindowSeed.id);
+  glassWindowSeed.water_count = (glassWindowSeed.water_count||0) + 1;
+  const localSeed = seeds.find(s => s.id === glassWindowSeed.id);
+  if(localSeed) localSeed.water_count = glassWindowSeed.water_count;
+  btn.textContent = '~ WATERED TODAY';
+  if(nearSeed && nearSeed.id === glassWindowSeed.id) {
+    document.getElementById('enc-water').textContent = `Watered ${glassWindowSeed.water_count}x`;
+  }
+}
+
+// ── PEEK BUTTON INJECTION ────────────────────────────────────────────────────
+const _origLoadSeedMessages = loadSeedMessages;
+loadSeedMessages = async function(seed) {
+  await _origLoadSeedMessages(seed);
+  const form = document.getElementById('enc-msg-form');
+  const peekDiv = document.createElement('div');
+  peekDiv.style.cssText = 'margin-top:.45rem;text-align:center';
+  peekDiv.innerHTML = `<button onclick="openGlassWindow(nearSeed)" style="
+    background:rgba(168,201,155,.06);border:1px solid rgba(168,201,155,.2);
+    border-radius:6px;padding:.35rem .8rem;color:rgba(168,201,155,.6);
+    font-family:'JetBrains Mono',monospace;font-size:.6rem;cursor:pointer;
+    letter-spacing:.06em;transition:background .2s;width:100%;
+  " onmouseover="this.style.background='rgba(168,201,155,.14)'" onmouseout="this.style.background='rgba(168,201,155,.06)'">PEEK INTO SEED ROOM</button>`;
+  form.appendChild(peekDiv);
+};
+
+// ── ENRICH SEEDS WITH VECTORS + CI ───────────────────────────────────────────
+async function loadSeedExtras() {
+  if(!seeds.length) return;
+  const ids = seeds.map(s=>s.id).filter(Boolean);
+  if(!ids.length) return;
+  const { data: rows } = await sb.from('waitlist')
+    .select('id,vectors,bio,seed_stage,ci_score')
+    .in('id', ids);
+  if(!rows) return;
+  const rowMap = {};
+  rows.forEach(r => rowMap[r.id] = r);
+  seeds.forEach(s => {
+    const r = rowMap[s.id];
+    if(!r) return;
+    s._vectors = r.vectors || {};
+    s._bio = r.bio || '';
+    s._stage = r.seed_stage || 'dormant';
+    s._ci = r.ci_score || 0;
+  });
+}
+setTimeout(loadSeedExtras, 2000);
+
+// Close glass window on Escape
+window.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && glassWindowOpen) closeGlassWindow();
+});
 
 </script>
 </body>
