@@ -542,6 +542,13 @@
       <div class="form-hint">So the field can reach you directly when access opens</div>
     </div>
     <div class="fg">
+      <label class="fl" for="f-password">Password</label>
+      <div style="position:relative">
+        <input type="password" id="f-password" class="fi" placeholder="min 8 characters" autocomplete="new-password" required style="padding-right:44px">
+        <button type="button" id="f-pw-toggle" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-dim);font-size:13px;padding:0;line-height:1;" aria-label="Toggle password visibility">show</button>
+      </div>
+    </div>
+    <div class="fg">
       <label class="fl" for="f-role">I am a...</label>
       <select id="f-role" class="fs">
         <option value="" disabled selected>Select your role</option>
@@ -1025,29 +1032,44 @@ function animCount(el, target){
 }
 loadSeedCount(document.getElementById('sb-count'));
 
+// ─── Password show/hide toggle ────────────────────────────────────────
+document.getElementById('f-pw-toggle').addEventListener('click', function(){
+  const inp = document.getElementById('f-password');
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  this.textContent = show ? 'hide' : 'show';
+});
+
 // ─── Form submit ──────────────────────────────────────────────────────
 document.getElementById('f-submit').addEventListener('click', async()=>{
-  const email=document.getElementById('f-email').value.trim();
-  const name =document.getElementById('f-name').value.trim();
-  const phone=document.getElementById('f-phone').value.trim();
-  const role =document.getElementById('f-role').value;
-  const errEl=document.getElementById('f-error');
-  const btn  =document.getElementById('f-submit');
+  const email   = document.getElementById('f-email').value.trim();
+  const name    = document.getElementById('f-name').value.trim();
+  const phone   = document.getElementById('f-phone').value.trim();
+  const password= document.getElementById('f-password').value;
+  const role    = document.getElementById('f-role').value;
+  const errEl   = document.getElementById('f-error');
+  const btn     = document.getElementById('f-submit');
   errEl.classList.remove('show');
   if(!email||!email.includes('@')){errEl.textContent='A valid email is required.';errEl.classList.add('show');return;}
+  if(!password||password.length<8){errEl.textContent='Password must be at least 8 characters.';errEl.classList.add('show');return;}
   if(!role){errEl.textContent='Tell the field who you are.';errEl.classList.add('show');return;}
   btn.classList.add('loading'); btn.textContent='Planting...'; btn.disabled=true;
   try {
-    // Create / sign in auth account via magic link
-    const { error: authErr } = await sb.auth.signInWithOtp({
+    // Create account + sign in immediately
+    const { data: authData, error: authErr } = await sb.auth.signUp({
       email,
+      password,
       options: {
         data: { display_name: name||null, phone: phone||null, role },
-        shouldCreateUser: true,
       }
     });
     if(authErr) throw authErr;
-    // Also upsert waitlist row with extra profile data
+    // If user already exists, sign them in instead
+    if(authData.user && authData.user.identities && authData.user.identities.length===0){
+      const { error: signInErr } = await sb.auth.signInWithPassword({ email, password });
+      if(signInErr) throw signInErr;
+    }
+    // Upsert waitlist row with profile data
     const { data, error: dbErr } = await sb.from('waitlist')
       .upsert({email, phone:phone||null, role, display_name:name||null}, {onConflict:'email'})
       .select().single();
@@ -1057,9 +1079,12 @@ document.getElementById('f-submit').addEventListener('click', async()=>{
     runTerminal();
   } catch(e){
     btn.classList.remove('loading'); btn.textContent='Plant My Seed'; btn.disabled=false;
-    errEl.textContent = (e.message&&e.message.toLowerCase().includes('rate'))
-      ?'Too many attempts — wait a moment and try again.'
-      :'Connection issue — check your network and try again.';
+    const msg = e.message||'';
+    errEl.textContent = msg.toLowerCase().includes('already registered')
+      ? 'Account exists — check your password or use sign in.'
+      : msg.toLowerCase().includes('rate')
+      ? 'Too many attempts — wait a moment and try again.'
+      : msg || 'Connection issue — check your network and try again.';
     errEl.classList.add('show');
   }
 });
