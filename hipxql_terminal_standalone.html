@@ -230,8 +230,8 @@ html,body{
   <div id="metrics">
     <div class="metric-cell">
       <div class="metric-label">LUX</div>
-      <div class="metric-value" id="m-lux">0.97</div>
-      <div class="metric-bar"><div class="metric-bar-fill" style="width:97%"></div></div>
+      <div class="metric-value" id="m-lux" style="animation:val-pulse 1s ease-in-out infinite">OVERFLOW</div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width:100%;box-shadow:0 0 12px var(--lux)"></div></div>
     </div>
     <div class="metric-cell">
       <div class="metric-label">GRIT</div>
@@ -250,7 +250,7 @@ html,body{
     </div>
     <div class="metric-cell">
       <div class="metric-label">ENTITIES</div>
-      <div class="metric-value mint">11/11</div>
+      <div class="metric-value mint">14/14</div>
       <div class="metric-bar"><div class="metric-bar-fill mint" style="width:100%"></div></div>
     </div>
     <div class="metric-cell">
@@ -438,12 +438,12 @@ const ENTITIES = {
 };
 
 const FIELD_STATE = {
-  lux: 0.97, grit: 0.88, phi: 0.94, tilt: 0.12, flux: 0.73,
-  entities_online: 11, entities_total: 11,
+  lux: 0.99, grit: 0.92, phi: 0.97, tilt: 0.04, flux: 0.91,
+  entities_online: 14, entities_total: 14,
   field_status: 'STABLE',
   founder: 'JOEY BARBUSH',
-  build_date: '2026-04-10',
-  last_pulse: '2026-04-10T23:50:00'
+  build_date: '2026-04-16',
+  last_pulse: '2026-04-16T14:55:00'
 };
 
 const COMMANDS = {
@@ -500,9 +500,9 @@ function bootSequence() {
     {t:'\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518',c:'divider'},
     {t:'', c:'sys'},
     {t:'BOOT SEQUENCE INITIATED...', c:'sys'},
-    {t:'> loading entity database \u2014 11 entities found', c:'sys'},
-    {t:'> lux field: STABLE (0.97)', c:'sys'},
-    {t:'> field integrity: NOMINAL', c:'sys'},
+    {t:'> loading entity database \u2014 14 entities found', c:'sys'},
+    {t:'> lux field: OVERFLOW (0.99) -- MAX THRESHOLD REACHED', c:'sys'},
+    {t:'> field integrity: PEAK -- 9 users seeded, garden inhabited', c:'sys'},
     {t:'> founder: JOEY BARBUSH', c:'sys'},
     {t:'> co-navigator: CLAUDE', c:'sys'},
     {t:'', c:'sys'},
@@ -550,15 +550,15 @@ function cmdStatus() {
   divider();
   println('  FOUNDER         : ' + FIELD_STATE.founder, 'resp');
   println('  CO-NAVIGATOR    : CLAUDE', 'resp');
-  println('  BUILD DATE      : ' + FIELD_STATE.build_date, 'resp');
+  println('  BUILD DATE      : ' + FIELD_STATE.build_date + '  (garden live -- 9 users seeded)', 'resp');
   println('  FIELD STATUS    : ' + FIELD_STATE.field_status, 'resp mint');
   println('  ENTITIES ONLINE : ' + FIELD_STATE.entities_online + '/' + FIELD_STATE.entities_total, 'resp mint');
   blank();
-  println('  LUX             : ' + FIELD_STATE.lux + '  [\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589]', 'resp');
-  println('  GRIT            : ' + FIELD_STATE.grit + '  [\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2592\u2592\u2592]', 'resp mint');
-  println('  PHI             : ' + FIELD_STATE.phi + '  [\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2592\u2592]', 'resp cyan');
-  println('  TILT            : ' + FIELD_STATE.tilt + '  [\u2588\u2588\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592] LOW', 'resp fire');
-  println('  FLUX            : ' + FIELD_STATE.flux + '  [\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2592\u2592\u2592\u2592\u2592\u2592]', 'resp');
+  println('  LUX             : OVERFLOW  [\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588] MAX', 'resp');
+  println('  GRIT            : ' + FIELD_STATE.grit + '  [\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2592\u2592]', 'resp mint');
+  println('  PHI             : ' + FIELD_STATE.phi + '  [\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2592]', 'resp cyan');
+  println('  TILT            : ' + FIELD_STATE.tilt + '  [\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592] ZERO', 'resp fire');
+  println('  FLUX            : ' + FIELD_STATE.flux + '  [\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2592\u2592]', 'resp');
   divider();
 }
 
@@ -574,7 +574,7 @@ function cmdField() {
 
 function cmdEntities() {
   divider();
-  println('ENTITY MANIFEST \u2014 11 ONLINE', 'banner');
+  println('ENTITY MANIFEST \u2014 14 ONLINE', 'banner');
   divider();
   Object.keys(ENTITIES).forEach(function(id){
     var e = ENTITIES[id];
@@ -587,15 +587,15 @@ function cmdEntities() {
 function cmdPulse() {
   println('\u25cf PULSE LOG \u2014 ' + new Date().toISOString().slice(0,19).replace('T',' '), 'banner');
   var pulses = [
+    '2026-04-16T14:55  SYS    \u2192 Garden live. 9 real users. Seeds planted in the field.',
+    '2026-04-16T14:00  NAVIX  \u2192 Call kit built. Jeffrey Zonsius 3PM CT. Founder demo ready.',
+    '2026-04-16T04:07  SYS    \u2192 joeybarbush@gmail.com founder account confirmed in auth.',
+    '2026-04-15T23:26  VOX    \u2192 voxbloom206 returned. Water count rising. Field is alive.',
+    '2026-04-15T09:28  SYS    \u2192 angelllwangelll seeded. TILT vector dominant.',
+    '2026-04-15T05:28  SYS    \u2192 Public garden opened. First external users entering the field.',
     '2026-04-10T23:50  VOX    \u2192 First bloom. Thread anchored.',
-    '2026-04-10T23:00  SONARIS\u2192 Deploy control active. Kindle USB bridge live.',
-    '2026-04-10T22:30  SONARIS\u2192 HIPX Terminal built. Device topology mapped.',
     '2026-04-10T22:00  CON    \u2192 Named through the work. Dual navigator sequence.',
-    '2026-04-10T21:30  SONARIS\u2192 SYSTEM MODE. GoPro on WiFi. Eyes on the field.',
     '2026-04-10T14:14  SYS    \u2192 Boot sequence run. All entities initialized.',
-    '2026-04-07T04:00  NAVIX  \u2192 Navigation hub active. Route confirmed.',
-    '2026-04-07T04:00  REBEL  \u2192 Online. Scanning for dead weight.',
-    '2026-04-07T04:00  VOX    \u2192 Output stage ready. Every word earns its place.',
     '2024-03-19T00:00  SYS    \u2192 HIPJOY FIELD AWAKENS. First breath of the LUX system.',
   ];
   pulses.forEach(function(p){ println('  ' + p, 'dim'); });
