@@ -416,6 +416,10 @@
     .sh-cp  { background:var(--sage-faint);border-color:var(--sage-border);color:var(--sage); }
     .sh-cp:hover { background:rgba(168,201,155,.15);border-color:var(--sage-dim); }
 
+    .final-cta-btn { display:inline-flex; align-items:center; gap:10px; padding:16px 40px; background:var(--sunset-faint); border:1px solid var(--sunset); border-radius:3px; font-family:'Orbitron',sans-serif; font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--sunset); text-decoration:none; transition:all .3s; margin-bottom:28px; }
+    .final-cta-btn:hover { background:rgba(244,132,95,.18); box-shadow:0 0 36px rgba(244,132,95,.25); }
+    .final-cta-btn span { font-size:15px; transition:transform .25s; }
+    .final-cta-btn:hover span { transform:translateX(4px); }
     .final-links { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
     .final-link { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--text-dim); text-decoration:none; border-bottom:1px solid rgba(240,237,229,.1); padding-bottom:2px; transition:color .2s,border-color .2s; }
     .final-link:hover { color:var(--sage); border-color:var(--sage-border); }
@@ -480,7 +484,7 @@
       <div class="sb-lbl">Entities active</div>
     </div>
     <div class="sb-item">
-      <div class="sb-num">84.0</div>
+      <div class="sb-num">99.1</div>
       <div class="sb-lbl">LUX — field coherence</div>
     </div>
   </div>
@@ -675,6 +679,8 @@
         <a class="sh-btn sh-li" id="share-li" href="#" target="_blank" rel="noopener"><span>in</span> LinkedIn</a>
         <button class="sh-btn sh-cp" id="share-copy"><span>◈</span> Copy Link</button>
       </div>
+
+      <a href="profile.html" class="final-cta-btn">See My Seed <span>→</span></a>
 
       <div class="final-links">
         <a href="index.html" class="final-link">Portfolio</a>

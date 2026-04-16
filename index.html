@@ -28,6 +28,7 @@
       --purple: #9B4FDC;
       --orange: #FF6B35;
       --teal: #00B4A0;
+      --sage-border: rgba(168,201,155,.3);
     }
 
     html { scroll-behavior: smooth; }
@@ -717,14 +718,16 @@
         Two sides, one person.
       </p>
       <div class="hero-ctas">
+        <a href="waitlist.html" class="btn-primary">
+          Plant Your Seed <span class="btn-arrow">→</span>
+        </a>
         <div class="hero-ctas-wrap">
-          <a href="field.html" class="btn-primary">
-            Enter the Field <span class="btn-arrow">→</span>
+          <a href="field.html" class="btn-secondary" style="border-color:var(--sage-dim);color:var(--sage);background:var(--sage-faint);">
+            Enter the Field <span class="btn-arrow" style="font-size:14px;">→</span>
           </a>
-          <span class="hero-desktop-note">↳ Desktop recommended for the full spatial experience</span>
+          <span class="hero-desktop-note">↳ The spatial garden -- desktop recommended</span>
         </div>
         <a href="#builds" class="btn-secondary">See What I Build</a>
-        <a href="waitlist.html" class="btn-secondary" style="border-color:var(--sage-border);color:var(--sage);background:var(--sage-faint);">Join the Waitlist</a>
       </div>
     </div>
   </section>

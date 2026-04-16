@@ -440,7 +440,7 @@ nav{
   <div class="wc-card">
     <div class="wc-sigil">🌱</div>
     <div class="wc-title">WELCOME TO THE GARDEN</div>
-    <div class="wc-sub">A living field where people grow in public.<br>11 AI entities roam. Every seed is a real person.</div>
+    <div class="wc-sub">A living field where people grow in public.<br>14 AI entities roam. Every seed is a real person.</div>
     <div class="wc-steps">
       <div class="wc-step">
         <div class="wc-step-icon">🕹</div>
@@ -452,7 +452,7 @@ nav{
       </div>
       <div class="wc-step">
         <div class="wc-step-icon">★</div>
-        <div class="wc-step-text"><b>ENTITIES</b>11 AI entities move through the field -- walk into one to receive a message from the system.</div>
+        <div class="wc-step-text"><b>ENTITIES</b>14 AI entities move through the field -- walk into one to receive a message from the system.</div>
       </div>
       <div class="wc-step">
         <div class="wc-step-icon">🌿</div>
@@ -631,7 +631,26 @@ const COLOR_MAP = {
   'FOUNDER':'#FFD700',
 };
 
+// Per-seed-type color overrides (takes priority over entity color)
+const SEED_TYPE_COLOR = {
+  'Bloom Seed':    '#C8A850',   // gold
+  'Anchor Seed':   '#2255AA',   // deep blue
+  'Flow Seed':     '#00B4A0',   // teal
+  'Builder Seed':  '#FF6B35',   // orange
+  'Radiant Seed':  '#9B4FDC',   // purple
+  'LUX Seed':      '#FFD700',
+  'Engine Seed':   '#FF6B35',
+  'Forge Seed':    '#F4845F',
+  'Root Seed':     '#A8C99B',
+  'Iron Seed':     '#8899AA',
+  'Spark Seed':    '#00B4A0',
+  'Vision Seed':   '#9B4FDC',
+  'Diamond Seed':  '#00CED1',
+  'Dreaming Seed': '#E075A8',
+  'Searching Seed':'#E075A8',
+};
 function getSeedColor(seedType) {
+  if(SEED_TYPE_COLOR[seedType]) return SEED_TYPE_COLOR[seedType];
   const entity = ENTITY_FOR_SEED[seedType] || 'CONAVIGATOR';
   return COLOR_MAP[entity] || '#A8C99B';
 }
