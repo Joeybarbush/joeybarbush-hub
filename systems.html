@@ -653,27 +653,16 @@
     });
   }
 
-  function neuroStatusClass(key, status) {
-    if (!status) return 'eq-healthy';
-    const s = ('' + status).toUpperCase();
-    if (['OK','TRAINING','NEAR_CONVERGED','CONVERGED','WARMUP','COSINE'].includes(s)) return 'eq-healthy';
-    if (['WARN','UNSTABLE'].includes(s)) return 'eq-degraded';
-    if (['DEAD','CRITICAL'].includes(s)) return 'eq-critical';
-    return 'eq-healthy';
-  }
-
-  function applyEqData(key, value, statusLabel) {
+  function applyEqData(key, value, status) {
     const valEl   = document.getElementById('eq-val-' + key);
     const fillEl  = document.getElementById('eq-fill-' + key);
     const statEl  = document.getElementById('eq-status-' + key);
     const nameEl  = document.querySelector('#eq-' + key + ' .eq-name');
-    if (!valEl) return;
-
-    const cls     = neuroStatusClass(key, statusLabel);
-    const fillCls = cls.replace('eq-', 'eq-fill-');
+    const cls     = status === 'healthy' ? 'eq-healthy' : status === 'degraded' ? 'eq-degraded' : 'eq-critical';
+    const fillCls = status === 'healthy' ? 'eq-fill-healthy' : status === 'degraded' ? 'eq-fill-degraded' : 'eq-fill-critical';
 
     [valEl, nameEl, statEl].forEach(el => {
-      el.className = el.className.replace(/eq-(healthy|degraded|critical|offline)/g, '').trim() + ' ' + cls;
+      el.className = el.className.replace(/eq-(healthy|degraded|critical|offline)/g, '') + ' ' + cls;
     });
     fillEl.className = 'eq-fill ' + fillCls;
 
@@ -690,43 +679,29 @@
 
     const display = typeof value === 'number' && value < 0.01 ? value.toExponential(2) : (typeof value === 'number' ? value.toFixed(4) : value);
     valEl.textContent = display;
-    statEl.textContent = ('' + statusLabel).toLowerCase();
+    statEl.textContent = status;
   }
 
-  const NEURO_ENDPOINT = 'http://localhost:8000/diagnostic';
-
   function loadNeuro() {
-    fetch(NEURO_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        mean_grad:0.05, std_grad:0.02,
-        layer_norms:[0.1,0.3,0.2],
-        loss_history:[2.3,2.1],
-        step:1200, warmup_steps:500,
-        lr_max:0.001, t_max:5000,
-      }),
-      signal: AbortSignal.timeout(3000),
-    })
+    fetch('http://localhost:8000/diagnostic', { signal: AbortSignal.timeout(3000) })
       .then(r => r.json())
       .then(data => {
         const eqs = data.equations || {};
-        ['lux','tilt','phi'].forEach(k => {
-          if (eqs[k]) applyEqData(k, eqs[k].value, eqs[k].status);
+        EQ_DEFS.forEach(def => {
+          if (eqs[def.key]) {
+            applyEqData(def.key, eqs[def.key].value, eqs[def.key].status);
+          }
         });
-        if (eqs.fire) applyEqData('fire', eqs.fire.value, eqs.fire.phase || 'cosine');
-        // GRIT not in /diagnostic -- stays -- until detail view
+        if (eqs.grit) applyEqData('grit', eqs.grit.value || 0, eqs.grit.status || 'healthy');
       })
       .catch(() => {
-        const mock = {
-          lux: { value:0.874, status:'OK' },
-          tilt:{ value:0.031, status:'OK' },
-          phi: { value:0.0087,status:'NEAR_CONVERGED' },
-          fire:{ value:0.0003,status:'cosine' },
-        };
-        Object.entries(mock).forEach(([k,v]) => applyEqData(k, v.value, v.status));
+        EQ_DEFS.forEach(def => {
+          const mockVals = { lux:0.874, tilt:0.031, phi:0.921, fire:0.0003, grit:0.856 };
+          const mockStatus = { lux:'healthy', tilt:'healthy', phi:'healthy', fire:'healthy', grit:'healthy' };
+          applyEqData(def.key, mockVals[def.key], mockStatus[def.key]);
+        });
         const statEl = document.querySelector('#eq-lux .eq-status');
-        if (statEl) statEl.textContent = 'ok (demo)';
+        if (statEl) statEl.textContent = 'healthy (demo)';
       });
   }
 
