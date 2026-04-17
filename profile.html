@@ -1953,11 +1953,19 @@ async function publicSendNote() {
 }
 
 // ── PASSWORD RECOVERY ─────────────────────────────────────────────────────────
+function showResetPanel() {
+  document.getElementById('signin-panel').style.display  = 'none';
+  document.getElementById('profile-panel').style.display = 'none';
+  document.getElementById('reset-panel').style.display   = 'flex';
+}
+
 sb.auth.onAuthStateChange((event, session) => {
   if (event === 'PASSWORD_RECOVERY') {
-    document.getElementById('signin-panel').style.display  = 'none';
-    document.getElementById('profile-panel').style.display = 'none';
-    document.getElementById('reset-panel').style.display   = 'flex';
+    showResetPanel();
+  }
+  // fallback: some flows fire SIGNED_IN with type=recovery in the hash
+  if (event === 'SIGNED_IN' && window.location.hash.includes('type=recovery')) {
+    showResetPanel();
   }
 });
 
@@ -1969,9 +1977,17 @@ async function doResetPassword() {
   const btn   = document.getElementById('rp-btn');
   errEl.style.display = 'none';
   okEl.style.display  = 'none';
-  if (!pw || pw.length < 8)  { errEl.textContent = 'Password must be at least 8 characters.'; errEl.style.display = 'block'; return; }
-  if (pw !== pw2)             { errEl.textContent = 'Passwords do not match.'; errEl.style.display = 'block'; return; }
+  if (!pw || pw.length < 8) { errEl.textContent = 'Password must be at least 8 characters.'; errEl.style.display = 'block'; return; }
+  if (pw !== pw2)           { errEl.textContent = 'Passwords do not match.'; errEl.style.display = 'block'; return; }
   btn.textContent = 'UPDATING...'; btn.disabled = true;
+  // guard: confirm session is live before updateUser
+  const { data: { session: activeSession } } = await sb.auth.getSession();
+  if (!activeSession) {
+    errEl.textContent = 'Session expired — please request a new reset link.';
+    errEl.style.display = 'block';
+    btn.textContent = 'UPDATE PASSWORD'; btn.disabled = false;
+    return;
+  }
   const { error } = await sb.auth.updateUser({ password: pw });
   if (error) {
     errEl.textContent = error.message || 'Update failed.';
