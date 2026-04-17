@@ -768,6 +768,15 @@ function resize(){
 resize();
 window.addEventListener('resize', resize);
 
+// ── VECTOR COLORS ─────────────────────────────────────────────────────────────
+const DVEC_COLORS = { LUX:'#C8A850', PHI:'#9B4FDC', FIRE:'#F4845F', GRIT:'#8899AA', TILT:'#00B4A0' };
+function dominantVecColor(vectors){
+  if(!vectors) return null;
+  const entries = Object.entries(vectors).filter(([k])=>DVEC_COLORS[k]);
+  if(!entries.length) return null;
+  return DVEC_COLORS[entries.reduce((a,b)=>b[1]>a[1]?b:a)[0]];
+}
+
 // ── SEED PLACEMENT -- GOLDEN SPIRAL from founder compound ────────────────────
 const GOLDEN_ANGLE = 2.39996; // ~137.5 deg in radians
 function layoutSeeds(data){
@@ -797,7 +806,7 @@ function layoutSeeds(data){
       water_count:  row.water_count  || 0,
       lux_score:    row.lux_score    || 0,
       is_founder:   false,
-      col:      getSeedColor(row.seed_type || 'Field Seed'),
+      col:      dominantVecColor(row.vectors) || getSeedColor(row.seed_type || 'Field Seed'),
       sigil:    getSeedSigil(row.seed_type || 'Field Seed'),
       pulse:    Math.random() * Math.PI * 2,
       bob:      Math.random() * Math.PI * 2,
@@ -805,6 +814,9 @@ function layoutSeeds(data){
       driftAmp: 2 + Math.random() * 2.5,
       driftSpd: 0.0007 + Math.random() * 0.0004,
       stampId:  Math.floor(Math.random()*9000+1000),
+      seed_stage:   row.seed_stage  || 'dormant',
+      ci_score:     row.ci_score    || 0,
+      vectors:      row.vectors     || {},
     };
   });
 
@@ -1045,7 +1057,12 @@ function draw(t){
     const isx     = sx + hDrift;
     const dist    = Math.hypot(player.x-s.x, player.y-s.y);
     const near    = dist < ENCOUNTER_DIST;
-    const glow    = near ? 1 : pulse * .6 + .4;
+    const stage   = s.seed_stage || 'dormant';
+    const isDorm  = stage === 'dormant';
+    const isBloom = stage === 'blooming';
+    const isRad   = stage === 'radiant';
+    const glowBase= isDorm ? 0.35 : isRad ? 1.0 : isBloom ? 0.75 : 0.55;
+    const glow    = near ? 1 : pulse * glowBase + glowBase * .5;
     const [r,g,b] = hexToRgb(s.col);
 
     // Outer halo drifts with orb
@@ -1066,7 +1083,8 @@ function draw(t){
     ctx.strokeStyle=`rgba(${r},${g},${b},.45)`; ctx.lineWidth=2; ctx.stroke();
 
     // Orb floats
-    const orbR = near ? 26 : 20;
+    const baseR   = isDorm ? 14 : Math.max(16, Math.min(30, 16 + (s.lux_score||0) * 0.14));
+    const orbR    = near ? Math.round(baseR * 1.35) : baseR;
     const orbGrad = ctx.createRadialGradient(isx-orbR*.35,isy-orbR*.35,1,isx,isy,orbR);
     orbGrad.addColorStop(0,`rgba(255,255,255,${0.15+pulse*.08})`);
     orbGrad.addColorStop(0.2,`rgba(${r},${g},${b},.95)`);
@@ -1079,6 +1097,15 @@ function draw(t){
     // Core highlight
     ctx.beginPath(); ctx.arc(isx-orbR*.28,isy-orbR*.28,orbR*.2,0,Math.PI*2);
     ctx.fillStyle=`rgba(255,255,255,${0.3+pulse*.15})`; ctx.fill();
+
+    // Radiant extra glow rings
+    if(isRad){
+      for(let ri=0;ri<2;ri++){
+        const rp=Math.sin(t*0.0022+s.pulse+ri*1.4)*.5+.5;
+        ctx.beginPath(); ctx.arc(isx,isy,orbR+9+ri*9,0,Math.PI*2);
+        ctx.strokeStyle=`rgba(${r},${g},${b},${0.18*rp})`; ctx.lineWidth=1.5; ctx.stroke();
+      }
+    }
 
     ctx.font=`bold ${near?16:13}px 'JetBrains Mono',monospace`;
     ctx.fillStyle=`rgba(255,255,255,${near?.98:.82})`;
@@ -1205,7 +1232,9 @@ function checkEncounter(){
       document.getElementById('enc-seed').textContent=closest.seed_type;
       document.getElementById('enc-seed').style.color=closest.col;
       document.getElementById('enc-handle').textContent='@'+closest.display_name;
-      document.getElementById('enc-stamp').textContent=`HX${closest.stampId} -- HIPJOY FIELD`;
+      const stageLabel = {dormant:'DORMANT',sprouting:'SPROUTING',growing:'GROWING',blooming:'BLOOMING',radiant:'RADIANT'}[closest.seed_stage||'dormant']||'DORMANT';
+      const ciStr = closest.ci_score ? closest.ci_score.toFixed(1) : '0.0';
+      document.getElementById('enc-stamp').textContent=`CI:${ciStr} · ${stageLabel} · HX${closest.stampId}`;
       document.getElementById('enc-water').textContent=closest.water_count>0?`Watered ${closest.water_count}x`:'';
       if(closest.is_founder){
         document.getElementById('enc-water').textContent='LUX: OVERFLOW BUILD -- ORIGIN POINT';
@@ -1560,7 +1589,7 @@ function loop(t){
 
   const { data } = await sb
     .from('waitlist')
-    .select('id,seed_type,display_name,water_count,lux_score,is_founder')
+    .select('id,seed_type,display_name,water_count,lux_score,is_founder,vectors,seed_stage,ci_score')
     .eq('survey_completed', true)
     .eq('gateway_approved', true)
     .order('created_at', {ascending:true});

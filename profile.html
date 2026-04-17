@@ -547,6 +547,28 @@ main{min-height:100vh;padding:5.5rem 1rem 2.5rem;position:relative;z-index:1;max
 .tier-pro{background:rgba(232,122,58,.08);border:1px solid rgba(232,122,58,.25);color:var(--orange)}
 .tier-text{font-size:.65rem;color:var(--text);line-height:1.5}
 .tier-price{font-family:Orbitron;font-size:.65rem;color:var(--sage);margin-left:auto;white-space:nowrap}
+
+/* DOMINANT VECTOR THEME */
+:root{--dominant-col:#A8C99B}
+
+/* VECTOR BARS ON CARD */
+.card-vectors{margin-top:.55rem;display:flex;flex-direction:column;gap:.22rem}
+.cv-row{display:flex;align-items:center;gap:.4rem;font-size:.52rem}
+.cv-lbl{width:2.2rem;letter-spacing:.06em;color:rgba(168,201,155,.5);flex-shrink:0}
+.cv-track{flex:1;height:3px;background:rgba(168,201,155,.1);border-radius:2px;overflow:hidden}
+.cv-fill{height:100%;border-radius:2px;transition:width 1.2s ease}
+.cv-num{width:1.8rem;text-align:right;flex-shrink:0;font-size:.5rem}
+
+/* STAGE GLOW */
+.stage-dormant{opacity:.88;filter:brightness(.85)}
+.stage-sprouting{}
+.stage-growing{box-shadow:0 0 28px rgba(0,206,209,.15)!important}
+.stage-blooming{box-shadow:0 0 36px rgba(200,168,80,.22)!important;animation:cardAuraPulse 4s ease-in-out infinite}
+.stage-radiant{box-shadow:0 0 50px rgba(255,215,0,.28)!important;animation:cardAuraPulse 2.5s ease-in-out infinite}
+
+/* FOUNDER CARD */
+.card-founder{border-color:#FFD700!important;box-shadow:0 0 50px rgba(255,215,0,.3),0 0 100px rgba(255,215,0,.1)!important}
+.card-founder .card-badge{color:#FFD700;border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.07)}
 </style>
 </head>
 <body>
@@ -696,6 +718,7 @@ main{min-height:100vh;padding:5.5rem 1rem 2.5rem;position:relative;z-index:1;max
             <button class="tag-add-btn" onclick="addTag()">+ TAG</button>
           </div>
           <div class="tag-limit" id="tag-limit"></div>
+          <div class="card-vectors" id="card-vectors"></div>
         </div>
         <div class="card-right">
           <div class="lux-gauge">
@@ -719,7 +742,7 @@ main{min-height:100vh;padding:5.5rem 1rem 2.5rem;position:relative;z-index:1;max
         </div>
         <div class="ci-info">
           <div class="ci-title">CRYSTALLIZATION INDEX</div>
-          <div class="ci-formula" style="font-size:.58rem">CI = S &times; V &times; ln(M+1) &times; C</div>
+          <div class="ci-formula" id="ci-formula" style="font-size:.58rem">CI = S &times; V &times; ln(M+1) &times; C</div>
           <div class="ci-dims" id="ci-dims"></div>
           <div style="display:flex;align-items:center;gap:.5rem;margin-top:.2rem">
             <div class="ci-stage-badge" id="ci-stage-badge">DORMANT</div>
@@ -1067,7 +1090,7 @@ async function loadProfile(user) {
   // Fetch waitlist row
   const { data: rows } = await sb
     .from('waitlist')
-    .select('id,email,seed_type,lux_score,display_name,water_count,shared,gateway_approved,vectors,q1_think,q2_struggle,q3_tool,q4_invest,q5_field,created_at,share_boosts,bio,ci_score,seed_stage')
+    .select('id,email,seed_type,lux_score,display_name,water_count,shared,gateway_approved,vectors,q1_think,q2_struggle,q3_tool,q4_invest,q5_field,created_at,share_boosts,bio,ci_score,seed_stage,is_founder')
     .eq('email', user.email)
     .limit(1);
 
@@ -1085,6 +1108,28 @@ async function loadProfile(user) {
     _vectors = row.vectors;
   } else {
     _vectors = deriveVectors(seedName, lux);
+  }
+
+  // Dominant vector color theme
+  const VEC_COLORS = { LUX:'#C8A850', PHI:'#9B4FDC', FIRE:'#F4845F', GRIT:'#8899AA', TILT:'#00B4A0' };
+  const _vecEntries = Object.entries(_vectors);
+  const domVec = _vecEntries.length ? _vecEntries.reduce((a,b)=>b[1]>a[1]?b:a) : ['LUX',0];
+  const domCol = VEC_COLORS[domVec[0]] || '#A8C99B';
+  document.documentElement.style.setProperty('--dominant-col', domCol);
+
+  // Stage class on card
+  const _stage = row?.seed_stage || 'dormant';
+  const card = document.getElementById('holo-card');
+  ['stage-dormant','stage-sprouting','stage-growing','stage-blooming','stage-radiant'].forEach(c=>card.classList.remove(c));
+  card.classList.add('stage-' + _stage);
+
+  // Founder styling
+  if(row?.is_founder){
+    card.classList.add('card-founder');
+    const badge = card.querySelector('.card-badge');
+    if(badge) badge.textContent = '★ FOUNDER';
+  } else {
+    card.classList.remove('card-founder');
   }
 
   // Entity alignment
@@ -1122,6 +1167,15 @@ async function loadProfile(user) {
   animateBar('bar-phi',  'val-phi',  _vectors.PHI);
   animateBar('bar-tilt', 'val-tilt', _vectors.TILT);
   animateBar('bar-fire', 'val-fire', _vectors.FIRE);
+
+  // Inline vector bars on card
+  const _cvHtml = ['LUX','GRIT','PHI','TILT','FIRE'].map(v=>{
+    const col = VEC_COLORS[v];
+    const val = Math.round(_vectors[v]||0);
+    return `<div class="cv-row"><span class="cv-lbl">${v}</span><div class="cv-track"><div class="cv-fill" style="width:${val}%;background:${col}"></div></div><span class="cv-num" style="color:${col}">${val}</span></div>`;
+  }).join('');
+  const cvEl = document.getElementById('card-vectors');
+  if(cvEl) cvEl.innerHTML = _cvHtml;
 
   // Signals
   setSignal('sig-1', row && row.q1_think);
@@ -1780,6 +1834,8 @@ async function updateCIDisplay() {
   const ciPct = Math.min(1, ciData.ci / ciMax);
   document.getElementById('ci-arc').setAttribute('stroke-dashoffset', 213.6 * (1 - ciPct));
   document.getElementById('ci-num').textContent = ciData.ci.toFixed(1);
+  const formulaEl = document.getElementById('ci-formula');
+  if(formulaEl) formulaEl.innerHTML = `<b>${ciData.Stability}</b> &times; <b>${ciData.Sovereignty}</b> &times; ln(<b>${ciData.Memory}</b>+1) &times; <b>${ciData.Coherence}</b> = <b style="color:var(--dominant-col,#A8C99B)">${ciData.ci.toFixed(2)}</b>`;
   document.getElementById('ci-dims').innerHTML = [
     `<span class="ci-dim">Stability:<b>${ciData.Stability}</b></span>`,
     `<span class="ci-dim">Sovereignty:<b>${ciData.Sovereignty}</b></span>`,
