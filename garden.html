@@ -61,11 +61,19 @@ nav{
 /* MINI MAP */
 #minimap{
   position:fixed;top:56px;right:14px;z-index:40;
-  width:150px;height:150px;border-radius:10px;
-  background:rgba(7,16,10,.85);border:1px solid rgba(168,201,155,.25);
-  overflow:hidden;box-shadow:0 0 18px rgba(0,0,0,.6),0 0 8px rgba(168,201,155,.08);
+  width:152px;border-radius:10px;
+  background:rgba(7,16,10,.92);border:1px solid rgba(168,201,155,.3);
+  overflow:hidden;box-shadow:0 0 18px rgba(0,0,0,.6),0 0 8px rgba(168,201,155,.1);
 }
-#mmc{display:block;width:150px;height:150px}
+.mm-label{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.28rem .55rem;font-family:Orbitron;font-size:.52rem;
+  color:rgba(168,201,155,.45);letter-spacing:.14em;
+  border-bottom:1px solid rgba(168,201,155,.08);
+}
+.mm-label-dot{width:5px;height:5px;border-radius:50%;background:#A8C99B;
+  animation:pbDotBlink 2s ease-in-out infinite;flex-shrink:0}
+#mmc{display:block;width:152px;height:152px}
 
 /* JOYSTICK */
 #jpad{position:fixed;bottom:68px;left:24px;width:120px;height:120px;display:none;pointer-events:auto;z-index:9999;touch-action:none}
@@ -214,14 +222,36 @@ nav{
 
 /* PUBLIC SCOREBOARD */
 #public-board{
-  position:fixed;top:180px;right:14px;z-index:41;
+  position:fixed;top:218px;right:14px;z-index:41;
   width:192px;
-  background:rgba(4,12,7,.88);backdrop-filter:blur(18px);
-  border:1px solid rgba(168,201,155,.14);border-radius:12px;
-  padding:.8rem .9rem .75rem;
-  transition:opacity .4s;
+  background:rgba(4,12,7,.92);backdrop-filter:blur(18px);
+  border:1px solid rgba(168,201,155,.16);border-radius:12px;
+  padding:.75rem .9rem .7rem;
+  transition:opacity .4s,height .25s ease;
 }
 #public-board.hide{opacity:0;pointer-events:none}
+#public-board.collapsed .pb-rows,
+#public-board.collapsed .pb-divider,
+#public-board.collapsed .pb-entity-badge,
+#public-board.collapsed .pb-footer{display:none}
+.pb-toggle{
+  background:none;border:none;color:rgba(168,201,155,.3);
+  cursor:pointer;font-size:.65rem;padding:0;margin-left:auto;flex-shrink:0;
+  transition:color .2s,transform .2s;line-height:1;
+}
+.pb-toggle:hover{color:rgba(168,201,155,.65)}
+#public-board.collapsed .pb-toggle{transform:rotate(180deg)}
+
+/* FIRST-STEPS HINT */
+#field-hint{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+  z-index:42;pointer-events:none;
+  background:rgba(7,16,10,.85);border:1px solid rgba(168,201,155,.14);
+  border-radius:8px;padding:.45rem 1rem;
+  font-size:.65rem;color:rgba(168,201,155,.55);letter-spacing:.08em;
+  opacity:0;transition:opacity .6s;text-align:center;white-space:nowrap;
+}
+#field-hint.show{opacity:1}
 .pb-title{
   font-family:Orbitron;font-size:.6rem;letter-spacing:.18em;
   color:rgba(168,201,155,.6);margin-bottom:.75rem;
@@ -485,7 +515,10 @@ nav{
 
 <canvas id="gc"></canvas>
 
-<div id="minimap"><canvas id="mmc"></canvas></div>
+<div id="minimap">
+  <div class="mm-label"><span class="mm-label-dot"></span>FIELD MAP<span id="mm-seed-count" style="color:rgba(168,201,155,.3)">--</span></div>
+  <canvas id="mmc"></canvas>
+</div>
 
 <div id="encounter">
   <div class="enc-top">
@@ -587,9 +620,15 @@ nav{
   <a class="pct-btn" href="waitlist.html">PLANT FREE →</a>
 </div>
 
+<!-- FIRST-STEPS HINT -->
+<div id="field-hint">walk near a seed to connect · WASD or arrows to move</div>
+
 <!-- PUBLIC FIELD SCOREBOARD -->
 <div id="public-board">
-  <div class="pb-title"><span class="pb-title-dot"></span>FIELD BOARD</div>
+  <div class="pb-title" style="cursor:pointer" onclick="toggleFieldBoard()">
+    <span class="pb-title-dot"></span>FIELD BOARD
+    <button class="pb-toggle" onclick="toggleFieldBoard();event.stopPropagation()">▲</button>
+  </div>
   <div id="pb-rows"><div class="pb-row" style="justify-content:center;color:rgba(168,201,155,.25);font-size:.62rem">scanning field...</div></div>
   <div class="pb-divider">
     <div class="pb-stat-mini"><b id="pb-total">--</b><span>seeds</span></div>
@@ -719,11 +758,14 @@ function layoutSeeds(data){
       water_count:  row.water_count  || 0,
       lux_score:    row.lux_score    || 0,
       is_founder:   false,
-      col:   getSeedColor(row.seed_type || 'Field Seed'),
-      sigil: getSeedSigil(row.seed_type || 'Field Seed'),
-      pulse: Math.random() * Math.PI * 2,
-      bob:   Math.random() * Math.PI * 2,
-      stampId: Math.floor(Math.random()*9000+1000),
+      col:      getSeedColor(row.seed_type || 'Field Seed'),
+      sigil:    getSeedSigil(row.seed_type || 'Field Seed'),
+      pulse:    Math.random() * Math.PI * 2,
+      bob:      Math.random() * Math.PI * 2,
+      sdrift:   Math.random() * Math.PI * 2,
+      driftAmp: 2 + Math.random() * 2.5,
+      driftSpd: 0.0007 + Math.random() * 0.0004,
+      stampId:  Math.floor(Math.random()*9000+1000),
     };
   });
 
@@ -741,6 +783,9 @@ function layoutSeeds(data){
       sigil:        '★',
       pulse:        Math.random() * Math.PI * 2,
       bob:          Math.random() * Math.PI * 2,
+      sdrift:       0,
+      driftAmp:     1.5,
+      driftSpd:     0.0006,
       stampId:      Math.floor(Math.random()*9000+1000),
     });
   }
@@ -949,58 +994,62 @@ function draw(t){
     if(sx < -200 || sx > tw+200 || sy < -200 || sy > th+200) return;
     if(s.is_founder){ drawFounderSeed(s,t,sx,sy); return; }
 
-    const pulse = Math.sin(t*0.0018 + s.pulse) * .5 + .5;
-    const bob   = Math.sin(t*0.0012 + s.bob) * 4;
-    const isy   = sy + bob;
-    const dist  = Math.hypot(player.x-s.x, player.y-s.y);
-    const near  = dist < ENCOUNTER_DIST;
-    const glow  = near ? 1 : pulse * .6 + .4;
+    const pulse   = Math.sin(t*0.0018 + s.pulse) * .5 + .5;
+    const bob     = Math.sin(t*0.0012 + s.bob) * 4;
+    const hDrift  = Math.sin(t*(s.driftSpd||0.0009) + (s.sdrift||0)) * (s.driftAmp||3);
+    const isy     = sy + bob;
+    const isx     = sx + hDrift;
+    const dist    = Math.hypot(player.x-s.x, player.y-s.y);
+    const near    = dist < ENCOUNTER_DIST;
+    const glow    = near ? 1 : pulse * .6 + .4;
     const [r,g,b] = hexToRgb(s.col);
 
-    // Outer halo -- much larger and brighter
+    // Outer halo drifts with orb
     const haloR = near ? 75 : 52;
-    const aura = ctx.createRadialGradient(sx,isy,0,sx,isy,haloR);
+    const aura = ctx.createRadialGradient(isx,isy,0,isx,isy,haloR);
     aura.addColorStop(0,`rgba(${r},${g},${b},${glow*.28})`);
     aura.addColorStop(0.5,`rgba(${r},${g},${b},${glow*.1})`);
     aura.addColorStop(1,`rgba(${r},${g},${b},0)`);
-    ctx.beginPath(); ctx.arc(sx,isy,haloR,0,Math.PI*2);
+    ctx.beginPath(); ctx.arc(isx,isy,haloR,0,Math.PI*2);
     ctx.fillStyle=aura; ctx.fill();
 
+    // Ground shadow stays anchored
     ctx.beginPath(); ctx.ellipse(sx,sy+22,20,6,0,0,Math.PI*2);
     ctx.fillStyle='rgba(0,0,0,.4)'; ctx.fill();
 
-    ctx.beginPath(); ctx.moveTo(sx,sy+22); ctx.lineTo(sx,isy+10);
-    ctx.strokeStyle=`rgba(${r},${g},${b},.5)`; ctx.lineWidth=2.5; ctx.stroke();
+    // Stem tilts with drift
+    ctx.beginPath(); ctx.moveTo(sx,sy+22); ctx.lineTo(isx,isy+10);
+    ctx.strokeStyle=`rgba(${r},${g},${b},.45)`; ctx.lineWidth=2; ctx.stroke();
 
-    // Orb -- 30% bigger minimum 20px, bright glow
+    // Orb floats
     const orbR = near ? 26 : 20;
-    const orbGrad = ctx.createRadialGradient(sx-orbR*.35,isy-orbR*.35,1,sx,isy,orbR);
+    const orbGrad = ctx.createRadialGradient(isx-orbR*.35,isy-orbR*.35,1,isx,isy,orbR);
     orbGrad.addColorStop(0,`rgba(255,255,255,${0.15+pulse*.08})`);
     orbGrad.addColorStop(0.2,`rgba(${r},${g},${b},.95)`);
     orbGrad.addColorStop(.65,`rgba(${r},${g},${b},.55)`);
     orbGrad.addColorStop(1,`rgba(${r},${g},${b},.12)`);
-    ctx.beginPath(); ctx.arc(sx,isy,orbR,0,Math.PI*2);
+    ctx.beginPath(); ctx.arc(isx,isy,orbR,0,Math.PI*2);
     ctx.fillStyle=orbGrad; ctx.fill();
-    ctx.beginPath(); ctx.arc(sx,isy,orbR,0,Math.PI*2);
+    ctx.beginPath(); ctx.arc(isx,isy,orbR,0,Math.PI*2);
     ctx.strokeStyle=`rgba(${r},${g},${b},${glow*.85})`; ctx.lineWidth=near?2.5:2; ctx.stroke();
     // Core highlight
-    ctx.beginPath(); ctx.arc(sx-orbR*.28,isy-orbR*.28,orbR*.2,0,Math.PI*2);
+    ctx.beginPath(); ctx.arc(isx-orbR*.28,isy-orbR*.28,orbR*.2,0,Math.PI*2);
     ctx.fillStyle=`rgba(255,255,255,${0.3+pulse*.15})`; ctx.fill();
 
     ctx.font=`bold ${near?16:13}px 'JetBrains Mono',monospace`;
     ctx.fillStyle=`rgba(255,255,255,${near?.98:.8})`;
     ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(s.sigil,sx,isy);
+    ctx.fillText(s.sigil,isx,isy);
 
-    // Always-visible labels BELOW the orb: name + seed type in entity color
+    // Labels below orb — colored by seed type
     const lblY = isy + orbR + 6;
     ctx.font=`bold ${near?11:9}px 'JetBrains Mono',monospace`;
     ctx.fillStyle=`rgba(${r},${g},${b},${near?.95:.75})`;
     ctx.textAlign='center'; ctx.textBaseline='top';
-    ctx.fillText('@'+s.display_name.slice(0,12), sx, lblY);
+    ctx.fillText('@'+s.display_name.slice(0,12), isx, lblY);
     ctx.font=`${near?10:8}px 'JetBrains Mono',monospace`;
     ctx.fillStyle=`rgba(${r},${g},${b},${near?.75:.5})`;
-    ctx.fillText(s.seed_type, sx, lblY+(near?13:11));
+    ctx.fillText(s.seed_type, isx, lblY+(near?13:11));
   });
 
   // ── ENTITIES ──
@@ -1043,11 +1092,11 @@ function draw(t){
 }
 
 function drawMinimap(){
-  const mw=150, mh=150;
+  const mw=152, mh=152;
   mm.width=mw; mm.height=mh;
   const scaleX = mw/WORLD_W, scaleY = mh/WORLD_H;
   mctx.clearRect(0,0,mw,mh);
-  mctx.fillStyle='rgba(4,10,6,.88)';
+  mctx.fillStyle='rgba(4,10,6,.92)';
   mctx.fillRect(0,0,mw,mh);
 
   // Central glow on minimap
@@ -1277,6 +1326,14 @@ function drawFounderSeed(s, t, sx, sy){
   ctx.beginPath(); ctx.arc(sx,ey,44,0,Math.PI*2);
   ctx.strokeStyle=`rgba(255,215,0,${0.22+pulse*.14})`; ctx.lineWidth=2; ctx.stroke();
 
+  // ── GOLD HEARTBEAT RING -- prominent pulsing ──
+  const hbPulse = Math.abs(Math.sin(t*0.0028));
+  ctx.beginPath(); ctx.arc(sx,ey,52+hbPulse*10,0,Math.PI*2);
+  ctx.strokeStyle=`rgba(255,215,0,${0.45+hbPulse*.45})`;
+  ctx.lineWidth=2.5+hbPulse*2; ctx.stroke();
+  ctx.beginPath(); ctx.arc(sx,ey,58+hbPulse*16,0,Math.PI*2);
+  ctx.strokeStyle=`rgba(255,215,0,${0.12+hbPulse*.22})`; ctx.lineWidth=1; ctx.stroke();
+
   // ── RADAR SWEEP (2 opposite beams, rotating) ──
   for(let i=0;i<2;i++){
     const beamA=t*0.0009+i*Math.PI;
@@ -1314,8 +1371,8 @@ function drawFounderSeed(s, t, sx, sy){
   ctx.beginPath(); ctx.ellipse(sx,sy+24,22,7,0,0,Math.PI*2);
   ctx.fillStyle='rgba(0,0,0,.4)'; ctx.fill();
 
-  // ── ORB BODY -- bigger and more dramatic ──
-  const orbR=near?46:38;
+  // ── ORB BODY -- biggest in the garden ──
+  const orbR=near?52:44;
   const og=ctx.createRadialGradient(sx-orbR*.35,ey-orbR*.35,3,sx,ey,orbR);
   og.addColorStop(0,`rgba(255,252,180,1.0)`);
   og.addColorStop(0.25,`rgba(255,240,120,.98)`);
@@ -1475,6 +1532,8 @@ function loop(t){
   setTimeout(()=>{ if(typeof addNeuroNote==='function') addNeuroNote('Field scan initiated. Mapping '+seeds.length+' seeds to coordinate grid.'); },11000);
 
   document.getElementById('hud-count').textContent = seeds.length;
+  const mmCount = document.getElementById('mm-seed-count');
+  if(mmCount) mmCount.textContent = seeds.length;
 
   bar.style.width = '100%';
   sub.textContent = 'Opening the garden...';
@@ -1487,6 +1546,11 @@ function loop(t){
     if(!_gardenSignedIn) document.getElementById('plant-cta-bar').classList.remove('hide');
     // First visit welcome
     maybeShowWelcome();
+    // Field hint — show briefly if no welcome overlay
+    if(localStorage.getItem('hj_garden_visited')){
+      const hint = document.getElementById('field-hint');
+      if(hint){ setTimeout(()=>hint.classList.add('show'),1800); setTimeout(()=>hint.classList.remove('show'),8000); }
+    }
   }, 500);
 })();
 
@@ -1760,6 +1824,11 @@ function buildPublicBoard(){
 
   // Auto-refresh every 45s
   setTimeout(buildPublicBoard, 45000);
+}
+
+// ── FIELD BOARD TOGGLE ────────────────────────────────────────────────────────
+function toggleFieldBoard(){
+  document.getElementById('public-board').classList.toggle('collapsed');
 }
 
 function initEntityNest(){
