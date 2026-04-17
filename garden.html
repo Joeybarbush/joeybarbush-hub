@@ -60,11 +60,14 @@ nav{
 
 /* MINI MAP */
 #minimap{
-  position:fixed;top:56px;right:14px;z-index:40;
+  position:fixed;top:50px;right:14px;z-index:40;
   width:150px;height:150px;border-radius:10px;
-  background:rgba(7,16,10,.85);border:1px solid rgba(168,201,155,.25);
-  overflow:hidden;box-shadow:0 0 18px rgba(0,0,0,.6),0 0 8px rgba(168,201,155,.08);
+  background:rgba(7,16,10,.92);border:1px solid rgba(168,201,155,.3);
+  overflow:hidden;
+  box-shadow:0 0 18px rgba(0,0,0,.7),0 0 12px rgba(168,201,155,.12),inset 0 1px 0 rgba(168,201,155,.08);
+  animation:minimapGlow 4s ease-in-out infinite;
 }
+@keyframes minimapGlow{0%,100%{border-color:rgba(168,201,155,.2)}50%{border-color:rgba(168,201,155,.4)}}
 #mmc{display:block;width:150px;height:150px}
 
 /* JOYSTICK */
@@ -74,11 +77,23 @@ nav{
 
 /* SEED COUNT HUD */
 #hud{
-  position:fixed;top:56px;left:14px;z-index:40;
+  position:fixed;top:50px;left:14px;z-index:40;
   font-size:.65rem;color:rgba(168,201,155,.5);letter-spacing:.1em;
-  background:rgba(7,16,10,.7);border:1px solid rgba(168,201,155,.12);
-  border-radius:8px;padding:.45rem .75rem;
+  background:rgba(7,16,10,.8);border:1px solid rgba(168,201,155,.14);
+  border-radius:8px;padding:.42rem .72rem;
 }
+
+/* MINIMAP LEGEND STRIP */
+#mm-legend{
+  position:absolute;bottom:0;left:0;right:0;
+  text-align:center;font-size:.44rem;color:rgba(168,201,155,.38);
+  background:rgba(4,10,6,.72);padding:.22rem;letter-spacing:.05em;
+  pointer-events:none;
+}
+
+/* PB title row layout for collapse icon */
+.pb-title{display:flex;align-items:center}
+.pb-rows-wrap{}
 
 /* LOADING SCREEN */
 #loader{
@@ -214,14 +229,22 @@ nav{
 
 /* PUBLIC SCOREBOARD */
 #public-board{
-  position:fixed;top:180px;right:14px;z-index:41;
-  width:192px;
-  background:rgba(4,12,7,.88);backdrop-filter:blur(18px);
-  border:1px solid rgba(168,201,155,.14);border-radius:12px;
-  padding:.8rem .9rem .75rem;
-  transition:opacity .4s;
+  position:fixed;top:210px;right:14px;z-index:41;
+  width:168px;
+  background:rgba(4,12,7,.92);backdrop-filter:blur(18px);
+  border:1px solid rgba(168,201,155,.16);border-radius:12px;
+  padding:.7rem .8rem .65rem;
+  transition:opacity .3s,transform .3s;
 }
-#public-board.hide{opacity:0;pointer-events:none}
+#public-board.hide{opacity:0;pointer-events:none;transform:translateX(10px)}
+#public-board.collapsed .pb-rows-wrap{display:none}
+#public-board.collapsed .pb-divider{display:none}
+#public-board.collapsed .pb-entity-badge{display:none}
+#public-board.collapsed .pb-footer{display:none}
+
+/* BOARD title is the collapse trigger */
+#public-board .pb-title{cursor:pointer;user-select:none}
+#public-board .pb-title:hover{opacity:.85}
 .pb-title{
   font-family:Orbitron;font-size:.6rem;letter-spacing:.18em;
   color:rgba(168,201,155,.6);margin-bottom:.75rem;
@@ -438,31 +461,31 @@ nav{
 <!-- FIRST-VISIT WELCOME OVERLAY -->
 <div id="welcome-overlay">
   <div class="wc-card">
-    <div class="wc-sigil">🌱</div>
+    <div class="wc-sigil">◈</div>
     <div class="wc-title">WELCOME TO THE GARDEN</div>
-    <div class="wc-sub">A living field where people grow in public.<br>14 AI entities roam. Every seed is a real person.</div>
+    <div class="wc-sub">Every glowing orb is a real person growing in public.<br>Walk the field. Encounter entities. Leave your mark.</div>
     <div class="wc-steps">
       <div class="wc-step">
         <div class="wc-step-icon">🕹</div>
-        <div class="wc-step-text"><b>NAVIGATE</b>Use WASD or arrow keys to walk the field. On mobile, use the joystick at the bottom-left.</div>
+        <div class="wc-step-text"><b>MOVE</b>WASD / arrow keys to explore. On mobile, use the joystick (bottom-left). The minimap (top-right) shows where everything is.</div>
       </div>
       <div class="wc-step">
         <div class="wc-step-icon">◉</div>
-        <div class="wc-step-text"><b>DISCOVER</b>Walk near a glowing orb to open a seed. Leave notes, see who planted it, and watch it grow.</div>
+        <div class="wc-step-text"><b>SEEDS</b>Each floating orb is a seed — a real person. Color = their entity alignment. Walk close to open their profile and leave a note.</div>
       </div>
       <div class="wc-step">
         <div class="wc-step-icon">★</div>
-        <div class="wc-step-text"><b>ENTITIES</b>14 AI entities move through the field -- walk into one to receive a message from the system.</div>
+        <div class="wc-step-text"><b>ENTITIES</b>11 AI entities drift through the field. Walk into one to receive a message. The gold compound at center is the FOUNDER origin.</div>
       </div>
       <div class="wc-step">
-        <div class="wc-step-icon">🌿</div>
-        <div class="wc-step-text"><b>PLANT YOUR OWN</b>Sign up to get your seed planted in the field. Water it, level it up, and leave your mark.</div>
+        <div class="wc-step-icon">💧</div>
+        <div class="wc-step-text"><b>WATER &amp; GROW</b>Water a seed to boost their LUX score. Plant your own to start earning LUX, unlock new stages, and appear in the field.</div>
       </div>
     </div>
     <div class="wc-actions">
       <button class="wc-enter" onclick="dismissWelcome()">ENTER THE FIELD →</button>
-      <a class="wc-plant" href="waitlist.html">PLANT MY SEED -- JOIN FREE</a>
-      <button class="wc-skip" onclick="dismissWelcome()">already have a seed -- skip</button>
+      <a class="wc-plant" href="waitlist.html">PLANT MY SEED -- FREE</a>
+      <button class="wc-skip" onclick="dismissWelcome()">already planted -- skip</button>
     </div>
   </div>
 </div>
@@ -485,7 +508,10 @@ nav{
 
 <canvas id="gc"></canvas>
 
-<div id="minimap"><canvas id="mmc"></canvas></div>
+<div id="minimap" style="position:relative">
+  <canvas id="mmc"></canvas>
+  <div id="mm-legend">● seeds &nbsp;·&nbsp; ▲ entities &nbsp;·&nbsp; ◈ you</div>
+</div>
 
 <div id="encounter">
   <div class="enc-top">
@@ -509,8 +535,9 @@ nav{
 </div>
 
 <div id="controls-hint">
-  WASD / arrows to move<br>
-  Walk near a seed to view it
+  WASD / arrows · move<br>
+  walk near orb · open seed<br>
+  <span style="color:rgba(168,201,155,.18)">orb color = entity · tap to explore</span>
 </div>
 
 <!-- GLASS WINDOW PANEL -->
@@ -589,15 +616,20 @@ nav{
 
 <!-- PUBLIC FIELD SCOREBOARD -->
 <div id="public-board">
-  <div class="pb-title"><span class="pb-title-dot"></span>FIELD BOARD</div>
-  <div id="pb-rows"><div class="pb-row" style="justify-content:center;color:rgba(168,201,155,.25);font-size:.62rem">scanning field...</div></div>
-  <div class="pb-divider">
-    <div class="pb-stat-mini"><b id="pb-total">--</b><span>seeds</span></div>
-    <div class="pb-stat-mini"><b id="pb-water">--</b><span>waters</span></div>
-    <div class="pb-stat-mini"><b id="pb-ents">11</b><span>entities</span></div>
+  <div class="pb-title" style="cursor:pointer" onclick="toggleBoard()">
+    <span class="pb-title-dot"></span>FIELD BOARD
+    <span id="board-collapse-icon" style="margin-left:auto;font-size:.55rem;opacity:.5">▾</span>
   </div>
-  <div class="pb-entity-badge" id="pb-dominant-ent">dominant: --</div>
-  <div class="pb-footer">∇ NEURO LAB LIVE SCAN</div>
+  <div class="pb-rows-wrap">
+    <div id="pb-rows"><div class="pb-row" style="justify-content:center;color:rgba(168,201,155,.25);font-size:.62rem">scanning field...</div></div>
+    <div class="pb-divider">
+      <div class="pb-stat-mini"><b id="pb-total">--</b><span>seeds</span></div>
+      <div class="pb-stat-mini"><b id="pb-water">--</b><span>waters</span></div>
+      <div class="pb-stat-mini"><b id="pb-ents">11</b><span>entities</span></div>
+    </div>
+    <div class="pb-entity-badge" id="pb-dominant-ent">dominant: --</div>
+    <div class="pb-footer">∇ NEURO LAB LIVE SCAN</div>
+  </div>
 </div>
 
 <script>
@@ -949,58 +981,67 @@ function draw(t){
     if(sx < -200 || sx > tw+200 || sy < -200 || sy > th+200) return;
     if(s.is_founder){ drawFounderSeed(s,t,sx,sy); return; }
 
-    const pulse = Math.sin(t*0.0018 + s.pulse) * .5 + .5;
-    const bob   = Math.sin(t*0.0012 + s.bob) * 4;
-    const isy   = sy + bob;
-    const dist  = Math.hypot(player.x-s.x, player.y-s.y);
-    const near  = dist < ENCOUNTER_DIST;
-    const glow  = near ? 1 : pulse * .6 + .4;
+    const pulse  = Math.sin(t*0.0018 + s.pulse) * .5 + .5;
+    const bob    = Math.sin(t*0.0012 + s.bob) * 4.5;
+    const driftX = Math.sin(t*0.0007 + s.bob + Math.PI*.5) * 3.5;
+    const isx    = sx + driftX;
+    const isy    = sy + bob;
+    const dist   = Math.hypot(player.x-s.x, player.y-s.y);
+    const near   = dist < ENCOUNTER_DIST;
+    const glow   = near ? 1 : pulse * .6 + .4;
     const [r,g,b] = hexToRgb(s.col);
 
-    // Outer halo -- much larger and brighter
-    const haloR = near ? 75 : 52;
-    const aura = ctx.createRadialGradient(sx,isy,0,sx,isy,haloR);
-    aura.addColorStop(0,`rgba(${r},${g},${b},${glow*.28})`);
+    // Outer halo
+    const haloR = near ? 80 : 56;
+    const aura = ctx.createRadialGradient(isx,isy,0,isx,isy,haloR);
+    aura.addColorStop(0,`rgba(${r},${g},${b},${glow*.3})`);
     aura.addColorStop(0.5,`rgba(${r},${g},${b},${glow*.1})`);
     aura.addColorStop(1,`rgba(${r},${g},${b},0)`);
-    ctx.beginPath(); ctx.arc(sx,isy,haloR,0,Math.PI*2);
+    ctx.beginPath(); ctx.arc(isx,isy,haloR,0,Math.PI*2);
     ctx.fillStyle=aura; ctx.fill();
 
-    ctx.beginPath(); ctx.ellipse(sx,sy+22,20,6,0,0,Math.PI*2);
-    ctx.fillStyle='rgba(0,0,0,.4)'; ctx.fill();
+    // Ground shadow (stays under the orb, drifts with it)
+    ctx.beginPath(); ctx.ellipse(isx,sy+22,18+driftX*.3,5,0,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,0,0,.35)'; ctx.fill();
 
-    ctx.beginPath(); ctx.moveTo(sx,sy+22); ctx.lineTo(sx,isy+10);
-    ctx.strokeStyle=`rgba(${r},${g},${b},.5)`; ctx.lineWidth=2.5; ctx.stroke();
+    // Stem
+    ctx.beginPath(); ctx.moveTo(isx,sy+22); ctx.lineTo(isx,isy+10);
+    ctx.strokeStyle=`rgba(${r},${g},${b},.45)`; ctx.lineWidth=2; ctx.stroke();
 
-    // Orb -- 30% bigger minimum 20px, bright glow
-    const orbR = near ? 26 : 20;
-    const orbGrad = ctx.createRadialGradient(sx-orbR*.35,isy-orbR*.35,1,sx,isy,orbR);
-    orbGrad.addColorStop(0,`rgba(255,255,255,${0.15+pulse*.08})`);
+    // Orb
+    const orbR = near ? 27 : 21;
+    const orbGrad = ctx.createRadialGradient(isx-orbR*.35,isy-orbR*.35,1,isx,isy,orbR);
+    orbGrad.addColorStop(0,`rgba(255,255,255,${0.18+pulse*.1})`);
     orbGrad.addColorStop(0.2,`rgba(${r},${g},${b},.95)`);
     orbGrad.addColorStop(.65,`rgba(${r},${g},${b},.55)`);
-    orbGrad.addColorStop(1,`rgba(${r},${g},${b},.12)`);
-    ctx.beginPath(); ctx.arc(sx,isy,orbR,0,Math.PI*2);
+    orbGrad.addColorStop(1,`rgba(${r},${g},${b},.1)`);
+    ctx.beginPath(); ctx.arc(isx,isy,orbR,0,Math.PI*2);
     ctx.fillStyle=orbGrad; ctx.fill();
-    ctx.beginPath(); ctx.arc(sx,isy,orbR,0,Math.PI*2);
-    ctx.strokeStyle=`rgba(${r},${g},${b},${glow*.85})`; ctx.lineWidth=near?2.5:2; ctx.stroke();
+    ctx.beginPath(); ctx.arc(isx,isy,orbR,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(${r},${g},${b},${glow*.9})`; ctx.lineWidth=near?2.5:1.8; ctx.stroke();
+    // Near: extra outer glow ring
+    if(near){
+      ctx.beginPath(); ctx.arc(isx,isy,orbR+5,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(${r},${g},${b},0.22)`; ctx.lineWidth=1; ctx.stroke();
+    }
     // Core highlight
-    ctx.beginPath(); ctx.arc(sx-orbR*.28,isy-orbR*.28,orbR*.2,0,Math.PI*2);
-    ctx.fillStyle=`rgba(255,255,255,${0.3+pulse*.15})`; ctx.fill();
+    ctx.beginPath(); ctx.arc(isx-orbR*.28,isy-orbR*.28,orbR*.2,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${0.32+pulse*.18})`; ctx.fill();
 
     ctx.font=`bold ${near?16:13}px 'JetBrains Mono',monospace`;
-    ctx.fillStyle=`rgba(255,255,255,${near?.98:.8})`;
+    ctx.fillStyle=`rgba(255,255,255,${near?.98:.82})`;
     ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(s.sigil,sx,isy);
+    ctx.fillText(s.sigil,isx,isy);
 
-    // Always-visible labels BELOW the orb: name + seed type in entity color
-    const lblY = isy + orbR + 6;
+    // Labels: name + seed type
+    const lblY = isy + orbR + 7;
     ctx.font=`bold ${near?11:9}px 'JetBrains Mono',monospace`;
-    ctx.fillStyle=`rgba(${r},${g},${b},${near?.95:.75})`;
+    ctx.fillStyle=`rgba(${r},${g},${b},${near?.98:.78})`;
     ctx.textAlign='center'; ctx.textBaseline='top';
-    ctx.fillText('@'+s.display_name.slice(0,12), sx, lblY);
-    ctx.font=`${near?10:8}px 'JetBrains Mono',monospace`;
-    ctx.fillStyle=`rgba(${r},${g},${b},${near?.75:.5})`;
-    ctx.fillText(s.seed_type, sx, lblY+(near?13:11));
+    ctx.fillText('@'+s.display_name.slice(0,14), isx, lblY);
+    ctx.font=`${near?9:8}px 'JetBrains Mono',monospace`;
+    ctx.fillStyle=`rgba(${r},${g},${b},${near?.72:.45})`;
+    ctx.fillText(s.seed_type, isx, lblY+(near?13:11));
   });
 
   // ── ENTITIES ──
@@ -1208,7 +1249,9 @@ function escHtml(s){
 function drawFounderSeed(s, t, sx, sy){
   const pulse  = Math.sin(t*0.0014+s.pulse)*0.5+0.5;
   const pulse2 = Math.sin(t*0.0022+s.pulse+1.2)*0.5+0.5;
-  const bob    = Math.sin(t*0.001+s.bob)*5;
+  const bob    = Math.sin(t*0.001+s.bob)*6;
+  const driftX = Math.sin(t*0.0006+s.bob+Math.PI*.5)*4;
+  sx = sx + driftX;
   const ey     = sy+bob;
   const near   = Math.hypot(player.x-s.x,player.y-s.y)<ENCOUNTER_DIST;
 
@@ -1489,6 +1532,16 @@ function loop(t){
     maybeShowWelcome();
   }, 500);
 })();
+
+// ── BOARD TOGGLE ──────────────────────────────────────────────────────────────
+let _boardCollapsed = false;
+function toggleBoard(){
+  _boardCollapsed = !_boardCollapsed;
+  const board = document.getElementById('public-board');
+  const icon  = document.getElementById('board-collapse-icon');
+  board.classList.toggle('collapsed', _boardCollapsed);
+  if(icon) icon.textContent = _boardCollapsed ? '▸' : '▾';
+}
 
 // ── WELCOME OVERLAY ───────────────────────────────────────────────────────────
 function dismissWelcome(){

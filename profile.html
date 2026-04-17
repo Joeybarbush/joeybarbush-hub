@@ -26,10 +26,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'JetBra
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
-  padding:.9rem 2rem;
-  background:rgba(13,15,14,.85);
-  backdrop-filter:blur(12px);
+  padding:.6rem 1.4rem;
+  background:rgba(13,15,14,.92);
+  backdrop-filter:blur(14px);
   border-bottom:1px solid var(--glass-border);
+}
+@media(max-width:600px){
+  .nav-links{gap:.8rem}
+  .nav-links a{font-size:.68rem}
 }
 .nav-logo{font-family:Orbitron;font-size:.85rem;color:var(--sage);text-decoration:none;letter-spacing:.1em}
 .nav-links{display:flex;gap:1.4rem;list-style:none;align-items:center}
@@ -51,7 +55,7 @@ nav{
 #stars{position:fixed;inset:0;pointer-events:none;z-index:0}
 
 /* LAYOUT */
-main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-width:860px;margin:0 auto}
+main{min-height:100vh;padding:4.2rem 1rem 2rem;position:relative;z-index:1;max-width:860px;margin:0 auto}
 
 /* SIGN-IN PANEL */
 #signin-panel{
@@ -93,57 +97,64 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
 .signin-plant a:hover{text-decoration:underline}
 
 /* PROFILE PANEL */
-#profile-panel{display:none;flex-direction:column;gap:2.5rem;animation:fadeIn .6s ease}
+#profile-panel{display:none;flex-direction:column;gap:0.55rem;animation:fadeIn .6s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
 /* HOLOGRAPHIC CARD */
 .holo-card{
   position:relative;border-radius:20px;overflow:hidden;
-  padding:2.5rem 2rem;
+  padding:1.5rem 1.4rem;
   background:linear-gradient(135deg,rgba(168,201,155,.08) 0%,rgba(0,0,0,.4) 50%,rgba(168,201,155,.06) 100%);
   border:1px solid var(--card-color, var(--sage-glow));
   box-shadow:0 0 40px rgba(168,201,155,.08), inset 0 1px 0 rgba(255,255,255,.05);
   cursor:default;
-  transition:transform .1s;
+  transition:transform .1s,box-shadow .3s;
+  animation:cardBreath 3.8s ease-in-out infinite;
 }
 .holo-card::before{
   content:'';position:absolute;inset:0;
-  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.03) 50%,transparent 60%);
-  animation:holoShine 4s ease-in-out infinite;
+  background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.05) 50%,transparent 62%);
+  animation:holoShine 3.5s ease-in-out infinite;
 }
-@keyframes holoShine{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}
-.holo-card-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;gap:1.5rem;align-items:center}
-@media(max-width:540px){.holo-card-inner{grid-template-columns:1fr}}
+@keyframes holoShine{0%{transform:translateX(-110%);opacity:.4}45%{opacity:.9}55%{opacity:.9}100%{transform:translateX(110%);opacity:.4}}
+@keyframes cardBreath{
+  0%,100%{box-shadow:0 0 40px rgba(168,201,155,.08),inset 0 1px 0 rgba(255,255,255,.05)}
+  50%{box-shadow:0 0 70px rgba(168,201,155,.18),0 0 120px rgba(168,201,155,.07),inset 0 1px 0 rgba(255,255,255,.09)}
+}
+/* Profile card: squared bottom so CI section connects flush */
+#profile-panel #holo-card{border-radius:20px 20px 0 0}
+.holo-card-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center}
+@media(max-width:480px){.holo-card-inner{grid-template-columns:1fr auto;gap:.7rem}}
 
 .card-left{}
-.card-badge{font-size:.65rem;color:var(--muted);letter-spacing:.12em;margin-bottom:.4rem}
+.card-badge{font-size:.58rem;color:var(--muted);letter-spacing:.14em;margin-bottom:.25rem;opacity:.7}
 .card-seed-name{
-  font-family:Orbitron;font-size:2rem;font-weight:900;
+  font-family:Orbitron;font-size:1.6rem;font-weight:900;
   color:var(--card-color,var(--sage));
   text-shadow:0 0 30px var(--card-color, var(--sage-glow));
-  line-height:1.1;margin-bottom:.5rem;
+  line-height:1.05;margin-bottom:.3rem;
 }
-.card-entity{display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem}
-.card-sigil{font-size:1.4rem;color:var(--card-color,var(--sage))}
-.card-entity-name{font-family:Orbitron;font-size:.75rem;letter-spacing:.1em;color:var(--muted)}
-.card-meta{font-size:.72rem;color:var(--muted);letter-spacing:.06em;line-height:2}
+.card-entity{display:flex;align-items:center;gap:.4rem;margin-bottom:.5rem}
+.card-sigil{font-size:1.2rem;color:var(--card-color,var(--sage));filter:drop-shadow(0 0 6px var(--card-color,var(--sage-glow)))}
+.card-entity-name{font-family:Orbitron;font-size:.7rem;letter-spacing:.1em;color:var(--muted)}
+.card-meta{font-size:.65rem;color:var(--muted);letter-spacing:.05em;line-height:1.7}
 
-.card-right{display:flex;flex-direction:column;align-items:center;gap:.5rem}
-.lux-gauge{position:relative;width:110px;height:110px}
-.lux-gauge svg{width:110px;height:110px;transform:rotate(-90deg)}
-.lux-gauge-bg{fill:none;stroke:rgba(255,255,255,.06);stroke-width:8}
-.lux-gauge-fill{fill:none;stroke-width:8;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:283;transition:stroke-dashoffset 1.5s cubic-bezier(.3,0,.2,1)}
+.card-right{display:flex;flex-direction:column;align-items:center;gap:.4rem}
+.lux-gauge{position:relative;width:148px;height:148px}
+.lux-gauge svg{width:148px;height:148px;transform:rotate(-90deg)}
+.lux-gauge-bg{fill:none;stroke:rgba(255,255,255,.06);stroke-width:9}
+.lux-gauge-fill{fill:none;stroke-width:9;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:283;transition:stroke-dashoffset 1.5s cubic-bezier(.3,0,.2,1)}
 .lux-center{
   position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   font-family:Orbitron;
 }
-.lux-number{font-size:1.5rem;font-weight:900;color:var(--card-color,var(--sage))}
-.lux-label{font-size:.55rem;color:var(--muted);letter-spacing:.1em}
+.lux-number{font-size:2.4rem;font-weight:900;color:var(--card-color,var(--sage));text-shadow:0 0 30px var(--card-color,var(--sage-glow))}
+.lux-label{font-size:.6rem;color:var(--muted);letter-spacing:.14em;margin-top:-.2rem}
 
 /* SECTION HEADERS */
 .section-head{
-  font-family:Orbitron;font-size:.7rem;letter-spacing:.15em;color:var(--muted);
-  border-bottom:1px solid var(--glass-border);padding-bottom:.5rem;margin-bottom:1.2rem;
+  font-family:Orbitron;font-size:.65rem;letter-spacing:.15em;color:var(--muted);
+  border-bottom:1px solid var(--glass-border);padding-bottom:.4rem;margin-bottom:.75rem;
 }
 
 /* SIGNALS GRID */
@@ -188,18 +199,18 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
 .card-handle{font-size:.8rem;color:rgba(255,255,255,.45);letter-spacing:.06em;margin-bottom:.55rem}
 
 /* WATER BUTTON */
-.water-wrap{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.water-wrap{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:.8rem;flex-wrap:wrap;padding:.6rem 1rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px}
 .water-btn{
   position:relative;overflow:hidden;
-  padding:.7rem 1.8rem;border-radius:30px;
+  padding:.55rem 1.4rem;border-radius:30px;
   background:rgba(0,130,200,.1);border:1px solid rgba(100,180,255,.3);
-  color:rgba(140,200,255,.9);font-family:Orbitron;font-size:.72rem;letter-spacing:.12em;
+  color:rgba(140,200,255,.9);font-family:Orbitron;font-size:.68rem;letter-spacing:.12em;
   cursor:pointer;transition:background .2s,box-shadow .2s;
 }
 .water-btn:hover{background:rgba(0,130,200,.2);box-shadow:0 0 20px rgba(100,180,255,.2)}
 .water-btn:active{transform:scale(.96)}
-.water-count{font-size:.68rem;color:var(--muted);letter-spacing:.08em}
-.water-cooldown{font-size:.65rem;color:rgba(100,180,255,.45);letter-spacing:.06em}
+.water-count{font-size:.65rem;color:var(--muted);letter-spacing:.08em}
+.water-cooldown{font-size:.6rem;color:rgba(100,180,255,.45);letter-spacing:.06em}
 
 /* WATER DROP PARTICLE */
 .w-drop{
@@ -347,23 +358,32 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
 
 /* CI SECTION */
 .ci-wrap{
-  display:flex;align-items:center;gap:1.2rem;
+  display:flex;align-items:center;gap:1rem;
   background:var(--glass);border:1px solid var(--glass-border);
-  border-radius:14px;padding:1.2rem 1.4rem;
+  border-radius:14px;padding:.85rem 1.2rem;
 }
-.ci-ring{position:relative;width:80px;height:80px;flex-shrink:0}
-.ci-ring svg{width:80px;height:80px;transform:rotate(-90deg)}
+/* Profile CI: flush attach to card above */
+#ci-section>.section-head{display:none}
+#ci-section .ci-wrap{
+  border-top:none;
+  border-radius:0 0 16px 16px;
+  margin-top:0;
+  background:rgba(0,0,0,.25);
+  padding:.75rem 1.4rem;
+}
+.ci-ring{position:relative;width:62px;height:62px;flex-shrink:0}
+.ci-ring svg{width:62px;height:62px;transform:rotate(-90deg)}
 .ci-ring circle{fill:none;stroke-width:6}
 .ci-ring .ci-bg{stroke:rgba(255,255,255,.06)}
 .ci-ring .ci-fg{stroke:var(--card-color,var(--sage));stroke-linecap:round;transition:stroke-dashoffset .8s ease}
 .ci-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.ci-val-num{font-family:Orbitron;font-size:1.1rem;font-weight:900;color:var(--card-color,var(--sage))}
-.ci-val-label{font-size:.5rem;color:var(--muted);letter-spacing:.1em}
-.ci-info{display:flex;flex-direction:column;gap:.25rem}
-.ci-title{font-family:Orbitron;font-size:.68rem;letter-spacing:.12em;color:var(--sage)}
-.ci-formula{font-size:.62rem;color:var(--muted);letter-spacing:.04em}
-.ci-dims{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.2rem}
-.ci-dim{font-size:.62rem;color:var(--muted)}
+.ci-val-num{font-family:Orbitron;font-size:.88rem;font-weight:900;color:var(--card-color,var(--sage))}
+.ci-val-label{font-size:.45rem;color:var(--muted);letter-spacing:.1em}
+.ci-info{display:flex;flex-direction:column;gap:.18rem}
+.ci-title{font-family:Orbitron;font-size:.6rem;letter-spacing:.12em;color:var(--sage)}
+.ci-formula{font-size:.58rem;color:var(--muted);letter-spacing:.03em}
+.ci-dims{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:.15rem}
+.ci-dim{font-size:.58rem;color:var(--muted)}
 .ci-dim b{color:var(--card-color,var(--sage));font-family:Orbitron}
 .ci-stage-badge{
   display:inline-block;font-family:Orbitron;font-size:.6rem;letter-spacing:.1em;
@@ -373,8 +393,8 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
 }
 
 /* TAGS */
-.tags-section{margin-bottom:.5rem}
-.tags-display{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.5rem}
+.tags-section{margin-bottom:.3rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;padding:.7rem 1rem}
+.tags-display{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.4rem}
 .seed-tag{
   font-size:.68rem;padding:.2rem .6rem;border-radius:14px;
   background:rgba(168,201,155,.06);border:1px solid rgba(168,201,155,.14);
@@ -398,13 +418,13 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
 .tag-limit{font-size:.6rem;color:var(--muted);margin-top:.25rem}
 
 /* BIO */
-.bio-wrap{margin-bottom:.5rem}
-.bio-display{font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.7;font-style:italic}
+.bio-wrap{margin-bottom:.3rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;padding:.7rem 1rem}
+.bio-display{font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.65;font-style:italic}
 .bio-input{
   width:100%;background:rgba(0,0,0,.3);border:1px solid var(--glass-border);
-  border-radius:8px;padding:.6rem .9rem;color:var(--text);
-  font-family:'JetBrains Mono',monospace;font-size:.78rem;outline:none;
-  resize:none;min-height:60px;transition:border-color .2s;
+  border-radius:8px;padding:.5rem .8rem;color:var(--text);
+  font-family:'JetBrains Mono',monospace;font-size:.75rem;outline:none;
+  resize:none;min-height:52px;transition:border-color .2s;
 }
 .bio-input:focus{border-color:var(--sage-glow)}
 
@@ -436,11 +456,11 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
 /* SHARE BOOST SECTION */
 .share-boost-wrap{
   background:rgba(232,122,58,.04);border:1px solid rgba(232,122,58,.2);
-  border-radius:14px;padding:1.2rem 1.4rem;text-align:center;
+  border-radius:12px;padding:.85rem 1.1rem;text-align:center;
 }
-.share-boost-title{font-family:Orbitron;font-size:.7rem;letter-spacing:.12em;color:var(--orange);margin-bottom:.3rem}
-.share-boost-sub{font-size:.68rem;color:var(--muted);margin-bottom:.8rem;line-height:1.6}
-.share-boost-btns{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap}
+.share-boost-title{font-family:Orbitron;font-size:.65rem;letter-spacing:.12em;color:var(--orange);margin-bottom:.2rem}
+.share-boost-sub{font-size:.62rem;color:var(--muted);margin-bottom:.6rem;line-height:1.5}
+.share-boost-btns{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap}
 .share-boost-btn{
   padding:.5rem 1rem;border-radius:8px;font-family:Orbitron;font-size:.62rem;
   letter-spacing:.08em;cursor:pointer;transition:background .2s;border:none;text-decoration:none;
@@ -451,7 +471,46 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
 .sb-li:hover{background:rgba(10,102,194,.18)}
 .sb-copy{background:var(--sage-dim);border:1px solid var(--sage-glow);color:var(--sage)}
 .sb-copy:hover{background:rgba(168,201,155,.25)}
-.share-boost-count{font-size:.62rem;color:var(--muted);margin-top:.6rem;letter-spacing:.06em}
+.share-boost-count{font-size:.62rem;color:var(--muted);margin-top:.5rem;letter-spacing:.06em}
+
+/* LUX GAUGE PULSE */
+@keyframes luxPulse{0%,100%{filter:drop-shadow(0 0 6px rgba(168,201,155,.3))}50%{filter:drop-shadow(0 0 16px rgba(168,201,155,.6))}}
+.lux-gauge{animation:luxPulse 2.8s ease-in-out infinite}
+
+/* METRIC HINT — walkthrough labels */
+.metric-hint{font-size:.55rem;color:rgba(168,201,155,.28);letter-spacing:.07em;line-height:1.5;margin-top:.18rem;font-style:italic}
+.metric-label-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.2rem}
+.metric-badge{font-family:Orbitron;font-size:.52rem;letter-spacing:.08em;padding:.1rem .45rem;border-radius:4px;border:1px solid rgba(168,201,155,.15);color:rgba(168,201,155,.5);background:rgba(168,201,155,.04)}
+
+/* SECTION DIVIDER with label */
+.section-divider{display:flex;align-items:center;gap:.6rem;margin:.3rem 0;opacity:.5}
+.section-divider::before,.section-divider::after{content:'';flex:1;height:1px;background:var(--glass-border)}
+.section-divider span{font-family:Orbitron;font-size:.52rem;color:var(--muted);letter-spacing:.1em;white-space:nowrap}
+
+/* CARD HANDLE tag highlight */
+.card-handle{font-size:.75rem;color:rgba(255,255,255,.45);letter-spacing:.06em;margin-bottom:.4rem}
+
+/* SCORE BAR reduce height and spacing */
+.score-bars{display:flex;flex-direction:column;gap:.5rem}
+.score-row{display:flex;align-items:center;gap:.6rem}
+.score-name{font-size:.62rem;color:var(--muted);letter-spacing:.08em;width:32px;flex-shrink:0}
+.score-track{flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.score-fill{height:100%;border-radius:2px;width:0;transition:width 1.2s cubic-bezier(.3,0,.2,1)}
+.score-val{font-size:.62rem;color:var(--muted);width:28px;text-align:right;flex-shrink:0}
+
+/* PRICE/TIER WALKTHROUGH */
+.tier-row{
+  display:flex;align-items:center;gap:.7rem;
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:10px;padding:.65rem .9rem;
+  transition:border-color .2s;
+}
+.tier-row:hover{border-color:rgba(168,201,155,.25)}
+.tier-badge{font-family:Orbitron;font-size:.55rem;letter-spacing:.1em;padding:.2rem .55rem;border-radius:4px;flex-shrink:0}
+.tier-free{background:rgba(168,201,155,.08);border:1px solid rgba(168,201,155,.2);color:var(--sage)}
+.tier-pro{background:rgba(232,122,58,.08);border:1px solid rgba(232,122,58,.25);color:var(--orange)}
+.tier-text{font-size:.65rem;color:var(--text);line-height:1.5}
+.tier-price{font-family:Orbitron;font-size:.65rem;color:var(--sage);margin-left:auto;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -591,8 +650,9 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
             <span class="card-sigil" id="card-sigil">★</span>
             <span class="card-entity-name" id="card-entity-name">CONAVIGATOR</span>
           </div>
-          <div class="card-meta">
-            <span id="card-email">--</span><br>
+          <div class="metric-hint">your AI entity — shapes your growth path</div>
+          <span id="card-email" style="display:none"></span>
+          <div class="card-meta" style="margin-top:.4rem">
             Member since <span id="card-since">--</span>
           </div>
         </div>
@@ -607,6 +667,7 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
               <div class="lux-label">LUX</div>
             </div>
           </div>
+          <div class="metric-hint" style="text-align:center;max-width:150px">field energy · 0–100</div>
         </div>
       </div>
     </div>
@@ -621,9 +682,12 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
         </div>
         <div class="ci-info">
           <div class="ci-title">CRYSTALLIZATION INDEX</div>
-          <div class="ci-formula">CI = Stability &times; Sovereignty &times; ln(Memory+1) &times; Coherence</div>
+          <div class="metric-hint" style="margin-bottom:.2rem">how solid your seed has become</div>
           <div class="ci-dims" id="ci-dims"></div>
-          <div class="ci-stage-badge" id="ci-stage-badge">DORMANT</div>
+          <div style="display:flex;align-items:center;gap:.5rem;margin-top:.2rem">
+            <div class="ci-stage-badge" id="ci-stage-badge">DORMANT</div>
+            <span class="metric-hint" style="margin:0">water to grow</span>
+          </div>
         </div>
       </div>
     </div>
@@ -664,8 +728,33 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
     <!-- WATER YOUR SEED -->
     <div class="water-wrap">
       <button class="water-btn" id="water-btn" onclick="waterSeed()">💧 Water Your Seed</button>
-      <div class="water-count" id="water-count"></div>
-      <div class="water-cooldown" id="water-cooldown"></div>
+      <div style="display:flex;flex-direction:column;gap:.1rem">
+        <div class="water-count" id="water-count"></div>
+        <div class="water-cooldown" id="water-cooldown"></div>
+      </div>
+    </div>
+
+    <!-- HOW TO GROW WALKTHROUGH -->
+    <div id="grow-guide" style="background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;padding:.75rem 1rem">
+      <div style="font-family:Orbitron;font-size:.58rem;letter-spacing:.14em;color:var(--muted);margin-bottom:.6rem">◈ HOW TO GROW YOUR SEED</div>
+      <div style="display:flex;flex-direction:column;gap:.42rem">
+        <div class="tier-row">
+          <span class="metric-badge" style="background:rgba(100,180,255,.08);border-color:rgba(100,180,255,.2);color:rgba(100,180,255,.7)">💧 WATER</span>
+          <span class="tier-text">Answer a field question from your entity — earns <b style="color:var(--sage)">+LUX</b> and raises your vectors</span>
+        </div>
+        <div class="tier-row">
+          <span class="metric-badge" style="background:rgba(232,122,58,.08);border-color:rgba(232,122,58,.2);color:var(--orange)">✕ SHARE</span>
+          <span class="tier-text">Post your seed on X or LinkedIn — earns <b style="color:var(--orange)">+2 LUX</b> and <b style="color:rgba(100,180,255,.8)">+1 water</b> per share</span>
+        </div>
+        <div class="tier-row">
+          <span class="metric-badge" style="background:rgba(155,79,220,.08);border-color:rgba(155,79,220,.2);color:#9B4FDC">∞ TASKS</span>
+          <span class="tier-text">Complete daily field tasks — each one boosts your weakest vector toward crystallization</span>
+        </div>
+        <div class="tier-row">
+          <span class="metric-badge" style="background:rgba(200,168,80,.08);border-color:rgba(200,168,80,.2);color:#C8A850">★ LUX</span>
+          <span class="tier-text">Your overall field energy (0–100). Higher LUX = stronger seed, richer signals, more entity contact</span>
+        </div>
+      </div>
     </div>
 
     <!-- FIELD TASKS -->
