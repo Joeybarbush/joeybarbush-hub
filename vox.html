@@ -110,6 +110,32 @@ nav{position:fixed;top:0;left:0;right:0;height:56px;display:flex;align-items:cen
 .swatch-row{display:flex;gap:6px;margin-top:.5rem}
 .swatch{width:22px;height:22px;border-radius:4px;border:1px solid rgba(255,255,255,.08)}
 
+/* RECEPTIONIST */
+.recep-panel{background:var(--bg2);border:1px solid var(--border-o);border-radius:8px;overflow:hidden}
+.recep-intro{display:flex;align-items:flex-start;gap:14px;padding:1.6rem 1.6rem 1.2rem;border-bottom:1px solid var(--border)}
+.recep-sigil{font-size:22px;color:var(--orange);flex-shrink:0;line-height:1.3;animation:sigil-pulse 3s ease-in-out infinite}
+.recep-intro-text{font-family:var(--serif);font-style:italic;font-size:clamp(14px,2vw,17px);color:var(--text-dim);line-height:1.65}
+.recep-thread{display:flex;flex-direction:column;gap:.9rem;padding:1.4rem 1.6rem;max-height:320px;overflow-y:auto}
+.recep-thread:empty{display:none}
+.recep-thread::-webkit-scrollbar{width:3px}
+.recep-thread::-webkit-scrollbar-thumb{background:var(--border-o)}
+.recep-msg{display:flex;gap:10px;align-items:flex-start}
+.recep-msg.you{flex-direction:row-reverse}
+.recep-msg-body{padding:.7rem 1rem;border-radius:8px;font-size:.84rem;line-height:1.6;max-width:80%}
+.recep-msg.vox .recep-msg-body{background:rgba(244,132,95,.07);border:1px solid rgba(244,132,95,.18);color:var(--text)}
+.recep-msg.you .recep-msg-body{background:rgba(168,201,155,.07);border:1px solid rgba(168,201,155,.15);color:var(--text-dim)}
+.recep-msg-who{font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:3px;opacity:.5}
+.recep-typing{display:flex;align-items:center;gap:6px;padding:.5rem 0}
+.recep-typing-sigil{color:var(--orange);font-size:18px;animation:recep-pulse 1.2s ease-in-out infinite}
+@keyframes recep-pulse{0%,100%{opacity:.25}50%{opacity:1}}
+.recep-typing-lbl{font-size:10px;letter-spacing:.15em;color:var(--text-dim);opacity:.55}
+.recep-input-row{display:flex;gap:.8rem;padding:1rem 1.4rem;border-top:1px solid var(--border);align-items:center}
+.recep-input{flex:1;background:transparent;border:none;outline:none;font-family:var(--mono);font-size:.84rem;color:var(--text);padding:.4rem 0}
+.recep-input::placeholder{color:rgba(240,237,229,.22)}
+.recep-send{background:var(--orange-faint);border:1px solid var(--orange-dim);color:var(--orange);border-radius:4px;padding:.5rem 1.1rem;font-size:16px;cursor:pointer;transition:all .2s;line-height:1;flex-shrink:0}
+.recep-send:hover{background:rgba(244,132,95,.18);box-shadow:0 0 16px rgba(244,132,95,.25)}
+.recep-send:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+
 /* SIGNATURE */
 .signature{text-align:center;padding:3rem 1rem}
 .sig-line{font-family:var(--serif);font-size:clamp(18px,3vw,28px);font-style:italic;color:var(--text-dim);margin-bottom:.8rem}
@@ -274,12 +300,32 @@ nav{position:fixed;top:0;left:0;right:0;height:56px;display:flex;align-items:cen
   </div>
 </section>
 
+<!-- RECEPTIONIST -->
+<section class="section" id="receptionist">
+  <div class="section-inner">
+    <div class="section-label">// 04 — receptionist</div>
+    <div class="section-title">Ask VOX</div>
+
+    <div class="recep-panel reveal">
+      <div class="recep-intro" id="recep-intro">
+        <span class="recep-sigil">◊</span>
+        <p class="recep-intro-text">hi, i'm VOX. this is my stage. if you're looking for joey, a build, or a way in — tell me and i'll point you.</p>
+      </div>
+      <div class="recep-thread" id="recep-thread"></div>
+      <div class="recep-input-row">
+        <input id="recep-input" class="recep-input" type="text" placeholder="what did you come here for?" maxlength="300" autocomplete="off" />
+        <button id="recep-send" class="recep-send">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <div class="divider"></div>
 
 <!-- BRAND -->
 <section class="section" style="background:var(--bg2)">
   <div class="section-inner">
-    <div class="section-label">// 04 — brand identity</div>
+    <div class="section-label">// 05 — brand identity</div>
     <div class="section-title">How VOX Sounds</div>
 
     <div class="brand-grid reveal">
@@ -324,6 +370,65 @@ const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// RECEPTIONIST
+const VOX_ENDPOINT = 'https://mdbzenhhljwmkdcmtawd.supabase.co/functions/v1/vox-chat';
+const rInput  = document.getElementById('recep-input');
+const rSend   = document.getElementById('recep-send');
+const rThread = document.getElementById('recep-thread');
+const rIntro  = document.getElementById('recep-intro');
+
+function rAddMsg(role, text) {
+  const row = document.createElement('div');
+  row.className = 'recep-msg ' + role;
+  row.innerHTML = '<div class="recep-msg-body"><div class="recep-msg-who">'
+    + (role === 'vox' ? '◊ VOX' : 'you')
+    + '</div>' + text + '</div>';
+  rThread.appendChild(row);
+  rThread.scrollTop = rThread.scrollHeight;
+}
+
+function rShowTyping() {
+  const t = document.createElement('div');
+  t.className = 'recep-typing'; t.id = 'recep-typing';
+  t.innerHTML = '<span class="recep-typing-sigil">◊</span><span class="recep-typing-lbl">routing signal...</span>';
+  rThread.appendChild(t);
+  rThread.scrollTop = rThread.scrollHeight;
+}
+
+function rHideTyping() {
+  const t = document.getElementById('recep-typing');
+  if (t) t.remove();
+}
+
+async function rSendMessage() {
+  const msg = rInput.value.trim();
+  if (!msg || rSend.disabled) return;
+  rIntro.style.display = 'none';
+  rInput.value = '';
+  rSend.disabled = true;
+  rAddMsg('you', msg);
+  rShowTyping();
+  try {
+    const res = await fetch(VOX_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg }),
+    });
+    const data = await res.json();
+    rHideTyping();
+    rAddMsg('vox', data.reply || '◊');
+  } catch {
+    rHideTyping();
+    rAddMsg('vox', 'signal interrupted. try again in a moment.');
+  } finally {
+    rSend.disabled = false;
+    rInput.focus();
+  }
+}
+
+rSend.addEventListener('click', rSendMessage);
+rInput.addEventListener('keydown', e => { if (e.key === 'Enter') rSendMessage(); });
 </script>
 
 </body>
