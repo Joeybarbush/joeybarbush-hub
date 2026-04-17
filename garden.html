@@ -82,11 +82,23 @@ nav{
 
 /* SEED COUNT HUD */
 #hud{
-  position:fixed;top:56px;left:14px;z-index:40;
+  position:fixed;top:50px;left:14px;z-index:40;
   font-size:.65rem;color:rgba(168,201,155,.5);letter-spacing:.1em;
-  background:rgba(7,16,10,.7);border:1px solid rgba(168,201,155,.12);
-  border-radius:8px;padding:.45rem .75rem;
+  background:rgba(7,16,10,.8);border:1px solid rgba(168,201,155,.14);
+  border-radius:8px;padding:.42rem .72rem;
 }
+
+/* MINIMAP LEGEND STRIP */
+#mm-legend{
+  position:absolute;bottom:0;left:0;right:0;
+  text-align:center;font-size:.44rem;color:rgba(168,201,155,.38);
+  background:rgba(4,10,6,.72);padding:.22rem;letter-spacing:.05em;
+  pointer-events:none;
+}
+
+/* PB title row layout for collapse icon */
+.pb-title{display:flex;align-items:center}
+.pb-rows-wrap{}
 
 /* LOADING SCREEN */
 #loader{
@@ -492,31 +504,31 @@ nav{
 <!-- FIRST-VISIT WELCOME OVERLAY -->
 <div id="welcome-overlay">
   <div class="wc-card">
-    <div class="wc-sigil">🌱</div>
+    <div class="wc-sigil">◈</div>
     <div class="wc-title">WELCOME TO THE GARDEN</div>
-    <div class="wc-sub">A living field where people grow in public.<br>14 AI entities roam. Every seed is a real person.</div>
+    <div class="wc-sub">Every glowing orb is a real person growing in public.<br>Walk the field. Encounter entities. Leave your mark.</div>
     <div class="wc-steps">
       <div class="wc-step">
         <div class="wc-step-icon">🕹</div>
-        <div class="wc-step-text"><b>NAVIGATE</b>Use WASD or arrow keys to walk the field. On mobile, use the joystick at the bottom-left.</div>
+        <div class="wc-step-text"><b>MOVE</b>WASD / arrow keys to explore. On mobile, use the joystick (bottom-left). The minimap (top-right) shows where everything is.</div>
       </div>
       <div class="wc-step">
         <div class="wc-step-icon">◉</div>
-        <div class="wc-step-text"><b>DISCOVER</b>Walk near a glowing orb to open a seed. Leave notes, see who planted it, and watch it grow.</div>
+        <div class="wc-step-text"><b>SEEDS</b>Each floating orb is a seed — a real person. Color = their entity alignment. Walk close to open their profile and leave a note.</div>
       </div>
       <div class="wc-step">
         <div class="wc-step-icon">★</div>
-        <div class="wc-step-text"><b>ENTITIES</b>14 AI entities move through the field -- walk into one to receive a message from the system.</div>
+        <div class="wc-step-text"><b>ENTITIES</b>11 AI entities drift through the field. Walk into one to receive a message. The gold compound at center is the FOUNDER origin.</div>
       </div>
       <div class="wc-step">
-        <div class="wc-step-icon">🌿</div>
-        <div class="wc-step-text"><b>PLANT YOUR OWN</b>Sign up to get your seed planted in the field. Water it, level it up, and leave your mark.</div>
+        <div class="wc-step-icon">💧</div>
+        <div class="wc-step-text"><b>WATER &amp; GROW</b>Water a seed to boost their LUX score. Plant your own to start earning LUX, unlock new stages, and appear in the field.</div>
       </div>
     </div>
     <div class="wc-actions">
       <button class="wc-enter" onclick="dismissWelcome()">ENTER THE FIELD →</button>
-      <a class="wc-plant" href="waitlist.html">PLANT MY SEED -- JOIN FREE</a>
-      <button class="wc-skip" onclick="dismissWelcome()">already have a seed -- skip</button>
+      <a class="wc-plant" href="waitlist.html">PLANT MY SEED -- FREE</a>
+      <button class="wc-skip" onclick="dismissWelcome()">already planted -- skip</button>
     </div>
   </div>
 </div>
@@ -566,8 +578,9 @@ nav{
 </div>
 
 <div id="controls-hint">
-  WASD / arrows to move<br>
-  Walk near a seed to view it
+  WASD / arrows · move<br>
+  walk near orb · open seed<br>
+  <span style="color:rgba(168,201,155,.18)">orb color = entity · tap to explore</span>
 </div>
 
 <!-- GLASS WINDOW PANEL -->
@@ -661,8 +674,6 @@ nav{
     <div class="pb-stat-mini"><b id="pb-water">--</b><span>waters</span></div>
     <div class="pb-stat-mini"><b id="pb-ents">11</b><span>entities</span></div>
   </div>
-  <div class="pb-entity-badge" id="pb-dominant-ent">dominant: --</div>
-  <div class="pb-footer">∇ NEURO LAB LIVE SCAN</div>
 </div>
 
 <script>
@@ -1068,14 +1079,14 @@ function draw(t){
     ctx.fillStyle=`rgba(255,255,255,${0.3+pulse*.15})`; ctx.fill();
 
     ctx.font=`bold ${near?16:13}px 'JetBrains Mono',monospace`;
-    ctx.fillStyle=`rgba(255,255,255,${near?.98:.8})`;
+    ctx.fillStyle=`rgba(255,255,255,${near?.98:.82})`;
     ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.fillText(s.sigil,isx,isy);
 
     // Labels below orb — colored by seed type
     const lblY = isy + orbR + 6;
     ctx.font=`bold ${near?11:9}px 'JetBrains Mono',monospace`;
-    ctx.fillStyle=`rgba(${r},${g},${b},${near?.95:.75})`;
+    ctx.fillStyle=`rgba(${r},${g},${b},${near?.98:.78})`;
     ctx.textAlign='center'; ctx.textBaseline='top';
     ctx.fillText('@'+s.display_name.slice(0,12), isx, lblY);
     ctx.font=`${near?10:8}px 'JetBrains Mono',monospace`;
@@ -1288,7 +1299,9 @@ function escHtml(s){
 function drawFounderSeed(s, t, sx, sy){
   const pulse  = Math.sin(t*0.0014+s.pulse)*0.5+0.5;
   const pulse2 = Math.sin(t*0.0022+s.pulse+1.2)*0.5+0.5;
-  const bob    = Math.sin(t*0.001+s.bob)*5;
+  const bob    = Math.sin(t*0.001+s.bob)*6;
+  const driftX = Math.sin(t*0.0006+s.bob+Math.PI*.5)*4;
+  sx = sx + driftX;
   const ey     = sy+bob;
   const near   = Math.hypot(player.x-s.x,player.y-s.y)<ENCOUNTER_DIST;
 
@@ -1586,6 +1599,16 @@ function loop(t){
     }
   }, 500);
 })();
+
+// ── BOARD TOGGLE ──────────────────────────────────────────────────────────────
+let _boardCollapsed = false;
+function toggleBoard(){
+  _boardCollapsed = !_boardCollapsed;
+  const board = document.getElementById('public-board');
+  const icon  = document.getElementById('board-collapse-icon');
+  board.classList.toggle('collapsed', _boardCollapsed);
+  if(icon) icon.textContent = _boardCollapsed ? '▸' : '▾';
+}
 
 // ── WELCOME OVERLAY ───────────────────────────────────────────────────────────
 function dismissWelcome(){
