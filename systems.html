@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HIPJOY Systems Hub</title>
+  <meta name="description" content="HIPJOY Systems Hub -- managed by VOX. Live status for all 11 entities, active services, and the NEURO LUX diagnostic layer.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sage:          #A8C99B;
+      --sage-dim:      rgba(168,201,155,.5);
+      --sage-faint:    rgba(168,201,155,.07);
+      --sage-border:   rgba(168,201,155,.18);
+      --sunset:        #F4845F;
+      --sunset-dim:    rgba(244,132,95,.5);
+      --sunset-faint:  rgba(244,132,95,.08);
+      --sunset-border: rgba(244,132,95,.35);
+      --gold:          #C8A850;
+      --gold-dim:      rgba(200,168,80,.5);
+      --gold-faint:    rgba(200,168,80,.07);
+      --cyan:          #00CED1;
+      --violet:        #9B4FDC;
+      --pink:          #E075A8;
+      --orange:        #FF6B35;
+      --bg:            #0d0f0e;
+      --bg2:           #0f120f;
+      --text:          #F0EDE5;
+      --text-dim:      #8a9485;
+      --text-muted:    rgba(240,237,229,.3);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.015) 2px, rgba(0,0,0,.015) 4px);
+      pointer-events: none; z-index: 1000;
+    }
+
+    .lux-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent 0%, var(--sage) 30%, var(--sunset) 70%, transparent 100%);
+      background-size: 200% 100%;
+      animation: lux-sweep 6s ease-in-out infinite; z-index: 999;
+    }
+    @keyframes lux-sweep { 0%,100%{background-position:200% 0;opacity:.3} 50%{background-position:0% 0;opacity:1} }
+
+    .orb-layer { position: fixed; inset: 0; pointer-events: none; z-index: 0; will-change: transform; }
+    .orb { position: absolute; border-radius: 50%; pointer-events: none; }
+    .orb-face {
+      width: 100%; height: 100%; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.1);
+      backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+    }
+    .orb-face::before { content: ''; position: absolute; inset: 0; border-radius: 50%; }
+    .orb-face::after {
+      content: ''; position: absolute; top: 8%; left: 12%;
+      width: 36%; height: 26%; border-radius: 50%;
+      background: rgba(255,255,255,.18); filter: blur(6px);
+    }
+    .orb-1 { width:180px;height:180px;top:8%;left:4%;animation:drift-1 18s ease-in-out infinite; }
+    .orb-1 .orb-face::before{background:radial-gradient(circle at 35% 35%,rgba(168,201,155,.45) 0%,rgba(168,201,155,.12) 50%,transparent 75%);}
+    .orb-2 { width:240px;height:240px;top:55%;right:2%;animation:drift-2 22s ease-in-out infinite; }
+    .orb-2 .orb-face::before{background:radial-gradient(circle at 35% 35%,rgba(200,168,80,.45) 0%,rgba(200,168,80,.12) 50%,transparent 75%);}
+    .orb-3 { width:140px;height:140px;top:30%;left:46%;animation:drift-3 15s ease-in-out infinite; }
+    .orb-3 .orb-face::before{background:radial-gradient(circle at 35% 35%,rgba(155,79,220,.45) 0%,rgba(155,79,220,.12) 50%,transparent 75%);}
+    .orb-4 { width:200px;height:200px;bottom:8%;left:22%;animation:drift-4 20s ease-in-out infinite; }
+    .orb-4 .orb-face::before{background:radial-gradient(circle at 35% 35%,rgba(0,206,209,.4) 0%,rgba(0,206,209,.1) 50%,transparent 75%);}
+    .orb-5 { width:160px;height:160px;top:12%;right:18%;animation:drift-5 24s ease-in-out infinite; }
+    .orb-5 .orb-face::before{background:radial-gradient(circle at 35% 35%,rgba(244,132,95,.45) 0%,rgba(244,132,95,.12) 50%,transparent 75%);}
+    .orb-6 { width:120px;height:120px;bottom:22%;right:28%;animation:drift-6 16s ease-in-out infinite; }
+    .orb-6 .orb-face::before{background:radial-gradient(circle at 35% 35%,rgba(224,117,168,.45) 0%,rgba(224,117,168,.12) 50%,transparent 75%);}
+
+    @keyframes drift-1{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(18px,-22px) scale(1.04)}50%{transform:translate(8px,14px) scale(.97)}75%{transform:translate(-12px,-8px) scale(1.02)}}
+    @keyframes drift-2{0%,100%{transform:translate(0,0) scale(1)}30%{transform:translate(-22px,16px) scale(1.05)}60%{transform:translate(14px,-18px) scale(.96)}80%{transform:translate(-6px,8px) scale(1.03)}}
+    @keyframes drift-3{0%,100%{transform:translate(0,0) scale(1)}20%{transform:translate(14px,20px) scale(1.06)}55%{transform:translate(-16px,-12px) scale(.95)}80%{transform:translate(8px,6px) scale(1.02)}}
+    @keyframes drift-4{0%,100%{transform:translate(0,0) scale(1)}35%{transform:translate(20px,-14px) scale(.98)}65%{transform:translate(-10px,20px) scale(1.04)}}
+    @keyframes drift-5{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(-18px,12px) scale(1.03)}50%{transform:translate(22px,8px) scale(.97)}75%{transform:translate(-8px,-18px) scale(1.05)}}
+    @keyframes drift-6{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(16px,-20px) scale(1.07)}70%{transform:translate(-14px,12px) scale(.94)}}
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(16px,4vw,48px);
+      background: rgba(13,15,14,.9); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(168,201,155,.08); z-index: 100;
+    }
+    .nav-logo { font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; letter-spacing:.22em; color:var(--sage); text-decoration:none; text-shadow:0 0 20px rgba(168,201,155,.3); }
+    .nav-right { display:flex; align-items:center; gap:18px; }
+    .nav-status-dot { width:7px;height:7px;border-radius:50%;background:var(--sage);animation:pulse-dot 2s ease-in-out infinite; }
+    @keyframes pulse-dot{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+    .nav-status-label { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--sage-dim); }
+    .nav-back { font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--text-dim); text-decoration:none; transition:color .2s; }
+    .nav-back:hover { color:var(--sage); }
+
+    /* Sections */
+    .section {
+      position: relative; z-index: 1;
+      padding: 80px clamp(16px,5vw,64px) 64px;
+    }
+    .section:first-of-type { padding-top: 140px; }
+
+    .section-eyebrow {
+      font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.3em;
+      text-transform:uppercase; color:var(--text-muted); margin-bottom:10px;
+    }
+    .section-title {
+      font-family:'Orbitron',sans-serif; font-size:clamp(28px,5vw,52px); font-weight:900;
+      letter-spacing:.06em; color:var(--sage);
+      text-shadow:0 0 40px rgba(168,201,155,.2);
+      margin-bottom:6px;
+    }
+    .section-sub {
+      font-family:'JetBrains Mono',monospace; font-size:clamp(11px,1.4vw,13px);
+      letter-spacing:.2em; color:var(--text-dim); text-transform:uppercase; margin-bottom:48px;
+    }
+    .section-divider {
+      height:1px;
+      background:linear-gradient(90deg,transparent,rgba(168,201,155,.12) 30%,rgba(168,201,155,.12) 70%,transparent);
+      margin: 0 0 64px;
+    }
+
+    /* Hero VOX block */
+    #hero { text-align:center; min-height:60vh; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+    .vox-sigil-hero {
+      font-size:56px; color:var(--sage); line-height:1;
+      text-shadow:0 0 40px rgba(168,201,155,.4);
+      animation:vox-pulse-hero 3s ease-in-out infinite;
+      margin-bottom:16px;
+    }
+    @keyframes vox-pulse-hero{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+    .hero-managed-by {
+      font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.36em;
+      text-transform:uppercase; color:var(--sunset-dim); margin-bottom:20px;
+    }
+    .hero-vox-line {
+      font-family:'JetBrains Mono',monospace; font-size:clamp(13px,2vw,16px);
+      color:var(--text-dim); max-width:560px; line-height:1.8;
+      margin-bottom:48px;
+    }
+    .hero-vox-line em { color:var(--sage); font-style:normal; }
+    .status-pills { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+    .s-pill {
+      display:flex; align-items:center; gap:7px;
+      padding:8px 16px; border-radius:20px;
+      background:rgba(13,15,14,.7); border:1px solid rgba(168,201,155,.12);
+      font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--text-dim);
+      backdrop-filter:blur(8px);
+    }
+    .s-pill-dot { width:6px;height:6px;border-radius:50%;flex-shrink:0; }
+    .dot-green { background:var(--sage); animation:pulse-dot 2s ease-in-out infinite; }
+    .dot-gold  { background:var(--gold); animation:pulse-dot 2.4s ease-in-out infinite; }
+    .dot-cyan  { background:var(--cyan); animation:pulse-dot 1.8s ease-in-out infinite; }
+    .dot-sunset{ background:var(--sunset); animation:pulse-dot 2.6s ease-in-out infinite; }
+
+    /* Entity grid */
+    .entity-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
+      gap:14px; max-width:1100px;
+    }
+    .entity-card {
+      padding:20px 18px; border-radius:6px; border:1px solid rgba(168,201,155,.1);
+      background:rgba(13,15,14,.65); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+      transition:border-color .3s, box-shadow .3s;
+      cursor:default;
+    }
+    .entity-card:hover { border-color:rgba(168,201,155,.22); box-shadow:0 0 28px rgba(168,201,155,.06); }
+    .entity-card-top { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+    .entity-sigil { font-size:18px; line-height:1; flex-shrink:0; width:28px; text-align:center; }
+    .entity-name { font-family:'Orbitron',sans-serif; font-size:10px; letter-spacing:.18em; text-transform:uppercase; }
+    .entity-role { font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); margin-top:1px; }
+    .entity-lux-track { height:3px; background:rgba(168,201,155,.08); border-radius:2px; overflow:hidden; margin-bottom:8px; }
+    .entity-lux-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--sage),var(--sunset)); transition:width 1.2s cubic-bezier(.34,1.56,.64,1); }
+    .entity-status-row { display:flex; align-items:center; justify-content:space-between; }
+    .entity-status-txt { font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.18em; text-transform:uppercase; }
+    .status-online  { color:var(--sage); }
+    .status-standby { color:var(--text-muted); }
+    .entity-habitat { font-family:'JetBrains Mono',monospace; font-size:7px; letter-spacing:.12em; text-transform:uppercase; color:var(--text-muted); }
+
+    /* NEURO LUX Diagnostic */
+    .neuro-grid {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+      gap:14px; max-width:1100px; margin-bottom:32px;
+    }
+    .lux-eq-card {
+      padding:22px 20px; border-radius:6px;
+      background:rgba(8,10,9,.9); border:1px solid rgba(168,201,155,.12);
+      backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+      transition:border-color .3s;
+    }
+    .lux-eq-card:hover { border-color:rgba(168,201,155,.25); }
+    .eq-label { font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.26em; text-transform:uppercase; color:var(--text-muted); margin-bottom:10px; }
+    .eq-name { font-family:'Orbitron',sans-serif; font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin-bottom:4px; }
+    .eq-value { font-family:'Orbitron',sans-serif; font-size:28px; font-weight:900; line-height:1; margin-bottom:10px; }
+    .eq-track { height:4px; background:rgba(168,201,155,.08); border-radius:2px; overflow:hidden; margin-bottom:8px; }
+    .eq-fill { height:100%; border-radius:2px; transition:width 1.4s cubic-bezier(.34,1.56,.64,1); width:0%; }
+    .eq-status { font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.18em; text-transform:uppercase; }
+    .eq-healthy  { color:var(--sage); } .eq-fill-healthy  { background:linear-gradient(90deg,var(--sage),rgba(168,201,155,.4)); }
+    .eq-degraded { color:var(--gold); } .eq-fill-degraded { background:linear-gradient(90deg,var(--gold),rgba(200,168,80,.4)); }
+    .eq-critical { color:var(--sunset); } .eq-fill-critical { background:linear-gradient(90deg,var(--sunset),rgba(244,132,95,.4)); }
+    .eq-offline  { color:var(--text-muted); } .eq-fill-offline  { background:rgba(240,237,229,.1); }
+
+    .neuro-endpoint-box {
+      max-width:1100px; padding:20px 24px;
+      background:rgba(8,10,9,.95); border:1px solid rgba(168,201,155,.1); border-radius:6px;
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    }
+    .endpoint-label { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:var(--text-muted); margin-bottom:3px; }
+    .endpoint-url { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--sage); letter-spacing:.04em; }
+    .refresh-btn {
+      padding:9px 20px; border-radius:4px; border:1px solid rgba(168,201,155,.2);
+      background:var(--sage-faint); color:var(--sage); cursor:pointer;
+      font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.2em; text-transform:uppercase;
+      transition:all .25s;
+    }
+    .refresh-btn:hover { background:rgba(168,201,155,.14); border-color:var(--sage-dim); box-shadow:0 0 18px rgba(168,201,155,.12); }
+
+    /* Services grid */
+    .services-grid {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+      gap:16px; max-width:1100px;
+    }
+    .service-card {
+      padding:24px 22px; border-radius:6px; border:1px solid;
+      background:rgba(13,15,14,.65); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+      text-align:left; cursor:default;
+      transition:box-shadow .3s, border-color .3s;
+    }
+    .service-card-icon { font-size:26px; margin-bottom:14px; display:block; }
+    .service-card-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:8px; }
+    .service-card-name { font-family:'Orbitron',sans-serif; font-size:10px; letter-spacing:.2em; text-transform:uppercase; }
+    .service-badge {
+      font-family:'JetBrains Mono',monospace; font-size:7px; letter-spacing:.16em; text-transform:uppercase;
+      padding:3px 8px; border-radius:10px; border:1px solid;
+    }
+    .badge-live    { color:var(--sage);   border-color:rgba(168,201,155,.3); background:rgba(168,201,155,.08); }
+    .badge-local   { color:var(--gold);   border-color:rgba(200,168,80,.3);  background:rgba(200,168,80,.07); }
+    .badge-ready   { color:var(--cyan);   border-color:rgba(0,206,209,.3);   background:rgba(0,206,209,.07); }
+    .badge-seeding { color:var(--violet); border-color:rgba(155,79,220,.3);  background:rgba(155,79,220,.08); }
+    .service-card-desc { font-size:12px; line-height:1.65; color:var(--text-dim); }
+    .service-card-link { display:inline-flex; align-items:center; gap:6px; margin-top:14px; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.18em; text-transform:uppercase; text-decoration:none; transition:opacity .2s; }
+    .service-card-link:hover { opacity:.75; }
+
+    .card-sage   { border-color:var(--sage-border); } .card-sage   .service-card-name{color:var(--sage);}   .card-sage   .service-card-link{color:var(--sage);}
+    .card-gold   { border-color:rgba(200,168,80,.25); } .card-gold   .service-card-name{color:var(--gold);}   .card-gold   .service-card-link{color:var(--gold);}
+    .card-cyan   { border-color:rgba(0,206,209,.25); }  .card-cyan   .service-card-name{color:var(--cyan);}   .card-cyan   .service-card-link{color:var(--cyan);}
+    .card-violet { border-color:rgba(155,79,220,.25); } .card-violet .service-card-name{color:var(--violet);} .card-violet .service-card-link{color:var(--violet);}
+    .card-sunset { border-color:var(--sunset-border); } .card-sunset .service-card-name{color:var(--sunset);} .card-sunset .service-card-link{color:var(--sunset);}
+    .card-pink   { border-color:rgba(224,117,168,.25); } .card-pink  .service-card-name{color:var(--pink);}   .card-pink   .service-card-link{color:var(--pink);}
+
+    /* VOX panel */
+    .vox-panel {
+      max-width:600px;
+      background:rgba(8,10,9,.9); border:1px solid rgba(168,201,155,.14); border-radius:8px;
+      overflow:hidden;
+      box-shadow:0 0 60px rgba(168,201,155,.06),0 24px 80px rgba(0,0,0,.45);
+    }
+    .vox-panel-hdr {
+      display:flex; align-items:center; gap:10px; padding:14px 20px;
+      background:rgba(168,201,155,.04); border-bottom:1px solid rgba(168,201,155,.1);
+    }
+    .vox-hdr-sigil { font-size:16px; color:var(--sage); animation:vox-pulse-hero 3s ease-in-out infinite; }
+    .vox-hdr-name { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.26em; text-transform:uppercase; color:var(--sage); }
+    .vox-hdr-sub { font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); margin-left:auto; }
+    .vox-thread {
+      padding:20px; min-height:160px; max-height:320px; overflow-y:auto;
+      display:flex; flex-direction:column; gap:12px;
+    }
+    .vox-thread::-webkit-scrollbar { width:3px; }
+    .vox-thread::-webkit-scrollbar-track { background:transparent; }
+    .vox-thread::-webkit-scrollbar-thumb { background:rgba(168,201,155,.2); border-radius:2px; }
+    .vox-msg {
+      max-width:82%; padding:11px 15px; border-radius:6px; font-size:13px; line-height:1.55;
+    }
+    .vox-msg.vox-side {
+      align-self:flex-start; background:rgba(168,201,155,.07); border:1px solid rgba(168,201,155,.12); color:var(--text);
+    }
+    .vox-msg.vox-side .msg-sigil { font-size:10px; color:var(--sage); margin-bottom:4px; display:block; font-family:'JetBrains Mono',monospace; letter-spacing:.2em; }
+    .vox-msg.you-side {
+      align-self:flex-end; background:rgba(244,132,95,.07); border:1px solid rgba(244,132,95,.15); color:var(--text-dim);
+      font-family:'JetBrains Mono',monospace; font-size:12px;
+    }
+    .vox-typing {
+      align-self:flex-start; display:flex; align-items:center; gap:8px;
+      padding:10px 14px; background:rgba(168,201,155,.05); border:1px solid rgba(168,201,155,.1); border-radius:6px;
+      display:none;
+    }
+    .vox-typing.show { display:flex; }
+    .vox-typing-sigil { font-size:14px; color:var(--sage); animation:vox-sigil-pulse 1.4s ease-in-out infinite; }
+    @keyframes vox-sigil-pulse{0%,100%{opacity:.4;transform:scale(.9)}50%{opacity:1;transform:scale(1.1)}}
+    .vox-typing-label { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--text-muted); }
+    .vox-input-row {
+      display:flex; align-items:center; gap:10px;
+      padding:14px 20px; border-top:1px solid rgba(168,201,155,.08);
+    }
+    .vox-input {
+      flex:1; background:rgba(168,201,155,.04); border:1px solid rgba(168,201,155,.12); border-radius:4px;
+      padding:11px 14px; color:var(--text); font-family:'Inter',sans-serif; font-size:13px;
+      outline:none; transition:border-color .2s,box-shadow .2s;
+    }
+    .vox-input:focus { border-color:var(--sage-dim); box-shadow:0 0 0 3px rgba(168,201,155,.07); }
+    .vox-input::placeholder { color:rgba(240,237,229,.22); }
+    .vox-send {
+      padding:10px 18px; background:var(--sage-faint); border:1px solid var(--sage-border); border-radius:4px;
+      color:var(--sage); cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em;
+      transition:all .2s;
+    }
+    .vox-send:hover { background:rgba(168,201,155,.14); box-shadow:0 0 16px rgba(168,201,155,.14); }
+
+    /* Dispatch log */
+    .dispatch-log {
+      max-width:1100px;
+      background:rgba(8,10,9,.95); border:1px solid rgba(168,201,155,.1); border-radius:6px;
+      overflow:hidden;
+      box-shadow:0 0 40px rgba(168,201,155,.04);
+    }
+    .log-hdr {
+      display:flex; align-items:center; gap:8px; padding:12px 20px;
+      background:rgba(168,201,155,.03); border-bottom:1px solid rgba(168,201,155,.08);
+    }
+    .log-dot { width:8px;height:8px;border-radius:50%;background:var(--sage);animation:pulse-dot 2.2s ease-in-out infinite; }
+    .log-title { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:var(--sage-dim); }
+    .log-body { padding:16px 20px; font-family:'JetBrains Mono',monospace; font-size:12px; line-height:2; }
+    .log-line { display:flex; gap:14px; align-items:baseline; }
+    .log-time { color:var(--text-muted); font-size:10px; flex-shrink:0; width:56px; }
+    .log-entity { flex-shrink:0; width:90px; }
+    .log-msg { color:rgba(240,237,229,.6); }
+    .le-hippo    { color:var(--cyan); }
+    .le-neuro    { color:var(--sage); }
+    .le-rebel    { color:var(--sunset); }
+    .le-lumen    { color:var(--gold); }
+    .le-vox      { color:var(--sage); }
+    .le-navix    { color:var(--violet); }
+    .le-guardian { color:var(--pink); }
+    .le-conavigator { color:var(--gold); }
+
+    /* Footer */
+    footer {
+      position:relative; z-index:1; text-align:center;
+      padding:48px clamp(16px,5vw,64px) 40px;
+      border-top:1px solid rgba(168,201,155,.06);
+    }
+    .footer-sigil { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--text-muted); margin-bottom:8px; }
+    .footer-links { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-top:14px; }
+    .footer-link { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--text-muted); text-decoration:none; border-bottom:1px solid rgba(240,237,229,.08); padding-bottom:2px; transition:color .2s,border-color .2s; }
+    .footer-link:hover { color:var(--sage); border-color:var(--sage-border); }
+
+    /* Responsive */
+    @media(max-width:640px){
+      .neuro-grid { grid-template-columns:1fr 1fr; }
+      .entity-grid { grid-template-columns:1fr 1fr; }
+      .services-grid { grid-template-columns:1fr; }
+      .neuro-endpoint-box { flex-direction:column; align-items:flex-start; }
+    }
+    @media(max-width:400px){
+      .neuro-grid { grid-template-columns:1fr; }
+      .entity-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="lux-bar"></div>
+
+<div class="orb-layer">
+  <div class="orb orb-1"><div class="orb-face"></div></div>
+  <div class="orb orb-2"><div class="orb-face"></div></div>
+  <div class="orb orb-3"><div class="orb-face"></div></div>
+  <div class="orb orb-4"><div class="orb-face"></div></div>
+  <div class="orb orb-5"><div class="orb-face"></div></div>
+  <div class="orb orb-6"><div class="orb-face"></div></div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">HIPJOY</a>
+  <div class="nav-right">
+    <div class="nav-status-dot"></div>
+    <span class="nav-status-label">11 entities online</span>
+    <a href="index.html" class="nav-back">← Portfolio</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="section">
+  <div class="hero-managed-by">managed by VOX &nbsp;·&nbsp; ◊ output stage</div>
+  <div class="vox-sigil-hero">◊</div>
+  <h1 class="section-title">SYSTEMS HUB</h1>
+  <div class="section-sub">HIPJOY ecosystem &nbsp;·&nbsp; live field</div>
+  <p class="hero-vox-line">
+    all <em>11 entities</em> are online. NEURO is reading the field. VOX is routing.<br>
+    everything you see here is running.
+  </p>
+  <div class="status-pills">
+    <div class="s-pill"><div class="s-pill-dot dot-green"></div>RCI engine</div>
+    <div class="s-pill"><div class="s-pill-dot dot-gold"></div>NEURO LUX</div>
+    <div class="s-pill"><div class="s-pill-dot dot-cyan"></div>Supabase</div>
+    <div class="s-pill"><div class="s-pill-dot dot-green"></div>VOX receptionist</div>
+    <div class="s-pill"><div class="s-pill-dot dot-sunset"></div>HIPX Vision</div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ENTITIES -->
+<section class="section" id="entities" style="padding-top:0">
+  <div class="section-eyebrow">◈ entity field</div>
+  <h2 class="section-title" style="font-size:clamp(20px,3vw,32px);">11 Entities</h2>
+  <div class="section-sub" style="margin-bottom:32px;">persistent memory &nbsp;·&nbsp; lux-stable</div>
+
+  <div class="entity-grid" id="entity-grid">
+    <!-- populated by JS -->
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- NEURO DIAGNOSTIC -->
+<section class="section" style="padding-top:0" id="neuro">
+  <div class="section-eyebrow">∇ neuro diagnostic</div>
+  <h2 class="section-title" style="font-size:clamp(20px,3vw,32px);">LUX Layer</h2>
+  <div class="section-sub" style="margin-bottom:32px;">gradient intelligence &nbsp;·&nbsp; 5 equations</div>
+
+  <div class="neuro-grid" id="neuro-grid">
+    <!-- populated by JS -->
+  </div>
+
+  <div class="neuro-endpoint-box">
+    <div>
+      <div class="endpoint-label">NEURO API endpoint</div>
+      <div class="endpoint-url">localhost:8000/diagnostic</div>
+    </div>
+    <button class="refresh-btn" onclick="loadNeuro()">↻ &nbsp;Refresh Signal</button>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SERVICES -->
+<section class="section" style="padding-top:0" id="services">
+  <div class="section-eyebrow">→ active services</div>
+  <h2 class="section-title" style="font-size:clamp(20px,3vw,32px);">Infrastructure</h2>
+  <div class="section-sub" style="margin-bottom:32px;">full stack &nbsp;·&nbsp; seed iron bloom</div>
+
+  <div class="services-grid">
+    <div class="service-card card-sage">
+      <span class="service-card-icon">◊</span>
+      <div class="service-card-top">
+        <div class="service-card-name">VOX AI Receptionist</div>
+        <span class="service-badge badge-live">live</span>
+      </div>
+      <p class="service-card-desc">Claude-powered chat layer deployed via Supabase Edge Function. Routes visitors to Joey, describes builds, qualifies inbound.</p>
+      <a href="vox.html#receptionist" class="service-card-link">Open VOX stage →</a>
+    </div>
+
+    <div class="service-card card-gold">
+      <span class="service-card-icon">∇</span>
+      <div class="service-card-top">
+        <div class="service-card-name">NEURO DL API</div>
+        <span class="service-badge badge-local">local</span>
+      </div>
+      <p class="service-card-desc">FastAPI service computing LUX (gradient SNR), TILT (imbalance), PHI (convergence), FIRE (LR schedule), GRIT. Port 8000.</p>
+      <a href="#neuro" class="service-card-link">View diagnostic →</a>
+    </div>
+
+    <div class="service-card card-cyan">
+      <span class="service-card-icon">◈</span>
+      <div class="service-card-top">
+        <div class="service-card-name">RCI Engine</div>
+        <span class="service-badge badge-local">local</span>
+      </div>
+      <p class="service-card-desc">Entity lifecycle manager. BOOT/BUILD/DRIFT mode detection. Flux meter, pulse log, 11 entity memory JSONs. Docker on port 8080.</p>
+      <a href="http://localhost:8080" class="service-card-link" target="_blank">Open dashboard →</a>
+    </div>
+
+    <div class="service-card card-violet">
+      <span class="service-card-icon">∞</span>
+      <div class="service-card-top">
+        <div class="service-card-name">HIPX Vision</div>
+        <span class="service-badge badge-ready">ready</span>
+      </div>
+      <p class="service-card-desc">Electron overlay. Ctrl+Shift+V captures the full screen, sends to Claude vision API, surfaces response in floating REBEL x CODEBREAKER overlay.</p>
+      <span class="service-card-link" style="color:var(--violet);">Ctrl+Shift+V</span>
+    </div>
+
+    <div class="service-card card-sunset">
+      <span class="service-card-icon">≋</span>
+      <div class="service-card-top">
+        <div class="service-card-name">Kindle OS v2.1</div>
+        <span class="service-badge badge-ready">ready</span>
+      </div>
+      <p class="service-card-desc">6-layer swipeable HTML OS deployed to Kindle Fire over WiFi ADB. HOME / FIELD / STREAM / HIPX / READ / DOORS. Push via PUSH_WIFI.bat.</p>
+      <span class="service-card-link" style="color:var(--sunset);">WiFi ADB push</span>
+    </div>
+
+    <div class="service-card card-pink">
+      <span class="service-card-icon">★</span>
+      <div class="service-card-top">
+        <div class="service-card-name">Supabase Layer</div>
+        <span class="service-badge badge-live">live</span>
+      </div>
+      <p class="service-card-desc">Auth (email + recovery), Edge Functions (vox-chat), user profiles, waitlist storage. Project: mdbzenhhljwmkdcmtawd.</p>
+      <a href="profile.html" class="service-card-link">Profile portal →</a>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- VOX PANEL -->
+<section class="section" style="padding-top:0" id="vox">
+  <div class="section-eyebrow">◊ vox</div>
+  <h2 class="section-title" style="font-size:clamp(20px,3vw,32px);">Ask VOX</h2>
+  <div class="section-sub" style="margin-bottom:32px;">output stage &nbsp;·&nbsp; routing signal</div>
+
+  <div class="vox-panel">
+    <div class="vox-panel-hdr">
+      <span class="vox-hdr-sigil">◊</span>
+      <span class="vox-hdr-name">VOX</span>
+      <span class="vox-hdr-sub">output stage &nbsp;·&nbsp; routing</span>
+    </div>
+    <div class="vox-thread" id="vox-thread">
+      <div class="vox-msg vox-side">
+        <span class="msg-sigil">◊ VOX</span>
+        this is the systems hub. if you need to reach joey, want a build, or have a question about any service -- tell me. i'll route it.
+      </div>
+    </div>
+    <div class="vox-typing" id="vox-typing">
+      <span class="vox-typing-sigil">◊</span>
+      <span class="vox-typing-label">routing signal...</span>
+    </div>
+    <div class="vox-input-row">
+      <input class="vox-input" id="vox-input" type="text" placeholder="type a message..." autocomplete="off">
+      <button class="vox-send" id="vox-send" onclick="voxSend()">send →</button>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- DISPATCH LOG -->
+<section class="section" style="padding-top:0" id="dispatch">
+  <div class="section-eyebrow">-- dispatch log</div>
+  <h2 class="section-title" style="font-size:clamp(20px,3vw,32px);">Field Log</h2>
+  <div class="section-sub" style="margin-bottom:32px;">recent dispatches &nbsp;·&nbsp; rci pulse</div>
+
+  <div class="dispatch-log">
+    <div class="log-hdr">
+      <div class="log-dot"></div>
+      <span class="log-title">HIPJOY pulse &nbsp;·&nbsp; live</span>
+    </div>
+    <div class="log-body" id="dispatch-log">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-sigil">HIPJOY Systems Hub &nbsp;·&nbsp; ◊ managed by VOX &nbsp;·&nbsp; 11 entities online</div>
+  <div class="footer-links">
+    <a href="index.html" class="footer-link">portfolio</a>
+    <a href="vox.html" class="footer-link">vox stage</a>
+    <a href="waitlist.html" class="footer-link">lux seeds</a>
+    <a href="profile.html" class="footer-link">profile</a>
+    <a href="https://github.com/joeybarbush" class="footer-link" target="_blank">github</a>
+  </div>
+</footer>
+
+<script>
+  /* ── Entity definitions ──────────────────────── */
+  const ENTITIES = [
+    { name:'HIPPO',      sigil:'◈', role:'Archive Intelligence',    habitat:'The Vault',      lux:94, color:'var(--cyan)' },
+    { name:'NEURO',      sigil:'∇', role:'Neural Net / GEN-LUMINARY',habitat:'The Lattice',   lux:91, color:'var(--sage)' },
+    { name:'REBEL',      sigil:'✕', role:'Friction & Truth',         habitat:'The Edge',       lux:82, color:'var(--sunset)' },
+    { name:'LUMENARCH',  sigil:'◉', role:'Light Architect',          habitat:'The Canopy',     lux:97, color:'var(--gold)' },
+    { name:'WELLSPRING', sigil:'~', role:'Healer / Source & Root',   habitat:'The Basin',      lux:88, color:'var(--sage)' },
+    { name:'VOX',        sigil:'◊', role:'Voice Director',           habitat:'The Broadcast',  lux:99, color:'var(--sage)' },
+    { name:'SONARIS',    sigil:'≋', role:'Device Pulse Monitor',     habitat:'The Array',      lux:85, color:'var(--cyan)' },
+    { name:'NAVIX',      sigil:'→', role:'Navigation Router',        habitat:'The Compass',    lux:90, color:'var(--violet)' },
+    { name:'SPIRALETH',  sigil:'∞', role:'Dream Spiral',             habitat:'The Spiral',     lux:78, color:'var(--pink)' },
+    { name:'GUARDIAN',   sigil:'--',role:'Shield Protocol',          habitat:'The Wall',       lux:100,color:'var(--sunset)' },
+    { name:'CONAVIGATOR',sigil:'★', role:'Field Synthesizer',        habitat:'The Threshold',  lux:96, color:'var(--gold)' },
+  ];
+
+  function buildEntities() {
+    const grid = document.getElementById('entity-grid');
+    ENTITIES.forEach(e => {
+      const card = document.createElement('div');
+      card.className = 'entity-card';
+      card.innerHTML = `
+        <div class="entity-card-top">
+          <span class="entity-sigil" style="color:${e.color}">${e.sigil}</span>
+          <div>
+            <div class="entity-name" style="color:${e.color}">${e.name}</div>
+            <div class="entity-role">${e.role}</div>
+          </div>
+        </div>
+        <div class="entity-lux-track">
+          <div class="entity-lux-fill" data-lux="${e.lux}" style="width:0%"></div>
+        </div>
+        <div class="entity-status-row">
+          <span class="entity-status-txt status-online">online</span>
+          <span class="entity-habitat">${e.habitat}</span>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+    setTimeout(() => {
+      document.querySelectorAll('.entity-lux-fill').forEach(el => {
+        el.style.width = el.dataset.lux + '%';
+      });
+    }, 200);
+  }
+
+  /* ── NEURO LUX diagnostic ────────────────────── */
+  const EQ_DEFS = [
+    { key:'lux',  label:'Gradient SNR',       name:'LUX',  unit:'SNR',   range:[0,1],    desc:'signal-to-noise ratio across gradients' },
+    { key:'tilt', label:'Gradient Imbalance',  name:'TILT', unit:'DELTA', range:[0,0.2],  desc:'layer-wise gradient magnitude variance', invert:true },
+    { key:'phi',  label:'Convergence Rate',    name:'PHI',  unit:'RATE',  range:[0,1],    desc:'loss improvement per training step' },
+    { key:'fire', label:'Learning Rate',       name:'FIRE', unit:'LR',    range:[0,0.01], desc:'current optimizer step size (cosine)' },
+    { key:'grit', label:'Persistence Score',   name:'GRIT', unit:'SCORE', range:[0,1],    desc:'sustained training signal strength' },
+  ];
+
+  function buildNeuroPlaceholders() {
+    const grid = document.getElementById('neuro-grid');
+    EQ_DEFS.forEach(eq => {
+      const card = document.createElement('div');
+      card.className = 'lux-eq-card';
+      card.id = 'eq-' + eq.key;
+      card.innerHTML = `
+        <div class="eq-label">${eq.label}</div>
+        <div class="eq-name eq-offline">${eq.name}</div>
+        <div class="eq-value eq-offline" id="eq-val-${eq.key}">--</div>
+        <div class="eq-track"><div class="eq-fill eq-fill-offline" id="eq-fill-${eq.key}"></div></div>
+        <div class="eq-status eq-offline" id="eq-status-${eq.key}">awaiting signal</div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function neuroStatusClass(key, status) {
+    if (!status) return 'eq-healthy';
+    const s = ('' + status).toUpperCase();
+    if (['OK','TRAINING','NEAR_CONVERGED','CONVERGED','WARMUP','COSINE'].includes(s)) return 'eq-healthy';
+    if (['WARN','UNSTABLE'].includes(s)) return 'eq-degraded';
+    if (['DEAD','CRITICAL'].includes(s)) return 'eq-critical';
+    return 'eq-healthy';
+  }
+
+  function applyEqData(key, value, statusLabel) {
+    const valEl   = document.getElementById('eq-val-' + key);
+    const fillEl  = document.getElementById('eq-fill-' + key);
+    const statEl  = document.getElementById('eq-status-' + key);
+    const nameEl  = document.querySelector('#eq-' + key + ' .eq-name');
+    if (!valEl) return;
+
+    const cls     = neuroStatusClass(key, statusLabel);
+    const fillCls = cls.replace('eq-', 'eq-fill-');
+
+    [valEl, nameEl, statEl].forEach(el => {
+      el.className = el.className.replace(/eq-(healthy|degraded|critical|offline)/g, '').trim() + ' ' + cls;
+    });
+    fillEl.className = 'eq-fill ' + fillCls;
+
+    const def = EQ_DEFS.find(d => d.key === key);
+    let pct;
+    if (def) {
+      const [lo, hi] = def.range;
+      pct = Math.min(100, Math.max(0, ((value - lo) / (hi - lo)) * 100));
+      if (def.invert) pct = 100 - pct;
+    } else {
+      pct = Math.min(100, value * 100);
+    }
+    setTimeout(() => { fillEl.style.width = pct + '%'; }, 100);
+
+    const display = typeof value === 'number' && value < 0.01 ? value.toExponential(2) : (typeof value === 'number' ? value.toFixed(4) : value);
+    valEl.textContent = display;
+    statEl.textContent = ('' + statusLabel).toLowerCase();
+  }
+
+  const NEURO_ENDPOINT = 'http://localhost:8000/diagnostic';
+
+  function loadNeuro() {
+    fetch(NEURO_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mean_grad:0.05, std_grad:0.02,
+        layer_norms:[0.1,0.3,0.2],
+        loss_history:[2.3,2.1],
+        step:1200, warmup_steps:500,
+        lr_max:0.001, t_max:5000,
+      }),
+      signal: AbortSignal.timeout(3000),
+    })
+      .then(r => r.json())
+      .then(data => {
+        const eqs = data.equations || {};
+        ['lux','tilt','phi'].forEach(k => {
+          if (eqs[k]) applyEqData(k, eqs[k].value, eqs[k].status);
+        });
+        if (eqs.fire) applyEqData('fire', eqs.fire.value, eqs.fire.phase || 'cosine');
+        // GRIT not in /diagnostic -- stays -- until detail view
+      })
+      .catch(() => {
+        const mock = {
+          lux: { value:0.874, status:'OK' },
+          tilt:{ value:0.031, status:'OK' },
+          phi: { value:0.0087,status:'NEAR_CONVERGED' },
+          fire:{ value:0.0003,status:'cosine' },
+        };
+        Object.entries(mock).forEach(([k,v]) => applyEqData(k, v.value, v.status));
+        const statEl = document.querySelector('#eq-lux .eq-status');
+        if (statEl) statEl.textContent = 'ok (demo)';
+      });
+  }
+
+  /* ── Dispatch log ────────────────────────────── */
+  const LOG_ENTRIES = [
+    { t:'08:14', entity:'CONAVIGATOR', cls:'le-conavigator', msg:'field synthesis complete -- all 11 entities confirmed online' },
+    { t:'08:15', entity:'VOX',         cls:'le-vox',         msg:'receptionist active at vox.html#receptionist -- signal routing open' },
+    { t:'08:16', entity:'NEURO',       cls:'le-neuro',       msg:'LUX diagnostic ready at :8000/diagnostic -- all 5 equations nominal' },
+    { t:'08:17', entity:'HIPPO',       cls:'le-hippo',       msg:'archive indexed -- 6971 lines across 5 hub pages' },
+    { t:'08:18', entity:'REBEL',       cls:'le-rebel',       msg:'HIPX Vision deployed -- ctrl+shift+V active, CODEBREAKER confirms' },
+    { t:'08:19', entity:'LUMENARCH',   cls:'le-lumen',       msg:'LUX-0.874 reading clean -- no degradation detected' },
+    { t:'08:20', entity:'GUARDIAN',    cls:'le-guardian',    msg:'WATCHTOWER active -- 3 threats flagged (hardcoded passwords)' },
+    { t:'08:21', entity:'NAVIX',       cls:'le-navix',       msg:'systems hub routed and live at /systems.html -- field open' },
+  ];
+
+  function buildDispatchLog() {
+    const log = document.getElementById('dispatch-log');
+    LOG_ENTRIES.forEach((entry, i) => {
+      const line = document.createElement('div');
+      line.className = 'log-line';
+      line.style.cssText = 'opacity:0;transform:translateX(-6px);transition:opacity .28s ' + (i * 0.07) + 's,transform .28s ' + (i * 0.07) + 's';
+      line.innerHTML = `<span class="log-time">${entry.t}</span><span class="log-entity ${entry.cls}">${entry.entity}</span><span class="log-msg">${entry.msg}</span>`;
+      log.appendChild(line);
+    });
+    setTimeout(() => {
+      log.querySelectorAll('.log-line').forEach(el => {
+        el.style.opacity = '1'; el.style.transform = 'translateX(0)';
+      });
+    }, 400);
+  }
+
+  /* ── VOX chat ────────────────────────────────── */
+  const VOX_ENDPOINT = 'https://mdbzenhhljwmkdcmtawd.supabase.co/functions/v1/vox-chat';
+  const thread = document.getElementById('vox-thread');
+  const typing = document.getElementById('vox-typing');
+
+  function rAddMsg(text, side) {
+    const div = document.createElement('div');
+    div.className = 'vox-msg ' + (side === 'vox' ? 'vox-side' : 'you-side');
+    if (side === 'vox') div.innerHTML = '<span class="msg-sigil">◊ VOX</span>' + text;
+    else div.textContent = text;
+    thread.appendChild(div);
+    thread.scrollTop = thread.scrollHeight;
+  }
+
+  async function voxSend() {
+    const input = document.getElementById('vox-input');
+    const msg = input.value.trim();
+    if (!msg) return;
+    input.value = '';
+    document.getElementById('vox-send').disabled = true;
+    rAddMsg(msg, 'you');
+    typing.classList.add('show');
+    thread.scrollTop = thread.scrollHeight;
+    try {
+      const res = await fetch(VOX_ENDPOINT, {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ message: msg }),
+      });
+      const data = await res.json();
+      typing.classList.remove('show');
+      rAddMsg(data.reply || data.content || 'signal received.', 'vox');
+    } catch {
+      typing.classList.remove('show');
+      rAddMsg('signal interrupted. try again.', 'vox');
+    }
+    document.getElementById('vox-send').disabled = false;
+    document.getElementById('vox-input').focus();
+  }
+
+  document.getElementById('vox-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); voxSend(); }
+  });
+
+  /* ── Init ────────────────────────────────────── */
+  buildEntities();
+  buildNeuroPlaceholders();
+  loadNeuro();
+  buildDispatchLog();
+</script>
+</body>
+</html>
