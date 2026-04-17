@@ -164,6 +164,21 @@
     .tut-mobile  { display:none; }
     @media (pointer:coarse) { .tut-desktop { display:none; } .tut-mobile { display:block; } }
 
+    /* First-visit explainer overlay */
+    #explainer { display:none; opacity:0; position:fixed; inset:0; z-index:210; background:rgba(13,15,12,.97); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); overflow-y:auto; -webkit-overflow-scrolling:touch; transition:opacity .7s ease; font-family:'JetBrains Mono',monospace; }
+    .xpl-inner { max-width:560px; margin:0 auto; padding:clamp(28px,6vw,64px) clamp(18px,5vw,40px) clamp(40px,8vw,80px); min-height:100vh; display:flex; flex-direction:column; justify-content:center; gap:28px; }
+    .xpl-eyebrow { font-family:'Orbitron',sans-serif; font-size:9px; letter-spacing:.28em; color:rgba(168,201,155,.45); text-transform:uppercase; margin-bottom:6px; }
+    .xpl-h1 { font-family:'Orbitron',sans-serif; font-size:clamp(20px,4vw,30px); font-weight:900; color:#A8C99B; letter-spacing:.1em; line-height:1.2; text-shadow:0 0 40px rgba(168,201,155,.25); }
+    .xpl-lead { font-size:13px; line-height:1.8; color:rgba(240,237,229,.7); margin-top:8px; }
+    .xpl-section { display:flex; flex-direction:column; gap:8px; }
+    .xpl-section-lbl { font-family:'Orbitron',sans-serif; font-size:8px; letter-spacing:.26em; color:rgba(168,201,155,.5); text-transform:uppercase; border-bottom:1px solid rgba(168,201,155,.1); padding-bottom:6px; }
+    .xpl-body { font-size:12px; line-height:1.85; color:rgba(240,237,229,.62); }
+    .xpl-body ul { padding-left:0; list-style:none; display:flex; flex-direction:column; gap:5px; }
+    .xpl-body li::before { content:'-- '; opacity:.4; }
+    .xpl-body a { color:#A8C99B; text-decoration:none; border-bottom:1px solid rgba(168,201,155,.3); }
+    .xpl-enter { align-self:flex-start; margin-top:6px; padding:12px 36px; cursor:pointer; font-family:'Orbitron',sans-serif; font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:#A8C99B; background:rgba(168,201,155,.07); border:1px solid rgba(168,201,155,.4); border-radius:2px; transition:all .3s; }
+    .xpl-enter:hover { background:rgba(168,201,155,.14); border-color:#A8C99B; box-shadow:0 0 24px rgba(168,201,155,.18); }
+
     /* Intro */
     #intro { position:fixed; inset:0; background:#0d0f0e; z-index:200; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; }
     #intro.fade { opacity:0; pointer-events:none; transition:opacity .9s; }
@@ -183,8 +198,37 @@
     <a href="garden.html" style="color:rgba(168,201,155,.5);font-size:.68rem;text-decoration:none;letter-spacing:.06em;font-family:'JetBrains Mono',monospace;transition:color .2s" onmouseover="this.style.color='#A8C99B'" onmouseout="this.style.color='rgba(168,201,155,.5)'">Garden</a>
     <a href="profile.html" style="color:rgba(168,201,155,.5);font-size:.68rem;text-decoration:none;letter-spacing:.06em;font-family:'JetBrains Mono',monospace;transition:color .2s" onmouseover="this.style.color='#A8C99B'" onmouseout="this.style.color='rgba(168,201,155,.5)'">My Seed</a>
     <a href="index.html" style="color:rgba(168,201,155,.35);font-size:.65rem;text-decoration:none;letter-spacing:.06em;font-family:'JetBrains Mono',monospace">← Home</a>
+    <a href="#" id="reread-intro" style="color:rgba(168,201,155,.25);font-size:.62rem;text-decoration:none;letter-spacing:.06em;font-family:'JetBrains Mono',monospace;transition:color .2s">? intro</a>
   </div>
 </nav>
+
+<!-- First-visit explainer -->
+<div id="explainer">
+  <div class="xpl-inner">
+    <div>
+      <div class="xpl-eyebrow">&#9672; HIPJOY / THE FIELD</div>
+      <div class="xpl-h1">You're standing in the field.</div>
+      <div class="xpl-lead">This is HIPJOY. Not a chatbot. Not a wrapper. A cognitive operating system made spatial.</div>
+    </div>
+    <div class="xpl-section">
+      <div class="xpl-section-lbl">What is this?</div>
+      <div class="xpl-body">HIPJOY is a Ritualized Continuity Intelligence -- 14 entities, 3 gateways, 22 weighted equations measuring coherence. Each entity is a role: memory, voice, routing, friction, structure. The field is the active state they create together. This page is the public face -- you're walking through the architecture.</div>
+    </div>
+    <div class="xpl-section">
+      <div class="xpl-section-lbl">How it works here</div>
+      <div class="xpl-body"><ul>
+        <li>WASD / arrow keys to move (joystick on mobile)</li>
+        <li>Walk into glowing zones to meet each entity</li>
+        <li>Everything is read-only -- you're visiting, not editing</li>
+      </ul></div>
+    </div>
+    <div class="xpl-section">
+      <div class="xpl-section-lbl">Who built this</div>
+      <div class="xpl-body">Built by <a href="https://joeybarbush.github.io">Joey Barbush</a>, CS student + independent researcher. See the README or joeybarbush.github.io for the full story.</div>
+    </div>
+    <button class="xpl-enter" id="explainer-enter">Enter the Field &rarr;</button>
+  </div>
+</div>
 
 <!-- Intro splash -->
 <div id="intro">
@@ -1024,6 +1068,38 @@ document.getElementById('enter-btn').addEventListener('click',()=>{
 init();
 lastT=performance.now();
 requestAnimationFrame(loop);
+</script>
+
+<script>
+(function() {
+  const LS_KEY = 'hipjoy_field_intro_seen';
+  const explainer = document.getElementById('explainer');
+  const intro = document.getElementById('intro');
+
+  const dismissExplainer = () => {
+    localStorage.setItem(LS_KEY, '1');
+    explainer.style.opacity = '0';
+    setTimeout(() => { explainer.style.display = 'none'; }, 750);
+    if (!started) started = true;
+  };
+  document.getElementById('explainer-enter').addEventListener('click', dismissExplainer);
+
+  if (!localStorage.getItem(LS_KEY)) {
+    intro.style.display = 'none';
+    explainer.style.display = 'flex';
+    // double-rAF ensures display:flex is painted before opacity transitions
+    requestAnimationFrame(() => requestAnimationFrame(() => { explainer.style.opacity = '1'; }));
+  }
+
+  const reread = document.getElementById('reread-intro');
+  reread.addEventListener('click', e => {
+    e.preventDefault();
+    explainer.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => { explainer.style.opacity = '1'; }));
+  });
+  reread.addEventListener('mouseover', () => { reread.style.color = 'rgba(168,201,155,.55)'; });
+  reread.addEventListener('mouseout',  () => { reread.style.color = 'rgba(168,201,155,.25)'; });
+})();
 </script>
 </body>
 </html>
