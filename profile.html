@@ -84,6 +84,12 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
 .signin-err{color:#F4845F;font-size:.75rem;text-align:center;display:none}
 .signin-plant{font-size:.75rem;color:var(--muted);text-align:center}
 .signin-plant a{color:var(--sage);text-decoration:none}
+
+/* RESET PASSWORD PANEL */
+#reset-panel{display:none;flex-direction:column;align-items:center;gap:2rem;padding:3rem 2rem}
+.reset-title{font-family:Orbitron;font-size:1.5rem;color:var(--sage);text-align:center;letter-spacing:.08em}
+.reset-subtitle{color:var(--muted);font-size:.8rem;text-align:center;letter-spacing:.05em;line-height:1.7;max-width:380px}
+.reset-success{color:#A8C99B;font-size:.8rem;text-align:center;display:none;margin-top:.5rem}
 .signin-plant a:hover{text-decoration:underline}
 
 /* PROFILE PANEL */
@@ -550,6 +556,25 @@ main{min-height:100vh;padding:6rem 1.5rem 4rem;position:relative;z-index:1;max-w
       <button class="signin-btn" id="si-btn" onclick="doSignIn()">ENTER THE FIELD</button>
     </div>
     <div class="signin-plant">Don't have an account? <a href="waitlist.html">Plant your seed first →</a></div>
+  </div>
+
+  <!-- RESET PASSWORD PANEL -->
+  <div id="reset-panel">
+    <div class="reset-title">◊ Set New Password</div>
+    <div class="reset-subtitle">You followed a recovery link. Enter your new password below.</div>
+    <div class="signin-box">
+      <div>
+        <div class="field-label">NEW PASSWORD</div>
+        <input class="field-input" id="rp-pw" type="password" placeholder="min 8 characters" autocomplete="new-password">
+      </div>
+      <div>
+        <div class="field-label">CONFIRM PASSWORD</div>
+        <input class="field-input" id="rp-pw2" type="password" placeholder="repeat password" autocomplete="new-password">
+      </div>
+      <div class="signin-err" id="rp-err"></div>
+      <div class="reset-success" id="rp-ok">Password updated. Signing you in...</div>
+      <button class="signin-btn" id="rp-btn" onclick="doResetPassword()">UPDATE PASSWORD</button>
+    </div>
   </div>
 
   <!-- PROFILE PANEL -->
@@ -1925,6 +1950,42 @@ async function publicSendNote() {
     // Reload notes
     loadPublicRoom(_publicSeedRow.display_name);
   }
+}
+
+// ── PASSWORD RECOVERY ─────────────────────────────────────────────────────────
+sb.auth.onAuthStateChange((event, session) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    document.getElementById('signin-panel').style.display  = 'none';
+    document.getElementById('profile-panel').style.display = 'none';
+    document.getElementById('reset-panel').style.display   = 'flex';
+  }
+});
+
+async function doResetPassword() {
+  const pw    = document.getElementById('rp-pw').value;
+  const pw2   = document.getElementById('rp-pw2').value;
+  const errEl = document.getElementById('rp-err');
+  const okEl  = document.getElementById('rp-ok');
+  const btn   = document.getElementById('rp-btn');
+  errEl.style.display = 'none';
+  okEl.style.display  = 'none';
+  if (!pw || pw.length < 8)  { errEl.textContent = 'Password must be at least 8 characters.'; errEl.style.display = 'block'; return; }
+  if (pw !== pw2)             { errEl.textContent = 'Passwords do not match.'; errEl.style.display = 'block'; return; }
+  btn.textContent = 'UPDATING...'; btn.disabled = true;
+  const { error } = await sb.auth.updateUser({ password: pw });
+  if (error) {
+    errEl.textContent = error.message || 'Update failed.';
+    errEl.style.display = 'block';
+    btn.textContent = 'UPDATE PASSWORD'; btn.disabled = false;
+    return;
+  }
+  okEl.style.display = 'block';
+  setTimeout(async () => {
+    const { data: { session } } = await sb.auth.getSession();
+    document.getElementById('reset-panel').style.display = 'none';
+    if (session?.user) loadProfile(session.user);
+    else document.getElementById('signin-panel').style.display = 'flex';
+  }, 1500);
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
