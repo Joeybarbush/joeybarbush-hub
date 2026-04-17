@@ -674,6 +674,8 @@ nav{
     <div class="pb-stat-mini"><b id="pb-water">--</b><span>waters</span></div>
     <div class="pb-stat-mini"><b id="pb-ents">11</b><span>entities</span></div>
   </div>
+  <div class="pb-entity-badge" id="pb-dominant-ent">dominant: --</div>
+  <div class="pb-footer">∇ NEURO LAB LIVE SCAN</div>
 </div>
 
 <script>
@@ -1876,7 +1878,8 @@ function buildPublicBoard(){
 
   document.getElementById('pb-total').textContent=seeds.length;
   document.getElementById('pb-water').textContent=totalWater;
-  document.getElementById('pb-dominant-ent').textContent=`dominant: ${SIGIL_MAP[domEnt?.[0]]||'★'} ${domEnt?.[0]||'--'}`;
+  const domEl=document.getElementById('pb-dominant-ent');
+  if(domEl) domEl.textContent=`dominant: ${SIGIL_MAP[domEnt?.[0]]||'★'} ${domEnt?.[0]||'--'}`;
 
   // Auto-refresh every 45s
   setTimeout(buildPublicBoard, 45000);
