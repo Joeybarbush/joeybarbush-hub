@@ -1,3 +1,7 @@
 # Private / founder-only tools -- never deploy publicly
 .private/
 monitor.html
+
+# Claude Code workspace (local only)
+.claude/
+
