@@ -7,7 +7,7 @@
   <meta name="description" content="Cognitive architecture for humans. 14 AI entities. 1 routing engine. Persistent identity. Join the HIPJOY LUX Seeds beta.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -51,14 +51,7 @@
       pointer-events: none; z-index: 1000;
     }
 
-    /* LUX sweep bar */
-    .lux-bar {
-      position: fixed; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent 0%, var(--sage) 30%, var(--sunset) 70%, transparent 100%);
-      background-size: 200% 100%;
-      animation: lux-sweep 6s ease-in-out infinite; z-index: 999;
-    }
-    @keyframes lux-sweep { 0%,100%{background-position:200% 0;opacity:.3} 50%{background-position:0% 0;opacity:1} }
+    /* .lux-bar superseded by .lux-sweep in farm shell */
 
     /* ── Orb Layer ─────────────────────────────────── */
     .orb-layer { position: fixed; inset: 0; pointer-events: none; z-index: 0; will-change: transform; }
@@ -440,11 +433,25 @@
     @media(max-width:400px){
       .seeds-grid{grid-template-columns:1fr;}
     }
+
+/* ══════════ FARM VISUAL SHELL ══════════ */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.96  0 0 0 0 0.92  0 0 0 0 0.84  0 0 0 0.030 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");opacity:0.45;mix-blend-mode:overlay}
+.lux-sweep{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,#A8C99B 30%,#F4845F 70%,transparent 100%);background-size:200% 100%;animation:lux-sw-a 6s ease-in-out infinite;z-index:999}
+@keyframes lux-sw-a{0%,100%{background-position:200% 0;opacity:.3}50%{background-position:0% 0;opacity:1}}
+.page-tint{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 1200px 900px at 50% 30%,rgba(155,79,220,.08) 0%,transparent 70%);opacity:.25;mix-blend-mode:screen}
+.field-spine{position:fixed;top:0;bottom:0;left:28px;width:1px;background:linear-gradient(to bottom,transparent 0%,rgba(168,201,155,.08) 8%,rgba(168,201,155,.14) 50%,rgba(168,201,155,.08) 92%,transparent 100%);z-index:2;pointer-events:none}
+.field-spine::before{content:'';position:absolute;left:-1.5px;width:4px;height:80px;border-radius:4px;background:linear-gradient(to bottom,transparent,rgba(168,201,155,.55),#F4845F,transparent);filter:blur(1px);opacity:.55;animation:sp-ta 14s ease-in-out infinite}
+@keyframes sp-ta{0%,100%{top:0%;opacity:0}8%{opacity:.55}50%{top:50%;opacity:.75}92%{opacity:.55}}
+.field-spine::after{content:'';position:absolute;left:0;top:0;bottom:0;width:7px;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 119px,rgba(168,201,155,.22) 119px,rgba(168,201,155,.22) 120px);opacity:.7}
+@media(max-width:900px){.field-spine{display:none}}
+@media(prefers-reduced-motion:reduce){.field-spine::before,.lux-sweep{animation:none!important}}
   </style>
 </head>
 <body>
+<div class="lux-sweep" aria-hidden="true"></div>
+<div class="page-tint" aria-hidden="true"></div>
+<div class="field-spine" aria-hidden="true"></div>
 
-<div class="lux-bar"></div>
 <canvas id="confetti-canvas"></canvas>
 
 <!-- Floating orbs -->

@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>HIPJOY — The Field</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #0d0f0e; font-family: 'JetBrains Mono', monospace; color: #F0EDE5; user-select: none; -webkit-user-select: none; }
@@ -187,9 +189,22 @@
     .i-enter { margin-top:28px; padding:13px 40px; border:1px solid rgba(168,201,155,.45); background:rgba(168,201,155,.07); color:#A8C99B; font-family:'Orbitron',sans-serif; font-size:10px; letter-spacing:.22em; text-transform:uppercase; cursor:pointer; border-radius:2px; transition:all .3s; }
     .i-enter:hover { background:rgba(168,201,155,.14); border-color:#A8C99B; box-shadow:0 0 28px rgba(168,201,155,.18); }
     .i-note { font-size:9px; letter-spacing:.15em; color:rgba(200,220,210,.2); text-transform:uppercase; margin-top:8px; }
+
+/* ══════════ FARM VISUAL SHELL ══════════ */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.96  0 0 0 0 0.92  0 0 0 0 0.84  0 0 0 0.030 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");opacity:0.45;mix-blend-mode:overlay}
+.lux-sweep{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,#A8C99B 30%,#F4845F 70%,transparent 100%);background-size:200% 100%;animation:lux-sw-a 6s ease-in-out infinite;z-index:999}
+@keyframes lux-sw-a{0%,100%{background-position:200% 0;opacity:.3}50%{background-position:0% 0;opacity:1}}
+.field-spine{position:fixed;top:0;bottom:0;left:28px;width:1px;background:linear-gradient(to bottom,transparent 0%,rgba(168,201,155,.08) 8%,rgba(168,201,155,.14) 50%,rgba(168,201,155,.08) 92%,transparent 100%);z-index:15;pointer-events:none}
+.field-spine::before{content:'';position:absolute;left:-1.5px;width:4px;height:80px;border-radius:4px;background:linear-gradient(to bottom,transparent,rgba(168,201,155,.55),#F4845F,transparent);filter:blur(1px);opacity:.55;animation:sp-ta 14s ease-in-out infinite}
+@keyframes sp-ta{0%,100%{top:0%;opacity:0}8%{opacity:.55}50%{top:50%;opacity:.75}92%{opacity:.55}}
+.field-spine::after{content:'';position:absolute;left:0;top:0;bottom:0;width:7px;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 119px,rgba(168,201,155,.22) 119px,rgba(168,201,155,.22) 120px);opacity:.7}
+@media(max-width:900px){.field-spine{display:none}}
+@media(prefers-reduced-motion:reduce){.field-spine::before,.lux-sweep{animation:none!important}}
   </style>
 </head>
 <body>
+<div class="lux-sweep" aria-hidden="true"></div>
+<div class="field-spine" aria-hidden="true"></div>
 
 <!-- Floating nav -->
 <nav style="position:fixed;top:0;left:0;right:0;z-index:190;display:flex;align-items:center;justify-content:space-between;padding:.55rem 1.2rem;background:rgba(13,15,14,.75);backdrop-filter:blur(10px);border-bottom:1px solid rgba(168,201,155,.08)">

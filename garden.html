@@ -663,9 +663,22 @@ nav{
   transition:background .2s;white-space:nowrap;
 }
 .pct-btn:hover{background:rgba(244,132,95,.2)}
+
+/* ══════════ FARM VISUAL SHELL ══════════ */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.96  0 0 0 0 0.92  0 0 0 0 0.84  0 0 0 0.030 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");opacity:0.45;mix-blend-mode:overlay}
+.lux-sweep{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,#A8C99B 30%,#F4845F 70%,transparent 100%);background-size:200% 100%;animation:lux-sw-a 6s ease-in-out infinite;z-index:999}
+@keyframes lux-sw-a{0%,100%{background-position:200% 0;opacity:.3}50%{background-position:0% 0;opacity:1}}
+.field-spine{position:fixed;top:0;bottom:0;left:28px;width:1px;background:linear-gradient(to bottom,transparent 0%,rgba(168,201,155,.08) 8%,rgba(168,201,155,.14) 50%,rgba(168,201,155,.08) 92%,transparent 100%);z-index:15;pointer-events:none}
+.field-spine::before{content:'';position:absolute;left:-1.5px;width:4px;height:80px;border-radius:4px;background:linear-gradient(to bottom,transparent,rgba(168,201,155,.55),#F4845F,transparent);filter:blur(1px);opacity:.55;animation:sp-ta 14s ease-in-out infinite}
+@keyframes sp-ta{0%,100%{top:0%;opacity:0}8%{opacity:.55}50%{top:50%;opacity:.75}92%{opacity:.55}}
+.field-spine::after{content:'';position:absolute;left:0;top:0;bottom:0;width:7px;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 119px,rgba(168,201,155,.22) 119px,rgba(168,201,155,.22) 120px);opacity:.7}
+@media(max-width:900px){.field-spine{display:none}}
+@media(prefers-reduced-motion:reduce){.field-spine::before,.lux-sweep{animation:none!important}}
 </style>
 </head>
 <body>
+<div class="lux-sweep" aria-hidden="true"></div>
+<div class="field-spine" aria-hidden="true"></div>
 
 <!-- farm atmosphere layer -->
 <div class="lux-sweep"></div>
