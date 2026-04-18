@@ -2627,5 +2627,249 @@
   })();
 </script>
 
+<script>
+/* ═══════════════════════════════════════════════════════
+   HIPX TELEMETRY v1 -- reader attention signal
+   collects: section dwell, scroll velocity, pauses, returns
+   pipes to: Supabase hipx_telemetry (anon inserts)
+   respects: Do-Not-Track (DNT=1 opts out entirely)
+   no PII: visitor_id is random uuid in localStorage, ua is hashed,
+           referrer reduced to domain only
+   this is the data the NEURO equation will drink from
+   ═══════════════════════════════════════════════════════ */
+(function(){
+  // opt-out for DNT users
+  if (navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.msDoNotTrack === '1') {
+    console.log('[HIPX] Telemetry opted out via DNT');
+    return;
+  }
+
+  const SUPA_URL = 'https://mdbzenhhljwmkdcmtawd.supabase.co';
+  const SUPA_KEY = 'sb_publishable_y_A-R_iHZ-bRq6VRcZx52w_tw8NNhYj';
+  const ENDPOINT = SUPA_URL + '/rest/v1/hipx_telemetry';
+  const PAGE_ID  = 'farm_v1';
+
+  // ── visitor identity (persistent) + session identity (per visit) ──
+  function uuid() {
+    // short uuid v4-ish (no crypto dep)
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = Math.random()*16|0;
+      return (c === 'x' ? r : (r&0x3|0x8)).toString(16);
+    });
+  }
+  let visitorId;
+  try {
+    visitorId = localStorage.getItem('hipx_visitor_id');
+    if (!visitorId) {
+      visitorId = uuid();
+      localStorage.setItem('hipx_visitor_id', visitorId);
+    }
+  } catch(e) { visitorId = uuid(); } // private mode fallback
+  const sessionId = uuid();
+  const sessionStart = Date.now();
+
+  // ── lightweight non-crypto hash for user-agent (just to group, not identify) ──
+  function hash32(s) {
+    let h = 2166136261;
+    for (let i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return (h >>> 0).toString(36);
+  }
+  const uaHash = hash32(navigator.userAgent || '');
+
+  // referrer domain only (no full URL, no query string)
+  let refDomain = null;
+  try {
+    if (document.referrer) refDomain = new URL(document.referrer).hostname;
+  } catch(e) {}
+
+  // ── queue + batch sender ──
+  const queue = [];
+  let flushTimer = null;
+
+  function flush(useBeacon = false) {
+    if (queue.length === 0) return;
+    const batch = queue.splice(0, queue.length);
+    const body = JSON.stringify(batch);
+    const headers = {
+      'Content-Type': 'application/json',
+      'apikey': SUPA_KEY,
+      'Authorization': 'Bearer ' + SUPA_KEY,
+      'Prefer': 'return=minimal'
+    };
+    if (useBeacon && navigator.sendBeacon) {
+      // sendBeacon doesn't let us set headers -- Supabase REST needs auth
+      // fall back to keepalive fetch instead
+      fetch(ENDPOINT, { method:'POST', headers, body, keepalive:true }).catch(()=>{});
+    } else {
+      fetch(ENDPOINT, { method:'POST', headers, body }).catch(()=>{});
+    }
+  }
+  function scheduleFlush(delay = 2000) {
+    if (flushTimer) return;
+    flushTimer = setTimeout(() => {
+      flushTimer = null;
+      flush();
+    }, delay);
+  }
+
+  function emit(eventType, data = {}) {
+    queue.push({
+      visitor_id: visitorId,
+      session_id: sessionId,
+      page: PAGE_ID,
+      event_type: eventType,
+      host_entity: data.host || null,
+      section_page: data.page != null ? parseInt(data.page, 10) : null,
+      dwell_ms: data.dwell != null ? Math.round(data.dwell) : null,
+      scroll_velocity: data.velocity != null ? data.velocity : null,
+      scroll_y: data.scrollY != null ? data.scrollY : Math.round(window.scrollY),
+      payload: data.extra || null,
+      ua_hash: uaHash,
+      referrer_domain: refDomain
+    });
+    scheduleFlush();
+  }
+
+  // ── page enter ──
+  emit('page_enter', {
+    extra: {
+      w: window.innerWidth,
+      h: window.innerHeight,
+      dpr: window.devicePixelRatio || 1,
+      lang: navigator.language || null
+    }
+  });
+
+  // ── section dwell tracking ──
+  // observe .weave sections; when one becomes "active" we start its timer,
+  // when it stops being active we flush a section_exit with dwell_ms
+  const sections = document.querySelectorAll('.weave');
+  const dwellTimers = new Map();  // section => enteredAt
+  let activeSection = null;
+
+  function enterSection(section) {
+    if (activeSection === section) return;
+    if (activeSection) exitSection(activeSection);
+    activeSection = section;
+    dwellTimers.set(section, Date.now());
+    emit('section_enter', {
+      host: section.dataset.host,
+      page: section.dataset.page
+    });
+  }
+  function exitSection(section) {
+    const t = dwellTimers.get(section);
+    if (!t) return;
+    const dwell = Date.now() - t;
+    dwellTimers.delete(section);
+    emit('section_exit', {
+      host: section.dataset.host,
+      page: section.dataset.page,
+      dwell
+    });
+  }
+
+  // reuse the same rootMargin as hostObs so our "active" matches the sphere
+  const dwellObs = new IntersectionObserver((entries) => {
+    // pick the most-centered visible section
+    let best = null;
+    entries.forEach(e => {
+      if (e.isIntersecting && (!best || e.intersectionRatio > best.intersectionRatio)) {
+        best = e;
+      }
+    });
+    if (best) enterSection(best.target);
+  }, { threshold: [0.25, 0.5, 0.75], rootMargin: '-30% 0px -30% 0px' });
+
+  sections.forEach(s => dwellObs.observe(s));
+
+  // ── scroll velocity + pause detection ──
+  let lastScrollY = window.scrollY;
+  let lastScrollT = Date.now();
+  let scrollSamples = []; // {v, t}
+  let pauseTimer = null;
+  let isScrolling = false;
+
+  function onScroll() {
+    const now = Date.now();
+    const dy = window.scrollY - lastScrollY;
+    const dt = now - lastScrollT || 1;
+    const v = Math.abs(dy) * 1000 / dt; // px per second
+    scrollSamples.push({ v, t: now });
+    // keep last 10s only
+    scrollSamples = scrollSamples.filter(s => now - s.t < 10000);
+    lastScrollY = window.scrollY;
+    lastScrollT = now;
+
+    isScrolling = true;
+    if (pauseTimer) clearTimeout(pauseTimer);
+    pauseTimer = setTimeout(() => {
+      isScrolling = false;
+      // emit a pause event (user stopped scrolling -- likely reading)
+      const avgV = scrollSamples.length
+        ? scrollSamples.reduce((s,x)=>s+x.v,0) / scrollSamples.length
+        : 0;
+      emit('scroll_pause', {
+        host: activeSection ? activeSection.dataset.host : null,
+        page: activeSection ? activeSection.dataset.page : null,
+        velocity: Math.round(avgV)
+      });
+    }, 1600); // 1.6s pause = reading signal
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ── periodic scroll-burst snapshot ── every 8s if scrolling
+  setInterval(() => {
+    if (!isScrolling || scrollSamples.length === 0) return;
+    const avgV = scrollSamples.reduce((s,x)=>s+x.v,0) / scrollSamples.length;
+    emit('scroll_burst', {
+      host: activeSection ? activeSection.dataset.host : null,
+      page: activeSection ? activeSection.dataset.page : null,
+      velocity: Math.round(avgV)
+    });
+  }, 8000);
+
+  // ── CTA clicks (Join Beta, Read Craftbook) ──
+  document.querySelectorAll('.cta').forEach(el => {
+    el.addEventListener('click', (e) => {
+      emit('cta_click', {
+        host: activeSection ? activeSection.dataset.host : null,
+        page: activeSection ? activeSection.dataset.page : null,
+        extra: { label: el.textContent.trim().slice(0, 48), href: el.getAttribute('href') }
+      });
+    });
+  });
+
+  // ── page exit: flush final section + total session time ──
+  function onExit() {
+    if (activeSection) exitSection(activeSection);
+    emit('page_exit', {
+      extra: {
+        total_ms: Date.now() - sessionStart,
+        max_scroll_y: Math.round(document.documentElement.scrollHeight - window.innerHeight)
+      }
+    });
+    flush(true);
+  }
+  window.addEventListener('pagehide', onExit);
+  window.addEventListener('beforeunload', onExit);
+  // flush every 15s as a safety net
+  setInterval(() => flush(), 15000);
+
+  // expose for debugging in console: HIPX.flush(), HIPX.id, HIPX.session
+  window.HIPX = {
+    flush,
+    visitor: visitorId,
+    session: sessionId,
+    queueLength: () => queue.length
+  };
+
+  console.log('[HIPX] telemetry online · visitor', visitorId.slice(0,8), '· session', sessionId.slice(0,8));
+})();
+</script>
+
 </body>
 </html>
