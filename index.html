@@ -15,20 +15,19 @@
   --text:#F0EDE5;
 }
 html,body{
-  height:100%;
   background:var(--bg);
   color:var(--text);
   font-family:'JetBrains Mono',monospace;
-  overflow:hidden;
 }
-@media(max-width:640px){html,body{overflow:auto}body{min-height:100svh}}
+html{scroll-behavior:smooth}
+body{min-height:100svh}
 
 /* ── NAV ───────────────────────────────────────────────────────────────────── */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:300;
   display:flex;align-items:center;justify-content:space-between;
   height:50px;padding:0 clamp(1.2rem,4vw,3rem);
-  background:rgba(10,10,15,.78);backdrop-filter:blur(24px);
+  background:rgba(10,10,15,.82);backdrop-filter:blur(24px);
   border-bottom:1px solid rgba(168,201,155,.07);
 }
 .nav-brand{
@@ -36,12 +35,22 @@ nav{
   letter-spacing:.22em;color:var(--sage);text-decoration:none;
   text-shadow:0 0 22px rgba(168,201,155,.35);
 }
-.nav-right{display:flex;align-items:center;gap:1.6rem}
-.nav-link{font-size:.56rem;letter-spacing:.14em;text-decoration:none;transition:color .2s}
+.nav-right{display:flex;align-items:center;gap:clamp(.8rem,2.2vw,1.8rem)}
+.nav-link{font-size:.56rem;letter-spacing:.14em;text-decoration:none;transition:color .2s;white-space:nowrap}
 .nav-link.dim{color:rgba(240,237,229,.32)}
 .nav-link.dim:hover{color:rgba(240,237,229,.68)}
 .nav-link.sage{color:rgba(168,201,155,.42)}
 .nav-link.sage:hover{color:var(--sage)}
+.nav-link.purple{color:rgba(155,79,220,.5)}
+.nav-link.purple:hover{color:rgba(155,79,220,.85)}
+.nav-hub-btn{
+  padding:.32rem .8rem;
+  border:1px solid rgba(168,201,155,.22);border-radius:100px;
+  color:rgba(168,201,155,.55);background:rgba(168,201,155,.05);
+  font-size:.52rem;letter-spacing:.16em;text-decoration:none;
+  transition:all .2s;white-space:nowrap;
+}
+.nav-hub-btn:hover{color:var(--sage);background:rgba(168,201,155,.1);border-color:rgba(168,201,155,.4)}
 
 /* ── HERO ──────────────────────────────────────────────────────────────────── */
 #hero{
@@ -280,6 +289,75 @@ nav{
 }
 .sbar-sep{color:rgba(240,237,229,.1);font-size:.5rem;flex-shrink:0}
 
+/* ── SCROLL HINT ────────────────────────────────────────────────────────────── */
+.scroll-hint{
+  position:absolute;bottom:62px;left:50%;transform:translateX(-50%);
+  z-index:10;display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  color:rgba(168,201,155,.3);font-size:.5rem;letter-spacing:.22em;
+  text-transform:uppercase;cursor:pointer;transition:color .2s;
+  animation:hint-bob 2.4s ease-in-out infinite;
+}
+.scroll-hint:hover{color:rgba(168,201,155,.65)}
+.scroll-hint-arrow{font-size:.9rem;line-height:1}
+@keyframes hint-bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
+
+/* ── PORTAL SECTION ─────────────────────────────────────────────────────────── */
+#portal{
+  position:relative;z-index:2;
+  padding:clamp(48px,7vw,88px) clamp(1.2rem,4vw,3rem) 70px;
+  background:rgba(10,10,15,.98);
+  border-top:1px solid rgba(168,201,155,.07);
+}
+.portal-eyebrow{
+  font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(168,201,155,.35);margin-bottom:.55rem;
+}
+.portal-title{
+  font-family:'Orbitron',sans-serif;font-size:clamp(13px,2.2vw,18px);
+  font-weight:700;letter-spacing:.14em;color:rgba(168,201,155,.7);
+  margin-bottom:2.4rem;
+}
+.portal-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));
+  gap:.9rem;max-width:1200px;margin:0 auto;
+}
+.portal-card{
+  display:flex;flex-direction:column;gap:.35rem;
+  padding:.9rem 1.1rem;
+  background:rgba(255,255,255,.018);
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:10px;text-decoration:none;
+  transition:border-color .22s,transform .22s,box-shadow .22s;
+  position:relative;overflow:hidden;
+}
+.portal-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1.5px;
+  background:var(--pc-color,rgba(168,201,155,.5));opacity:.45;
+  transition:opacity .22s;
+}
+.portal-card:hover{
+  border-color:rgba(255,255,255,.12);
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(0,0,0,.3);
+}
+.portal-card:hover::before{opacity:1}
+.pc-sigil{font-size:1.1rem;line-height:1}
+.pc-name{
+  font-family:'Orbitron',sans-serif;font-size:.62rem;font-weight:700;
+  letter-spacing:.1em;color:var(--pc-color,rgba(168,201,155,.8));
+}
+.pc-desc{
+  font-size:.57rem;letter-spacing:.04em;
+  color:rgba(240,237,229,.28);line-height:1.55;
+}
+.pc-arrow{
+  font-size:.6rem;color:var(--pc-color,rgba(168,201,155,.4));
+  margin-top:auto;padding-top:.4rem;opacity:.55;
+  transition:opacity .2s,transform .2s;
+}
+.portal-card:hover .pc-arrow{opacity:1;transform:translateX(3px)}
+
 /* ── MOBILE ─────────────────────────────────────────────────────────────────── */
 @media(max-width:640px){
   #hero{height:auto;min-height:100svh;padding-bottom:56px}
@@ -289,10 +367,13 @@ nav{
   .sbar-item:last-child{display:none}
   .hero-content{padding:1.4rem 1.4rem;backdrop-filter:blur(4px)}
   .hero-title{font-size:clamp(44px,13vw,70px)}
+  .scroll-hint{display:none}
+}
+@media(max-width:480px){
+  .nav-right .nav-link:not(.nav-hub-btn):not(.nav-link.sage){display:none}
 }
 @media(max-width:380px){
   nav{padding:0 1rem}
-  .nav-link.sage{display:none}
 }
 </style>
 </head>
@@ -301,9 +382,13 @@ nav{
 <nav>
   <a href="#" class="nav-brand">HIPJOY</a>
   <div class="nav-right">
-    <a href="entities.html" class="nav-link purple" style="color:rgba(155,79,220,.5)">ENTITIES</a>
-    <a href="garden.html" class="nav-link sage">THE GARDEN →</a>
-    <a href="portfolio.html" class="nav-link dim">← PORTFOLIO</a>
+    <a href="entities.html" class="nav-link purple">ENTITIES</a>
+    <a href="vox.html" class="nav-link dim" style="color:rgba(244,132,95,.42)">VOX</a>
+    <a href="garden.html" class="nav-link sage">GARDEN</a>
+    <a href="farm.html" class="nav-link dim">FARM</a>
+    <a href="waitlist.html" class="nav-link dim">PLANT</a>
+    <a href="portfolio.html" class="nav-link dim">PORTFOLIO</a>
+    <a href="#portal" class="nav-hub-btn">ALL PAGES ↓</a>
   </div>
 </nav>
 
@@ -352,6 +437,11 @@ nav{
     </div>
   </div>
 
+  <a href="#portal" class="scroll-hint">
+    <span class="scroll-hint-arrow">↓</span>
+    All Pages
+  </a>
+
 </section>
 
 <div class="stats-bar">
@@ -373,6 +463,78 @@ nav{
     <span class="sbar-lbl">LUX — FIELD COHERENCE</span>
   </div>
 </div>
+
+<!-- ═══ PORTAL HUB ═══ -->
+<section id="portal">
+  <div class="portal-eyebrow">// every door</div>
+  <div class="portal-title">HIPJOY — Full System Map</div>
+  <div class="portal-grid">
+
+    <a href="entities.html" class="portal-card" style="--pc-color:rgba(155,79,220,.8)">
+      <span class="pc-sigil">⬡</span>
+      <div class="pc-name">ENTITIES</div>
+      <div class="pc-desc">Entity marketplace — all 14 active products</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="vox.html" class="portal-card" style="--pc-color:rgba(244,132,95,.8)">
+      <span class="pc-sigil">◊</span>
+      <div class="pc-name">VOX</div>
+      <div class="pc-desc">AI Receptionist — output stage signal routing</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="garden.html" class="portal-card" style="--pc-color:rgba(168,201,155,.8)">
+      <span class="pc-sigil">◈</span>
+      <div class="pc-name">THE GARDEN</div>
+      <div class="pc-desc">Spatial field — walk among real seeds &amp; entities</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="farm.html" class="portal-card" style="--pc-color:rgba(200,168,80,.8)">
+      <span class="pc-sigil">⬟</span>
+      <div class="pc-name">THE FARM</div>
+      <div class="pc-desc">Desktop landing — full system overview</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="field.html" class="portal-card" style="--pc-color:rgba(0,206,209,.8)">
+      <span class="pc-sigil">∇</span>
+      <div class="pc-name">THE FIELD</div>
+      <div class="pc-desc">Field interface — HIPXQL terminal &amp; live data</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="waitlist.html" class="portal-card" style="--pc-color:rgba(168,201,155,.75)">
+      <span class="pc-sigil">◉</span>
+      <div class="pc-name">PLANT A SEED</div>
+      <div class="pc-desc">Join the waitlist — plant your seed free</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="profile.html" class="portal-card" style="--pc-color:rgba(200,168,80,.7)">
+      <span class="pc-sigil">★</span>
+      <div class="pc-name">PROFILE</div>
+      <div class="pc-desc">Your seed profile — LUX score &amp; vectors</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="systems.html" class="portal-card" style="--pc-color:rgba(0,180,160,.75)">
+      <span class="pc-sigil">≋</span>
+      <div class="pc-name">SYSTEMS</div>
+      <div class="pc-desc">Architecture map — full RCI engine overview</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="portfolio.html" class="portal-card" style="--pc-color:rgba(240,237,229,.4)">
+      <span class="pc-sigil">⊗</span>
+      <div class="pc-name">PORTFOLIO</div>
+      <div class="pc-desc">Joey Barbush — founder &amp; systems architect</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+  </div>
+</section>
 
 <script>
 // Typewriter — first line matches target screenshot
