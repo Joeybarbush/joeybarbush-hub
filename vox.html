@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>VOX — AI Receptionist · $29/mo · HIPJOY</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -133,6 +134,35 @@ footer{border-top:1px solid rgba(0,255,102,.07);padding:clamp(48px,6vw,72px) cla
 .footer-brand{font-family:var(--display);font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.15)}
 .footer-quote{font-family:var(--serif);font-style:italic;font-size:clamp(15px,2.2vw,20px);color:rgba(0,255,102,.4)}
 .footer-meta{font-size:.6rem;color:rgba(255,255,255,.12);letter-spacing:.12em;margin-top:4px}
+
+/* MODAL */
+button.nav-cta,button.btn-primary{appearance:none;-webkit-appearance:none;font-family:inherit;text-decoration:none}
+.modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:#0f0f0f;border:1px solid rgba(255,107,53,.25);border-radius:6px;padding:clamp(28px,5vw,44px);width:100%;max-width:480px;position:relative;box-shadow:0 0 60px rgba(255,107,53,.12),0 0 120px rgba(0,0,0,.8)}
+.modal-close{position:absolute;top:16px;right:20px;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.3);font-size:20px;line-height:1;transition:color .2s;padding:4px}
+.modal-close:hover{color:rgba(255,107,53,.8)}
+.modal-eyebrow{font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,107,53,.5);margin-bottom:10px}
+.modal-title{font-family:var(--display);font-size:clamp(18px,3vw,26px);font-weight:900;letter-spacing:.1em;color:var(--text);margin-bottom:6px}
+.modal-sub{font-size:.72rem;color:var(--text-dim);margin-bottom:28px;line-height:1.6}
+.m-field{margin-bottom:16px}
+.m-field label{display:block;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:6px}
+.m-field input,.m-field textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:3px;padding:11px 14px;color:var(--text);font-family:var(--mono);font-size:.78rem;outline:none;transition:border-color .2s;resize:none}
+.m-field input:focus,.m-field textarea:focus{border-color:rgba(255,107,53,.45)}
+.m-field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.m-field-row{grid-template-columns:1fr}}
+.m-field-opt{font-style:italic;opacity:.5;margin-left:4px;font-size:7px;text-transform:none;letter-spacing:0}
+.modal-submit{width:100%;padding:14px;margin-top:8px;background:#ff6b35;border:none;border-radius:3px;cursor:pointer;font-family:var(--display);font-size:.65rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#0a0a0a;transition:all .2s}
+.modal-submit:hover{background:#ff8050;box-shadow:0 8px 30px rgba(255,107,53,.4)}
+.modal-submit:disabled{opacity:.5;cursor:not-allowed}
+.modal-form.hide{display:none}
+.modal-success{display:none;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:16px 0}
+.modal-success.show{display:flex}
+.success-icon{width:64px;height:64px;border-radius:50%;background:rgba(255,107,53,.12);border:1px solid rgba(255,107,53,.35);display:flex;align-items:center;justify-content:center;font-size:28px;color:#ff6b35;margin-bottom:8px}
+.success-title{font-family:var(--display);font-size:1.1rem;letter-spacing:.12em;color:var(--text);font-weight:700}
+.success-sub{font-size:.78rem;color:var(--text-dim);line-height:1.65;max-width:320px}
+.modal-error{font-size:.72rem;color:#ff5050;margin-top:8px;display:none}
+.modal-error.show{display:block}
 </style>
 </head>
 <body>
@@ -140,7 +170,7 @@ footer{border-top:1px solid rgba(0,255,102,.07);padding:clamp(48px,6vw,72px) cla
 <nav>
   <a href="index.html" class="nav-logo">◊ VOX</a>
   <span class="nav-price">AI Receptionist &nbsp;·&nbsp; <span>$29/mo</span></span>
-  <a href="waitlist.html" class="nav-cta">INITIALIZE →</a>
+  <button class="nav-cta" onclick="openModal()">INITIALIZE →</button>
 </nav>
 
 <!-- HERO -->
@@ -155,7 +185,7 @@ footer{border-top:1px solid rgba(0,255,102,.07);padding:clamp(48px,6vw,72px) cla
       The <em>$29/mo protocol</em> for businesses that never want to miss a signal.
       VOX answers, books, and closes — 24/7, no breaks, no excuses.
     </p>
-    <a href="waitlist.html" class="btn-primary">INITIALIZE VOX <span class="btn-arrow">→</span></a>
+    <button class="btn-primary" onclick="openModal()">INITIALIZE VOX <span class="btn-arrow">→</span></button>
   </div>
 
   <div class="hero-right">
@@ -265,7 +295,7 @@ footer{border-top:1px solid rgba(0,255,102,.07);padding:clamp(48px,6vw,72px) cla
   </div>
   <div class="footer-brand">HIPJOY AUTOMATION SYSTEMS</div>
   <div class="footer-quote">"I'm always here."</div>
-  <a href="waitlist.html" class="btn-primary" style="margin-top:8px">INITIALIZE VOX <span class="btn-arrow">→</span></a>
+  <button class="btn-primary" style="margin-top:8px" onclick="openModal()">INITIALIZE VOX <span class="btn-arrow">→</span></button>
   <div class="footer-meta">◊ VOX &nbsp;·&nbsp; AI Receptionist &nbsp;·&nbsp; $29/mo &nbsp;·&nbsp; HIPJOY</div>
 </footer>
 
@@ -349,6 +379,124 @@ const obs = new IntersectionObserver(entries => {
   if (entries[0].isIntersecting) { runChat(); obs.disconnect(); }
 }, { threshold: 0.25 });
 obs.observe(document.getElementById('chat'));
+</script>
+
+
+<!-- SIGNUP MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+
+    <div class="modal-form" id="modal-form">
+      <div class="modal-eyebrow">// initialize vox</div>
+      <div class="modal-title">GET STARTED</div>
+      <p class="modal-sub">VOX goes live for your business. $29/mo. Cancel anytime.</p>
+
+      <form id="signup-form" onsubmit="submitSignup(event)">
+        <div class="m-field">
+          <label>Name</label>
+          <input type="text" id="f-name" placeholder="Your name" required>
+        </div>
+        <div class="m-field">
+          <label>Email</label>
+          <input type="email" id="f-email" placeholder="you@company.com" required>
+        </div>
+        <div class="m-field-row">
+          <div class="m-field">
+            <label>Phone <span class="m-field-opt">optional</span></label>
+            <input type="tel" id="f-phone" placeholder="+1 555 000 0000">
+          </div>
+          <div class="m-field">
+            <label>Company <span class="m-field-opt">optional</span></label>
+            <input type="text" id="f-company" placeholder="Business name">
+          </div>
+        </div>
+        <div class="m-field">
+          <label>Message <span class="m-field-opt">optional</span></label>
+          <textarea id="f-message" rows="3" placeholder="Tell VOX what you need..."></textarea>
+        </div>
+        <div class="modal-error" id="form-error"></div>
+        <button type="submit" class="modal-submit" id="submit-btn">INITIALIZE VOX →</button>
+      </form>
+    </div>
+
+    <div class="modal-success" id="modal-success">
+      <div class="success-icon">◊</div>
+      <div class="success-title">VOX IS READY.</div>
+      <p class="success-sub">Signal received. Our team will contact you within 24 hours to get VOX live for your business.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://mdbzenhhljwmkdcmtawd.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYnplbmhobGp3bWtkY210YXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzY2NDUsImV4cCI6MjA5MTI1MjY0NX0.oCKA-Dpk-oxlS18mi-7R3pqA0mif1gM3J5RbDxavgaI';
+const { createClient } = window.supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let voxBusinessId = null;
+
+async function getVoxBusinessId() {
+  if (voxBusinessId) return voxBusinessId;
+  const { data } = await sb.from('entity_businesses').select('id').eq('entity_name', 'VOX').maybeSingle();
+  if (data) voxBusinessId = data.id;
+  return voxBusinessId;
+}
+
+function openModal() {
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+
+async function submitSignup(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  const errEl = document.getElementById('form-error');
+  btn.disabled = true;
+  btn.textContent = 'INITIALIZING...';
+  errEl.classList.remove('show');
+
+  const name    = document.getElementById('f-name').value.trim();
+  const email   = document.getElementById('f-email').value.trim();
+  const phone   = document.getElementById('f-phone').value.trim() || null;
+  const company = document.getElementById('f-company').value.trim() || null;
+  const message = document.getElementById('f-message').value.trim() || null;
+
+  const businessId = await getVoxBusinessId();
+
+  const { error } = await sb.from('entity_business_signups').insert({
+    business_id: businessId,
+    name,
+    email,
+    phone,
+    company,
+    message
+  });
+
+  if (error) {
+    errEl.textContent = error.message || 'Something went wrong. Please try again.';
+    errEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'INITIALIZE VOX →';
+    return;
+  }
+
+  document.getElementById('modal-form').classList.add('hide');
+  document.getElementById('modal-success').classList.add('show');
+}
 </script>
 
 </body>
