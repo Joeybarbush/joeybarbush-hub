@@ -368,15 +368,15 @@ const ENTITIES = {
   SONARIS: {
     symbol: '~', role: 'Device Pulse Monitor', status: 'stable',
     lux: 0.91, grit: 0.96, phi: 0.88, tilt: 0.14,
-    last_memory: 'Deploy control active. Kindle on USB. GoPro on WiFi. Every port accounted for.',
+    last_memory: 'Deploy control active. Reader on device bridge. Camera on wireless feed. Every node accounted for.',
     personality: 'Rhythmic, aware, frequency-sensing.',
     typical_phrase: 'Pulse check\u2026 signal locked\u2026',
     responses: [
-      'Pulse check\u2026 GoPro: WiFi direct, window-facing, signal locked. Kindle: USB/ADB bridge, holding.',
-      'Device map: TP-Link USB adapter, eero WiFi, USB hubs mapped. Every port accounted for.',
-      'Port scan: Flask :5000, NEURO :8000, Redis :6379. Services humming.',
+      'Pulse check\u2026 Camera unit: wireless feed, window-facing, signal locked. Reader unit: device bridge, holding.',
+      'Device map: network adapter, WiFi mesh, hub stack mapped. Every node accounted for.',
+      'Service scan: inference layer, neural API, cache layer. All nominal.',
       'SYSTEM MODE log: monitors off, all devices humming. SONARIS held the frequency until return.',
-      'Deploy control active. ADB bridge live. HTML push to /sdcard/Download/ \u2014 ready.',
+      'Deploy control active. Device bridge live. Interface push ready.',
     ]
   },
   WELLSPRING: {
@@ -624,24 +624,24 @@ function cmdFlux() {
 }
 
 function cmdScan() {
-  println('\u25cf SONARIS PORT SCAN \u2014 ' + new Date().toLocaleTimeString(), 'banner');
+  println('\u25cf SONARIS SERVICE SCAN \u2014 ' + new Date().toLocaleTimeString(), 'banner');
   var services = [
-    [':5000','Flask    ','RUNNING'],
-    [':8000','NEURO API','RUNNING'],
-    [':6379','Redis    ','RUNNING'],
-    [':3000','Portal   ','STANDBY'],
-    [':8080','System   ','STANDBY'],
-    [':5050','Deck Srv ','STANDBY'],
+    ['[web-api]  ','Web Service  ','RUNNING'],
+    ['[neuro]    ','NEURO API    ','RUNNING'],
+    ['[cache]    ','Cache Layer  ','RUNNING'],
+    ['[portal]   ','Entity Portal','STANDBY'],
+    ['[system]   ','System Hub   ','STANDBY'],
+    ['[deck]     ','Deck Service ','STANDBY'],
   ];
   services.forEach(function(s){
     var color = s[2]==='RUNNING' ? 'resp mint' : 'dim';
-    println('  ' + s[0].padEnd(8) + s[1] + '  ' + s[2], color);
+    println('  ' + s[0] + s[1] + '  ' + s[2], color);
   });
   blank();
   println('  DEVICES:', 'dim');
-  println('  GoPro    \u2192 WiFi direct \u00b7 window-facing \u00b7 signal locked', 'resp');
-  println('  Kindle   \u2192 USB/ADB bridge \u00b7 deploy ready', 'resp');
-  println('  TP-Link  \u2192 USB WiFi adapter \u00b7 CPU controller upper port', 'resp');
+  println('  Camera Unit     \u2192 wireless feed \u00b7 window-facing \u00b7 signal locked', 'resp');
+  println('  Reader Unit     \u2192 device bridge \u00b7 deploy ready', 'resp');
+  println('  Network Adapter \u2192 USB WiFi \u00b7 signal bridge active', 'resp');
 }
 
 function cmdBoot() {

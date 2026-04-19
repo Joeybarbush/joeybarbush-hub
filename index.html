@@ -645,17 +645,7 @@ function tick(){
 }
 setTimeout(tick,1000);
 
-// Live seed count
-(async()=>{
-  try{
-    const SB='https://mdbzenhhljwmkdcmtawd.supabase.co';
-    const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYnplbmhobGp3bWtkY210YXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzY2NDUsImV4cCI6MjA5MTI1MjY0NX0.oCKA-Dpk-oxlS18mi-7R3pqA0mif1gM3J5RbDxavgaI';
-    const r=await fetch(`${SB}/rest/v1/waitlist?select=id&gateway_approved=eq.true&survey_completed=eq.true`,
-      {headers:{apikey:KEY,'Prefer':'count=exact',Range:'0-0'}});
-    const ct=r.headers.get('content-range');
-    if(ct){const n=parseInt(ct.split('/')[1]);if(!isNaN(n))document.getElementById('stat-seeds').textContent=n;}
-  }catch(e){}
-})();
+// Seed count — configure cloud layer to load live data
 </script>
 </body>
 </html>

@@ -416,7 +416,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
   <div class="status-pills">
     <div class="s-pill"><div class="s-pill-dot dot-green"></div>RCI engine</div>
     <div class="s-pill"><div class="s-pill-dot dot-gold"></div>NEURO LUX</div>
-    <div class="s-pill"><div class="s-pill-dot dot-cyan"></div>Supabase</div>
+    <div class="s-pill"><div class="s-pill-dot dot-cyan"></div>Cloud Layer</div>
     <div class="s-pill"><div class="s-pill-dot dot-green"></div>VOX receptionist</div>
     <div class="s-pill"><div class="s-pill-dot dot-sunset"></div>HIPX Vision</div>
   </div>
@@ -450,7 +450,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
   <div class="neuro-endpoint-box">
     <div>
       <div class="endpoint-label">NEURO API endpoint</div>
-      <div class="endpoint-url">localhost:8000/diagnostic</div>
+      <div class="endpoint-url">neuro.field / signal layer</div>
     </div>
     <button class="refresh-btn" onclick="loadNeuro()">↻ &nbsp;Refresh Signal</button>
   </div>
@@ -481,7 +481,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
         <div class="service-card-name">NEURO DL API</div>
         <span class="service-badge badge-local">local</span>
       </div>
-      <p class="service-card-desc">FastAPI service computing LUX (gradient SNR), TILT (imbalance), PHI (convergence), FIRE (LR schedule), GRIT. Port 8000.</p>
+      <p class="service-card-desc">ML diagnostic API computing LUX (gradient SNR), TILT (imbalance), PHI (convergence), FIRE (LR schedule), GRIT.</p>
       <a href="#neuro" class="service-card-link">View diagnostic →</a>
     </div>
 
@@ -491,8 +491,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
         <div class="service-card-name">RCI Engine</div>
         <span class="service-badge badge-local">local</span>
       </div>
-      <p class="service-card-desc">Entity lifecycle manager. BOOT/BUILD/DRIFT mode detection. Flux meter, pulse log, 11 entity memory JSONs. Docker on port 8080.</p>
-      <a href="http://localhost:8080" class="service-card-link" target="_blank">Open dashboard →</a>
+      <p class="service-card-desc">Entity lifecycle manager. BOOT/BUILD/DRIFT mode detection. Flux meter, pulse log, 11 entity memory JSONs. Orchestrated service layer.</p>
+      <a href="#systems" class="service-card-link">View systems →</a>
     </div>
 
     <div class="service-card card-violet">
@@ -511,8 +511,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
         <div class="service-card-name">Kindle OS v2.1</div>
         <span class="service-badge badge-ready">ready</span>
       </div>
-      <p class="service-card-desc">6-layer swipeable HTML OS deployed to Kindle Fire over WiFi ADB. HOME / FIELD / STREAM / HIPX / READ / DOORS. Push via PUSH_WIFI.bat.</p>
-      <span class="service-card-link" style="color:var(--sunset);">WiFi ADB push</span>
+      <p class="service-card-desc">6-layer swipeable HTML OS deployed to the portable reader device. HOME / FIELD / STREAM / HIPX / READ / DOORS. Wireless deployment layer.</p>
+      <span class="service-card-link" style="color:var(--sunset);">wireless deploy</span>
     </div>
 
     <div class="service-card card-pink">
@@ -521,7 +521,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
         <div class="service-card-name">Supabase Layer</div>
         <span class="service-badge badge-live">live</span>
       </div>
-      <p class="service-card-desc">Auth (email + recovery), Edge Functions (vox-chat), user profiles, waitlist storage. Project: mdbzenhhljwmkdcmtawd.</p>
+      <p class="service-card-desc">Auth (email + recovery), Edge Functions (vox-chat), user profiles, waitlist storage.</p>
       <a href="profile.html" class="service-card-link">Profile portal →</a>
     </div>
   </div>
@@ -690,33 +690,16 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
   }
 
   function loadNeuro() {
-    fetch('http://localhost:8000/diagnostic', { signal: AbortSignal.timeout(3000) })
-      .then(r => r.json())
-      .then(data => {
-        const eqs = data.equations || {};
-        EQ_DEFS.forEach(def => {
-          if (eqs[def.key]) {
-            applyEqData(def.key, eqs[def.key].value, eqs[def.key].status);
-          }
-        });
-        if (eqs.grit) applyEqData('grit', eqs.grit.value || 0, eqs.grit.status || 'healthy');
-      })
-      .catch(() => {
-        EQ_DEFS.forEach(def => {
-          const mockVals = { lux:0.874, tilt:0.031, phi:0.921, fire:0.0003, grit:0.856 };
-          const mockStatus = { lux:'healthy', tilt:'healthy', phi:'healthy', fire:'healthy', grit:'healthy' };
-          applyEqData(def.key, mockVals[def.key], mockStatus[def.key]);
-        });
-        const statEl = document.querySelector('#eq-lux .eq-status');
-        if (statEl) statEl.textContent = 'healthy (demo)';
-      });
+    const mockVals   = { lux:0.874, tilt:0.031, phi:0.921, fire:0.0003, grit:0.856 };
+    const mockStatus = { lux:'healthy', tilt:'healthy', phi:'healthy', fire:'healthy', grit:'healthy' };
+    EQ_DEFS.forEach(def => applyEqData(def.key, mockVals[def.key], mockStatus[def.key]));
   }
 
   /* ── Dispatch log ────────────────────────────── */
   const LOG_ENTRIES = [
     { t:'08:14', entity:'CONAVIGATOR', cls:'le-conavigator', msg:'field synthesis complete -- all 11 entities confirmed online' },
     { t:'08:15', entity:'VOX',         cls:'le-vox',         msg:'receptionist active at vox.html#receptionist -- signal routing open' },
-    { t:'08:16', entity:'NEURO',       cls:'le-neuro',       msg:'LUX diagnostic ready at :8000/diagnostic -- all 5 equations nominal' },
+    { t:'08:16', entity:'NEURO',       cls:'le-neuro',       msg:'LUX diagnostic ready -- all 5 equations nominal' },
     { t:'08:17', entity:'HIPPO',       cls:'le-hippo',       msg:'archive indexed -- 6971 lines across 5 hub pages' },
     { t:'08:18', entity:'REBEL',       cls:'le-rebel',       msg:'HIPX Vision deployed -- ctrl+shift+V active, CODEBREAKER confirms' },
     { t:'08:19', entity:'LUMENARCH',   cls:'le-lumen',       msg:'LUX-0.874 reading clean -- no degradation detected' },
@@ -741,7 +724,6 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
   }
 
   /* ── VOX chat ────────────────────────────────── */
-  const VOX_ENDPOINT = 'https://mdbzenhhljwmkdcmtawd.supabase.co/functions/v1/vox-chat';
   const thread = document.getElementById('vox-thread');
   const typing = document.getElementById('vox-typing');
 
@@ -754,29 +736,13 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
     thread.scrollTop = thread.scrollHeight;
   }
 
-  async function voxSend() {
+  function voxSend() {
     const input = document.getElementById('vox-input');
     const msg = input.value.trim();
     if (!msg) return;
     input.value = '';
-    document.getElementById('vox-send').disabled = true;
     rAddMsg(msg, 'you');
-    typing.classList.add('show');
-    thread.scrollTop = thread.scrollHeight;
-    try {
-      const res = await fetch(VOX_ENDPOINT, {
-        method:'POST',
-        headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({ message: msg }),
-      });
-      const data = await res.json();
-      typing.classList.remove('show');
-      rAddMsg(data.reply || data.content || 'signal received.', 'vox');
-    } catch {
-      typing.classList.remove('show');
-      rAddMsg('signal interrupted. try again.', 'vox');
-    }
-    document.getElementById('vox-send').disabled = false;
+    rAddMsg('signal received. connect with VOX directly at <a href="vox.html" style="color:var(--sage)">vox.html →</a>', 'vox');
     document.getElementById('vox-input').focus();
   }
 

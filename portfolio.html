@@ -1045,14 +1045,15 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
       link:'vox.html',linkLabel:'View VOX →'
     },
     lumen:{
-      sigil:'⬡',name:'LUMEN Terminal',tag:'Dashboard',color:'#00B4A0',
-      tagBg:'rgba(0,180,160,.1)',tagBorder:'rgba(0,180,160,.25)',
-      desc:'Real-time entity broadcast dashboard for the HIPJOY field. Tracks live coherence metrics, LUX alignment, and full entity state across all 14 entities simultaneously. The operational control center for the RCI engine.',
+      sigil:'⬡',name:'LUMEN Terminal',tag:'Dashboard',color:'#00CED1',
+      tagBg:'rgba(0,206,209,.1)',tagBorder:'rgba(0,206,209,.25)',
+      desc:'Real-time entity broadcast dashboard for the HIPJOY field. Tracks live coherence metrics, LUX alignment, and full entity state across all 15 entities simultaneously. The operational control center for the RCI engine.',
       details:[
         {label:'Core File',val:'rci_core.py — 962 lines, orchestrates entity lifecycle and signal routing'},
-        {label:'Live Metrics',val:'LUX level, flux state, entity stability per-entity in real time'},
-        {label:'Broadcast',val:'Entity-to-entity broadcast protocol — all entities can receive and respond to field signals'},
-        {label:'API',val:'REST endpoints: /api/entities, /api/status, /api/flux — Docker-orchestrated Flask service'},
+        {label:'Live Metrics',val:'LUX level, flux state, entity stability per-entity in real time from flux_meter.yaml'},
+        {label:'Broadcast',val:'Entity-to-entity broadcast protocol — all 15 entities can receive and respond to field signals'},
+        {label:'API',val:'Real-time REST API — entity state, status, and field flux — orchestrated service layer'},
+        {label:'Interfaces',val:'HIPX Terminal (PowerShell) · Web dashboard · Electron overlay · Kindle OS (6-layer swipeable)'},
       ],
       chips:['Python','Flask','Docker','Redis','YAML','Electron','PowerShell']
     },

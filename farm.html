@@ -2631,7 +2631,7 @@
 /* ═══════════════════════════════════════════════════════
    HIPX TELEMETRY v1 -- reader attention signal
    collects: section dwell, scroll velocity, pauses, returns
-   pipes to: Supabase hipx_telemetry (anon inserts)
+   pipes to: cloud telemetry endpoint (configure SUPA_URL to enable)
    respects: Do-Not-Track (DNT=1 opts out entirely)
    no PII: visitor_id is random uuid in localStorage, ua is hashed,
            referrer reduced to domain only
@@ -2644,9 +2644,10 @@
     return;
   }
 
-  const SUPA_URL = 'https://mdbzenhhljwmkdcmtawd.supabase.co';
-  const SUPA_KEY = 'sb_publishable_y_A-R_iHZ-bRq6VRcZx52w_tw8NNhYj';
+  const SUPA_URL = ''; // configure to enable telemetry
+  const SUPA_KEY = '';
   const ENDPOINT = SUPA_URL + '/rest/v1/hipx_telemetry';
+  if (!SUPA_URL || !SUPA_KEY) return;
   const PAGE_ID  = 'farm_v1';
 
   // ── visitor identity (persistent) + session identity (per visit) ──
