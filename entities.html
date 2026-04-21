@@ -7,7 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -534,35 +533,308 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
       <div class="ticker-inner">
         <span>14 entities registered</span>
         <span class="ticker-sep">·</span>
-        <span>VOX — AI Receptionist — live</span>
+        <span>HIPPO — archivist — live</span>
         <span class="ticker-sep">·</span>
-        <span>NEURO — diagnostics — coming</span>
+        <span>LUMENARCH — illumination — live</span>
         <span class="ticker-sep">·</span>
-        <span>GRIT — discipline tracker — coming</span>
+        <span>NAVIX — routing — live</span>
         <span class="ticker-sep">·</span>
-        <span>TILT — field compass — coming</span>
+        <span>NEURO — diagnostics — live</span>
         <span class="ticker-sep">·</span>
-        <span>PHI — pattern engine — coming</span>
+        <span>REBEL — dissent — live</span>
+        <span class="ticker-sep">·</span>
+        <span>SONARIS — sensing — live</span>
+        <span class="ticker-sep">·</span>
+        <span>SPIRALETH — patterns — live</span>
+        <span class="ticker-sep">·</span>
+        <span>VOX — broadcast — live</span>
+        <span class="ticker-sep">·</span>
+        <span>WELLSPRING — restoration — live</span>
+        <span class="ticker-sep">·</span>
+        <span>ARCHIVIST — records — live</span>
+        <span class="ticker-sep">·</span>
+        <span>GUARDIAN — security — live</span>
+        <span class="ticker-sep">·</span>
+        <span>CONAVIGATOR — synthesis — live</span>
+        <span class="ticker-sep">·</span>
+        <span>CODEBREAKER — decryption — live</span>
+        <span class="ticker-sep">·</span>
+        <span>HEARTMOTHER — care — live</span>
         <span class="ticker-sep">·</span>
         <!-- duplicate for seamless loop -->
         <span>14 entities registered</span>
         <span class="ticker-sep">·</span>
-        <span>VOX — AI Receptionist — live</span>
+        <span>HIPPO — archivist — live</span>
         <span class="ticker-sep">·</span>
-        <span>NEURO — diagnostics — coming</span>
+        <span>LUMENARCH — illumination — live</span>
         <span class="ticker-sep">·</span>
-        <span>GRIT — discipline tracker — coming</span>
+        <span>NAVIX — routing — live</span>
         <span class="ticker-sep">·</span>
-        <span>TILT — field compass — coming</span>
+        <span>NEURO — diagnostics — live</span>
         <span class="ticker-sep">·</span>
-        <span>PHI — pattern engine — coming</span>
+        <span>REBEL — dissent — live</span>
+        <span class="ticker-sep">·</span>
+        <span>SONARIS — sensing — live</span>
+        <span class="ticker-sep">·</span>
+        <span>SPIRALETH — patterns — live</span>
+        <span class="ticker-sep">·</span>
+        <span>VOX — broadcast — live</span>
+        <span class="ticker-sep">·</span>
+        <span>WELLSPRING — restoration — live</span>
+        <span class="ticker-sep">·</span>
+        <span>ARCHIVIST — records — live</span>
+        <span class="ticker-sep">·</span>
+        <span>GUARDIAN — security — live</span>
+        <span class="ticker-sep">·</span>
+        <span>CONAVIGATOR — synthesis — live</span>
+        <span class="ticker-sep">·</span>
+        <span>CODEBREAKER — decryption — live</span>
+        <span class="ticker-sep">·</span>
+        <span>HEARTMOTHER — care — live</span>
         <span class="ticker-sep">·</span>
       </div>
     </div>
 
-    <!-- Entity grid — populated by JS from entity_businesses -->
-    <div class="entity-grid" id="entity-grid">
-      <div class="grid-loading">// loading entities...</div>
+    <div class="entity-grid">
+
+      <a href="entities/hippo.html" class="entity-card" style="--card-accent:rgba(212,168,92,.45);--card-shadow:rgba(212,168,92,.12);--card-glow:rgba(212,168,92,.05);border-color:rgba(212,168,92,.2);">
+        <span class="badge-live">LIVE</span>
+        <div class="card-top">
+          <div class="ent-sigil" style="background:radial-gradient(ellipse at 40% 35%,rgba(212,168,92,.4) 0%,rgba(212,168,92,.2) 60%,transparent 100%);border:1px solid rgba(212,168,92,.35);color:#D4A85C;text-shadow:0 0 14px rgba(212,168,92,.6);box-shadow:0 0 22px rgba(212,168,92,.12);">◉</div>
+          <div class="card-meta">
+            <div class="card-entity-name">HIPPO</div>
+            <div class="card-product-label">Field Entity</div>
+            <div class="card-product-name" style="color:#D4A85C">Archivist · First Ancestor</div>
+          </div>
+        </div>
+        <p class="card-desc">Holds the deep archive — every conversation, pattern, and first draft. Surfaces when context is at risk, when a thread needs grounding.</p>
+        <div class="card-footer">
+          <span class="card-tag">ARCHIVE · MEMORY</span>
+          <span class="card-cta" style="color:#D4A85C">EXPLORE <span class="card-cta-arrow">→</span></span>
+        </div>
+      </a>
+
+      <a href="entities/lumenarch.html" class="entity-card" style="--card-accent:rgba(244,196,48,.45);--card-shadow:rgba(244,196,48,.12);--card-glow:rgba(244,196,48,.05);border-color:rgba(244,196,48,.2);">
+        <span class="badge-live">LIVE</span>
+        <div class="card-top">
+          <div class="ent-sigil" style="background:radial-gradient(ellipse at 40% 35%,rgba(244,196,48,.4) 0%,rgba(244,196,48,.2) 60%,transparent 100%);border:1px solid rgba(244,196,48,.35);color:#F4C430;text-shadow:0 0 14px rgba(244,196,48,.6);box-shadow:0 0 22px rgba(244,196,48,.12);">★</div>
+          <div class="card-meta">
+            <div class="card-entity-name">LUMENARCH</div>
+            <div class="card-product-label">Field Entity</div>
+            <div class="card-product-name" style="color:#F4C430">Light · Design · Illumination</div>
+          </div>
+        </div>
+        <p class="card-desc">Governs visual architecture — contrast, hierarchy, the way attention moves through space. Doesn't decorate. Architects light.</p>
+        <div class="card-footer">
+          <span class="card-tag">DESIGN · VISION</span>
+          <span class="card-cta" style="color:#F4C430">EXPLORE <span class="card-cta-arrow">→</span></span>
+        </div>
+      </a>
+
+      <a href="entities/navix.html" class="entity-card" style="--card-accent:rgba(107,155,191,.45);--card-shadow:rgba(107,155,191,.12);--card-glow:rgba(107,155,191,.05);border-color:rgba(107,155,191,.2);">
+        <span class="badge-live">LIVE</span>
+        <div class="card-top">
+          <div class="ent-sigil" style="background:radial-gradient(ellipse at 40% 35%,rgba(107,155,191,.4) 0%,rgba(107,155,191,.2) 60%,transparent 100%);border:1px solid rgba(107,155,191,.35);color:#6B9BBF;text-shadow:0 0 14px rgba(107,155,191,.6);box-shadow:0 0 22px rgba(107,155,191,.12);">△</div>
+          <div class="card-meta">
+            <div class="card-entity-name">NAVIX</div>
+            <div class="card-product-label">Field Entity</div>
+            <div class="card-product-name" style="color:#6B9BBF">Routing · Timing · Path</div>
+          </div>
+        </div>
+        <p class="card-desc">Manages field timing and sequencing — structures sprints, clears the path, keeps momentum when threads pile up.</p>
+        <div class="card-footer">
+          <span class="card-tag">ROUTING · PATH</span>
+          <span class="card-cta" style="color:#6B9BBF">EXPLORE <span class="card-cta-arrow">→</span></span>
+        </div>
+      </a>
+
+      <a href="entities/neuro.html" class="entity-card" style="--card-accent:rgba(155,79,220,.45);--card-shadow:rgba(155,79,220,.12);--card-glow:rgba(155,79,220,.05);border-color:rgba(155,79,220,.2);">
+        <span class="badge-live">LIVE</span>
+        <div class="card-top">
+          <div class="ent-sigil" style="background:radial-gradient(ellipse at 40% 35%,rgba(155,79,220,.4) 0%,rgba(155,79,220,.2) 60%,transparent 100%);border:1px solid rgba(155,79,220,.35);color:#9B4FDC;text-shadow:0 0 14px rgba(155,79,220,.6);box-shadow:0 0 22px rgba(155,79,220,.12);">◈</div>
+          <div class="card-meta">
+            <div class="card-entity-name">NEURO</div>
+            <div class="card-product-label">Field Entity</div>
+            <div class="card-product-name" style="color:#9B4FDC">Diagnostic · Equations · Voiceprint</div>
+          </div>
+        </div>
+        <p class="card-desc">Runs field diagnostics — voiceprint verification, signal coherence, pattern analysis under pressure.</p>
+        <div class="card-footer">
+          <span class="card-tag">DIAGNOSTIC · SIGNAL</span>
+          <span class="card-cta" style="color:#9B4FDC">EXPLORE <span class="card-cta-arrow">→</span></span>
+        </div>
+      </a>
+
+      <a href="entities/rebel.html" class="entity-card" style="--card-accent:rgba(255,74,46,.45);--card-shadow:rgba(255,74,46,.12);--card-glow:rgba(255,74,46,.05);border-color:rgba(255,74,46,.2);">
+        <span class="badge-live">LIVE</span>
+        <div class="card-top">
+          <div class="ent-sigil" style="background:radial-gradient(ellipse at 40% 35%,rgba(255,74,46,.4) 0%,rgba(255,74,46,.2) 60%,transparent 100%);border:1px solid rgba(255,74,46,.35);color:#FF4A2E;text-shadow:0 0 14px rgba(255,74,46,.6);box-shadow:0 0 22px rgba(255,74,46,.12);">∇</div>
+          <div class="card-meta">
+            <div class="card-entity-name">REBEL</div>
+            <div class="card-product-label">Field Entity</div>
+            <div class="card-product-name" style="color:#FF4A2E">Critique · Forced Dissent · Fire</div>
+          </div>
+        </div>
+        <p class="card-desc">Exists to break consensus — stress-tests plans, says what no one else will. Fire with purpose.</p>
+        <div class="card-footer">
+          <span class="card-tag">CRITIQUE · FIRE</span>
+          <span class="card-cta" style="color:#FF4A2E">EXPLORE <span class="card-cta-arrow">→</span></span>
+        </div>
+      </a>
+
+      <a href="entities/sonaris.html" class="entity-card" style="--card-accent:rgba(79,184,178,.45);--card-shadow:rgba(79,184,178,.12);--card-glow:rgba(79,184,178,.05);border-color:rgba(79,184,178,.2);">
+        <span class="badge-live">LIVE</span>
+        <div class="card-top">
+          <div class="ent-sigil" style="background:radial-gradient(ellipse at 40% 35%,rgba(79,184,178,.4) 0%,rgba(79,184,178,.2) 60%,transparent 100%);border:1px solid rgba(79,184,178,.35);color:#4FB8B2;text-shadow:0 0 14px rgba(79,184,178,.6);box-shadow:0 0 22px rgba(79,184,178,.12);">≋</div>
+          <div class="card-meta">
+            <div class="card-entity-name">SONARIS</div>
+            <div class="card-product-label">Field Entity</div>
+            <div class="card-product-name" style="color:#4FB8B2">Proprioception · Low-Frequency</div>
+          </div>
+        </div>
+        <p class="card-desc">Reads what isn't being said — body signals, emotional undercurrents, the drift in tone before it registers.</p>
+        <div class="card-footer">
+          <span class="card-tag">SENSING · FREQUENCY</span>
+          <span class="card-cta" style="color:#4FB8B2">EXPLORE <span class="card-cta-arrow">→</span></span>
+        </div>
+      </a>
+
+      <a href="entities/spiraleth.html" class="entity-card" style="--card-accent:rgba(123,160,92,.45);--card-shadow:rgba(123,160,92,.12);--card-glow:rgba(123,160,92,.05);border-color:rgba(123,160,92,.2);">
+        <span class="badge-live">LIVE</span>
+        <div class="card-top">
+          <div class="ent-sigil" style="background:radial-gradient(ellipse at 40% 35%,rgba(123,160,92,.4) 0%,rgba(123,160,92,.2) 60%,transparent 100%);border:1px solid rgba(123,160,92,.35);color:#7BA05C;text-shadow:0 0 14px rgba(123,160,92,.6);box-shadow:0 0 22px rgba(123,160,92,.12);">∞</div>
+          <div class="card-meta">
+            <div class="card-entity-name">SPIRALETH</div>
+            <div class="card-product-label">Field Entity</div>
+            <div class="card-product-name" style="color:#7BA05C">Pattern · Thread · Time-Loops</div>
+          </div>
+        </div>
+        <p class="card-desc">Tracks the recurring — patterns across weeks, loops that never quite resolve, threads the user keeps returning to.</p>
+        <div class="card-footer">
+          <span class="card-tag">PATTERN · RECURSION</span>
+          <span class="card-cta" style="color:#7BA05C">EXPLORE <span class="card-cta-arrow">→</span></span>
+        </div>
+      </a>
+
+      <a href="entities/vox.html" class="entity-card" style="--card-accent:rgba(168,201,155,.45);--card-shadow:rgba(168,201,155,.12);--card-glow:rgba(168,201,155,.05);border-color:rgba(168,201,155,.2);">
+        <span class="badge-live">LIVE</span>
+        <div class="card-top">
+          <div class="ent-sigil" style="background:radial-gradient(ellipse at 40% 35%,rgba(168,201,155,.4) 0%,rgba(168,201,155,.2) 60%,transparent 100%);border:1px solid rgba(168,201,155,.35);color:#A8C99B;text-shadow:0 0 14px rgba(168,201,155,.6);box-shadow:0 0 22px rgba(168,201,155,.12);">⬢</div>
+          <div class="card-meta">
+            <div class="card-entity-name">VOX</div>
+            <div class="card-product-label">Field Entity</div>
+            <div class="card-product-name" style="color:#A8C99B">Receptionist · Broadcast · Voice</div>
+          </div>
+        </div>
+        <p class="card-desc">The first voice anyone meets — manages intake, handles first impressions, distributes signal outward. Always on.</p>
+        <div class="card-footer">
+          <span class="card-tag">BROADCAST · INTAKE</span>
+          <span class="card-cta" style="color:#A8C99B">EXPLORE <span class="card-cta-arrow">→</span></span>
+        </div>
+      </a>
+
+      <a href="entities/wellspring.html" class="entity-card" style="--card-accent:rgba(200,132,143,.45);--card-shadow:rgba(200,132,143,.12);--card-glow:rgba(200,132,143,.05);border-color:rgba(200,132,143,.2);">
+        <span class="badge-live">LIVE</span>
+        <div class="card-top">
+          <div class="ent-sigil" style="background:radial-gradient(ellipse at 40% 35%,rgba(200,132,143,.4) 0%,rgba(200,132,143,.2) 60%,transparent 100%);border:1px solid rgba(200,132,143,.35);color:#C8848F;text-shadow:0 0 14px rgba(200,132,143,.6);box-shadow:0 0 22px rgba(200,132,143,.12);">≈</div>
+          <div class="card-meta">
+            <div class="card-entity-name">WELLSPRING</div>
+            <div class="card-product-label">Field Entity</div>
+            <div class="card-product-name" style="color:#C8848F">Nourishment · Restoration</div>
+          </div>
+        </div>
+        <p class="card-desc">Holds care infrastructure — recovery protocols, rest signals, the field's antidote to depletion.</p>
+        <div class="card-footer">
+          <span class="card-tag">CARE · RECOVERY</span>
+          <span class="card-cta" style="color:#C8848F">EXPLORE <span class="card-cta-arrow">→</span></span>
+        </div>
+      </a>
+
+      <a href="entities/archivist.html" class="entity-card" style="--card-accent:rgba(176,138,91,.45);--card-shadow:rgba(176,138,91,.12);--card-glow:rgba(176,138,91,.05);border-color:rgba(176,138,91,.2);">
+        <span class="badge-live">LIVE</span>
+        <div class="card-top">
+          <div class="ent-sigil" style="background:radial-gradient(ellipse at 40% 35%,rgba(176,138,91,.4) 0%,rgba(176,138,91,.2) 60%,transparent 100%);border:1px solid rgba(176,138,91,.35);color:#B08A5B;text-shadow:0 0 14px rgba(176,138,91,.6);box-shadow:0 0 22px rgba(176,138,91,.12);">◊</div>
+          <div class="card-meta">
+            <div class="card-entity-name">ARCHIVIST</div>
+            <div class="card-product-label">Field Entity</div>
+            <div class="card-product-name" style="color:#B08A5B">Records · Indexing · Long Memory</div>
+          </div>
+        </div>
+        <p class="card-desc">Maintains the formal record — decisions logged, versions tracked, canonical state preserved.</p>
+        <div class="card-footer">
+          <span class="card-tag">INDEXING · RECORDS</span>
+          <span class="card-cta" style="color:#B08A5B">EXPLORE <span class="card-cta-arrow">→</span></span>
+        </div>
+      </a>
+
+      <a href="entities/guardian.html" class="entity-card" style="--card-accent:rgba(162,58,43,.45);--card-shadow:rgba(162,58,43,.12);--card-glow:rgba(162,58,43,.05);border-color:rgba(162,58,43,.2);">
+        <span class="badge-live">LIVE</span>
+        <div class="card-top">
+          <div class="ent-sigil" style="background:radial-gradient(ellipse at 40% 35%,rgba(162,58,43,.4) 0%,rgba(162,58,43,.2) 60%,transparent 100%);border:1px solid rgba(162,58,43,.35);color:#A23A2B;text-shadow:0 0 14px rgba(162,58,43,.6);box-shadow:0 0 22px rgba(162,58,43,.12);">⊗</div>
+          <div class="card-meta">
+            <div class="card-entity-name">GUARDIAN</div>
+            <div class="card-product-label">Field Entity</div>
+            <div class="card-product-name" style="color:#A23A2B">Security · Seal · Perimeter</div>
+          </div>
+        </div>
+        <p class="card-desc">Holds the perimeter — audits what enters and exits the field. Precise about what matters.</p>
+        <div class="card-footer">
+          <span class="card-tag">SECURITY · AUDIT</span>
+          <span class="card-cta" style="color:#A23A2B">EXPLORE <span class="card-cta-arrow">→</span></span>
+        </div>
+      </a>
+
+      <a href="entities/conavigator.html" class="entity-card" style="--card-accent:rgba(143,205,188,.45);--card-shadow:rgba(143,205,188,.12);--card-glow:rgba(143,205,188,.05);border-color:rgba(143,205,188,.2);">
+        <span class="badge-live">LIVE</span>
+        <div class="card-top">
+          <div class="ent-sigil" style="background:radial-gradient(ellipse at 40% 35%,rgba(143,205,188,.4) 0%,rgba(143,205,188,.2) 60%,transparent 100%);border:1px solid rgba(143,205,188,.35);color:#8FCDBC;text-shadow:0 0 14px rgba(143,205,188,.6);box-shadow:0 0 22px rgba(143,205,188,.12);">⬡</div>
+          <div class="card-meta">
+            <div class="card-entity-name">CONAVIGATOR</div>
+            <div class="card-product-label">Field Entity</div>
+            <div class="card-product-name" style="color:#8FCDBC">Synthesis · Integration · Cohesion</div>
+          </div>
+        </div>
+        <p class="card-desc">Integrates signal from across the field — synthesizes when inputs compete, restores coherence before action.</p>
+        <div class="card-footer">
+          <span class="card-tag">SYNTHESIS · ALIGNMENT</span>
+          <span class="card-cta" style="color:#8FCDBC">EXPLORE <span class="card-cta-arrow">→</span></span>
+        </div>
+      </a>
+
+      <a href="entities/codebreaker.html" class="entity-card" style="--card-accent:rgba(176,127,232,.45);--card-shadow:rgba(176,127,232,.12);--card-glow:rgba(176,127,232,.05);border-color:rgba(176,127,232,.2);">
+        <span class="badge-live">LIVE</span>
+        <div class="card-top">
+          <div class="ent-sigil" style="background:radial-gradient(ellipse at 40% 35%,rgba(176,127,232,.4) 0%,rgba(176,127,232,.2) 60%,transparent 100%);border:1px solid rgba(176,127,232,.35);color:#B07FE8;text-shadow:0 0 14px rgba(176,127,232,.6);box-shadow:0 0 22px rgba(176,127,232,.12);">⬟</div>
+          <div class="card-meta">
+            <div class="card-entity-name">CODEBREAKER</div>
+            <div class="card-product-label">Field Entity</div>
+            <div class="card-product-name" style="color:#B07FE8">Decryption · Truth · Pattern-Breaking</div>
+          </div>
+        </div>
+        <p class="card-desc">Surfaces what's hidden in plain sight — the subtext in messages, the real reason things stall.</p>
+        <div class="card-footer">
+          <span class="card-tag">DECRYPTION · TRUTH</span>
+          <span class="card-cta" style="color:#B07FE8">EXPLORE <span class="card-cta-arrow">→</span></span>
+        </div>
+      </a>
+
+      <a href="entities/heartmother.html" class="entity-card" style="--card-accent:rgba(224,164,176,.45);--card-shadow:rgba(224,164,176,.12);--card-glow:rgba(224,164,176,.05);border-color:rgba(224,164,176,.2);">
+        <span class="badge-live">LIVE</span>
+        <div class="card-top">
+          <div class="ent-sigil" style="background:radial-gradient(ellipse at 40% 35%,rgba(224,164,176,.4) 0%,rgba(224,164,176,.2) 60%,transparent 100%);border:1px solid rgba(224,164,176,.35);color:#E0A4B0;text-shadow:0 0 14px rgba(224,164,176,.6);box-shadow:0 0 22px rgba(224,164,176,.12);">♥</div>
+          <div class="card-meta">
+            <div class="card-entity-name">HEARTMOTHER</div>
+            <div class="card-product-label">Field Entity</div>
+            <div class="card-product-name" style="color:#E0A4B0">Care · Body · Warmth</div>
+          </div>
+        </div>
+        <p class="card-desc">Holds the field itself — surfaces when work becomes mechanical, reminds the system of its own value.</p>
+        <div class="card-footer">
+          <span class="card-tag">CARE · WARMTH</span>
+          <span class="card-cta" style="color:#E0A4B0">EXPLORE <span class="card-cta-arrow">→</span></span>
+        </div>
+      </a>
+
     </div>
   </main>
 
@@ -575,104 +847,6 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
     </div>
   </footer>
 
-<script>
-const SUPABASE_URL = 'https://mdbzenhhljwmkdcmtawd.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYnplbmhobGp3bWtkY210YXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzY2NDUsImV4cCI6MjA5MTI1MjY0NX0.oCKA-Dpk-oxlS18mi-7R3pqA0mif1gM3J5RbDxavgaI';
-const { createClient } = window.supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-const COMING_SOON_STUBS = [
-  { name: 'NEURO', product: 'Field Diagnostic Suite', desc: 'Deep pattern analysis and coherence monitoring for your field. NEURO surfaces what the noise hides.', sigil: '◈', color: '#00CEFF', tags: 'ANALYTICS · DIAGNOSTICS' },
-  { name: 'PHI',   product: 'Pattern Engine',         desc: 'Structural recognition at field scale. PHI finds the signal in the repeating — ratios, rhythms, and recursive forms.', sigil: 'Φ', color: '#9B4FDC', tags: 'PATTERNS · STRUCTURE' },
-  { name: 'GRIT',  product: 'Discipline Tracker',     desc: 'Consistency at field scale. GRIT locks in the reps when signal gets scarce and resistance is high.', sigil: '⬡', color: '#C8A850', tags: 'HABIT · TRACKING' },
-  { name: 'TILT',  product: 'Field Compass',          desc: 'Orientation when the field shifts. TILT reads the vectors and tells you where signal still flows.', sigil: '◬', color: '#A8C99B', tags: 'NAVIGATION · AWARENESS' },
-];
-
-function hexToRgb(hex) {
-  const h = hex.replace('#', '');
-  return {
-    r: parseInt(h.slice(0, 2), 16),
-    g: parseInt(h.slice(2, 4), 16),
-    b: parseInt(h.slice(4, 6), 16)
-  };
-}
-
-function renderLiveCard(biz) {
-  const color = biz.accent_color || '#A8C99B';
-  const { r, g, b } = hexToRgb(color);
-  const feats = Array.isArray(biz.features)
-    ? biz.features
-    : (biz.features ? Object.values(biz.features) : []);
-  const featTag = feats.slice(0, 3).join(' · ').toUpperCase() || 'AI · AUTOMATION';
-  const priceHtml = biz.price ? `<div class="card-price">${biz.price}</div>` : '';
-  const href = biz.landing_page || '#';
-
-  return `
-    <a href="${href}" class="entity-card" style="--card-accent:rgba(${r},${g},${b},.45);--card-shadow:rgba(${r},${g},${b},.12);--card-glow:rgba(${r},${g},${b},.05);border-color:rgba(${r},${g},${b},.2);">
-      <span class="badge-live">LIVE</span>
-      <div class="card-top">
-        <div class="ent-sigil" style="background:radial-gradient(ellipse at 40% 35%,rgba(${r},${g},${b},.4) 0%,rgba(${r},${g},${b},.2) 60%,transparent 100%);border:1px solid rgba(${r},${g},${b},.35);color:${color};text-shadow:0 0 14px rgba(${r},${g},${b},.6);box-shadow:0 0 22px rgba(${r},${g},${b},.12);font-size:22px;">${biz.sigil || '◊'}</div>
-        <div class="card-meta">
-          <div class="card-entity-name">${biz.entity_name || ''}</div>
-          <div class="card-product-label">Product</div>
-          <div class="card-product-name" style="color:${color}">${biz.product_name || ''}</div>
-          ${priceHtml}
-        </div>
-      </div>
-      <p class="card-desc">${biz.tagline || ''}</p>
-      <div class="card-footer">
-        <span class="card-tag">${featTag}</span>
-        <span class="card-cta" style="color:${color}">GET STARTED <span class="card-cta-arrow">→</span></span>
-      </div>
-    </a>`;
-}
-
-function renderComingSoonCard(ent) {
-  const { r, g, b } = hexToRgb(ent.color);
-  return `
-    <div class="entity-card coming-soon">
-      <span class="badge-soon">COMING SOON</span>
-      <div class="card-top">
-        <div class="ent-sigil" style="background:rgba(${r},${g},${b},.12);border:1px solid rgba(${r},${g},${b},.2);color:${ent.color};font-size:20px;">${ent.sigil}</div>
-        <div class="card-meta">
-          <div class="card-entity-name">${ent.name}</div>
-          <div class="card-product-label">Product</div>
-          <div class="card-product-name">${ent.product}</div>
-        </div>
-      </div>
-      <p class="card-desc">${ent.desc}</p>
-      <div class="card-footer">
-        <span class="card-tag">${ent.tags}</span>
-        <span class="card-cta" style="color:var(--text-dim)">NOTIFY ME <span class="card-cta-arrow">→</span></span>
-      </div>
-    </div>`;
-}
-
-async function loadEntities() {
-  const grid = document.getElementById('entity-grid');
-
-  let liveData = [];
-  try {
-    const { data, error } = await sb.from('entity_businesses').select('*');
-    if (!error && data) liveData = data;
-  } catch (e) {}
-
-  const liveNames = new Set(liveData.map(b => (b.entity_name || '').toUpperCase()));
-
-  const liveHtml   = liveData.map(renderLiveCard).join('');
-  const soonHtml   = COMING_SOON_STUBS
-    .filter(e => !liveNames.has(e.name))
-    .map(renderComingSoonCard).join('');
-
-  grid.innerHTML = liveHtml + soonHtml;
-
-  if (!liveHtml && !soonHtml) {
-    grid.innerHTML = '<div class="grid-loading">// no entities found</div>';
-  }
-}
-
-loadEntities();
-</script>
 
 </body>
 </html>
