@@ -634,6 +634,47 @@
     .weave-stagger:nth-child(4){transition-delay:.26s}
 
     /* ── MOBILE ────────────────────────────────────────────────────────── */
+    /* ── RESEARCH THESIS ─────────────────────────────────────── */
+    .research-thesis{
+      padding:clamp(56px,8vw,96px) clamp(20px,5vw,64px);
+      border-top:1px solid rgba(168,201,155,.08);
+      background:rgba(155,79,220,.02);
+    }
+    .rt-inner{max-width:900px;margin:0 auto}
+    .rt-eyebrow{
+      font-family:'JetBrains Mono',monospace;font-size:9px;
+      letter-spacing:.3em;text-transform:uppercase;
+      color:rgba(155,79,220,.55);margin-bottom:14px;
+    }
+    .rt-title{
+      font-family:'Orbitron',sans-serif;
+      font-size:clamp(22px,3.6vw,34px);font-weight:700;
+      letter-spacing:.04em;color:var(--text,#F0EDE5);
+      line-height:1.25;margin-bottom:18px;
+    }
+    .rt-body{
+      font-family:'JetBrains Mono',monospace;
+      font-size:14px;line-height:1.8;
+      color:rgba(240,237,229,.68);
+      max-width:700px;margin-bottom:28px;
+    }
+    .rt-body strong{color:#A8C99B;font-weight:500}
+    .rt-link{
+      color:#9B4FDC;text-decoration:none;
+      border-bottom:1px solid rgba(155,79,220,.35);
+      transition:border-color .2s,color .2s;
+    }
+    .rt-link:hover{color:#C8A6F2;border-color:rgba(155,79,220,.7)}
+    .rt-chips{display:flex;flex-wrap:wrap;gap:8px}
+    .rt-chip{
+      font-family:'JetBrains Mono',monospace;
+      font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+      padding:5px 11px;border-radius:3px;
+      background:rgba(168,201,155,.04);
+      border:1px solid rgba(168,201,155,.14);
+      color:rgba(168,201,155,.7);
+    }
+
     @media(max-width:640px){
       .nav-links li:not(:last-child):not(:nth-last-child(2)){display:none}
       .hero-name{font-size:clamp(36px,13vw,64px)}
@@ -971,6 +1012,27 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
     </div>
   </section>
 
+<!-- ═══ RESEARCH THESIS ═══ -->
+<section class="research-thesis">
+  <div class="rt-inner">
+    <div class="rt-eyebrow">// independent research</div>
+    <h2 class="rt-title">Agent behavior under asymmetric permission structures.</h2>
+    <p class="rt-body">
+      Working with the <a href="https://www.activeinference.institute" class="rt-link" target="_blank" rel="noopener">Active Inference Institute</a>
+      on framing agent dynamics through the <strong>Free Energy Principle</strong> and <strong>Markov blanket</strong> lens —
+      specifically, how elevated dispatch scope shapes what an agent treats as the boundary between self and environment.
+      HIPJOY is both the platform I'm studying and the lab I'm studying it in.
+    </p>
+    <div class="rt-chips">
+      <span class="rt-chip">Active Inference Institute</span>
+      <span class="rt-chip">Free Energy Principle</span>
+      <span class="rt-chip">Markov Blankets</span>
+      <span class="rt-chip">Agent Permission Topology</span>
+      <span class="rt-chip">RCI Architecture</span>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer>
@@ -994,6 +1056,10 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
     <a href="index.html" class="footer-link" style="border-color:rgba(168,201,155,.18);color:var(--sage-dim)">
       ◈ HIPJOY
     </a>
+  </div>
+  <div style="display:flex;align-items:center;gap:.5rem;justify-content:center;margin:2.5rem auto 1.2rem;padding:.45rem 1rem;width:fit-content;border-radius:100px;background:rgba(168,201,155,.04);border:1px solid rgba(168,201,155,.12);font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.24em;color:rgba(168,201,155,.58);">
+    <span style="width:6px;height:6px;border-radius:50%;background:#A8C99B;box-shadow:0 0 8px rgba(168,201,155,.6);display:inline-block"></span>
+    <span>BUILT ON CLAUDE CODE</span>
   </div>
 </footer>
 
@@ -1047,11 +1113,11 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
     lumen:{
       sigil:'⬡',name:'LUMEN Terminal',tag:'Dashboard',color:'#00CED1',
       tagBg:'rgba(0,206,209,.1)',tagBorder:'rgba(0,206,209,.25)',
-      desc:'Real-time entity broadcast dashboard for the HIPJOY field. Tracks live coherence metrics, LUX alignment, and full entity state across all 15 entities simultaneously. The operational control center for the RCI engine.',
+      desc:'Real-time entity broadcast dashboard for the HIPJOY field. Tracks live coherence metrics, LUX alignment, and full entity state across all 14 entities simultaneously. The operational control center for the RCI engine.',
       details:[
         {label:'Core File',val:'rci_core.py — 962 lines, orchestrates entity lifecycle and signal routing'},
         {label:'Live Metrics',val:'LUX level, flux state, entity stability per-entity in real time from flux_meter.yaml'},
-        {label:'Broadcast',val:'Entity-to-entity broadcast protocol — all 15 entities can receive and respond to field signals'},
+        {label:'Broadcast',val:'Entity-to-entity broadcast protocol — all 14 entities can receive and respond to field signals'},
         {label:'API',val:'Real-time REST API — entity state, status, and field flux — orchestrated service layer'},
         {label:'Interfaces',val:'HIPX Terminal (PowerShell) · Web dashboard · Electron overlay · Kindle OS (6-layer swipeable)'},
       ],

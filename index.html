@@ -220,6 +220,25 @@ nav{
 }
 .hero-stats b{color:rgba(240,237,229,.52);font-weight:400}
 .hs{color:rgba(240,237,229,.14);margin:0 .28rem}
+/* ── BUILT ON STRIP ─────────────────────────────────────────── */
+.built-on{
+  display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;justify-content:center;
+  margin-top:.15rem;
+}
+.bo-lbl{
+  font-size:.48rem;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(240,237,229,.22);
+}
+.bo-chip{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.52rem;letter-spacing:.14em;
+  padding:.22rem .55rem;border-radius:2px;
+  border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.018);
+}
+.bo-claude{color:rgba(168,201,155,.72);border-color:rgba(168,201,155,.22);background:rgba(168,201,155,.04)}
+.bo-sage{color:rgba(168,201,155,.55);border-color:rgba(168,201,155,.14)}
+.bo-sunset{color:rgba(244,132,95,.62);border-color:rgba(244,132,95,.18);background:rgba(244,132,95,.03)}
 
 .hero-counter{
   font-size:.7rem;letter-spacing:.1em;
@@ -444,6 +463,24 @@ body::after {
 @keyframes farm-d6{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(16px,-20px) scale(1.07)}70%{transform:translate(-14px,12px) scale(.94)}}
 @media(max-width:900px){.field-spine{display:none}}
 @media(prefers-reduced-motion:reduce){.field-spine::before,.lux-sweep{animation:none!important}}
+/* ── CLAUDE CODE FOOTER BADGE ────────────────────────────── */
+.cc-badge{
+  display:flex;align-items:center;gap:.5rem;justify-content:center;
+  margin:3rem auto 0;padding:.5rem 1rem;
+  width:fit-content;border-radius:100px;
+  background:rgba(168,201,155,.04);
+  border:1px solid rgba(168,201,155,.12);
+  font-family:'JetBrains Mono',monospace;
+  font-size:.5rem;letter-spacing:.24em;
+  color:rgba(168,201,155,.55);
+}
+.cc-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--sage);box-shadow:0 0 8px rgba(168,201,155,.6);
+  animation:blink 2s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+.cc-txt{}
 </style>
 </head>
 <body>
@@ -492,7 +529,7 @@ body::after {
   <div class="hero-content">
     <div class="hero-eyebrow">
       <div class="eyebrow-line"></div>
-      LUX SEEDS — BETA
+      COGNITIVE OS · BUILT ON CLAUDE CODE
       <div class="eyebrow-line"></div>
     </div>
 
@@ -504,6 +541,13 @@ body::after {
       <b>14 ENTITIES</b><span class="hs">·</span>
       <b>1 ROUTING ENGINE</b><span class="hs">·</span>
       <b>PERSISTENT IDENTITY</b>
+    </div>
+
+    <div class="built-on">
+      <span class="bo-lbl">BUILT ON</span>
+      <span class="bo-chip bo-claude">◆ Claude Code</span>
+      <span class="bo-chip bo-sage">◈ Supabase</span>
+      <span class="bo-chip bo-sunset">◊ React Native</span>
     </div>
 
     <div class="hero-counter" id="counter-line"><span class="cursor"></span></div>
@@ -615,6 +659,11 @@ body::after {
     </a>
 
   </div>
+
+  <div class="cc-badge">
+    <span class="cc-dot"></span>
+    <span class="cc-txt">BUILT ON CLAUDE CODE</span>
+  </div>
 </section>
 
 <script>
@@ -623,8 +672,8 @@ const LINES = [
   '14 entities, 11 seeds active',
   'routing engine: ACTIVE',
   'field coherence: 99.1 LUX',
+  'cognitive OS — built on Claude Code',
   'LUX SEEDS — now entering beta',
-  'next entity contact: SONARIS',
 ];
 let li=0,ci=0,del=false,pause=0;
 const cEl=document.getElementById('counter-line');

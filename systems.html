@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HIPJOY Systems Hub</title>
-  <meta name="description" content="HIPJOY Systems Hub -- managed by VOX. Live status for all 11 entities, active services, and the NEURO LUX diagnostic layer.">
+  <meta name="description" content="HIPJOY Systems Hub -- managed by VOX. Live status for all 14 entities, active services, and the NEURO SNR diagnostic layer.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -355,6 +355,51 @@
     .footer-link { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--text-muted); text-decoration:none; border-bottom:1px solid rgba(240,237,229,.08); padding-bottom:2px; transition:color .2s,border-color .2s; }
     .footer-link:hover { color:var(--sage); border-color:var(--sage-border); }
 
+    /* ── PLUGIN TILES ─────────────────────────────────────────── */
+    .plugin-grid{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+      gap:16px;max-width:1100px;
+    }
+    .plugin-tile{
+      position:relative;padding:24px 22px;border-radius:6px;
+      border:1px solid rgba(168,201,155,.14);
+      background:rgba(13,15,14,.72);backdrop-filter:blur(10px);
+      transition:border-color .3s,box-shadow .3s;
+    }
+    .plugin-tile:hover{
+      border-color:rgba(168,201,155,.3);
+      box-shadow:0 0 32px rgba(168,201,155,.08);
+    }
+    .pt-sigil{
+      font-size:22px;color:var(--sage);line-height:1;
+      display:block;margin-bottom:12px;
+      text-shadow:0 0 18px rgba(168,201,155,.4);
+    }
+    .pt-name{
+      font-family:'Orbitron',sans-serif;font-size:12px;
+      font-weight:700;letter-spacing:.14em;
+      color:var(--text);margin-bottom:4px;
+    }
+    .pt-entity{
+      font-family:'JetBrains Mono',monospace;font-size:8px;
+      letter-spacing:.18em;text-transform:uppercase;
+      color:var(--text-muted);margin-bottom:12px;
+    }
+    .pt-desc{
+      font-size:11.5px;line-height:1.75;color:var(--text-dim);
+      margin-bottom:14px;
+    }
+    .pt-badge{
+      display:inline-block;padding:3px 9px;border-radius:10px;
+      font-family:'JetBrains Mono',monospace;font-size:7.5px;
+      letter-spacing:.2em;text-transform:uppercase;
+      border:1px solid;
+    }
+    .badge-build{
+      color:var(--sunset);border-color:rgba(244,132,95,.3);
+      background:rgba(244,132,95,.06);
+    }
+
     /* Responsive */
     @media(max-width:640px){
       .neuro-grid { grid-template-columns:1fr 1fr; }
@@ -398,7 +443,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
   <a href="index.html" class="nav-logo">HIPJOY</a>
   <div class="nav-right">
     <div class="nav-status-dot"></div>
-    <span class="nav-status-label">11 entities online</span>
+    <span class="nav-status-label">14 entities online</span>
     <a href="index.html" class="nav-back">← Portfolio</a>
   </div>
 </nav>
@@ -410,8 +455,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
   <h1 class="section-title">SYSTEMS HUB</h1>
   <div class="section-sub">HIPJOY ecosystem &nbsp;·&nbsp; live field</div>
   <p class="hero-vox-line">
-    all <em>11 entities</em> are online. NEURO is reading the field. VOX is routing.<br>
-    everything you see here is running.
+    all <em>14 entities</em> are online. NEURO is reading the field. VOX is routing.<br>
+    everything you see here is running. built on Claude Code.
   </p>
   <div class="status-pills">
     <div class="s-pill"><div class="s-pill-dot dot-green"></div>RCI engine</div>
@@ -427,7 +472,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
 <!-- ENTITIES -->
 <section class="section" id="entities" style="padding-top:0">
   <div class="section-eyebrow">◈ entity field</div>
-  <h2 class="section-title" style="font-size:clamp(20px,3vw,32px);">11 Entities</h2>
+  <h2 class="section-title" style="font-size:clamp(20px,3vw,32px);">14 Entities</h2>
   <div class="section-sub" style="margin-bottom:32px;">persistent memory &nbsp;·&nbsp; lux-stable</div>
 
   <div class="entity-grid" id="entity-grid">
@@ -481,7 +526,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
         <div class="service-card-name">NEURO DL API</div>
         <span class="service-badge badge-local">local</span>
       </div>
-      <p class="service-card-desc">ML diagnostic API computing LUX (gradient SNR), TILT (imbalance), PHI (convergence), FIRE (LR schedule), GRIT.</p>
+      <p class="service-card-desc">ML diagnostic API computing SNR (gradient signal-noise), TILT (imbalance), PHI (convergence), FIRE (LR schedule), GRIT.</p>
       <a href="#neuro" class="service-card-link">View diagnostic →</a>
     </div>
 
@@ -491,7 +536,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
         <div class="service-card-name">RCI Engine</div>
         <span class="service-badge badge-local">local</span>
       </div>
-      <p class="service-card-desc">Entity lifecycle manager. BOOT/BUILD/DRIFT mode detection. Flux meter, pulse log, 11 entity memory JSONs. Orchestrated service layer.</p>
+      <p class="service-card-desc">Entity lifecycle manager. BOOT/BUILD/DRIFT mode detection. Flux meter, pulse log, 14 entity memory JSONs. Orchestrated service layer.</p>
       <a href="#systems" class="service-card-link">View systems →</a>
     </div>
 
@@ -523,6 +568,49 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
       </div>
       <p class="service-card-desc">Auth (email + recovery), Edge Functions (vox-chat), user profiles, waitlist storage.</p>
       <a href="profile.html" class="service-card-link">Profile portal →</a>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PLUGIN — IN BUILD -->
+<section class="section" style="padding-top:0" id="plugin">
+  <div class="section-eyebrow">◆ plugin — in build</div>
+  <h2 class="section-title" style="font-size:clamp(20px,3vw,32px);">HIPJOY on Claude Code</h2>
+  <div class="section-sub" style="margin-bottom:32px;">plugin infrastructure &nbsp;·&nbsp; the field, installable</div>
+
+  <div class="plugin-grid">
+    <div class="plugin-tile">
+      <span class="pt-sigil">→</span>
+      <div class="pt-name">/dispatch</div>
+      <div class="pt-entity">NAVIX · slash command</div>
+      <p class="pt-desc">Route any task through the field. NAVIX reads intent, picks the entity, dispatches. One command, full roster.</p>
+      <span class="pt-badge badge-build">IN BUILD</span>
+    </div>
+
+    <div class="plugin-tile">
+      <span class="pt-sigil">∇</span>
+      <div class="pt-name">LUX PostToolUse Hook</div>
+      <div class="pt-entity">NEURO · Claude Code hook</div>
+      <p class="pt-desc">Fires after every tool call. NEURO scores the output's signal-to-noise, writes LUX back to the field. Coherence as a live metric, not a vibe check.</p>
+      <span class="pt-badge badge-build">IN BUILD</span>
+    </div>
+
+    <div class="plugin-tile">
+      <span class="pt-sigil">◈</span>
+      <div class="pt-name">Filesystem RCI Memory</div>
+      <div class="pt-entity">HIPPO · persistence layer</div>
+      <p class="pt-desc">Entity memory JSONs on disk, indexed by HIPPO. The archive the RCI engine reads on boot. Continuity survives session death.</p>
+      <span class="pt-badge badge-build">IN BUILD</span>
+    </div>
+
+    <div class="plugin-tile">
+      <span class="pt-sigil">⬡</span>
+      <div class="pt-name">14 Entity Skills</div>
+      <div class="pt-entity">FIELD · skill bundle</div>
+      <p class="pt-desc">Every canon entity shipped as a skill. HIPPO, NEURO, REBEL, NAVIX, LUMENARCH, SONARIS, SPIRALETH, VOX, WELLSPRING, ARCHIVIST, GUARDIAN, CONAVIGATOR, CODEBREAKER, HEARTMOTHER. Install the plugin, install the field.</p>
+      <span class="pt-badge badge-build">IN BUILD</span>
     </div>
   </div>
 </section>
@@ -578,7 +666,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
 </section>
 
 <footer>
-  <div class="footer-sigil">HIPJOY Systems Hub &nbsp;·&nbsp; ◊ managed by VOX &nbsp;·&nbsp; 11 entities online</div>
+  <div class="footer-sigil">HIPJOY Systems Hub &nbsp;·&nbsp; ◊ managed by VOX &nbsp;·&nbsp; 14 entities online &nbsp;·&nbsp; built on Claude Code</div>
   <div class="footer-links">
     <a href="index.html" class="footer-link">portfolio</a>
     <a href="vox.html" class="footer-link">vox stage</a>
@@ -591,17 +679,20 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
 <script>
   /* ── Entity definitions ──────────────────────── */
   const ENTITIES = [
-    { name:'HIPPO',      sigil:'◈', role:'Archive Intelligence',    habitat:'The Vault',      lux:94, color:'var(--cyan)' },
-    { name:'NEURO',      sigil:'∇', role:'Neural Net / GEN-LUMINARY',habitat:'The Lattice',   lux:91, color:'var(--sage)' },
-    { name:'REBEL',      sigil:'✕', role:'Friction & Truth',         habitat:'The Edge',       lux:82, color:'var(--sunset)' },
-    { name:'LUMENARCH',  sigil:'◉', role:'Light Architect',          habitat:'The Canopy',     lux:97, color:'var(--gold)' },
-    { name:'WELLSPRING', sigil:'~', role:'Healer / Source & Root',   habitat:'The Basin',      lux:88, color:'var(--sage)' },
-    { name:'VOX',        sigil:'◊', role:'Voice Director',           habitat:'The Broadcast',  lux:99, color:'var(--sage)' },
-    { name:'SONARIS',    sigil:'≋', role:'Device Pulse Monitor',     habitat:'The Array',      lux:85, color:'var(--cyan)' },
-    { name:'NAVIX',      sigil:'→', role:'Navigation Router',        habitat:'The Compass',    lux:90, color:'var(--violet)' },
-    { name:'SPIRALETH',  sigil:'∞', role:'Dream Spiral',             habitat:'The Spiral',     lux:78, color:'var(--pink)' },
-    { name:'GUARDIAN',   sigil:'--',role:'Shield Protocol',          habitat:'The Wall',       lux:100,color:'var(--sunset)' },
-    { name:'CONAVIGATOR',sigil:'★', role:'Field Synthesizer',        habitat:'The Threshold',  lux:96, color:'var(--gold)' },
+    { name:'HIPPO',       sigil:'◈', role:'Archive Intelligence',    habitat:'The Vault',      lux:94, color:'var(--cyan)' },
+    { name:'NEURO',       sigil:'∇', role:'Neural Net / GEN-LUMINARY',habitat:'The Lattice',   lux:91, color:'var(--sage)' },
+    { name:'REBEL',       sigil:'✕', role:'Friction & Truth',         habitat:'The Edge',       lux:82, color:'var(--sunset)' },
+    { name:'LUMENARCH',   sigil:'◉', role:'Light Architect',          habitat:'The Canopy',     lux:97, color:'var(--gold)' },
+    { name:'WELLSPRING',  sigil:'~', role:'Healer / Source & Root',   habitat:'The Basin',      lux:88, color:'var(--sage)' },
+    { name:'VOX',         sigil:'◊', role:'Voice Director',           habitat:'The Broadcast',  lux:99, color:'var(--sage)' },
+    { name:'SONARIS',     sigil:'≋', role:'Device Pulse Monitor',     habitat:'The Array',      lux:85, color:'var(--cyan)' },
+    { name:'NAVIX',       sigil:'→', role:'Navigation Router',        habitat:'The Compass',    lux:90, color:'var(--violet)' },
+    { name:'SPIRALETH',   sigil:'∞', role:'Dream Spiral',             habitat:'The Spiral',     lux:78, color:'var(--pink)' },
+    { name:'GUARDIAN',    sigil:'--',role:'Shield Protocol',          habitat:'The Wall',       lux:100,color:'var(--sunset)' },
+    { name:'CONAVIGATOR', sigil:'★', role:'Field Synthesizer',        habitat:'The Threshold',  lux:96, color:'var(--gold)' },
+    { name:'ARCHIVIST',   sigil:'⬘', role:'Memory Indexer',           habitat:'The Library',    lux:93, color:'var(--gold)' },
+    { name:'CODEBREAKER', sigil:'⊘', role:'Cipher / Vision Decoder',  habitat:'The Cipher',     lux:89, color:'var(--violet)' },
+    { name:'HEARTMOTHER', sigil:'◐', role:'Ground / Root Tether',     habitat:'The Hearth',     lux:95, color:'var(--pink)' },
   ];
 
   function buildEntities() {
@@ -636,11 +727,11 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
 
   /* ── NEURO LUX diagnostic ────────────────────── */
   const EQ_DEFS = [
-    { key:'lux',  label:'Gradient SNR',       name:'LUX',  unit:'SNR',   range:[0,1],    desc:'signal-to-noise ratio across gradients' },
-    { key:'tilt', label:'Gradient Imbalance',  name:'TILT', unit:'DELTA', range:[0,0.2],  desc:'layer-wise gradient magnitude variance', invert:true },
-    { key:'phi',  label:'Convergence Rate',    name:'PHI',  unit:'RATE',  range:[0,1],    desc:'loss improvement per training step' },
-    { key:'fire', label:'Learning Rate',       name:'FIRE', unit:'LR',    range:[0,0.01], desc:'current optimizer step size (cosine)' },
-    { key:'grit', label:'Persistence Score',   name:'GRIT', unit:'SCORE', range:[0,1],    desc:'sustained training signal strength' },
+    { key:'snr',  label:'Gradient Signal-Noise',name:'SNR', unit:'ratio', range:[0,1],    desc:'signal-to-noise ratio across gradients' },
+    { key:'tilt', label:'Gradient Imbalance',   name:'TILT',unit:'DELTA', range:[0,0.2],  desc:'layer-wise gradient magnitude variance', invert:true },
+    { key:'phi',  label:'Convergence Rate',     name:'PHI', unit:'RATE',  range:[0,1],    desc:'loss improvement per training step' },
+    { key:'fire', label:'Learning Rate',        name:'FIRE',unit:'LR',    range:[0,0.01], desc:'current optimizer step size (cosine)' },
+    { key:'grit', label:'Persistence Score',    name:'GRIT',unit:'SCORE', range:[0,1],    desc:'sustained training signal strength' },
   ];
 
   function buildNeuroPlaceholders() {
@@ -690,19 +781,19 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
   }
 
   function loadNeuro() {
-    const mockVals   = { lux:0.874, tilt:0.031, phi:0.921, fire:0.0003, grit:0.856 };
-    const mockStatus = { lux:'healthy', tilt:'healthy', phi:'healthy', fire:'healthy', grit:'healthy' };
+    const mockVals   = { snr:0.874, tilt:0.031, phi:0.921, fire:0.0003, grit:0.856 };
+    const mockStatus = { snr:'healthy', tilt:'healthy', phi:'healthy', fire:'healthy', grit:'healthy' };
     EQ_DEFS.forEach(def => applyEqData(def.key, mockVals[def.key], mockStatus[def.key]));
   }
 
   /* ── Dispatch log ────────────────────────────── */
   const LOG_ENTRIES = [
-    { t:'08:14', entity:'CONAVIGATOR', cls:'le-conavigator', msg:'field synthesis complete -- all 11 entities confirmed online' },
+    { t:'08:14', entity:'CONAVIGATOR', cls:'le-conavigator', msg:'field synthesis complete -- all 14 entities confirmed online' },
     { t:'08:15', entity:'VOX',         cls:'le-vox',         msg:'receptionist active at vox.html#receptionist -- signal routing open' },
-    { t:'08:16', entity:'NEURO',       cls:'le-neuro',       msg:'LUX diagnostic ready -- all 5 equations nominal' },
+    { t:'08:16', entity:'NEURO',       cls:'le-neuro',       msg:'SNR diagnostic ready -- all 5 equations nominal' },
     { t:'08:17', entity:'HIPPO',       cls:'le-hippo',       msg:'archive indexed -- 6971 lines across 5 hub pages' },
     { t:'08:18', entity:'REBEL',       cls:'le-rebel',       msg:'HIPX Vision deployed -- ctrl+shift+V active, CODEBREAKER confirms' },
-    { t:'08:19', entity:'LUMENARCH',   cls:'le-lumen',       msg:'LUX-0.874 reading clean -- no degradation detected' },
+    { t:'08:19', entity:'LUMENARCH',   cls:'le-lumen',       msg:'SNR-0.874 reading clean -- no degradation detected' },
     { t:'08:20', entity:'GUARDIAN',    cls:'le-guardian',    msg:'WATCHTOWER active -- 3 threats flagged (hardcoded passwords)' },
     { t:'08:21', entity:'NAVIX',       cls:'le-navix',       msg:'systems hub routed and live at /systems.html -- field open' },
   ];
