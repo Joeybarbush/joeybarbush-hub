@@ -30,6 +30,8 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
+    --entity-color:#B8860B;
+    --entity-rgb:184,134,11;
     --ink:        #06080A;
     --ink-2:      #0B0F12;
     --ink-3:      #0E1318;
@@ -1920,6 +1922,20 @@
   <!-- FIELD WEAVE: the craftbook binding -- a living thread running down the left edge -->
   <div class="field-spine" aria-hidden="true"></div>
 
+  <!-- ── STUDIO CHROME ───────────────── -->
+  <div style="position:fixed;top:70px;left:clamp(1.5rem,8vw,96px);display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#B8860B;z-index:298;pointer-events:none" aria-hidden="true">
+    <span style="display:inline-block;width:22px;height:1px;background:#B8860B;opacity:.7;flex-shrink:0"></span>
+    HIPJOY FIELD · THE FARM
+    <span style="display:inline-flex;align-items:center;gap:5px;font-size:9px;color:rgba(184,134,11,.65);border:1px solid rgba(184,134,11,.2);border-radius:2px;padding:2px 7px;background:rgba(184,134,11,.05);margin-left:4px;">
+      <span style="width:5px;height:5px;border-radius:50%;background:#B8860B;box-shadow:0 0 8px #B8860B;display:inline-block;flex-shrink:0"></span>
+      ⬢ HIPPO
+    </span>
+  </div>
+  <div style="position:fixed;top:70px;right:clamp(1.5rem,8vw,80px);display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#F0EDE5;padding:5px 9px;border:1px solid rgba(184,134,11,.35);border-radius:2px;background:rgba(184,134,11,.06);z-index:298;pointer-events:none" aria-hidden="true">
+    <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#B8860B;box-shadow:0 0 10px #B8860B;flex-shrink:0"></span>
+    ⬢ HIPPO
+  </div>
+
   <!-- FIELD WEAVE: page counter -- tells you which page of the field you're on -->
   <div class="page-counter" aria-hidden="true">
     <span class="pc-label">FIELD PAGE</span>
@@ -2876,5 +2892,13 @@
 })();
 </script>
 
+<!-- ── STUDIO FOOTER BADGE ─────────── -->
+<div style="position:relative;z-index:2;background:#05050a;padding:1.5rem clamp(1.5rem,6vw,80px);border-top:1px solid rgba(240,237,229,.04);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+  <span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,229,.28);">part of the <a href="index.html" style="color:rgba(168,201,155,.5);text-decoration:none;">HIPJOY field</a></span>
+  <span style="display:inline-flex;align-items:center;gap:.4rem;font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(168,201,155,.58);border:1px solid rgba(168,201,155,.12);border-radius:2px;padding:.32rem .85rem;background:rgba(168,201,155,.04);">
+    <span style="width:5px;height:5px;border-radius:50%;background:#A8C99B;box-shadow:0 0 8px rgba(168,201,155,.6);display:inline-block;flex-shrink:0"></span>
+    BUILT ON CLAUDE CODE
+  </span>
+</div>
 </body>
 </html>
