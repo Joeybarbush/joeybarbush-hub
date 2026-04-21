@@ -11,6 +11,8 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
+  --entity-color:#A8C99B;
+  --entity-rgb:168,201,155;
   --bg:#0d0f0e;--bg2:#111311;--bg3:#141714;
   --sage:#A8C99B;--sage-dim:rgba(168,201,155,.5);--sage-faint:rgba(168,201,155,.08);--sage-glow:rgba(168,201,155,.55);
   --sunset:#F4845F;--sunset-dim:rgba(244,132,95,.5);--sunset-faint:rgba(244,132,95,.08);
@@ -218,6 +220,20 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
   <div class="orb orb-4"><div class="orb-face"></div></div>
   <div class="orb orb-5"><div class="orb-face"></div></div>
   <div class="orb orb-6"><div class="orb-face"></div></div>
+</div>
+
+<!-- ── STUDIO CHROME ──────── -->
+<div style="position:fixed;top:70px;left:clamp(1.5rem,8vw,96px);display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#A8C99B;z-index:298;pointer-events:none" aria-hidden="true">
+  <span style="display:inline-block;width:22px;height:1px;background:#A8C99B;opacity:.7;flex-shrink:0"></span>
+  HIPJOY FIELD · VOX SIGNAL
+  <span style="display:inline-flex;align-items:center;gap:5px;font-size:9px;color:rgba(168,201,155,.65);border:1px solid rgba(168,201,155,.2);border-radius:2px;padding:2px 7px;background:rgba(168,201,155,.05);margin-left:4px;">
+    <span style="width:5px;height:5px;border-radius:50%;background:#A8C99B;box-shadow:0 0 8px #A8C99B;display:inline-block;flex-shrink:0"></span>
+    ◊ VOX
+  </span>
+</div>
+<div style="position:fixed;top:70px;right:clamp(1.5rem,8vw,80px);display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#F0EDE5;padding:5px 9px;border:1px solid rgba(168,201,155,.35);border-radius:2px;background:rgba(168,201,155,.06);z-index:298;pointer-events:none" aria-hidden="true">
+  <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#A8C99B;box-shadow:0 0 10px #A8C99B;flex-shrink:0"></span>
+  ◊ VOX
 </div>
 
 <nav>
@@ -556,5 +572,13 @@ async function submitSignup(e) {
 }
 </script>
 
+<!-- ── STUDIO FOOTER BADGE ── -->
+<footer style="position:relative;z-index:2;background:#05050a;padding:1.5rem clamp(1.5rem,6vw,80px);border-top:1px solid rgba(240,237,229,.04);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:2rem;">
+  <span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,229,.28);">part of the <a href="index.html" style="color:rgba(168,201,155,.5);text-decoration:none;">HIPJOY field</a></span>
+  <span style="display:inline-flex;align-items:center;gap:.4rem;font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(168,201,155,.58);border:1px solid rgba(168,201,155,.12);border-radius:2px;padding:.32rem .85rem;background:rgba(168,201,155,.04);">
+    <span style="width:5px;height:5px;border-radius:50%;background:#A8C99B;box-shadow:0 0 8px rgba(168,201,155,.6);display:inline-block;flex-shrink:0"></span>
+    BUILT ON CLAUDE CODE
+  </span>
+</footer>
 </body>
 </html>

@@ -10,6 +10,8 @@
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
+      --entity-color:#F4A825;
+      --entity-rgb:244,168,37;
       --ink:#06080A;--ink-2:#0B100D;
       --paper:#F5EBD6;--paper-hi:#FFFFFF;
       --paper-dim:rgba(245,235,214,.70);
@@ -737,6 +739,20 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
   <div class="orb orb-6"><div class="orb-face"></div></div>
 </div>
 
+<!-- ── STUDIO CHROME ──────── -->
+<div style="position:fixed;top:70px;left:clamp(1.5rem,8vw,96px);display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#F4A825;z-index:298;pointer-events:none" aria-hidden="true">
+  <span style="display:inline-block;width:22px;height:1px;background:#F4A825;opacity:.7;flex-shrink:0"></span>
+  HIPJOY FIELD · PORTFOLIO
+  <span style="display:inline-flex;align-items:center;gap:5px;font-size:9px;color:rgba(244,168,37,.65);border:1px solid rgba(244,168,37,.2);border-radius:2px;padding:2px 7px;background:rgba(244,168,37,.05);margin-left:4px;">
+    <span style="width:5px;height:5px;border-radius:50%;background:#F4A825;box-shadow:0 0 8px #F4A825;display:inline-block;flex-shrink:0"></span>
+    ◉ LUMENARCH
+  </span>
+</div>
+<div style="position:fixed;top:70px;right:clamp(1.5rem,8vw,80px);display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#F0EDE5;padding:5px 9px;border:1px solid rgba(244,168,37,.35);border-radius:2px;background:rgba(244,168,37,.06);z-index:298;pointer-events:none" aria-hidden="true">
+  <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#F4A825;box-shadow:0 0 10px #F4A825;flex-shrink:0"></span>
+  ◉ LUMENARCH
+</div>
+
 <nav>
   <a href="index.html" class="nav-logo">◈ HIPJOY</a>
   <ul class="nav-links">
@@ -1181,5 +1197,24 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
 
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 </script>
+
+<!-- ── QUESTIONS WE'RE ENGAGING ── -->
+<section style="position:relative;z-index:2;padding:clamp(2rem,5vw,4rem) clamp(1.5rem,6vw,80px);background:#05050a;border-top:1px solid rgba(240,237,229,.04);">
+  <div style="max-width:720px;margin:0 auto;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(244,168,37,.45);margin-bottom:1.5rem;">— QUESTIONS WE'RE ENGAGING</div>
+    <div style="display:flex;flex-direction:column;gap:1.5rem;">
+      <div style="border-left:2px solid rgba(244,168,37,.25);padding-left:1.2rem;">
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:rgba(240,237,229,.72);line-height:1.55;margin-bottom:.5rem;">"How do you validate seed-type classifications correlate with stable behavioral patterns vs. short-term response variability?"</p>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.14em;color:rgba(240,237,229,.28);">— external researcher, Apr 2026</div>
+      </div>
+      <div style="border-left:2px solid rgba(244,168,37,.25);padding-left:1.2rem;">
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:rgba(240,237,229,.72);line-height:1.55;margin-bottom:.5rem;">"What makes this different from a generic AI assistant?"</p>
+        <p style="font-family:'Inter',sans-serif;font-size:.82rem;color:rgba(240,237,229,.5);line-height:1.6;margin-bottom:.5rem;">The 14 entities aren't personas — they're structured cognitive roles with persistent memory, signal scoring, and distinct dispatch scope. It's not a chatbot you customize; it's a field you inhabit.</p>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.14em;color:rgba(240,237,229,.28);">— Joey Barbush, Apr 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 </body>
 </html>
