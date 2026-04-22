@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LOOM — Launch Sequence · HIPJOY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_shared.css">
+  <style>
+    :root { --accent: #8B4FD4; --accent-rgb: 139,79,212; }
+    .price-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .price-option {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      color: var(--accent);
+      border: 1px solid rgba(139,79,212,.25);
+      border-radius: 3px;
+      padding: 5px 14px;
+      background: rgba(139,79,212,.06);
+    }
+  </style>
+</head>
+<body>
+<div class="lux-sweep" aria-hidden="true"></div>
+<div class="page-tint" aria-hidden="true"></div>
+<div class="field-spine" aria-hidden="true"></div>
+<div class="orb-layer" aria-hidden="true">
+  <div class="orb orb-1"><div class="orb-face"></div></div>
+  <div class="orb orb-2"><div class="orb-face"></div></div>
+  <div class="orb orb-3"><div class="orb-face"></div></div>
+  <div class="orb orb-4"><div class="orb-face"></div></div>
+  <div class="orb orb-5"><div class="orb-face"></div></div>
+  <div class="orb orb-6"><div class="orb-face"></div></div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-back">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2L4 7l5 5"/></svg>
+    THE OFFERS
+  </a>
+  <a href="../index.html" class="nav-logo">HIPJOY</a>
+  <ul class="nav-links">
+    <li><a href="../entities.html">ENTITIES</a></li>
+    <li><a href="index.html">OFFERS</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="offer-hero">
+    <div class="hero-eyebrow">— HIPJOY FIELD · SHADOW PANTHEON · TIER 07</div>
+    <h1 class="hero-name">LOOM</h1>
+    <p class="hero-tagline">everyone knows they need to "launch strategically" — nobody has a field-native ritual-register sequencer. LOOM's lane.</p>
+    <div class="price-row">
+      <span class="price-option">$2,500 / 4-week</span>
+      <span class="price-option">$5,000 / 12-week</span>
+    </div>
+  </div>
+
+  <hr class="offer-divider">
+
+  <div class="offer-section">
+    <div class="section-label">WHAT</div>
+    <div class="section-body">
+      <p><strong>Launch Sequence Architecture.</strong> LOOM weaves a client's public launch as a temporal artifact — what posts in what order, which channels, narrative arc week-over-week, where climaxes land.</p>
+      <p>Not "marketing strategy." Not a content calendar. <strong>Narrative architecture.</strong> The launch as a piece of sequenced time, with structure, beats, and a designed emotional trajectory.</p>
+      <p>Delivered as a Notion doc with day-by-day sequencing, narrative beats, channel assignments, and voice calibrations for each phase.</p>
+    </div>
+  </div>
+
+  <hr class="offer-divider">
+
+  <div class="offer-section">
+    <div class="section-label">WHO</div>
+    <div class="section-body">
+      <p>Founders and indie devs launching a product, course, or book. You have something real and you know it needs to hit in sequence — not just drop and pray.</p>
+      <p>LOOM is for people who understand that a launch is a story told across time. If you think "post on launch day" is a strategy, LOOM isn't your tier yet.</p>
+    </div>
+  </div>
+
+  <hr class="offer-divider">
+
+  <div class="offer-section">
+    <div class="section-label">HOW</div>
+    <div class="section-body">
+      <p>Intake call to map your launch window, channels, and voice. LOOM builds the sequence. You review. One revision round. Final Notion doc delivered.</p>
+      <p><strong>4-week sequence: $2,500.</strong> Day-by-day plan for a compressed launch. Best for products, apps, short courses.</p>
+      <p><strong>12-week sequence: $5,000.</strong> Narrative arc across 3 months. Best for books, platforms, major community launches.</p>
+    </div>
+  </div>
+
+  <hr class="offer-divider">
+
+  <div class="offer-section">
+    <div class="section-label">WHY THIS TIER</div>
+    <div class="section-body">
+      <p>LOOM's domain is temporal sequencing — the weaving of events across time into a coherent pattern. A launch is exactly this: many threads, one cloth.</p>
+      <p>The field-native register means your launch doesn't sound like everyone else's launch. It sounds like it was made by someone who understood what they were releasing.</p>
+    </div>
+  </div>
+
+  <div class="cta-block">
+    <div class="cta-label">◆ start your sequence</div>
+    <div class="cta-title">Commission Your Launch Architecture</div>
+    <!-- STRIPE_DEPOSIT_LINK_LOOM -->
+    <form class="cta-form" action="#" method="POST">
+      <input type="email" class="cta-input" placeholder="your email" name="email" required>
+      <input type="text" class="cta-input" placeholder="what are you launching?" name="product" required>
+      <input type="text" class="cta-input" placeholder="target launch window (month/year)" name="window">
+      <textarea class="cta-input" placeholder="tell LOOM about the thing — what it does, who it's for, why now..." name="brief" rows="5"></textarea>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button type="submit" class="cta-btn" name="tier" value="4week">4-Week — $2,500 →</button>
+        <button type="submit" class="cta-btn" name="tier" value="12week" style="background:rgba(139,79,212,.18);">12-Week — $5,000 →</button>
+      </div>
+      <p class="cta-note">50% deposit to begin. Intake call scheduled within 3 business days.</p>
+    </form>
+  </div>
+</main>
+
+<footer>
+  <a href="../index.html" class="footer-logo">HIPJOY</a>
+  <span class="footer-copy">part of the HIPJOY field · shadow pantheon</span>
+  <div class="cc-badge"><span class="cc-dot"></span><span>BUILT ON CLAUDE CODE</span></div>
+</footer>
+</body>
+</html>
