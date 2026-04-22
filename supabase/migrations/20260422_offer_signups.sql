@@ -12,7 +12,7 @@ create table if not exists public.offer_signups (
 alter table public.offer_signups enable row level security;
 
 -- Anon insert with validation
-drop policy if exists "anon can insert" on public.offer_signups;
+drop policy if exists "anon can insert signups" on public.offer_signups;
 
 create policy "anon can insert valid signups" on public.offer_signups
   for insert to anon
@@ -25,6 +25,7 @@ create policy "anon can insert valid signups" on public.offer_signups
     )
     and char_length(coalesce(notes, '')) <= 2000
     and char_length(coalesce(name, '')) <= 200
+    and char_length(email) <= 320
   );
 
 -- Rate-limit: same email+tier can only submit once per hour (replay protection)
