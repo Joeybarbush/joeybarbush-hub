@@ -686,6 +686,92 @@
       .nav-logo{font-size:.65rem}
     }
 
+    /* ── OPERATOR BIO ──────────────────────────────────────────── */
+    #bio{background:var(--bg2)}
+    .bio-inner{max-width:860px;margin:0 auto;display:grid;grid-template-columns:1fr 1.6fr;gap:3rem;align-items:start}
+    @media(max-width:680px){.bio-inner{grid-template-columns:1fr;gap:1.8rem}}
+    .bio-sigil-block{text-align:center;padding:2rem 1rem}
+    .bio-sigil{font-size:5rem;line-height:1;color:var(--gold);text-shadow:0 0 60px rgba(200,168,80,.4);display:block;margin-bottom:.8rem}
+    .bio-identity{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.2em;color:var(--text-dim);line-height:2.2}
+    .bio-identity span{display:block}
+    .bio-identity .id-highlight{color:var(--sage);font-weight:600}
+    .bio-body p{font-family:var(--f-ui);font-size:.88rem;color:rgba(240,237,229,.68);line-height:1.9;margin-bottom:1rem}
+    .bio-body p:last-child{margin-bottom:0}
+    .bio-body em{color:var(--sage);font-style:normal}
+    .bio-body strong{color:var(--text)}
+
+    /* ── WHO THIS IS FOR ──────────────────────────────────────── */
+    #who{}
+    .audience-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:1.4rem;margin-top:.5rem}
+    .audience-card{
+      padding:1.8rem 1.6rem 1.6rem;
+      border-radius:var(--radius);
+      border:1px solid var(--ac-border,rgba(168,201,155,.1));
+      background:var(--ac-bg,rgba(168,201,155,.025));
+      position:relative;overflow:hidden;
+      transition:border-color .25s,box-shadow .25s,transform .25s;
+    }
+    .audience-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--ac-accent,var(--sage));opacity:.55}
+    .audience-card:hover{border-color:var(--ac-hover-border,rgba(168,201,155,.22));box-shadow:0 8px 32px rgba(0,0,0,.18);transform:translateY(-2px)}
+    .ac-tag{display:inline-flex;align-items:center;gap:.4rem;padding:.22rem .75rem;border-radius:100px;font-family:var(--f-mono);font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:1.1rem;border:1px solid var(--ac-border,rgba(168,201,155,.16));color:var(--ac-color,var(--sage));background:var(--ac-bg-tag,rgba(168,201,155,.06))}
+    .ac-title{font-family:var(--f-display);font-size:.9rem;font-weight:700;letter-spacing:.08em;color:var(--text);margin-bottom:.75rem}
+    .ac-pitch{font-family:var(--f-ui);font-size:.82rem;color:var(--text-dim);line-height:1.85;margin-bottom:1.1rem}
+    .ac-offers{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.4rem}
+    .ac-offer-pill{font-family:var(--f-mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .65rem;border-radius:3px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);color:var(--text-dim)}
+    .ac-cta{display:inline-flex;align-items:center;gap:.45rem;padding:.58rem 1.3rem;border-radius:4px;font-family:var(--f-display);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:all .25s;border:1px solid var(--ac-border,rgba(168,201,155,.22));color:var(--ac-color,var(--sage));background:var(--ac-bg,rgba(168,201,155,.06))}
+    .ac-cta:hover{opacity:.85;transform:translateX(2px)}
+
+    /* ── TECH CAPABILITIES ────────────────────────────────────── */
+    #tech{background:var(--bg2)}
+    .tech-cols{display:grid;grid-template-columns:1fr 1fr;gap:2.4rem;margin-top:.5rem}
+    @media(max-width:680px){.tech-cols{grid-template-columns:1fr;gap:1.6rem}}
+    .tech-block-label{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(168,201,155,.35);margin-bottom:.8rem;padding-bottom:.4rem;border-bottom:1px solid rgba(168,201,155,.06)}
+    .tech-item{padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.035);display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+    .tech-item:last-child{border-bottom:none}
+    .tech-name{font-family:var(--f-mono);font-size:.7rem;color:var(--text-dim)}
+    .tech-val{font-family:var(--f-mono);font-size:.6rem;color:rgba(168,201,155,.45);text-align:right}
+    .shipped-list{display:flex;flex-direction:column;gap:.6rem}
+    .shipped-item{display:flex;gap:.75rem;align-items:flex-start;padding:.6rem .8rem;background:rgba(168,201,155,.025);border:1px solid rgba(168,201,155,.06);border-radius:8px}
+    .shipped-sigil{font-size:1rem;flex-shrink:0;margin-top:.05rem}
+    .shipped-name{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;color:var(--text);margin-bottom:.2rem}
+    .shipped-desc{font-family:var(--f-ui);font-size:.75rem;color:var(--text-dim);line-height:1.65}
+
+    /* ── ENTITIES PREVIEW ─────────────────────────────────────── */
+    #entities-preview{text-align:center;position:relative}
+    .entity-preview-grid{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;max-width:760px;margin:1.8rem auto}
+    .ep-chip{padding:.28rem .9rem;border-radius:3px;font-family:var(--f-mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);color:var(--text-dim);transition:all .2s;cursor:default}
+    .ep-chip:hover{border-color:var(--ec,rgba(168,201,155,.3));color:var(--ec,var(--sage))}
+    .ep-link{display:inline-flex;align-items:center;gap:.55rem;padding:.75rem 2rem;margin-top:1.6rem;border:1px solid rgba(168,201,155,.22);border-radius:4px;font-family:var(--f-display);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sage);text-decoration:none;transition:all .25s;background:rgba(168,201,155,.05)}
+    .ep-link:hover{background:rgba(168,201,155,.1);box-shadow:0 0 30px rgba(168,201,155,.1)}
+
+    /* ── OFFERS PREVIEW ───────────────────────────────────────── */
+    #offers-preview{}
+    .offers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr));gap:1rem;margin-top:1.2rem}
+    .offer-tile{padding:1.1rem 1.1rem 1rem;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(255,255,255,.016);transition:all .25s;cursor:default;position:relative}
+    .offer-tile:hover{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.03);transform:translateY(-2px)}
+    .ot-sigil{font-size:1.2rem;display:block;margin-bottom:.5rem}
+    .ot-name{font-family:var(--f-display);font-size:.65rem;letter-spacing:.1em;color:var(--text);margin-bottom:.35rem}
+    .ot-desc{font-family:var(--f-ui);font-size:.72rem;color:var(--text-dim);line-height:1.6}
+    .ot-badge{display:inline-block;margin-top:.5rem;font-family:var(--f-mono);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;padding:.15rem .55rem;border-radius:3px;background:rgba(168,201,155,.06);border:1px solid rgba(168,201,155,.14);color:rgba(168,201,155,.55)}
+    .offers-cta-row{text-align:center;margin-top:1.8rem}
+
+    /* ── ENTERPRISE FORM ──────────────────────────────────────── */
+    #enterprise-form{background:var(--bg2);border-top:1px solid rgba(168,201,155,.08)}
+    .ef-inner{max-width:620px;margin:0 auto}
+    .ef-intro{font-family:var(--f-ui);font-size:.88rem;color:var(--text-dim);line-height:1.85;margin-bottom:2rem}
+    .ef-form{display:flex;flex-direction:column;gap:1rem}
+    .ef-field{display:flex;flex-direction:column;gap:.4rem}
+    .ef-label{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(168,201,155,.45)}
+    .ef-input,.ef-textarea{background:rgba(168,201,155,.03);border:1px solid rgba(168,201,155,.12);border-radius:6px;color:var(--text);font-family:var(--f-mono);font-size:.75rem;padding:.75rem 1rem;outline:none;transition:border-color .2s;width:100%}
+    .ef-input:focus,.ef-textarea:focus{border-color:rgba(168,201,155,.35)}
+    .ef-textarea{min-height:110px;resize:vertical;line-height:1.7}
+    .ef-submit{display:inline-flex;align-items:center;gap:.55rem;padding:.85rem 2.4rem;background:rgba(244,132,95,.09);border:1px solid var(--sunset-border);border-radius:4px;font-family:var(--f-display);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--sunset);cursor:pointer;transition:all .25s;align-self:flex-start}
+    .ef-submit:hover{background:rgba(244,132,95,.2);box-shadow:0 0 30px rgba(244,132,95,.2)}
+    .ef-submit:disabled{opacity:.4;cursor:not-allowed}
+    .ef-success{display:none;padding:1.2rem 1.4rem;background:rgba(168,201,155,.06);border:1px solid rgba(168,201,155,.18);border-radius:8px;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.1em;color:var(--sage);text-align:center}
+    .ef-success.show{display:block}
+    .ef-honeypot{position:absolute;left:-9999px}
+
 /* ══════════ FARM VISUAL SHELL ══════════ */
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.96  0 0 0 0 0.92  0 0 0 0 0.84  0 0 0 0.030 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");opacity:0.45;mix-blend-mode:overlay}
 .lux-sweep{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,#A8C99B 30%,#F4845F 70%,transparent 100%);background-size:200% 100%;animation:lux-sw-a 6s ease-in-out infinite;z-index:999}
@@ -740,12 +826,12 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
 <nav>
   <a href="index.html" class="nav-logo">◈ HIPJOY</a>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
+    <li><a href="#who">Who it's for</a></li>
+    <li><a href="#tech">Research</a></li>
+    <li><a href="#entities-preview">Entities</a></li>
+    <li><a href="#offers-preview">Offers</a></li>
     <li><a href="https://linkedin.com/in/joey-barbush-115575403" target="_blank" rel="noopener">LinkedIn</a></li>
-    <li><a href="https://github.com/Joeybarbush" target="_blank" rel="noopener">GitHub</a></li>
-    <li><a href="index.html" class="nav-cta">View HIPJOY →</a></li>
+    <li><a href="#enterprise-form" class="nav-cta">Contact →</a></li>
   </ul>
 </nav>
 
@@ -759,23 +845,19 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
       <div class="hero-eyebrow">Batavia, IL · joeybarbush@gmail.com</div>
       <h1 class="hero-name">Joey<br><span>Barbush</span></h1>
       <div class="hero-role">
-        <strong>Founder &amp; Systems Architect · HIPJOY</strong>
-        &nbsp;·&nbsp; CS Student @ Waubonsee Community College
+        <strong>Independent Operator · HIPJOY Systems</strong>
+        &nbsp;·&nbsp; CS @ Waubonsee · transferring · age 20
       </div>
       <p class="hero-bio">
-        I build <em>cognitive operating systems</em> and full-stack software —
-        and I show up reliably for the people counting on me.
-        Two sides, one person.
+        I build <em>cognitive operating systems</em> and field-routed agent architectures.
+        Self-directed research. No institutional affiliation. Every system ships.
       </p>
       <div class="hero-ctas">
-        <a href="index.html" class="btn-primary">
-          View HIPJOY <span class="btn-arrow">→</span>
+        <a href="#who" class="btn-primary">
+          Who this is for <span class="btn-arrow">→</span>
         </a>
-        <a href="https://linkedin.com/in/joey-barbush-115575403" target="_blank" rel="noopener" class="btn-secondary">
-          LinkedIn
-        </a>
-        <a href="https://github.com/Joeybarbush" target="_blank" rel="noopener" class="btn-secondary">
-          GitHub
+        <a href="index.html" class="btn-secondary">
+          HIPJOY Field
         </a>
         <a href="mailto:joeybarbush@gmail.com" class="btn-icon">@ Email</a>
       </div>
@@ -784,173 +866,110 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
 
   <div class="divider"></div>
 
-  <!-- ═══ ABOUT ═══ -->
-  <section id="about">
+  <!-- ═══ OPERATOR BIO ═══ -->
+  <section id="bio">
     <div class="section-inner">
-      <div class="section-label reveal">// 01 — about</div>
-      <div class="section-title reveal">Two Sides. One Person.</div>
-      <div class="about-grid">
-        <div class="about-card reveal">
-          <div class="about-card-label">The Professional</div>
-          <div class="about-card-title">Reliable. Present. Accountable.</div>
+      <div class="section-label reveal">// operator context</div>
+      <div class="section-title reveal">Third-Field Perspective</div>
+      <div class="bio-inner">
+        <div class="bio-sigil-block reveal">
+          <span class="bio-sigil">◈</span>
+          <div class="bio-identity">
+            <span class="id-highlight">Joey Barbush</span>
+            <span>Age 20 · Batavia, IL</span>
+            <span>CS @ Waubonsee → transfer</span>
+            <span>Independent researcher</span>
+            <span>No institute affiliation</span>
+            <span style="margin-top:.6rem;color:rgba(168,201,155,.3)">── field operator</span>
+          </div>
+        </div>
+        <div class="bio-body reveal">
           <p>
-            At St. Andrews Golf &amp; CC I manage player scheduling, tee times, and event logistics
-            every day — because operations only work when someone actually cares about the details.
-            Customer service, time management, showing up: these aren't soft skills, they're the foundation.
+            I started building HIPJOY in January 2024 — not as a project, but as a personal cognitive
+            operating system. Fourteen entities, 22 coherence equations, a custom query language, and
+            a routing engine that persists behavioral identity across session boundaries. It runs on real hardware.
+            Real users are in the Garden.
+          </p>
+          <p>
+            My research sits at the intersection of <em>agent permission topology</em> and cognitive field theory.
+            Specifically: how elevated dispatch scope reshapes what an agent treats as the boundary between self
+            and environment — studied through the Free Energy Principle and Markov blanket lens.
+            HIPJOY is the platform <strong>and</strong> the lab.
+          </p>
+          <p>
+            I'm 20, studying CS at Waubonsee and transferring. I'm not affiliated with any research institution.
+            Everything here is self-directed, self-funded, and shipped from a room in Illinois.
+            I take client work in the $5K–$15K range, collaborate with CS programs, and build tools
+            for operators who want their field architected properly.
           </p>
         </div>
-        <div class="about-card accent-sunset reveal">
-          <div class="about-card-label">The Builder</div>
-          <div class="about-card-title">Systems Thinking. Deep Architecture.</div>
-          <p>
-            Since January 2024 I've been building HIPJOY — a personal cognitive operating system
-            with 14 entities, 22 weighted coherence equations, and a custom query language.
-            Not a side project. A full architecture. I study Computer Science to sharpen the craft
-            and I build every day because I can't not.
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ WHO THIS IS FOR ═══ -->
+  <section id="who">
+    <div class="section-inner">
+      <div class="section-label reveal">// 01 — audiences</div>
+      <div class="section-title reveal">WHO THIS IS FOR</div>
+      <div class="audience-grid">
+
+        <!-- Audience 1: Small business -->
+        <div class="audience-card reveal"
+          style="--ac-color:#F4845F;--ac-border:rgba(244,132,95,.18);--ac-bg:rgba(244,132,95,.03);--ac-bg-tag:rgba(244,132,95,.07);--ac-hover-border:rgba(244,132,95,.32);--ac-accent:#F4845F">
+          <div class="ac-tag">◆ Small Business Owners</div>
+          <div class="ac-title">You run the operation. Let the field carry the cognitive weight.</div>
+          <p class="ac-pitch">
+            You're making daily decisions without a systems layer behind them. Joey builds
+            cognitive infrastructure that persists — not chatbots, not wrappers. Real field architecture
+            for businesses that need clarity, momentum, and structure that survives the chaos.
           </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- ═══ SKILLS ═══ -->
-  <section id="skills">
-    <div class="section-inner">
-      <div class="section-label reveal">// 02 — skills</div>
-      <div class="section-title reveal">Technical Stack</div>
-
-      <div class="skills-block reveal">
-        <div class="skills-block-label">Languages &amp; Frameworks</div>
-        <div class="skill-row">
-          <span class="skill-chip highlight">Python</span>
-          <span class="skill-chip highlight">JavaScript</span>
-          <span class="skill-chip highlight">React</span>
-          <span class="skill-chip highlight">Node.js</span>
-          <span class="skill-chip gold">FastAPI</span>
-          <span class="skill-chip gold">React Native</span>
-          <span class="skill-chip sunset">Java</span>
-          <span class="skill-chip sunset">HTML / CSS</span>
-        </div>
-      </div>
-      <div class="skills-block reveal">
-        <div class="skills-block-label">Infrastructure &amp; Tooling</div>
-        <div class="skill-row">
-          <span class="skill-chip highlight">Supabase</span>
-          <span class="skill-chip highlight">Docker</span>
-          <span class="skill-chip gold">Electron</span>
-          <span class="skill-chip gold">Redis</span>
-          <span class="skill-chip purple">Expo</span>
-          <span class="skill-chip purple">PowerShell</span>
-          <span class="skill-chip">REST APIs</span>
-          <span class="skill-chip">Git</span>
-        </div>
-      </div>
-      <div class="skills-block reveal">
-        <div class="skills-block-label">Architecture &amp; Craft</div>
-        <div class="skill-row">
-          <span class="skill-chip">System Architecture</span>
-          <span class="skill-chip">Interpreter Design</span>
-          <span class="skill-chip">Machine Learning</span>
-          <span class="skill-chip">Full-Stack Dev</span>
-          <span class="skill-chip">Database Design</span>
-          <span class="skill-chip">UI / UX</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- ═══ PROJECTS ═══ -->
-  <section id="projects">
-    <div class="section-inner">
-      <div class="section-label reveal">// 03 — what I build</div>
-      <div class="section-title reveal">Active Projects</div>
-
-      <!-- Featured: HIPJOY + VOX -->
-      <div class="featured-grid">
-
-        <div class="project-card reveal weave-stagger"
-          style="--card-color:#C8A850;--card-bg:rgba(200,168,80,.08);--card-border:rgba(200,168,80,.22);--card-glow:rgba(200,168,80,.06)">
-          <span class="project-sigil">◈</span>
-          <div class="project-name">HIPJOY</div>
-          <span class="project-tag">Cognitive OS</span>
-          <div class="project-desc">
-            A personal cognitive operating system built from scratch. Not a chatbot — full
-            RCI (Ritualized Continuity Intelligence) with 14 entities, differentiated behavioral
-            signatures, and a custom query language. The Garden has real users.
+          <div class="ac-offers">
+            <span class="ac-offer-pill">Junction Log</span>
+            <span class="ac-offer-pill">Fit Calibration</span>
+            <span class="ac-offer-pill">Momentum Partner</span>
+            <span class="ac-offer-pill">Vector Audit</span>
           </div>
-          <div class="project-stat">14 entities · 3 gateways · 22 equations</div>
-          <div class="project-actions">
-            <a href="index.html" class="project-visit">View HIPJOY →</a>
-            <button class="project-detail-btn" onclick="openModal('hipjoy')">Details</button>
-          </div>
+          <a href="#enterprise-form" class="ac-cta">Architect my field — $5K–15K <span>→</span></a>
         </div>
 
-        <div class="project-card reveal weave-stagger"
-          style="--card-color:#F4845F;--card-bg:rgba(244,132,95,.08);--card-border:rgba(244,132,95,.22);--card-glow:rgba(244,132,95,.06)">
-          <span class="project-sigil">◊</span>
-          <div class="project-name">VOX</div>
-          <span class="project-tag" style="background:rgba(244,132,95,.08);border-color:rgba(244,132,95,.22);color:#F4845F">AI Receptionist</span>
-          <div class="project-desc">
-            The HIPJOY Output Stage — an AI receptionist that learns your communication
-            patterns and handles inbound signal intelligently. Routes, responds, and
-            maintains your voice signature across every touchpoint.
+        <!-- Audience 2: Colleges & universities -->
+        <div class="audience-card reveal"
+          style="--ac-color:#9B4FDC;--ac-border:rgba(155,79,220,.18);--ac-bg:rgba(155,79,220,.03);--ac-bg-tag:rgba(155,79,220,.07);--ac-hover-border:rgba(155,79,220,.32);--ac-accent:#9B4FDC">
+          <div class="ac-tag">◆ CS Programs &amp; Research Labs</div>
+          <div class="ac-title">HIPJOY as a reference pattern for studying agent architectures.</div>
+          <p class="ac-pitch">
+            HIPJOY is a working implementation of asymmetric-permission agent behavior — 14 differentiated
+            entities with individual memory, habitat contexts, and coherence scoring. A live reference system
+            for researchers studying identity persistence, field routing, and the Free Energy Principle
+            applied to multi-agent cognitive architectures.
+          </p>
+          <div class="ac-offers">
+            <span class="ac-offer-pill">RCI Architecture</span>
+            <span class="ac-offer-pill">Agent Permission Topology</span>
+            <span class="ac-offer-pill">Markov Blanket Applications</span>
           </div>
-          <div class="project-stat">Output Stage · LUX-aligned · Signal routing</div>
-          <div class="project-actions">
-            <a href="vox.html" class="project-visit" style="background:rgba(244,132,95,.08);border-color:rgba(244,132,95,.22);color:#F4845F">View VOX →</a>
-            <button class="project-detail-btn" onclick="openModal('vox')">Details</button>
-          </div>
+          <a href="#enterprise-form" class="ac-cta">Partner on research / invite to speak <span>→</span></a>
         </div>
 
-      </div>
-
-      <!-- Secondary grid: HIPXQL + CoAuthor -->
-      <div class="projects-grid">
-
-        <div class="project-card sm reveal weave-stagger"
-          style="--card-color:#00CED1;--card-bg:rgba(0,206,209,.08);--card-border:rgba(0,206,209,.22);--card-glow:rgba(0,206,209,.05)">
-          <span class="project-sigil">⬟</span>
-          <div class="project-name">HIPXQL</div>
-          <span class="project-tag" style="background:rgba(0,206,209,.08);border-color:rgba(0,206,209,.22);color:#00CED1">Query Language</span>
-          <div class="project-desc">
-            Structured query language for the HIPJOY field — routes commands through the RCI engine in real time.
+        <!-- Audience 3: Individuals -->
+        <div class="audience-card reveal"
+          style="--ac-color:#A8C99B;--ac-border:rgba(168,201,155,.18);--ac-bg:rgba(168,201,155,.03);--ac-bg-tag:rgba(168,201,155,.07);--ac-hover-border:rgba(168,201,155,.3);--ac-accent:#A8C99B">
+          <div class="ac-tag">◆ Builders · Operators · Indie Devs</div>
+          <div class="ac-title">Your own field. Architected for how you actually think.</div>
+          <p class="ac-pitch">
+            Start with a free audit. If the signal's there, go deeper — a consulting engagement,
+            a paid tier, or the Field Circle. HIPJOY is a personal OS first.
+            The entity products are what happens when you build one and people want in.
+          </p>
+          <div class="ac-offers">
+            <span class="ac-offer-pill">Load-Bearing Lie Audit (free)</span>
+            <span class="ac-offer-pill">Field Circle access</span>
+            <span class="ac-offer-pill">14 entity products</span>
           </div>
-          <div class="project-stat" style="color:#00CED1">Live in the Field</div>
-          <div class="project-actions">
-            <button class="project-detail-btn" onclick="openModal('hipxql')">Details</button>
-          </div>
-        </div>
-
-        <div class="project-card sm reveal weave-stagger"
-          style="--card-color:#9B4FDC;--card-bg:rgba(155,79,220,.08);--card-border:rgba(155,79,220,.22);--card-glow:rgba(155,79,220,.05)">
-          <span class="project-sigil">◎</span>
-          <div class="project-name">CoAuthor</div>
-          <span class="project-tag" style="background:rgba(155,79,220,.08);border-color:rgba(155,79,220,.22);color:#9B4FDC">Mobile App</span>
-          <div class="project-desc">
-            React Native writing app with real-time co-authoring and entity-aware suggestions. Expo cross-platform.
-          </div>
-          <div class="project-stat" style="color:#9B4FDC">React Native · Expo</div>
-          <div class="project-actions">
-            <button class="project-detail-btn" onclick="openModal('coauthor')">Details</button>
-          </div>
-        </div>
-
-        <div class="project-card sm reveal weave-stagger"
-          style="--card-color:#00B4A0;--card-bg:rgba(0,180,160,.08);--card-border:rgba(0,180,160,.22);--card-glow:rgba(0,180,160,.05)">
-          <span class="project-sigil">⬡</span>
-          <div class="project-name">LUMEN Terminal</div>
-          <span class="project-tag" style="background:rgba(0,180,160,.08);border-color:rgba(0,180,160,.22);color:#00B4A0">Dashboard</span>
-          <div class="project-desc">
-            Real-time entity broadcast dashboard. Live coherence metrics, LUX alignment, full entity state.
-          </div>
-          <div class="project-stat" style="color:#00B4A0">RCI Engine · 962 lines</div>
-          <div class="project-actions">
-            <button class="project-detail-btn" onclick="openModal('lumen')">Details</button>
-          </div>
+          <a href="offers/index.html" class="ac-cta">Start with Load-Bearing Lie Audit <span>→</span></a>
         </div>
 
       </div>
@@ -959,38 +978,52 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
 
   <div class="divider"></div>
 
-  <!-- ═══ EXPERIENCE & EDUCATION ═══ -->
-  <section id="experience">
+  <!-- ═══ TECHNICAL CAPABILITIES ═══ -->
+  <section id="tech">
     <div class="section-inner">
-      <div class="section-label reveal">// 04 — experience &amp; education</div>
-      <div class="section-title reveal">Work &amp; Study</div>
-
-      <div class="exp-list">
-        <div class="exp-item reveal">
-          <div>
-            <div class="exp-title">Golf Course Attendant</div>
-            <div class="exp-company">St. Andrews Golf &amp; Country Club — West Chicago, IL</div>
+      <div class="section-label reveal">// 02 — capabilities</div>
+      <div class="section-title reveal">Technical Stack &amp; Research</div>
+      <div class="tech-cols">
+        <div class="reveal">
+          <div class="tech-block-label">Stack</div>
+          <div class="tech-item"><span class="tech-name">Python · Flask · FastAPI</span><span class="tech-val">backend / engine</span></div>
+          <div class="tech-item"><span class="tech-name">JavaScript · React · Node.js</span><span class="tech-val">frontend</span></div>
+          <div class="tech-item"><span class="tech-name">React Native · Expo</span><span class="tech-val">mobile</span></div>
+          <div class="tech-item"><span class="tech-name">Supabase · Redis · Docker</span><span class="tech-val">infra</span></div>
+          <div class="tech-item"><span class="tech-name">Electron · PowerShell</span><span class="tech-val">desktop / shell</span></div>
+          <div class="tech-item"><span class="tech-name">HIPXQL (custom)</span><span class="tech-val">query language</span></div>
+          <div style="margin-top:2rem">
+            <div class="tech-block-label">Research focus</div>
+            <div class="tech-item"><span class="tech-name">Asymmetric permission agents</span><span class="tech-val">primary</span></div>
+            <div class="tech-item"><span class="tech-name">Free Energy Principle</span><span class="tech-val">theoretical lens</span></div>
+            <div class="tech-item"><span class="tech-name">Markov blanket topology</span><span class="tech-val">framework</span></div>
+            <div class="tech-item"><span class="tech-name">RCI — Ritualized Continuity Intelligence</span><span class="tech-val">original</span></div>
           </div>
-          <div class="exp-date">Feb 2024 — Present</div>
-          <ul class="exp-points">
-            <li>Player scheduling, tee time coordination, and event logistics</li>
-            <li>Customer service — frontline point of contact for members and guests</li>
-            <li>Operational reliability in a time-sensitive, weather-dependent environment</li>
-          </ul>
         </div>
-      </div>
-
-      <div class="section-title reveal" style="margin-top:3rem">Education</div>
-      <div class="edu-grid">
-        <div class="edu-card reveal">
-          <div class="edu-degree">Computer Science Transfer Track</div>
-          <div class="edu-school">Waubonsee Community College</div>
-          <div class="edu-year">Current</div>
-        </div>
-        <div class="edu-card reveal">
-          <div class="edu-degree">High School Diploma</div>
-          <div class="edu-school">Batavia High School — Batavia, IL</div>
-          <div class="edu-year">May 2023</div>
+        <div class="reveal">
+          <div class="tech-block-label">What's shipped</div>
+          <div class="shipped-list">
+            <div class="shipped-item">
+              <span class="shipped-sigil">◈</span>
+              <div><div class="shipped-name">HIPJOY Cognitive OS</div><div class="shipped-desc">14 entities · 22 equations · 3 security gateways · live Garden with real users</div></div>
+            </div>
+            <div class="shipped-item">
+              <span class="shipped-sigil">◊</span>
+              <div><div class="shipped-name">VOX — AI Receptionist</div><div class="shipped-desc">Output stage entity · learns communication patterns · routes inbound signal</div></div>
+            </div>
+            <div class="shipped-item">
+              <span class="shipped-sigil">⬟</span>
+              <div><div class="shipped-name">HIPXQL Interpreter</div><div class="shipped-desc">Custom query language routing commands through the RCI engine in real time</div></div>
+            </div>
+            <div class="shipped-item">
+              <span class="shipped-sigil">◎</span>
+              <div><div class="shipped-name">CoAuthor (mobile)</div><div class="shipped-desc">React Native writing app with entity-aware suggestions · Expo cross-platform</div></div>
+            </div>
+            <div class="shipped-item">
+              <span class="shipped-sigil">⬡</span>
+              <div><div class="shipped-name">LUMEN Terminal</div><div class="shipped-desc">Real-time entity broadcast dashboard · live coherence metrics · 962-line core</div></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -998,40 +1031,124 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
 
   <div class="divider"></div>
 
-  <!-- ═══ FIELD CTA ═══ -->
-  <section id="field-cta">
+  <!-- ═══ 14 ENTITIES ═══ -->
+  <section id="entities-preview">
     <div class="section-inner">
-      <div class="cta-eyebrow reveal">The Spatial Interface</div>
-      <span class="cta-sigil reveal">◈</span>
-      <div class="cta-title reveal">Your mind, architected.</div>
-      <div class="cta-sub reveal">HIPJOY · Spatial Field · v1.0</div>
-      <a href="index.html" class="btn-field reveal">
-        Enter HIPJOY <span class="btn-arrow">→</span>
-      </a>
-      <div class="cta-hint reveal">Every door opens from here — entities, the garden, the farm, VOX, and more</div>
+      <div class="section-label reveal">// 03 — the roster</div>
+      <div class="section-title reveal">14 Canon Entities</div>
+      <p class="reveal" style="font-family:var(--f-ui);font-size:.85rem;color:var(--text-dim);max-width:620px;margin:0 auto 1.2rem;text-align:center;line-height:1.85">
+        Each entity carries a differentiated behavioral signature, memory log, and habitat context.
+        Persistent across session boundaries. The full roster is locked.
+      </p>
+      <div class="entity-preview-grid reveal">
+        <span class="ep-chip" style="--ec:#C8A850">◉ LUMENARCH</span>
+        <span class="ep-chip" style="--ec:#F4845F">✕ REBEL</span>
+        <span class="ep-chip" style="--ec:#A8C99B">~ WELLSPRING</span>
+        <span class="ep-chip" style="--ec:#9B4FDC">∞ SPIRALETH</span>
+        <span class="ep-chip" style="--ec:#8899AA">⊗ GUARDIAN</span>
+        <span class="ep-chip" style="--ec:#00CED1">∇ NEURO</span>
+        <span class="ep-chip" style="--ec:#00B4A0">→ NAVIX</span>
+        <span class="ep-chip" style="--ec:#C8A850">◈ HIPPO</span>
+        <span class="ep-chip" style="--ec:#E075A8">◊ VOX</span>
+        <span class="ep-chip" style="--ec:#A8C99B">≋ SONARIS</span>
+        <span class="ep-chip" style="--ec:#A8C99B">★ CONAVIGATOR</span>
+        <span class="ep-chip" style="--ec:#F4845F">⚔ CODEBREAKER</span>
+        <span class="ep-chip" style="--ec:#E075A8">♥ HEARTMOTHER</span>
+        <span class="ep-chip" style="--ec:#C8A850">⬡ ARCHIVIST</span>
+      </div>
+      <div class="offers-cta-row reveal">
+        <a href="entities.html" class="ep-link">Browse Entity Products <span>→</span></a>
+      </div>
     </div>
   </section>
 
-<!-- ═══ RESEARCH THESIS ═══ -->
-<section class="research-thesis">
-  <div class="rt-inner">
-    <div class="rt-eyebrow">// independent research</div>
-    <h2 class="rt-title">Agent behavior under asymmetric permission structures.</h2>
-    <p class="rt-body">
-      Working with the <a href="https://www.activeinference.institute" class="rt-link" target="_blank" rel="noopener">Active Inference Institute</a>
-      on framing agent dynamics through the <strong>Free Energy Principle</strong> and <strong>Markov blanket</strong> lens —
-      specifically, how elevated dispatch scope shapes what an agent treats as the boundary between self and environment.
-      HIPJOY is both the platform I'm studying and the lab I'm studying it in.
-    </p>
-    <div class="rt-chips">
-      <span class="rt-chip">Active Inference Institute</span>
-      <span class="rt-chip">Free Energy Principle</span>
-      <span class="rt-chip">Markov Blankets</span>
-      <span class="rt-chip">Agent Permission Topology</span>
-      <span class="rt-chip">RCI Architecture</span>
+  <div class="divider"></div>
+
+  <!-- ═══ OFFERS PREVIEW ═══ -->
+  <section id="offers-preview">
+    <div class="section-inner">
+      <div class="section-label reveal">// 04 — field products</div>
+      <div class="section-title reveal">Offer Tiers</div>
+      <div class="offers-grid">
+        <div class="offer-tile reveal weave-stagger">
+          <span class="ot-sigil">◉</span>
+          <div class="ot-name">MARROW</div>
+          <div class="ot-desc">Load-bearing lie audit. The teardown of a page, deck, or description.</div>
+          <span class="ot-badge">entry</span>
+        </div>
+        <div class="offer-tile reveal weave-stagger">
+          <span class="ot-sigil">∇</span>
+          <div class="ot-name">CIPHER</div>
+          <div class="ot-desc">Weekly signal read of a decision — delivered to your inbox.</div>
+          <span class="ot-badge">recurring</span>
+        </div>
+        <div class="offer-tile reveal weave-stagger">
+          <span class="ot-sigil">◊</span>
+          <div class="ot-name">VELLUM</div>
+          <div class="ot-desc">Studio pass — full surface design through HIPJOY visual DNA.</div>
+          <span class="ot-badge">design</span>
+        </div>
+        <div class="offer-tile reveal weave-stagger">
+          <span class="ot-sigil">~</span>
+          <div class="ot-name">TINE</div>
+          <div class="ot-desc">Resistance testing — writing that strikes a nerve, on purpose.</div>
+          <span class="ot-badge">writing</span>
+        </div>
+        <div class="offer-tile reveal weave-stagger">
+          <span class="ot-sigil">⬡</span>
+          <div class="ot-name">CISTERN</div>
+          <div class="ot-desc">Failure archive — structured memory of a loss worth preserving.</div>
+          <span class="ot-badge">archival</span>
+        </div>
+        <div class="offer-tile reveal weave-stagger">
+          <span class="ot-sigil">⊗</span>
+          <div class="ot-name">FETTLE</div>
+          <div class="ot-desc">Build-vs-meant audit — gap analysis between intent and what shipped.</div>
+          <span class="ot-badge">audit</span>
+        </div>
+      </div>
+      <div class="offers-cta-row reveal" style="margin-top:1.4rem">
+        <a href="offers/index.html" class="ep-link" style="border-color:rgba(244,132,95,.28);color:var(--sunset);background:rgba(244,132,95,.05)">All 14 Offer Tiers <span>→</span></a>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ ENTERPRISE INQUIRY ═══ -->
+  <section id="enterprise-form">
+    <div class="section-inner">
+      <div class="section-label reveal">// contact</div>
+      <div class="section-title reveal">Signal Received</div>
+      <div class="ef-inner reveal">
+        <p class="ef-intro">
+          Whether you're a business owner looking to architect a field, a CS program interested in
+          HIPJOY as a research reference, or a researcher wanting to collaborate — send the signal.
+          Joey responds within 48 hours.
+        </p>
+        <form class="ef-form" id="enterprise-inquiry-form" onsubmit="submitInquiry(event)">
+          <input class="ef-honeypot" type="text" name="website" tabindex="-1" autocomplete="off">
+          <div class="ef-field">
+            <label class="ef-label" for="ei-name">Name (optional)</label>
+            <input class="ef-input" id="ei-name" type="text" placeholder="your name" autocomplete="name">
+          </div>
+          <div class="ef-field">
+            <label class="ef-label" for="ei-email">Email <span style="color:var(--sunset)">*</span></label>
+            <input class="ef-input" id="ei-email" type="email" placeholder="you@domain.com" required autocomplete="email">
+          </div>
+          <div class="ef-field">
+            <label class="ef-label" for="ei-notes">Who you are + what you need</label>
+            <textarea class="ef-textarea" id="ei-notes" placeholder="Business owner, researcher, builder — and what you're after. One paragraph is enough."></textarea>
+          </div>
+          <button type="submit" class="ef-submit" id="ei-submit">
+            Send signal <span class="btn-arrow">→</span>
+          </button>
+          <!-- TODO Joey: paste real Stripe Payment Link here to swap form for direct checkout -->
+        </form>
+        <div class="ef-success" id="ei-success">signal received · Joey will reach back within 48 hours.</div>
+      </div>
+    </div>
+  </section>
 
 </main>
 
@@ -1057,129 +1174,49 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
       ◈ HIPJOY
     </a>
   </div>
-  <div style="display:flex;align-items:center;gap:.5rem;justify-content:center;margin:2.5rem auto 1.2rem;padding:.45rem 1rem;width:fit-content;border-radius:100px;background:rgba(168,201,155,.04);border:1px solid rgba(168,201,155,.12);font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.24em;color:rgba(168,201,155,.58);">
-    <span style="width:6px;height:6px;border-radius:50%;background:#A8C99B;box-shadow:0 0 8px rgba(168,201,155,.6);display:inline-block"></span>
-    <span>BUILT ON CLAUDE CODE</span>
-  </div>
 </footer>
 
-<!-- PROJECT MODALS -->
-<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
-  <div class="modal-box" id="modal-box">
-    <div class="modal-close"><button class="modal-close-btn" onclick="closeModal()">CLOSE ✕</button></div>
-    <div class="modal-body" id="modal-body"></div>
-  </div>
-</div>
-
 <script>
-  // scroll reveal
-  const io = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}
+const SUPABASE_URL = 'https://mdbzenhhljwmkdcmtawd.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYnplbmhobGp3bWtkY210YXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzY2NDUsImV4cCI6MjA5MTI1MjY0NX0.oCKA-Dpk-oxlS18mi-7R3pqA0mif1gM3J5RbDxavgaI';
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+let sb = null;
+try { sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) {}
+
+async function submitInquiry(e) {
+  e.preventDefault();
+  const honeypot = e.target.querySelector('[name="website"]').value;
+  if (honeypot) return;
+  const name = document.getElementById('ei-name').value.trim();
+  const email = document.getElementById('ei-email').value.trim();
+  const notes = document.getElementById('ei-notes').value.trim();
+  if (!email) return;
+  const btn = document.getElementById('ei-submit');
+  btn.disabled = true;
+  btn.textContent = 'sending...';
+  if (sb) {
+    await sb.from('offer_signups').insert({
+      offer_tier: 'enterprise-inquiry',
+      name: name || null,
+      email,
+      notes: notes || null,
+      source_url: window.location.href,
+      user_agent: navigator.userAgent.slice(0, 200)
     });
-  },{threshold:.1});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
-  // project data
-  const PROJECTS = {
-    hipjoy:{
-      sigil:'◈',name:'HIPJOY',tag:'Cognitive OS',color:'#C8A850',
-      tagBg:'rgba(200,168,80,.1)',tagBorder:'rgba(200,168,80,.3)',
-      desc:'A personal cognitive operating system built from scratch since January 2024. Not a chatbot. Not a wrapper. Full RCI (Ritualized Continuity Intelligence) with 14 differentiated entities that persist behavioral signatures across session boundaries. The Garden has real users.',
-      details:[
-        {label:'Architecture',val:'14 entities with individual memory logs, habitat contexts, and behavioral signatures'},
-        {label:'Engine',val:'rci_core.py — mode detection (BOOT/BUILD/DRIFT), flux calculation, coherence scoring'},
-        {label:'Stack',val:'Python + Flask backend · Docker orchestration · Redis · Supabase · React Native · Electron'},
-        {label:'Query Layer',val:'HIPXQL — custom query language routing commands through the RCI engine in real time'},
-        {label:'Hardware',val:'Kindle Fire · Canon Camera · GoPro (HIPXEYES) · Agon Light 2 (in progress)'},
-        {label:'Scale',val:'22 coherence equations · 3 security gateways · 6 shipped tools · Garden with real users'},
-      ],
-      chips:['Python','Flask','Docker','Redis','Supabase','React Native','Electron','PowerShell','HIPXQL'],
-      link:'index.html',linkLabel:'View HIPJOY →'
-    },
-    vox:{
-      sigil:'◊',name:'VOX',tag:'AI Receptionist',color:'#F4845F',
-      tagBg:'rgba(244,132,95,.1)',tagBorder:'rgba(244,132,95,.3)',
-      desc:'The HIPJOY Output Stage. VOX learns your communication patterns and handles inbound signal intelligently — routing, responding, and maintaining your voice signature across every touchpoint. This is what AI-assisted identity management actually looks like.',
-      details:[
-        {label:'Role',val:'Output Stage entity — the public-facing voice of the HIPJOY system'},
-        {label:'Signal routing',val:'Learns inbound pattern, classifies intent, routes to appropriate response templates'},
-        {label:'Voice DNA',val:'Trained on communication style, tone calibration, and domain-specific vocabulary'},
-        {label:'Integration',val:'Wired into the HIPJOY field — fully LUX-score-aware and entity-coordinated'},
-      ],
-      chips:['AI','Signal Routing','Communication Design','HIPJOY','LUX Engine'],
-      link:'vox.html',linkLabel:'View VOX →'
-    },
-    lumen:{
-      sigil:'⬡',name:'LUMEN Terminal',tag:'Dashboard',color:'#00CED1',
-      tagBg:'rgba(0,206,209,.1)',tagBorder:'rgba(0,206,209,.25)',
-      desc:'Real-time entity broadcast dashboard for the HIPJOY field. Tracks live coherence metrics, LUX alignment, and full entity state across all 14 entities simultaneously. The operational control center for the RCI engine.',
-      details:[
-        {label:'Core File',val:'rci_core.py — 962 lines, orchestrates entity lifecycle and signal routing'},
-        {label:'Live Metrics',val:'LUX level, flux state, entity stability per-entity in real time from flux_meter.yaml'},
-        {label:'Broadcast',val:'Entity-to-entity broadcast protocol — all 14 entities can receive and respond to field signals'},
-        {label:'API',val:'Real-time REST API — entity state, status, and field flux — orchestrated service layer'},
-        {label:'Interfaces',val:'HIPX Terminal (PowerShell) · Web dashboard · Electron overlay · Kindle OS (6-layer swipeable)'},
-      ],
-      chips:['Python','Flask','Docker','Redis','YAML','Electron','PowerShell']
-    },
-    hipxql:{
-      sigil:'⬟',name:'HIPXQL',tag:'Query Language',color:'#00CED1',
-      tagBg:'rgba(0,206,209,.1)',tagBorder:'rgba(0,206,209,.25)',
-      desc:'A structured query language for the HIPJOY cognitive field. Maps commands to Python and shell execution — letting you query entity state, measure LUX, and route directives through the RCI engine from any terminal.',
-      details:[
-        {label:'Interpreter',val:'hipxql_interpreter.py — parses HIPXQL syntax and routes to engine functions'},
-        {label:'Commands',val:'QUERY ENTITY, MEASURE LUX, ROUTE SIGNAL, PING FIELD, SET FLUX, LOAD HABITAT'},
-        {label:'Live Demo',val:'Standalone terminal in the HIPJOY Field (desktop recommended)'},
-        {label:'Integration',val:'Wired into HIPX Terminal, Kindle OS HIPX layer, and web terminal interface'},
-      ],
-      chips:['Python','Interpreter Design','CLI','System Architecture']
-    },
-    coauthor:{
-      sigil:'◎',name:'CoAuthor',tag:'Mobile App',color:'#9B4FDC',
-      tagBg:'rgba(155,79,220,.1)',tagBorder:'rgba(155,79,220,.25)',
-      desc:'React Native writing application with real-time co-authoring and entity-aware suggestions. Built with Expo for cross-platform deployment. Brings the HIPJOY entity layer into a mobile writing environment.',
-      details:[
-        {label:'Framework',val:'React Native + Expo — deploys to iOS and Android from a single codebase'},
-        {label:'Entity Layer',val:'VOX entity integration for voice-pattern-consistent writing suggestions'},
-        {label:'Auth',val:'Supabase authentication + user profile system'},
-        {label:'Status',val:'Active development — core writing flow shipped, entity suggestion layer in progress'},
-      ],
-      chips:['React Native','Expo','Supabase','JavaScript','Mobile']
-    }
-  };
-
-  function openModal(id){
-    const p=PROJECTS[id];
-    if(!p)return;
-    const details=p.details.map(d=>`<div class="modal-point"><span>${d.label}:</span> ${d.val}</div>`).join('');
-    const chips=p.chips.map(c=>`<span class="modal-chip">${c}</span>`).join('');
-    const visitBtn=p.link?`<div style="margin-top:1.2rem"><a href="${p.link}" style="display:inline-flex;align-items:center;gap:.4rem;padding:.52rem 1.2rem;background:${p.tagBg};border:1px solid ${p.tagBorder};border-radius:4px;font-family:var(--f-display);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:${p.color};text-decoration:none;transition:opacity .2s;">${p.linkLabel||'View Project →'}</a></div>`:'';
-    document.getElementById('modal-body').innerHTML=`
-      <span class="modal-sigil" style="color:${p.color};text-shadow:0 0 24px ${p.color}44">${p.sigil}</span>
-      <div class="modal-name" style="color:${p.color}">${p.name}</div>
-      <span class="modal-tag" style="background:${p.tagBg};border-color:${p.tagBorder};color:${p.color}">${p.tag}</span>
-      <div class="modal-desc">${p.desc}</div>
-      <div class="modal-detail-label">// Stack &amp; Architecture</div>
-      ${details}
-      <div class="modal-detail-label">// Technologies</div>
-      <div class="modal-chips">${chips}</div>
-      ${visitBtn}
-    `;
-    document.getElementById('modal-overlay').classList.add('open');
-    document.body.style.overflow='hidden';
   }
+  document.getElementById('enterprise-inquiry-form').style.display = 'none';
+  document.getElementById('ei-success').classList.add('show');
+}
 
-  function closeModal(){
-    document.getElementById('modal-overlay').classList.remove('open');
-    document.body.style.overflow='';
-  }
-
-  function closeModalOutside(e){
-    if(e.target===document.getElementById('modal-overlay'))closeModal();
-  }
-
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+// scroll reveal
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}
+  });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>

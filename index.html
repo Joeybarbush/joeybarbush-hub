@@ -463,24 +463,7 @@ body::after {
 @keyframes farm-d6{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(16px,-20px) scale(1.07)}70%{transform:translate(-14px,12px) scale(.94)}}
 @media(max-width:900px){.field-spine{display:none}}
 @media(prefers-reduced-motion:reduce){.field-spine::before,.lux-sweep{animation:none!important}}
-/* ── CLAUDE CODE FOOTER BADGE ────────────────────────────── */
-.cc-badge{
-  display:flex;align-items:center;gap:.5rem;justify-content:center;
-  margin:3rem auto 0;padding:.5rem 1rem;
-  width:fit-content;border-radius:100px;
-  background:rgba(168,201,155,.04);
-  border:1px solid rgba(168,201,155,.12);
-  font-family:'JetBrains Mono',monospace;
-  font-size:.5rem;letter-spacing:.24em;
-  color:rgba(168,201,155,.55);
-}
-.cc-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--sage);box-shadow:0 0 8px rgba(168,201,155,.6);
-  animation:blink 2s ease-in-out infinite;
-}
 @keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
-.cc-txt{}
 </style>
 </head>
 <body>
@@ -529,7 +512,7 @@ body::after {
   <div class="hero-content">
     <div class="hero-eyebrow">
       <div class="eyebrow-line"></div>
-      COGNITIVE OS · BUILT ON CLAUDE CODE
+      COGNITIVE OS · INDEPENDENT BUILD
       <div class="eyebrow-line"></div>
     </div>
 
@@ -545,7 +528,6 @@ body::after {
 
     <div class="built-on">
       <span class="bo-lbl">BUILT ON</span>
-      <span class="bo-chip bo-claude">◆ Claude Code</span>
       <span class="bo-chip bo-sage">◈ Supabase</span>
       <span class="bo-chip bo-sunset">◊ React Native</span>
     </div>
@@ -660,10 +642,6 @@ body::after {
 
   </div>
 
-  <div class="cc-badge">
-    <span class="cc-dot"></span>
-    <span class="cc-txt">BUILT ON CLAUDE CODE</span>
-  </div>
 </section>
 
 <script>
@@ -672,7 +650,6 @@ const LINES = [
   '14 entities, 11 seeds active',
   'routing engine: ACTIVE',
   'field coherence: 99.1 LUX',
-  'cognitive OS — built on Claude Code',
   'LUX SEEDS — now entering beta',
 ];
 let li=0,ci=0,del=false,pause=0;

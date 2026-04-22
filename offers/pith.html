@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PITH — HIPJOY Offers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_shared.css">
+  <style>:root{--entity-color:#A8C99B;--entity-rgb:168,201,155}</style>
+</head>
+<body>
+<div class="lux-sweep" aria-hidden="true"></div>
+<div class="field-spine" aria-hidden="true"></div>
+<nav>
+  <a href="../index.html" class="nav-logo">&#9672; HIPJOY</a>
+  <a href="index.html" class="nav-back">&larr; All Offers</a>
+</nav>
+<main>
+  <section class="offer-hero">
+    <div class="offer-hero-inner">
+      <div class="offer-eyebrow reveal">HIPJOY Offers &middot; Writing &middot; One-shot</div>
+      <span class="offer-sigil reveal">&#8734;</span>
+      <h1 class="offer-name reveal"><span>PITH</span></h1>
+      <p class="offer-tagline reveal">Compression. Many paragraphs, one sentence.</p>
+      <div class="offer-price reveal">Tier: <strong>Writing &middot; One-shot</strong> &nbsp;&middot;&nbsp; contact for rate</div>
+    </div>
+  </section>
+  <div class="offer-body">
+    <div class="offer-section-label reveal">// what this is</div>
+    <p class="reveal">PITH is the compression tier. You send paragraphs — an explanation, a bio, a mission statement, a manifesto, a pitch, anything that has too many words in it. Joey reads all of it and writes one sentence that holds everything worth keeping.</p>
+    <div class="offer-section-label reveal">// how it works</div>
+    <p class="reveal">The sentence is not a summary. It is a distillation. The goal is to find the single load-bearing claim and strip everything else away without losing any of the weight.</p>
+  </div>
+  <div class="offer-form-wrap reveal">
+    <div class="form-heading">Send the signal</div>
+    <div class="form-sub">Joey responds within 48 hours.</div>
+    <form class="of-form" id="offer-form" onsubmit="submitOffer(event)">
+      <input class="of-honeypot" type="text" name="website" tabindex="-1" autocomplete="off">
+      <div class="of-field">
+        <label class="of-label" for="of-name">Name (optional)</label>
+        <input class="of-input" id="of-name" type="text" placeholder="your name" autocomplete="name">
+      </div>
+      <div class="of-field">
+        <label class="of-label" for="of-email">Email <span style="color:#F4845F">*</span></label>
+        <input class="of-input" id="of-email" type="email" placeholder="you@domain.com" required autocomplete="email">
+      </div>
+      <div class="of-field">
+        <label class="of-label" for="of-notes">PITH notes</label>
+        <textarea class="of-textarea" id="of-notes" placeholder="paste the paragraphs you want compressed to one sentence"></textarea>
+      </div>
+      <button type="submit" class="of-submit" id="of-submit">Send signal &rarr;</button>
+      <!-- TODO Joey: paste real Stripe Payment Link here to swap form for direct checkout -->
+    </form>
+    <div class="of-success" id="of-success">signal received &middot; Joey will reach back within 48 hours.</div>
+  </div>
+</main>
+<footer>
+  <span class="footer-sig">&#8734; PITH &nbsp;&middot;&nbsp; <a href="../portfolio.html">Joey Barbush</a> &nbsp;&middot;&nbsp; <a href="mailto:joeybarbush@gmail.com">joeybarbush@gmail.com</a></span>
+  <span class="footer-sig"><a href="index.html">All Offers</a> &nbsp;&middot;&nbsp; <a href="../index.html">HIPJOY</a></span>
+</footer>
+<script>
+const SUPABASE_URL = 'https://mdbzenhhljwmkdcmtawd.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYnplbmhobGp3bWtkY210YXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzY2NDUsImV4cCI6MjA5MTI1MjY0NX0.oCKA-Dpk-oxlS18mi-7R3pqA0mif1gM3J5RbDxavgaI';
+const OFFER_TIER = 'pith';
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+let sb = null;
+try { sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) {}
+async function submitOffer(e) {
+  e.preventDefault();
+  if (e.target.querySelector('[name="website"]').value) return;
+  const name = document.getElementById('of-name').value.trim();
+  const email = document.getElementById('of-email').value.trim();
+  const notes = document.getElementById('of-notes').value.trim();
+  if (!email) return;
+  const btn = document.getElementById('of-submit');
+  btn.disabled = true; btn.textContent = 'sending...';
+  if (sb) {
+    await sb.from('offer_signups').insert({
+      offer_tier: OFFER_TIER, name: name || null, email,
+      notes: notes || null, source_url: window.location.href,
+      user_agent: navigator.userAgent.slice(0, 200)
+    });
+  }
+  document.getElementById('offer-form').style.display = 'none';
+  document.getElementById('of-success').classList.add('show');
+}
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
