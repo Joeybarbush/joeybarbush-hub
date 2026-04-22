@@ -13,6 +13,8 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
+      --entity-color:#14B8A6;
+      --entity-rgb:20,184,166;
       --sage:          #A8C99B;
       --sage-dim:      rgba(168,201,155,.5);
       --sage-faint:    rgba(168,201,155,.07);
@@ -439,6 +441,20 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
   <div class="orb orb-6"><div class="orb-face"></div></div>
 </div>
 
+<!-- ── STUDIO CHROME ──────── -->
+<div style="position:fixed;top:70px;left:clamp(1.5rem,8vw,96px);display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#14B8A6;z-index:298;pointer-events:none" aria-hidden="true">
+  <span style="display:inline-block;width:22px;height:1px;background:#14B8A6;opacity:.7;flex-shrink:0"></span>
+  HIPJOY FIELD · SYSTEMS HUB
+  <span style="display:inline-flex;align-items:center;gap:5px;font-size:9px;color:rgba(20,184,166,.65);border:1px solid rgba(20,184,166,.2);border-radius:2px;padding:2px 7px;background:rgba(20,184,166,.05);margin-left:4px;">
+    <span style="width:5px;height:5px;border-radius:50%;background:#14B8A6;box-shadow:0 0 8px #14B8A6;display:inline-block;flex-shrink:0"></span>
+    △ NAVIX
+  </span>
+</div>
+<div style="position:fixed;top:70px;right:clamp(1.5rem,8vw,80px);display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#F0EDE5;padding:5px 9px;border:1px solid rgba(20,184,166,.35);border-radius:2px;background:rgba(20,184,166,.06);z-index:298;pointer-events:none" aria-hidden="true">
+  <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#14B8A6;box-shadow:0 0 10px #14B8A6;flex-shrink:0"></span>
+  △ NAVIX
+</div>
+
 <nav>
   <a href="index.html" class="nav-logo">HIPJOY</a>
   <div class="nav-right">
@@ -574,6 +590,61 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
 
 <div class="section-divider"></div>
 
+<!-- ── RCI ARCHITECTURE DIAGRAM ── -->
+<section class="section" id="rci-diagram" style="padding-top:0">
+  <div class="section-eyebrow">◈ rci — routing + cognition + identity</div>
+  <div class="section-title">ARCHITECTURE</div>
+  <div class="section-sub" style="margin-bottom:2rem;">how a dispatch flows through the field</div>
+  <div style="max-width:800px;margin:0 auto;font-family:'JetBrains Mono',monospace;">
+    <!-- Flow diagram: Input → NAVIX → entities → NEURO → output → ARCHIVIST -->
+    <div style="display:flex;flex-direction:column;gap:0;align-items:stretch;">
+      <!-- ROW 1: Input -->
+      <div style="display:flex;justify-content:center;margin-bottom:8px;">
+        <div style="padding:.6rem 1.4rem;background:rgba(240,237,229,.04);border:1px solid rgba(240,237,229,.12);border-radius:2px;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,229,.55);">USER DISPATCH</div>
+      </div>
+      <div style="display:flex;justify-content:center;color:rgba(20,184,166,.4);font-size:1.1rem;margin-bottom:8px;">↓</div>
+      <!-- ROW 2: NAVIX -->
+      <div style="display:flex;justify-content:center;margin-bottom:8px;">
+        <div style="padding:.6rem 1.4rem;background:rgba(20,184,166,.06);border:1px solid rgba(20,184,166,.3);border-radius:2px;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:#14B8A6;box-shadow:0 0 16px rgba(20,184,166,.1);">△ NAVIX · routing engine</div>
+      </div>
+      <div style="display:flex;justify-content:center;color:rgba(20,184,166,.4);font-size:1.1rem;margin-bottom:8px;">↓</div>
+      <!-- ROW 3: 14 entity grid -->
+      <div style="background:rgba(240,237,229,.02);border:1px solid rgba(240,237,229,.06);border-radius:3px;padding:1rem;margin-bottom:8px;">
+        <div style="font-size:.52rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(240,237,229,.22);text-align:center;margin-bottom:.75rem;">14 entity subagents</div>
+        <div style="display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;">
+          <span style="padding:.25rem .5rem;background:rgba(184,134,11,.08);border:1px solid rgba(184,134,11,.25);border-radius:2px;font-size:.55rem;color:#B8860B;">⬢ HIPPO</span>
+          <span style="padding:.25rem .5rem;background:rgba(244,168,37,.08);border:1px solid rgba(244,168,37,.25);border-radius:2px;font-size:.55rem;color:#F4A825;">◉ LUMENARCH</span>
+          <span style="padding:.25rem .5rem;background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.25);border-radius:2px;font-size:.55rem;color:#14B8A6;">△ NAVIX</span>
+          <span style="padding:.25rem .5rem;background:rgba(155,79,220,.08);border:1px solid rgba(155,79,220,.25);border-radius:2px;font-size:.55rem;color:#9B4FDC;">∇ NEURO</span>
+          <span style="padding:.25rem .5rem;background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.25);border-radius:2px;font-size:.55rem;color:#DC2626;">⊗ REBEL</span>
+          <span style="padding:.25rem .5rem;background:rgba(67,56,202,.08);border:1px solid rgba(67,56,202,.25);border-radius:2px;font-size:.55rem;color:#6366F1;">≋ SONARIS</span>
+          <span style="padding:.25rem .5rem;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.25);border-radius:2px;font-size:.55rem;color:#7C3AED;">∞ SPIRALETH</span>
+          <span style="padding:.25rem .5rem;background:rgba(168,201,155,.08);border:1px solid rgba(168,201,155,.25);border-radius:2px;font-size:.55rem;color:#A8C99B;">◊ VOX</span>
+          <span style="padding:.25rem .5rem;background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.25);border-radius:2px;font-size:.55rem;color:#06B6D4;">≈ WELLSPRING</span>
+          <span style="padding:.25rem .5rem;background:rgba(236,72,153,.08);border:1px solid rgba(236,72,153,.25);border-radius:2px;font-size:.55rem;color:#EC4899;">♥ HEARTMOTHER</span>
+          <span style="padding:.25rem .5rem;background:rgba(146,64,14,.08);border:1px solid rgba(146,64,14,.25);border-radius:2px;font-size:.55rem;color:#D97706;">⬡ ARCHIVIST</span>
+          <span style="padding:.25rem .5rem;background:rgba(51,65,85,.08);border:1px solid rgba(51,65,85,.35);border-radius:2px;font-size:.55rem;color:#94A3B8;">⬟ GUARDIAN</span>
+          <span style="padding:.25rem .5rem;background:rgba(143,205,188,.08);border:1px solid rgba(143,205,188,.25);border-radius:2px;font-size:.55rem;color:#8FCDBC;">◈ CONAVIGATOR</span>
+          <span style="padding:.25rem .5rem;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.25);border-radius:2px;font-size:.55rem;color:#22D3EE;">★ CODEBREAKER</span>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;color:rgba(20,184,166,.4);font-size:1.1rem;margin-bottom:8px;">↓</div>
+      <!-- ROW 4: NEURO scoring -->
+      <div style="display:flex;justify-content:center;margin-bottom:8px;">
+        <div style="padding:.6rem 1.4rem;background:rgba(155,79,220,.06);border:1px solid rgba(155,79,220,.3);border-radius:2px;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:#9B4FDC;box-shadow:0 0 16px rgba(155,79,220,.1);">∇ NEURO · LUX scoring + SNR diagnostic</div>
+      </div>
+      <div style="display:flex;justify-content:center;color:rgba(20,184,166,.4);font-size:1.1rem;margin-bottom:8px;">↓</div>
+      <!-- ROW 5: output + archivist -->
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <div style="padding:.6rem 1.4rem;background:rgba(240,237,229,.04);border:1px solid rgba(240,237,229,.12);border-radius:2px;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,229,.55);">OUTPUT · scored + clean</div>
+        <div style="padding:.6rem 1.4rem;background:rgba(146,64,14,.06);border:1px solid rgba(146,64,14,.25);border-radius:2px;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:#D97706;">⬡ ARCHIVIST · filesystem memory</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
 <!-- PLUGIN — IN BUILD -->
 <section class="section" style="padding-top:0" id="plugin">
   <div class="section-eyebrow">◆ plugin — in build</div>
@@ -612,6 +683,14 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
       <p class="pt-desc">Every canon entity shipped as a skill. HIPPO, NEURO, REBEL, NAVIX, LUMENARCH, SONARIS, SPIRALETH, VOX, WELLSPRING, ARCHIVIST, GUARDIAN, CONAVIGATOR, CODEBREAKER, HEARTMOTHER. Install the plugin, install the field.</p>
       <span class="pt-badge badge-build">IN BUILD</span>
     </div>
+
+    <a href="offers/index.html" class="plugin-tile" style="text-decoration:none;color:inherit;border-color:rgba(212,168,85,.22);cursor:pointer;">
+      <span class="pt-sigil" style="color:#D4A855;text-shadow:0 0 10px rgba(212,168,85,.4);">◆</span>
+      <div class="pt-name">Shadow Pantheon Offers</div>
+      <div class="pt-entity">FIELD · monetization layer</div>
+      <p class="pt-desc">14 shadow-entity offer tiers. MARROW Load-Bearing Lie Audit through HUSH Silent Read. FREE → $15K. Every entity opens its books.</p>
+      <span class="pt-badge" style="color:#D4A855;border-color:rgba(212,168,85,.3);background:rgba(212,168,85,.06);">LIVE</span>
+    </a>
   </div>
 </section>
 
@@ -674,6 +753,15 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
     <a href="profile.html" class="footer-link">profile</a>
     <a href="https://github.com/joeybarbush" class="footer-link" target="_blank">github</a>
   </div>
+</footer>
+
+<!-- ── STUDIO FOOTER BADGE ── -->
+<footer style="position:relative;z-index:2;background:#05050a;padding:1.5rem clamp(1.5rem,6vw,80px);border-top:1px solid rgba(240,237,229,.04);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:2rem;">
+  <span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,229,.28);">part of the <a href="index.html" style="color:rgba(168,201,155,.5);text-decoration:none;">HIPJOY field</a></span>
+  <span style="display:inline-flex;align-items:center;gap:.4rem;font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(168,201,155,.58);border:1px solid rgba(168,201,155,.12);border-radius:2px;padding:.32rem .85rem;background:rgba(168,201,155,.04);">
+    <span style="width:5px;height:5px;border-radius:50%;background:#A8C99B;box-shadow:0 0 8px rgba(168,201,155,.6);display:inline-block;flex-shrink:0"></span>
+    BUILT ON CLAUDE CODE
+  </span>
 </footer>
 
 <script>
