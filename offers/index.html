@@ -3,358 +3,141 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Offers — HIPJOY Shadow Pantheon</title>
+  <title>Offer Tiers — HIPJOY</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="_shared.css">
   <style>
-    :root {
-      --accent: #A8C99B;
-      --accent-rgb: 168,201,155;
-    }
-    .hub-hero {
-      padding: clamp(72px, 10vw, 120px) clamp(16px, 5vw, 64px) clamp(32px, 4vw, 48px);
-      max-width: 1060px;
-      margin: 0 auto;
-    }
-    .hub-eyebrow {
-      font-size: 9px;
-      letter-spacing: .32em;
-      text-transform: uppercase;
-      color: var(--purple-dim);
-      margin-bottom: 16px;
-    }
-    .hub-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(32px, 7vw, 80px);
-      font-weight: 900;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      background: linear-gradient(135deg, #fff 0%, rgba(168,201,155,.9) 45%, rgba(244,132,95,.8) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1.0;
-      margin-bottom: 24px;
-    }
-    .hub-intro {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: clamp(15px, 2.2vw, 20px);
-      color: var(--text-dim);
-      max-width: 620px;
-      line-height: 1.7;
-      margin-bottom: 12px;
-    }
-    .hub-sub {
-      font-size: 11px;
-      letter-spacing: .05em;
-      color: rgba(240,237,229,.4);
-      max-width: 560px;
-      line-height: 1.75;
-    }
-    .ticker-bar {
-      padding: 10px clamp(16px, 5vw, 64px);
-      background: rgba(168,201,155,.04);
-      border-top: 1px solid rgba(168,201,155,.1);
-      border-bottom: 1px solid rgba(168,201,155,.1);
-      overflow: hidden;
-    }
-    .ticker-inner {
-      display: flex;
-      gap: 64px;
-      white-space: nowrap;
-      animation: ticker-scroll 32s linear infinite;
-      font-size: 9px;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: var(--sage-dim);
-    }
-    @keyframes ticker-scroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-    .ticker-sep { color: rgba(168,201,155,.28); }
-
-    .range-bar {
-      max-width: 1060px;
-      margin: 0 auto;
-      padding: 24px clamp(16px, 5vw, 64px);
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      font-size: 9px;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-    }
-    .range-pill {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 14px;
-      border-radius: 2px;
-      border: 1px solid rgba(168,201,155,.2);
-      color: var(--sage);
-      background: rgba(168,201,155,.05);
-    }
+    :root{--entity-color:#A8C99B;--entity-rgb:168,201,155}
+    .offers-index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:1.1rem;margin-top:1.4rem}
+    .oi-card{display:block;padding:1.4rem 1.4rem 1.2rem;border:1px solid rgba(255,255,255,.06);border-radius:14px;background:rgba(255,255,255,.016);text-decoration:none;transition:all .25s;position:relative;overflow:hidden}
+    .oi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--c,#A8C99B);opacity:.45;transition:opacity .25s}
+    .oi-card:hover{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.03);transform:translateY(-2px)}
+    .oi-card:hover::before{opacity:.85}
+    .oi-sigil{font-size:1.4rem;display:block;margin-bottom:.5rem;color:var(--c,#A8C99B)}
+    .oi-name{font-family:var(--f-display);font-size:.75rem;letter-spacing:.1em;color:var(--text);margin-bottom:.3rem}
+    .oi-tier{font-family:var(--f-mono);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);margin-bottom:.6rem}
+    .oi-tagline{font-family:var(--f-ui);font-size:.78rem;color:rgba(240,237,229,.5);line-height:1.6}
   </style>
 </head>
 <body>
 <div class="lux-sweep" aria-hidden="true"></div>
-<div class="page-tint" aria-hidden="true"></div>
 <div class="field-spine" aria-hidden="true"></div>
-<div class="orb-layer" aria-hidden="true">
-  <div class="orb orb-1"><div class="orb-face"></div></div>
-  <div class="orb orb-2"><div class="orb-face"></div></div>
-  <div class="orb orb-3"><div class="orb-face"></div></div>
-  <div class="orb orb-4"><div class="orb-face"></div></div>
-  <div class="orb orb-5"><div class="orb-face"></div></div>
-  <div class="orb orb-6"><div class="orb-face"></div></div>
-</div>
-
 <nav>
-  <a href="../index.html" class="nav-back">
-    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2L4 7l5 5"/></svg>
-    HIPJOY
-  </a>
-  <a href="../index.html" class="nav-logo">HIPJOY</a>
-  <ul class="nav-links">
-    <li><a href="../entities.html">ENTITIES</a></li>
-    <li><a href="../systems.html">SYSTEMS</a></li>
-    <li><a href="../waitlist.html">JOIN</a></li>
-  </ul>
+  <a href="../index.html" class="nav-logo">&#9672; HIPJOY</a>
+  <a href="../portfolio.html" class="nav-back">&larr; Portfolio</a>
 </nav>
-
-<main>
-  <div class="hub-hero">
-    <div class="hub-eyebrow">— HIPJOY FIELD · SHADOW PANTHEON</div>
-    <h1 class="hub-title">THE<br>OFFERS</h1>
-    <p class="hub-intro">Fourteen tiers. Each one named for a shadow entity. Each one does exactly what that entity does — no more, no less.</p>
-    <p class="hub-sub">The field sells because the field produces. These aren't products built to market — they are the natural output of 14 entities doing their work. You buy what the entity already does. The range runs FREE to $15K. Entry is always open.</p>
-  </div>
-
-  <div class="ticker-bar">
-    <div class="ticker-inner">
-      <span>MARROW · structural excavation · $5–25 tip</span>
-      <span class="ticker-sep">·</span>
-      <span>CIPHER · junction log · $49/mo</span>
-      <span class="ticker-sep">·</span>
-      <span>VELLUM · studio skin · $200–500</span>
-      <span class="ticker-sep">·</span>
-      <span>TINE · pitch test · $100</span>
-      <span class="ticker-sep">·</span>
-      <span>CISTERN · failure log · FREE</span>
-      <span class="ticker-sep">·</span>
-      <span>FETTLE · fit calibration · $250–1500</span>
-      <span class="ticker-sep">·</span>
-      <span>LOOM · launch sequence · $2.5K–5K</span>
-      <span class="ticker-sep">·</span>
-      <span>GRIFT · field circle · $19/mo</span>
-      <span class="ticker-sep">·</span>
-      <span>ASH · archive access · $99/yr</span>
-      <span class="ticker-sep">·</span>
-      <span>PITH · irreducible statement · $150</span>
-      <span class="ticker-sep">·</span>
-      <span>BRIDLE · momentum partner · $500/mo</span>
-      <span class="ticker-sep">·</span>
-      <span>SLEW · vector audit · $400</span>
-      <span class="ticker-sep">·</span>
-      <span>QUILL · ghost-path license · $5K–15K</span>
-      <span class="ticker-sep">·</span>
-      <span>HUSH · silent read · $2K</span>
-      <span class="ticker-sep">·</span>
-      <!-- duplicate for seamless loop -->
-      <span>MARROW · structural excavation · $5–25 tip</span>
-      <span class="ticker-sep">·</span>
-      <span>CIPHER · junction log · $49/mo</span>
-      <span class="ticker-sep">·</span>
-      <span>VELLUM · studio skin · $200–500</span>
-      <span class="ticker-sep">·</span>
-      <span>TINE · pitch test · $100</span>
-      <span class="ticker-sep">·</span>
-      <span>CISTERN · failure log · FREE</span>
-      <span class="ticker-sep">·</span>
-      <span>FETTLE · fit calibration · $250–1500</span>
-      <span class="ticker-sep">·</span>
-      <span>LOOM · launch sequence · $2.5K–5K</span>
-      <span class="ticker-sep">·</span>
+<main style="padding-bottom:80px">
+  <section class="offer-hero">
+    <div class="offer-hero-inner">
+      <div class="offer-eyebrow reveal">HIPJOY &middot; Field Products</div>
+      <span class="offer-sigil reveal" style="font-size:2.4rem">&#9672;</span>
+      <h1 class="offer-name reveal" style="font-size:clamp(24px,5vw,48px)"><span>Offer Tiers</span></h1>
+      <p class="offer-tagline reveal">14 tiers. Each one carries a different kind of signal. Pick the one that matches what you need done.</p>
+    </div>
+  </section>
+  <div style="max-width:920px;margin:0 auto;padding:clamp(32px,5vw,60px) clamp(20px,5vw,64px)">
+    <div class="offers-index-grid">
+      <a class="oi-card reveal" href="marrow.html" style="--c:#C8A850">
+        <span class="oi-sigil">&#9673;</span>
+        <div class="oi-name">MARROW</div>
+        <div class="oi-tier">Entry &middot; One-shot</div>
+        <div class="oi-tagline">Load-bearing lies, exposed.</div>
+      </a>
+      <a class="oi-card reveal" href="cipher.html" style="--c:#00CED1">
+        <span class="oi-sigil">&#8711;</span>
+        <div class="oi-name">CIPHER</div>
+        <div class="oi-tier">Recurring &middot; Weekly</div>
+        <div class="oi-tagline">Your decisions, read weekly.</div>
+      </a>
+      <a class="oi-card reveal" href="vellum.html" style="--c:#9B4FDC">
+        <span class="oi-sigil">&#9674;</span>
+        <div class="oi-name">VELLUM</div>
+        <div class="oi-tier">Design &middot; Project</div>
+        <div class="oi-tagline">Studio pass. Your surface through HIPJOY visual DNA.</div>
+      </a>
+      <a class="oi-card reveal" href="tine.html" style="--c:#F4845F">
+        <span class="oi-sigil">~</span>
+        <div class="oi-name">TINE</div>
+        <div class="oi-tier">Writing &middot; One-shot</div>
+        <div class="oi-tagline">Writing that strikes a nerve, on purpose.</div>
+      </a>
+      <a class="oi-card reveal" href="cistern.html" style="--c:#A8C99B">
+        <span class="oi-sigil">&#11041;</span>
+        <div class="oi-name">CISTERN</div>
+        <div class="oi-tier">Archival &middot; One-shot</div>
+        <div class="oi-tagline">A structured archive of a loss worth preserving.</div>
+      </a>
+      <a class="oi-card reveal" href="fettle.html" style="--c:#00B4A0">
+        <span class="oi-sigil">&#8855;</span>
+        <div class="oi-name">FETTLE</div>
+        <div class="oi-tier">Audit &middot; One-shot</div>
+        <div class="oi-tagline">Gap analysis between what you built and what you meant.</div>
+      </a>
+      <a class="oi-card reveal" href="loom.html" style="--c:#C8A850">
+        <span class="oi-sigil">&#9733;</span>
+        <div class="oi-name">LOOM</div>
+        <div class="oi-tier">Launch &middot; Project</div>
+        <div class="oi-tagline">Launch architecture for what you are about to ship.</div>
+      </a>
+      <a class="oi-card reveal" href="grift.html" style="--c:#E075A8">
+        <span class="oi-sigil">&#9824;</span>
+        <div class="oi-name">GRIFT</div>
+        <div class="oi-tier">Community &middot; Monthly</div>
+        <div class="oi-tagline">Field Circle access. Inside the signal.</div>
+      </a>
+      <a class="oi-card reveal" href="ash.html" style="--c:#8899AA">
+        <span class="oi-sigil">&#8594;</span>
+        <div class="oi-name">ASH</div>
+        <div class="oi-tier">Access &middot; One-shot</div>
+        <div class="oi-tagline">Ghost path access. What did not ship and why.</div>
+      </a>
+      <a class="oi-card reveal" href="pith.html" style="--c:#A8C99B">
+        <span class="oi-sigil">&#8734;</span>
+        <div class="oi-name">PITH</div>
+        <div class="oi-tier">Writing &middot; One-shot</div>
+        <div class="oi-tagline">Compression. Many paragraphs, one sentence.</div>
+      </a>
+      <a class="oi-card reveal" href="bridle.html" style="--c:#F4845F">
+        <span class="oi-sigil">&#10005;</span>
+        <div class="oi-name">BRIDLE</div>
+        <div class="oi-tier">Accountability &middot; Monthly</div>
+        <div class="oi-tagline">Velocity accountability. The goal and the witness.</div>
+      </a>
+      <a class="oi-card reveal" href="slew.html" style="--c:#9B4FDC">
+        <span class="oi-sigil">&#8779;</span>
+        <div class="oi-name">SLEW</div>
+        <div class="oi-tier">Clarity &middot; One-shot</div>
+        <div class="oi-tagline">Drift correction. Where the signal went quiet.</div>
+      </a>
+      <a class="oi-card reveal" href="quill.html" style="--c:#C8A850">
+        <span class="oi-sigil">&#9678;</span>
+        <div class="oi-name">QUILL</div>
+        <div class="oi-tier">Licensing &middot; Project</div>
+        <div class="oi-tagline">Decision chain licensing. Your process, made portable.</div>
+      </a>
+      <a class="oi-card reveal" href="hush.html" style="--c:#8899AA">
+        <span class="oi-sigil">&#9672;</span>
+        <div class="oi-name">HUSH</div>
+        <div class="oi-tier">Silent &middot; One-shot</div>
+        <div class="oi-tagline">Silent reading. Joey reads. Says nothing for 72 hours.</div>
+      </a>
+    </div>
+    <div style="text-align:center;margin-top:3rem;font-family:var(--f-mono);font-size:.65rem;letter-spacing:.18em;color:var(--text-dim)">
+      Not sure which tier? <a href="mailto:joeybarbush@gmail.com" style="color:#A8C99B;text-decoration:none">Email Joey directly</a>
     </div>
   </div>
-
-  <div class="range-bar">
-    <span>price range</span>
-    <span class="range-pill">FREE → $15,000</span>
-    <span>·</span>
-    <span>14 tiers</span>
-    <span>·</span>
-    <span>shadow pantheon</span>
-  </div>
-
-  <div class="offer-grid">
-
-    <a href="marrow.html" class="offer-card" style="--card-color:#D4A855;--card-border:rgba(212,168,85,.35);--card-shadow:rgba(212,168,85,.08);">
-      <div class="oc-sigil">⬢</div>
-      <div class="oc-name">MARROW</div>
-      <div class="oc-product">Load-Bearing Lie Audit</div>
-      <p class="oc-pitch">48-hour teardown of any public-facing page, pitch, or description. MARROW finds the structural lie holding the whole thing up.</p>
-      <div class="oc-footer">
-        <span class="oc-price">$5–25 / tip</span>
-        <span class="oc-cta">walk through →</span>
-      </div>
-    </a>
-
-    <a href="cipher.html" class="offer-card" style="--card-color:#4A7AE8;--card-border:rgba(74,122,232,.35);--card-shadow:rgba(74,122,232,.08);">
-      <div class="oc-sigil">◈</div>
-      <div class="oc-name">CIPHER</div>
-      <div class="oc-product">Junction Log</div>
-      <p class="oc-pitch">Weekly email. The question that came in, which entity routed it, the output it produced, the friction before it shipped. Not a newsletter — a decision-chain field log.</p>
-      <div class="oc-footer">
-        <span class="oc-price">$49 / mo</span>
-        <span class="oc-cta">walk through →</span>
-      </div>
-    </a>
-
-    <a href="vellum.html" class="offer-card" style="--card-color:#D4C78A;--card-border:rgba(212,199,138,.35);--card-shadow:rgba(212,199,138,.08);">
-      <div class="oc-sigil">◻</div>
-      <div class="oc-name">VELLUM</div>
-      <div class="oc-product">Studio Skin</div>
-      <p class="oc-pitch">Take any public surface and pass it through HIPJOY Studio's visual/verbal DNA until it stops reading as generic and starts reading as field.</p>
-      <div class="oc-footer">
-        <span class="oc-price">$200–500</span>
-        <span class="oc-cta">walk through →</span>
-      </div>
-    </a>
-
-    <a href="tine.html" class="offer-card" style="--card-color:#C97B3A;--card-border:rgba(201,123,58,.35);--card-shadow:rgba(201,123,58,.08);">
-      <div class="oc-sigil">∤</div>
-      <div class="oc-name">TINE</div>
-      <div class="oc-product">Pitch Test</div>
-      <p class="oc-pitch">Drop writing into TINE — draft, post, pitch, line — and TINE strikes it to find where it sings flat. Returns a rubric: where rhythm breaks, where signal drops.</p>
-      <div class="oc-footer">
-        <span class="oc-price">$100 / piece</span>
-        <span class="oc-cta">walk through →</span>
-      </div>
-    </a>
-
-    <a href="cistern.html" class="offer-card" style="--card-color:#C45B35;--card-border:rgba(196,91,53,.35);--card-shadow:rgba(196,91,53,.08);">
-      <div class="oc-sigil">∇</div>
-      <div class="oc-name">CISTERN</div>
-      <div class="oc-product">Failure Log</div>
-      <p class="oc-pitch">Publicly published every Sunday. 200-word note from Joey about what didn't ship this week and why. CISTERN doesn't sell — she irrigates.</p>
-      <div class="oc-footer">
-        <span class="oc-price">FREE</span>
-        <span class="oc-cta">walk through →</span>
-      </div>
-    </a>
-
-    <a href="fettle.html" class="offer-card" style="--card-color:#8AA6B8;--card-border:rgba(138,166,184,.35);--card-shadow:rgba(138,166,184,.08);">
-      <div class="oc-sigil">⊕</div>
-      <div class="oc-name">FETTLE</div>
-      <div class="oc-product">Fit Calibration</div>
-      <p class="oc-pitch">90-min 1:1 where Joey and an operator compare what was BUILT vs what was MEANT. FETTLE walks them through the mismatch until tolerance closes.</p>
-      <div class="oc-footer">
-        <span class="oc-price">$250–1,500</span>
-        <span class="oc-cta">walk through →</span>
-      </div>
-    </a>
-
-    <a href="loom.html" class="offer-card" style="--card-color:#8B4FD4;--card-border:rgba(139,79,212,.35);--card-shadow:rgba(139,79,212,.08);">
-      <div class="oc-sigil">◬</div>
-      <div class="oc-name">LOOM</div>
-      <div class="oc-product">Launch Sequence</div>
-      <p class="oc-pitch">LOOM weaves a client's public launch as a temporal artifact — what posts in what order, which channels, narrative arc week-over-week, where climaxes land.</p>
-      <div class="oc-footer">
-        <span class="oc-price">$2,500–5,000</span>
-        <span class="oc-cta">walk through →</span>
-      </div>
-    </a>
-
-    <a href="grift.html" class="offer-card" style="--card-color:#D4A820;--card-border:rgba(212,168,32,.35);--card-shadow:rgba(212,168,32,.08);">
-      <div class="oc-sigil">◉</div>
-      <div class="oc-name">GRIFT</div>
-      <div class="oc-product">Field Circle</div>
-      <p class="oc-pitch">Private group of operators using HIPJOY patterns in their own work. Weekly small-ritual: office hours, Joey + 5–10 operators talking dispatch, routing, voice, selling.</p>
-      <div class="oc-footer">
-        <span class="oc-price">$19 / mo</span>
-        <span class="oc-cta">walk through →</span>
-      </div>
-    </a>
-
-    <a href="ash.html" class="offer-card" style="--card-color:#C85A35;--card-border:rgba(200,90,53,.35);--card-shadow:rgba(200,90,53,.08);">
-      <div class="oc-sigil">⊗</div>
-      <div class="oc-name">ASH</div>
-      <div class="oc-product">Archive Access</div>
-      <p class="oc-pitch">Full read-access to every HIPJOY session log, ghost-path, ritual, dispatch decision — especially the failures, abandoned branches, iterations that died.</p>
-      <div class="oc-footer">
-        <span class="oc-price">$99 / yr</span>
-        <span class="oc-cta">walk through →</span>
-      </div>
-    </a>
-
-    <a href="pith.html" class="offer-card" style="--card-color:#E0E0D8;--card-border:rgba(224,224,216,.35);--card-shadow:rgba(224,224,216,.08);">
-      <div class="oc-sigil">◦</div>
-      <div class="oc-name">PITH</div>
-      <div class="oc-product">Irreducible Statement</div>
-      <p class="oc-pitch">Give PITH 2–3 paragraphs and PITH returns ONE sentence that carries the whole. Not a summary. The irreducible. What survives the burn.</p>
-      <div class="oc-footer">
-        <span class="oc-price">$150 / piece</span>
-        <span class="oc-cta">walk through →</span>
-      </div>
-    </a>
-
-    <a href="bridle.html" class="offer-card" style="--card-color:#A0622A;--card-border:rgba(160,98,42,.35);--card-shadow:rgba(160,98,42,.08);">
-      <div class="oc-sigil">⊸</div>
-      <div class="oc-name">BRIDLE</div>
-      <div class="oc-product">Momentum Partner</div>
-      <p class="oc-pitch">Joey is your weekly accountability partner for a specific velocity goal. Monday check-in. Friday check-in. BRIDLE governs your acceleration so you don't brake — you direct.</p>
-      <div class="oc-footer">
-        <span class="oc-price">$500 / mo</span>
-        <span class="oc-cta">walk through →</span>
-      </div>
-    </a>
-
-    <a href="slew.html" class="offer-card" style="--card-color:#7AB58C;--card-border:rgba(122,181,140,.35);--card-shadow:rgba(122,181,140,.08);">
-      <div class="oc-sigil">≋</div>
-      <div class="oc-name">SLEW</div>
-      <div class="oc-product">Vector Audit</div>
-      <p class="oc-pitch">SLEW looks at a 3-month slice of a founder's work and tells them where drift accumulated — the 14 simultaneous intentions that pulled them off course.</p>
-      <div class="oc-footer">
-        <span class="oc-price">$400</span>
-        <span class="oc-cta">walk through →</span>
-      </div>
-    </a>
-
-    <a href="quill.html" class="offer-card" style="--card-color:#6B7FD4;--card-border:rgba(107,127,212,.35);--card-shadow:rgba(107,127,212,.08);">
-      <div class="oc-sigil">✦</div>
-      <div class="oc-name">QUILL</div>
-      <div class="oc-product">Ghost-Path License</div>
-      <p class="oc-pitch">HIPJOY opens an internal decision chain to an enterprise client. Here's how we made a real decision: branches rejected, pattern chosen, result. Licensed as private case study content.</p>
-      <div class="oc-footer">
-        <span class="oc-price">$5,000–15,000</span>
-        <span class="oc-cta">walk through →</span>
-      </div>
-    </a>
-
-    <a href="hush.html" class="offer-card" style="--card-color:#9B8EC4;--card-border:rgba(155,142,196,.35);--card-shadow:rgba(155,142,196,.08);">
-      <div class="oc-sigil">◌</div>
-      <div class="oc-name">HUSH</div>
-      <div class="oc-product">Silent Read</div>
-      <p class="oc-pitch">For $2,000 Joey walks YOUR field for 8 minutes — your work, your startup, your draft, your thought architecture. Not a call. Not a deck. A silent read and a single page back.</p>
-      <div class="oc-footer">
-        <span class="oc-price">$2,000</span>
-        <span class="oc-cta">walk through →</span>
-      </div>
-    </a>
-
-  </div>
 </main>
-
 <footer>
-  <a href="../index.html" class="footer-logo">HIPJOY</a>
-  <span class="footer-copy">part of the HIPJOY field · shadow pantheon</span>
-  <div class="cc-badge">
-    <span class="cc-dot"></span>
-    <span>BUILT ON CLAUDE CODE</span>
-  </div>
+  <span class="footer-sig">&#9672; HIPJOY Offers &nbsp;&middot;&nbsp; <a href="../portfolio.html">Joey Barbush</a> &nbsp;&middot;&nbsp; <a href="mailto:joeybarbush@gmail.com">joeybarbush@gmail.com</a></span>
+  <span class="footer-sig"><a href="../index.html">HIPJOY Hub</a></span>
 </footer>
+<script>
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
 </body>
 </html>

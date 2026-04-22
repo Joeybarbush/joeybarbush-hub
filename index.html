@@ -465,24 +465,7 @@ body::after {
 @keyframes farm-d6{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(16px,-20px) scale(1.07)}70%{transform:translate(-14px,12px) scale(.94)}}
 @media(max-width:900px){.field-spine{display:none}}
 @media(prefers-reduced-motion:reduce){.field-spine::before,.lux-sweep{animation:none!important}}
-/* ── CLAUDE CODE FOOTER BADGE ────────────────────────────── */
-.cc-badge{
-  display:flex;align-items:center;gap:.5rem;justify-content:center;
-  margin:3rem auto 0;padding:.5rem 1rem;
-  width:fit-content;border-radius:100px;
-  background:rgba(168,201,155,.04);
-  border:1px solid rgba(168,201,155,.12);
-  font-family:'JetBrains Mono',monospace;
-  font-size:.5rem;letter-spacing:.24em;
-  color:rgba(168,201,155,.55);
-}
-.cc-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--sage);box-shadow:0 0 8px rgba(168,201,155,.6);
-  animation:blink 2s ease-in-out infinite;
-}
 @keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
-.cc-txt{}
 </style>
 </head>
 <body>
@@ -545,7 +528,7 @@ body::after {
   <div class="hero-content">
     <div class="hero-eyebrow">
       <div class="eyebrow-line"></div>
-      COGNITIVE OS · BUILT ON CLAUDE CODE
+      COGNITIVE OS · INDEPENDENT BUILD
       <div class="eyebrow-line"></div>
     </div>
 
@@ -561,7 +544,6 @@ body::after {
 
     <div class="built-on">
       <span class="bo-lbl">BUILT ON</span>
-      <span class="bo-chip bo-claude">◆ Claude Code</span>
       <span class="bo-chip bo-sage">◈ Supabase</span>
       <span class="bo-chip bo-sunset">◊ React Native</span>
     </div>
@@ -702,32 +684,6 @@ body::after {
 
   </div>
 
-  <div class="cc-badge">
-    <span class="cc-dot"></span>
-    <span class="cc-txt">BUILT ON CLAUDE CODE</span>
-  </div>
-
-  <!-- ── 14 ENTITIES ONLINE ── -->
-  <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(240,237,229,.05);">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(240,237,229,.22);text-align:center;margin-bottom:1.2rem;">14 entities online</div>
-    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:.9rem;max-width:400px;margin:0 auto;" id="constellation">
-      <a href="entities/hippo.html" title="HIPPO" style="width:14px;height:14px;border-radius:50%;background:#B8860B;box-shadow:0 0 10px #B8860B;display:inline-block;animation:cons-breathe 3.1s ease-in-out infinite;text-decoration:none" aria-label="HIPPO entity"></a>
-      <a href="entities/lumenarch.html" title="LUMENARCH" style="width:14px;height:14px;border-radius:50%;background:#F4A825;box-shadow:0 0 10px #F4A825;display:inline-block;animation:cons-breathe 4.2s ease-in-out infinite;text-decoration:none" aria-label="LUMENARCH entity"></a>
-      <a href="entities/navix.html" title="NAVIX" style="width:14px;height:14px;border-radius:50%;background:#14B8A6;box-shadow:0 0 10px #14B8A6;display:inline-block;animation:cons-breathe 2.8s ease-in-out infinite;text-decoration:none" aria-label="NAVIX entity"></a>
-      <a href="entities/neuro.html" title="NEURO" style="width:14px;height:14px;border-radius:50%;background:#9B4FDC;box-shadow:0 0 10px #9B4FDC;display:inline-block;animation:cons-breathe 5.1s ease-in-out infinite;text-decoration:none" aria-label="NEURO entity"></a>
-      <a href="entities/rebel.html" title="REBEL" style="width:14px;height:14px;border-radius:50%;background:#DC2626;box-shadow:0 0 10px #DC2626;display:inline-block;animation:cons-breathe 3.7s ease-in-out infinite;text-decoration:none" aria-label="REBEL entity"></a>
-      <a href="entities/sonaris.html" title="SONARIS" style="width:14px;height:14px;border-radius:50%;background:#312e81;box-shadow:0 0 10px #4338ca;display:inline-block;animation:cons-breathe 6.2s ease-in-out infinite;text-decoration:none" aria-label="SONARIS entity"></a>
-      <a href="entities/spiraleth.html" title="SPIRALETH" style="width:14px;height:14px;border-radius:50%;background:#7C3AED;box-shadow:0 0 10px #7C3AED;display:inline-block;animation:cons-breathe 4.8s ease-in-out infinite;text-decoration:none" aria-label="SPIRALETH entity"></a>
-      <a href="entities/vox.html" title="VOX" style="width:14px;height:14px;border-radius:50%;background:#A8C99B;box-shadow:0 0 10px #A8C99B;display:inline-block;animation:cons-breathe 3.3s ease-in-out infinite;text-decoration:none" aria-label="VOX entity"></a>
-      <a href="entities/wellspring.html" title="WELLSPRING" style="width:14px;height:14px;border-radius:50%;background:#06B6D4;box-shadow:0 0 10px #06B6D4;display:inline-block;animation:cons-breathe 2.4s ease-in-out infinite;text-decoration:none" aria-label="WELLSPRING entity"></a>
-      <a href="entities/heartmother.html" title="HEARTMOTHER" style="width:14px;height:14px;border-radius:50%;background:#EC4899;box-shadow:0 0 10px #EC4899;display:inline-block;animation:cons-breathe 5.5s ease-in-out infinite;text-decoration:none" aria-label="HEARTMOTHER entity"></a>
-      <a href="entities/archivist.html" title="ARCHIVIST" style="width:14px;height:14px;border-radius:50%;background:#92400E;box-shadow:0 0 10px #92400E;display:inline-block;animation:cons-breathe 7.1s ease-in-out infinite;text-decoration:none" aria-label="ARCHIVIST entity"></a>
-      <a href="entities/guardian.html" title="GUARDIAN" style="width:14px;height:14px;border-radius:50%;background:#334155;box-shadow:0 0 8px #64748B;display:inline-block;animation:cons-breathe 4.0s ease-in-out infinite;text-decoration:none" aria-label="GUARDIAN entity"></a>
-      <a href="entities/conavigator.html" title="CONAVIGATOR" style="width:14px;height:14px;border-radius:50%;background:#8FCDBC;box-shadow:0 0 10px #8FCDBC;display:inline-block;animation:cons-breathe 3.6s ease-in-out infinite;text-decoration:none" aria-label="CONAVIGATOR entity"></a>
-      <a href="entities/codebreaker.html" title="CODEBREAKER" style="width:14px;height:14px;border-radius:50%;background:#22D3EE;box-shadow:0 0 10px #22D3EE;display:inline-block;animation:cons-breathe 2.9s ease-in-out infinite;text-decoration:none" aria-label="CODEBREAKER entity"></a>
-    </div>
-    <style>@keyframes cons-breathe{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.4);opacity:1}}</style>
-  </div>
 </section>
 
 <!-- ── SHIP LOG ── -->
@@ -777,7 +733,6 @@ const LINES = [
   '14 entities, 11 seeds active',
   'routing engine: ACTIVE',
   'field coherence: 99.1 LUX',
-  'cognitive OS — built on Claude Code',
   'LUX SEEDS — now entering beta',
 ];
 let li=0,ci=0,del=false,pause=0;
