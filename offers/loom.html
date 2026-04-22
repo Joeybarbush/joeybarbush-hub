@@ -36,7 +36,7 @@
   <div class="offer-form-wrap reveal">
     <div class="form-heading">Send the signal</div>
     <div class="form-sub">Joey responds within 48 hours.</div>
-    <form class="of-form" id="offer-form" onsubmit="submitOffer(event)">
+    <form class="of-form" id="offer-form" onsubmit="submitOffer(event, 'loom')">
       <input class="of-honeypot" type="text" name="website" tabindex="-1" autocomplete="off">
       <div class="of-field">
         <label class="of-label" for="of-name">Name (optional)</label>
@@ -52,6 +52,7 @@
       </div>
       <button type="submit" class="of-submit" id="of-submit">Send signal &rarr;</button>
       <!-- TODO Joey: paste real Stripe Payment Link here to swap form for direct checkout -->
+      <div id="of-error" style="display:none;color:#FF4A2E;font-family:var(--font-meta);font-size:.7rem;letter-spacing:.1em;margin-top:1rem"></div>
     </form>
     <div class="of-success" id="of-success">signal received &middot; Joey will reach back within 48 hours.</div>
   </div>
@@ -60,38 +61,8 @@
   <span class="footer-sig">&#9733; LOOM &nbsp;&middot;&nbsp; <a href="../portfolio.html">Joey Barbush</a> &nbsp;&middot;&nbsp; <a href="mailto:joeybarbush@gmail.com">joeybarbush@gmail.com</a></span>
   <span class="footer-sig"><a href="index.html">All Offers</a> &nbsp;&middot;&nbsp; <a href="../index.html">HIPJOY</a></span>
 </footer>
-<script>
-const SUPABASE_URL = 'https://mdbzenhhljwmkdcmtawd.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYnplbmhobGp3bWtkY210YXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzY2NDUsImV4cCI6MjA5MTI1MjY0NX0.oCKA-Dpk-oxlS18mi-7R3pqA0mif1gM3J5RbDxavgaI';
-const OFFER_TIER = 'loom';
-</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-let sb = null;
-try { sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) {}
-async function submitOffer(e) {
-  e.preventDefault();
-  if (e.target.querySelector('[name="website"]').value) return;
-  const name = document.getElementById('of-name').value.trim();
-  const email = document.getElementById('of-email').value.trim();
-  const notes = document.getElementById('of-notes').value.trim();
-  if (!email) return;
-  const btn = document.getElementById('of-submit');
-  btn.disabled = true; btn.textContent = 'sending...';
-  if (sb) {
-    await sb.from('offer_signups').insert({
-      offer_tier: OFFER_TIER, name: name || null, email,
-      notes: notes || null, source_url: window.location.href,
-      user_agent: navigator.userAgent.slice(0, 200)
-    });
-  }
-  document.getElementById('offer-form').style.display = 'none';
-  document.getElementById('of-success').classList.add('show');
-}
-const io = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}});
-},{threshold:.1});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-</script>
+<script src="_shared.js"></script>
+
 </body>
 </html>

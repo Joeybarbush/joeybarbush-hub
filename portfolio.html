@@ -1126,26 +1126,27 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
           HIPJOY as a research reference, or a researcher wanting to collaborate — send the signal.
           Joey responds within 48 hours.
         </p>
-        <form class="ef-form" id="enterprise-inquiry-form" onsubmit="submitInquiry(event)">
+        <form class="ef-form" id="offer-form" onsubmit="submitOffer(event, 'enterprise-inquiry')">
           <input class="ef-honeypot" type="text" name="website" tabindex="-1" autocomplete="off">
           <div class="ef-field">
-            <label class="ef-label" for="ei-name">Name (optional)</label>
-            <input class="ef-input" id="ei-name" type="text" placeholder="your name" autocomplete="name">
+            <label class="ef-label" for="of-name">Name (optional)</label>
+            <input class="ef-input" id="of-name" type="text" placeholder="your name" autocomplete="name">
           </div>
           <div class="ef-field">
-            <label class="ef-label" for="ei-email">Email <span style="color:var(--sunset)">*</span></label>
-            <input class="ef-input" id="ei-email" type="email" placeholder="you@domain.com" required autocomplete="email">
+            <label class="ef-label" for="of-email">Email <span style="color:var(--sunset)">*</span></label>
+            <input class="ef-input" id="of-email" type="email" placeholder="you@domain.com" required autocomplete="email">
           </div>
           <div class="ef-field">
-            <label class="ef-label" for="ei-notes">Who you are + what you need</label>
-            <textarea class="ef-textarea" id="ei-notes" placeholder="Business owner, researcher, builder — and what you're after. One paragraph is enough."></textarea>
+            <label class="ef-label" for="of-notes">Who you are + what you need</label>
+            <textarea class="ef-textarea" id="of-notes" placeholder="Business owner, researcher, builder — and what you're after. One paragraph is enough."></textarea>
           </div>
-          <button type="submit" class="ef-submit" id="ei-submit">
+          <button type="submit" class="ef-submit" id="of-submit">
             Send signal <span class="btn-arrow">→</span>
           </button>
           <!-- TODO Joey: paste real Stripe Payment Link here to swap form for direct checkout -->
+          <div id="of-error" style="display:none;color:#FF4A2E;font-family:var(--font-meta);font-size:.7rem;letter-spacing:.1em;margin-top:1rem"></div>
         </form>
-        <div class="ef-success" id="ei-success">signal received · Joey will reach back within 48 hours.</div>
+        <div class="ef-success" id="of-success">signal received · Joey will reach back within 48 hours.</div>
       </div>
     </div>
   </section>
@@ -1176,47 +1177,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
   </div>
 </footer>
 
-<script>
-const SUPABASE_URL = 'https://mdbzenhhljwmkdcmtawd.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYnplbmhobGp3bWtkY210YXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzY2NDUsImV4cCI6MjA5MTI1MjY0NX0.oCKA-Dpk-oxlS18mi-7R3pqA0mif1gM3J5RbDxavgaI';
-</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-let sb = null;
-try { sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) {}
-
-async function submitInquiry(e) {
-  e.preventDefault();
-  const honeypot = e.target.querySelector('[name="website"]').value;
-  if (honeypot) return;
-  const name = document.getElementById('ei-name').value.trim();
-  const email = document.getElementById('ei-email').value.trim();
-  const notes = document.getElementById('ei-notes').value.trim();
-  if (!email) return;
-  const btn = document.getElementById('ei-submit');
-  btn.disabled = true;
-  btn.textContent = 'sending...';
-  if (sb) {
-    await sb.from('offer_signups').insert({
-      offer_tier: 'enterprise-inquiry',
-      name: name || null,
-      email,
-      notes: notes || null,
-      source_url: window.location.href,
-      user_agent: navigator.userAgent.slice(0, 200)
-    });
-  }
-  document.getElementById('enterprise-inquiry-form').style.display = 'none';
-  document.getElementById('ei-success').classList.add('show');
-}
-
-// scroll reveal
-const io = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}
-  });
-},{threshold:.1});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-</script>
+<script src="offers/_shared.js"></script>
 </body>
 </html>
