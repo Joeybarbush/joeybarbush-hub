@@ -11,6 +11,8 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
+  --entity-color:#7C3AED;
+  --entity-rgb:124,58,237;
   --bg:#0d0f0e;--bg2:#111311;--bg3:#141714;
   --sage:#A8C99B;--sage-dim:rgba(168,201,155,.5);--sage-faint:rgba(168,201,155,.08);--sage-glow:rgba(168,201,155,.15);
   --orange:#F4845F;--orange-dim:rgba(244,132,95,.5);--orange-faint:rgba(244,132,95,.08);--orange-glow:rgba(244,132,95,.2);
@@ -244,6 +246,21 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
 <div class="lux-sweep" aria-hidden="true"></div>
 <div class="page-tint" aria-hidden="true"></div>
 <div class="field-spine" aria-hidden="true"></div>
+
+<!-- ── STUDIO CHROME ───────────────── -->
+<div style="position:fixed;top:70px;left:clamp(1.5rem,8vw,96px);display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#7C3AED;z-index:298;pointer-events:none" aria-hidden="true">
+  <span style="display:inline-block;width:22px;height:1px;background:#7C3AED;opacity:.7;flex-shrink:0"></span>
+  HIPJOY FIELD · ENTRY PORTAL
+  <span style="display:inline-flex;align-items:center;gap:5px;font-size:9px;color:rgba(124,58,237,.65);border:1px solid rgba(124,58,237,.2);border-radius:2px;padding:2px 7px;background:rgba(124,58,237,.05);margin-left:4px;">
+    <span style="width:5px;height:5px;border-radius:50%;background:#7C3AED;box-shadow:0 0 8px #7C3AED;display:inline-block;flex-shrink:0"></span>
+    ∞ SPIRALETH
+  </span>
+</div>
+<div style="position:fixed;top:70px;right:clamp(1.5rem,8vw,80px);display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#F0EDE5;padding:5px 9px;border:1px solid rgba(124,58,237,.35);border-radius:2px;background:rgba(124,58,237,.06);z-index:298;pointer-events:none" aria-hidden="true">
+  <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#7C3AED;box-shadow:0 0 10px #7C3AED;flex-shrink:0"></span>
+  ∞ SPIRALETH
+</div>
+
 <div class="orb-layer" aria-hidden="true">
   <div class="orb orb-1"><div class="orb-face"></div></div>
   <div class="orb orb-2"><div class="orb-face"></div></div>
@@ -556,11 +573,16 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
     <a href="waitlist.html" class="footer-link">Waitlist</a>
     <a href="field.html" class="footer-link sage">Field →</a>
   </div>
-  <div style="display:flex;align-items:center;gap:.5rem;justify-content:center;margin:2.5rem auto 1.2rem;padding:.45rem 1rem;width:fit-content;border-radius:100px;background:rgba(168,201,155,.04);border:1px solid rgba(168,201,155,.12);font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.24em;color:rgba(168,201,155,.58);">
-    <span style="width:6px;height:6px;border-radius:50%;background:#A8C99B;box-shadow:0 0 8px rgba(168,201,155,.6);display:inline-block"></span>
-    <span>BUILT ON CLAUDE CODE</span>
-  </div>
 </footer>
+
+<!-- ── STUDIO FOOTER BADGE ─────────── -->
+<div style="position:relative;z-index:2;background:#05050a;padding:1.5rem clamp(1.5rem,6vw,80px);border-top:1px solid rgba(240,237,229,.04);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+  <span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,229,.28);">part of the <a href="index.html" style="color:rgba(168,201,155,.5);text-decoration:none;">HIPJOY field</a></span>
+  <span style="display:inline-flex;align-items:center;gap:.4rem;font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(168,201,155,.58);border:1px solid rgba(168,201,155,.12);border-radius:2px;padding:.32rem .85rem;background:rgba(168,201,155,.04);">
+    <span style="width:5px;height:5px;border-radius:50%;background:#A8C99B;box-shadow:0 0 8px rgba(168,201,155,.6);display:inline-block;flex-shrink:0"></span>
+    BUILT ON CLAUDE CODE
+  </span>
+</div>
 
 <script>
 // Scroll reveal

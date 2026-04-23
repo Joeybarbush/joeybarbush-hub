@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HIPJOY — The Field</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
+    :root{--entity-color:#8FCDBC;--entity-rgb:143,205,188;}
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #0d0f0e; font-family: 'JetBrains Mono', monospace; color: #F0EDE5; user-select: none; -webkit-user-select: none; }
     #world { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: block; }
@@ -205,6 +206,17 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
 <body>
 <div class="lux-sweep" aria-hidden="true"></div>
 <div class="field-spine" aria-hidden="true"></div>
+
+<!-- ── STUDIO CHROME ──────── -->
+<div style="position:fixed;top:6px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(143,205,188,.55);z-index:18;pointer-events:none;" aria-hidden="true">
+  <span style="width:16px;height:1px;background:rgba(143,205,188,.5);display:inline-block;flex-shrink:0"></span>
+  HIPJOY FIELD · THE FIELD
+  <span style="width:16px;height:1px;background:rgba(143,205,188,.5);display:inline-block;flex-shrink:0"></span>
+  <span style="display:inline-flex;align-items:center;gap:4px;font-size:8px;color:rgba(143,205,188,.55);margin-left:4px;">
+    <span style="width:4px;height:4px;border-radius:50%;background:#8FCDBC;display:inline-block;flex-shrink:0"></span>
+    ◈ CONAVIGATOR
+  </span>
+</div>
 
 <!-- Floating nav -->
 <nav style="position:fixed;top:0;left:0;right:0;z-index:190;display:flex;align-items:center;justify-content:space-between;padding:.55rem 1.2rem;background:rgba(13,15,14,.75);backdrop-filter:blur(10px);border-bottom:1px solid rgba(168,201,155,.08)">
@@ -1116,9 +1128,5 @@ requestAnimationFrame(loop);
   reread.addEventListener('mouseout',  () => { reread.style.color = 'rgba(168,201,155,.25)'; });
 })();
 </script>
-<div style="display:flex;align-items:center;gap:.5rem;justify-content:center;margin:2.5rem auto 1.2rem;padding:.45rem 1rem;width:fit-content;border-radius:100px;background:rgba(168,201,155,.04);border:1px solid rgba(168,201,155,.12);font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.24em;color:rgba(168,201,155,.58);">
-  <span style="width:6px;height:6px;border-radius:50%;background:#A8C99B;box-shadow:0 0 8px rgba(168,201,155,.6);display:inline-block"></span>
-  <span>BUILT ON CLAUDE CODE</span>
-</div>
 </body>
 </html>

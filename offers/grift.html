@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRIFT — HIPJOY Offers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_shared.css">
+  <style>:root{--entity-color:#E075A8;--entity-rgb:224,117,168}</style>
+</head>
+<body>
+<div class="lux-sweep" aria-hidden="true"></div>
+<div class="field-spine" aria-hidden="true"></div>
+<nav>
+  <a href="../index.html" class="nav-logo">&#9672; HIPJOY</a>
+  <a href="index.html" class="nav-back">&larr; All Offers</a>
+</nav>
+<main>
+  <section class="offer-hero">
+    <div class="offer-hero-inner">
+      <div class="offer-eyebrow reveal">HIPJOY Offers &middot; Community &middot; Monthly</div>
+      <span class="offer-sigil reveal">&#9824;</span>
+      <h1 class="offer-name reveal"><span>GRIFT</span></h1>
+      <p class="offer-tagline reveal">Field Circle access. Inside the signal.</p>
+      <div class="offer-price reveal">Tier: <strong>Community &middot; Monthly</strong> &nbsp;&middot;&nbsp; contact for rate</div>
+    </div>
+  </section>
+  <div class="offer-body">
+    <div class="offer-section-label reveal">// what this is</div>
+    <p class="reveal">GRIFT is the Field Circle. A small, ongoing group of operators, builders, and researchers who are in the field — reading, building, and sending signal. Access to the circle is selective. You apply by telling Joey why you want in and what you are working on.</p>
+    <div class="offer-section-label reveal">// how it works</div>
+    <p class="reveal">The Field Circle is not a community in the platform sense. It is a signal loop — a small group whose work is interesting enough to share and whose attention is worth having.</p>
+  </div>
+  <div class="offer-form-wrap reveal">
+    <div class="form-heading">Send the signal</div>
+    <div class="form-sub">Joey responds within 48 hours.</div>
+    <form class="of-form" id="offer-form" onsubmit="submitOffer(event, 'grift')">
+      <input class="of-honeypot" type="text" name="website" tabindex="-1" autocomplete="off">
+      <div class="of-field">
+        <label class="of-label" for="of-name">Name (optional)</label>
+        <input class="of-input" id="of-name" type="text" placeholder="your name" autocomplete="name">
+      </div>
+      <div class="of-field">
+        <label class="of-label" for="of-email">Email <span style="color:#F4845F">*</span></label>
+        <input class="of-input" id="of-email" type="email" placeholder="you@domain.com" required autocomplete="email">
+      </div>
+      <div class="of-field">
+        <label class="of-label" for="of-notes">GRIFT notes</label>
+        <textarea class="of-textarea" id="of-notes" placeholder="why do you want in the Field Circle?"></textarea>
+      </div>
+      <button type="submit" class="of-submit" id="of-submit">Send signal &rarr;</button>
+      <!-- TODO Joey: paste real Stripe Payment Link here to swap form for direct checkout -->
+      <div id="of-error" style="display:none;color:#FF4A2E;font-family:var(--font-meta);font-size:.7rem;letter-spacing:.1em;margin-top:1rem"></div>
+    </form>
+    <div class="of-success" id="of-success">signal received &middot; Joey will reach back within 48 hours.</div>
+  </div>
+</main>
+<footer>
+  <span class="footer-sig">&#9824; GRIFT &nbsp;&middot;&nbsp; <a href="../portfolio.html">Joey Barbush</a> &nbsp;&middot;&nbsp; <a href="mailto:joeybarbush@gmail.com">joeybarbush@gmail.com</a></span>
+  <span class="footer-sig"><a href="index.html">All Offers</a> &nbsp;&middot;&nbsp; <a href="../index.html">HIPJOY</a></span>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="_shared.js"></script>
+
+</body>
+</html>

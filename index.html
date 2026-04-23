@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>HIPJOY — Your Mind, Architected.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,6 +15,8 @@
   --purple:#9B4FDC;
   --sunset:#F4845F;
   --text:#F0EDE5;
+  --entity-color:#A8C99B;
+  --entity-rgb:168,201,155;
 }
 html,body{
   background:var(--bg);
@@ -463,24 +465,7 @@ body::after {
 @keyframes farm-d6{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(16px,-20px) scale(1.07)}70%{transform:translate(-14px,12px) scale(.94)}}
 @media(max-width:900px){.field-spine{display:none}}
 @media(prefers-reduced-motion:reduce){.field-spine::before,.lux-sweep{animation:none!important}}
-/* ── CLAUDE CODE FOOTER BADGE ────────────────────────────── */
-.cc-badge{
-  display:flex;align-items:center;gap:.5rem;justify-content:center;
-  margin:3rem auto 0;padding:.5rem 1rem;
-  width:fit-content;border-radius:100px;
-  background:rgba(168,201,155,.04);
-  border:1px solid rgba(168,201,155,.12);
-  font-family:'JetBrains Mono',monospace;
-  font-size:.5rem;letter-spacing:.24em;
-  color:rgba(168,201,155,.55);
-}
-.cc-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--sage);box-shadow:0 0 8px rgba(168,201,155,.6);
-  animation:blink 2s ease-in-out infinite;
-}
 @keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
-.cc-txt{}
 </style>
 </head>
 <body>
@@ -495,6 +480,20 @@ body::after {
   <div class="orb orb-4"><div class="orb-face"></div></div>
   <div class="orb orb-5"><div class="orb-face"></div></div>
   <div class="orb orb-6"><div class="orb-face"></div></div>
+</div>
+
+<!-- ── STUDIO CHROME ──────── -->
+<div style="position:fixed;top:70px;left:clamp(1.5rem,8vw,96px);display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#A8C99B;z-index:298;pointer-events:none" aria-hidden="true">
+  <span style="display:inline-block;width:22px;height:1px;background:#A8C99B;opacity:.7;flex-shrink:0"></span>
+  HIPJOY FIELD · FIELD HUB
+  <span style="display:inline-flex;align-items:center;gap:5px;font-size:9px;color:rgba(168,201,155,.65);border:1px solid rgba(168,201,155,.2);border-radius:2px;padding:2px 7px;background:rgba(168,201,155,.05);margin-left:4px;">
+    <span style="width:5px;height:5px;border-radius:50%;background:#A8C99B;box-shadow:0 0 8px #A8C99B;display:inline-block;flex-shrink:0"></span>
+    ◊ VOX
+  </span>
+</div>
+<div style="position:fixed;top:70px;right:clamp(1.5rem,8vw,80px);display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#F0EDE5;padding:5px 9px;border:1px solid rgba(168,201,155,.35);border-radius:2px;background:rgba(168,201,155,.06);z-index:298;pointer-events:none" aria-hidden="true">
+  <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#A8C99B;box-shadow:0 0 10px #A8C99B;flex-shrink:0"></span>
+  ◊ VOX
 </div>
 
 <nav>
@@ -531,7 +530,7 @@ body::after {
   <div class="hero-content">
     <div class="hero-eyebrow">
       <div class="eyebrow-line"></div>
-      COGNITIVE OS · BUILT ON CLAUDE CODE
+      COGNITIVE OS · INDEPENDENT BUILD
       <div class="eyebrow-line"></div>
     </div>
 
@@ -547,7 +546,6 @@ body::after {
 
     <div class="built-on">
       <span class="bo-lbl">BUILT ON</span>
-      <span class="bo-chip bo-claude">◆ Claude Code</span>
       <span class="bo-chip bo-sage">◈ Supabase</span>
       <span class="bo-chip bo-sunset">◊ React Native</span>
     </div>
@@ -590,6 +588,25 @@ body::after {
     <span class="sbar-lbl">LUX — FIELD COHERENCE</span>
   </div>
 </div>
+
+<!-- ── WHAT YOU CAN STRIP ── -->
+<section id="what-you-can" style="position:relative;z-index:2;background:#05050a;padding:clamp(2rem,5vw,4rem) clamp(1.2rem,4vw,3rem);border-top:1px solid rgba(240,237,229,.04);">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(168,201,155,.35);margin-bottom:1rem;">// what you can do here</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:1rem;max-width:1000px;margin:0 auto;">
+    <div style="padding:1.2rem 1.4rem;background:rgba(168,201,155,.03);border:1px solid rgba(168,201,155,.1);border-radius:3px;border-left:2px solid rgba(168,201,155,.4);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(168,201,155,.5);margin-bottom:.5rem;">△ NAVIX ROUTING</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:rgba(240,237,229,.75);line-height:1.4;">dispatch any question → routed by NAVIX to the entity that owns it</div>
+    </div>
+    <div style="padding:1.2rem 1.4rem;background:rgba(155,79,220,.03);border:1px solid rgba(155,79,220,.1);border-radius:3px;border-left:2px solid rgba(155,79,220,.4);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(155,79,220,.5);margin-bottom:.5rem;">∇ NEURO SCORING</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:rgba(240,237,229,.75);line-height:1.4;">every output scored by NEURO for signal coherence — LUX confirms the read</div>
+    </div>
+    <div style="padding:1.2rem 1.4rem;background:rgba(184,134,11,.03);border:1px solid rgba(184,134,11,.1);border-radius:3px;border-left:2px solid rgba(184,134,11,.4);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(184,134,11,.5);margin-bottom:.5rem;">⬢ HIPPO ARCHIVE</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:rgba(240,237,229,.75);line-height:1.4;">every thread archived by HIPPO — nothing lost, everything indexed</div>
+    </div>
+  </div>
+</section>
 
 <!-- ═══ PORTAL HUB ═══ -->
 <section id="portal">
@@ -660,13 +677,57 @@ body::after {
       <div class="pc-arrow">→</div>
     </a>
 
+    <a href="offers/index.html" class="portal-card" style="--pc-color:rgba(212,168,85,.8)">
+      <span class="pc-sigil">◆</span>
+      <div class="pc-name">OFFERS</div>
+      <div class="pc-desc">Shadow pantheon revenue book — 14 tiers, FREE → $15K</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
   </div>
 
-  <div class="cc-badge">
-    <span class="cc-dot"></span>
-    <span class="cc-txt">BUILT ON CLAUDE CODE</span>
+</section>
+
+<!-- ── SHIP LOG ── -->
+<section id="ship-log" style="position:relative;z-index:2;background:#05050a;padding:clamp(2rem,5vw,4rem) clamp(1.2rem,4vw,3rem);border-top:1px solid rgba(240,237,229,.04);">
+  <div style="max-width:900px;margin:0 auto;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(168,201,155,.35);margin-bottom:.4rem;">// field activity</div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.14em;color:rgba(168,201,155,.6);margin-bottom:1.5rem;">SHIP LOG</div>
+    <div id="ship-log-entries" style="display:flex;flex-direction:column;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.68rem;">
+      <div style="color:rgba(240,237,229,.2);letter-spacing:.1em;">loading commits…</div>
+    </div>
   </div>
 </section>
+<script>
+(function(){
+  fetch('https://api.github.com/repos/Joeybarbush/joeybarbush-hub/commits?per_page=5')
+    .then(r=>r.json()).then(commits=>{
+      const el=document.getElementById('ship-log-entries');
+      if(!el||!Array.isArray(commits))return;
+      el.innerHTML=commits.map(c=>{
+        const sha=c.sha.slice(0,7);
+        const msg=c.commit.message.split('\n')[0].slice(0,72);
+        const d=new Date(c.commit.author.date);
+        const ago=Math.round((Date.now()-d)/864e5);
+        const rel=ago===0?'today':ago===1?'yesterday':ago+'d ago';
+        return `<div style="display:flex;gap:1rem;align-items:baseline;padding:.4rem 0;border-bottom:1px solid rgba(240,237,229,.04);">
+          <span style="color:rgba(168,201,155,.45);flex-shrink:0">${sha}</span>
+          <span style="color:rgba(240,237,229,.62);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${msg}</span>
+          <span style="color:rgba(240,237,229,.22);flex-shrink:0;font-size:.6rem">${rel}</span>
+        </div>`;
+      }).join('');
+    }).catch(()=>{});
+})();
+</script>
+
+<!-- ── STUDIO FOOTER BADGE ── -->
+<footer style="position:relative;z-index:2;background:#05050a;padding:1.5rem clamp(1.5rem,6vw,80px);border-top:1px solid rgba(240,237,229,.04);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:2rem;">
+  <span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,229,.28);">part of the <a href="index.html" style="color:rgba(168,201,155,.5);text-decoration:none;">HIPJOY field</a></span>
+  <span style="display:inline-flex;align-items:center;gap:.4rem;font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(168,201,155,.58);border:1px solid rgba(168,201,155,.12);border-radius:2px;padding:.32rem .85rem;background:rgba(168,201,155,.04);">
+    <span style="width:5px;height:5px;border-radius:50%;background:#A8C99B;box-shadow:0 0 8px rgba(168,201,155,.6);display:inline-block;flex-shrink:0"></span>
+    BUILT ON CLAUDE CODE
+  </span>
+</footer>
 
 <script>
 // Typewriter — first line matches target screenshot
@@ -674,7 +735,6 @@ const LINES = [
   '14 entities, 11 seeds active',
   'routing engine: ACTIVE',
   'field coherence: 99.1 LUX',
-  'cognitive OS — built on Claude Code',
   'LUX SEEDS — now entering beta',
 ];
 let li=0,ci=0,del=false,pause=0;
@@ -698,8 +758,5 @@ setTimeout(tick,1000);
 
 // Seed count — configure cloud layer to load live data
 </script>
-</body>
-</html>
-  </div>
 </body>
 </html>

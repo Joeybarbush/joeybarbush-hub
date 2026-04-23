@@ -13,6 +13,8 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
+      --entity-color:#EC4899;
+      --entity-rgb:236,72,153;
       --sage:          #A8C99B;
       --sage-dim:      rgba(168,201,155,.5);
       --sage-faint:    rgba(168,201,155,.07);
@@ -452,6 +454,20 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
 <div class="page-tint" aria-hidden="true"></div>
 <div class="field-spine" aria-hidden="true"></div>
 
+<!-- ── STUDIO CHROME ───────────────── -->
+<div style="position:fixed;top:70px;left:clamp(1.5rem,8vw,96px);display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#EC4899;z-index:298;pointer-events:none" aria-hidden="true">
+  <span style="display:inline-block;width:22px;height:1px;background:#EC4899;opacity:.7;flex-shrink:0"></span>
+  HIPJOY FIELD · PLANT A SEED
+  <span style="display:inline-flex;align-items:center;gap:5px;font-size:9px;color:rgba(236,72,153,.65);border:1px solid rgba(236,72,153,.2);border-radius:2px;padding:2px 7px;background:rgba(236,72,153,.05);margin-left:4px;">
+    <span style="width:5px;height:5px;border-radius:50%;background:#EC4899;box-shadow:0 0 8px #EC4899;display:inline-block;flex-shrink:0"></span>
+    ♥ HEARTMOTHER
+  </span>
+</div>
+<div style="position:fixed;top:70px;right:clamp(1.5rem,8vw,80px);display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#F0EDE5;padding:5px 9px;border:1px solid rgba(236,72,153,.35);border-radius:2px;background:rgba(236,72,153,.06);z-index:298;pointer-events:none" aria-hidden="true">
+  <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#EC4899;box-shadow:0 0 10px #EC4899;flex-shrink:0"></span>
+  ♥ HEARTMOTHER
+</div>
+
 <canvas id="confetti-canvas"></canvas>
 
 <!-- Floating orbs -->
@@ -471,7 +487,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
 
 <!-- ═══ HERO ═══ -->
 <section id="hero">
-  <div class="hero-eyebrow">COGNITIVE OS · BUILT ON CLAUDE CODE</div>
+  <div class="hero-eyebrow">COGNITIVE OS · INDEPENDENT BUILD</div>
   <h1 class="hero-title">HIPJOY</h1>
   <p class="hero-tagline">Your mind, architected.</p>
   <div class="hero-sub">14 entities · 1 routing engine · Persistent identity</div>
@@ -1303,9 +1319,5 @@ function setupShare(seedType, lux){
   });
 }
 </script>
-<div style="display:flex;align-items:center;gap:.5rem;justify-content:center;margin:2.5rem auto 1.2rem;padding:.45rem 1rem;width:fit-content;border-radius:100px;background:rgba(168,201,155,.04);border:1px solid rgba(168,201,155,.12);font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.24em;color:rgba(168,201,155,.58);">
-  <span style="width:6px;height:6px;border-radius:50%;background:#A8C99B;box-shadow:0 0 8px rgba(168,201,155,.6);display:inline-block"></span>
-  <span>BUILT ON CLAUDE CODE</span>
-</div>
 </body>
 </html>
