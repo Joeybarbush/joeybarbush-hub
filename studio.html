@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="color-scheme" content="light"/>
+<title>Joey Barbush · Studio · Websites That Carry Signal</title>
+<meta name="description" content="I build websites for small businesses, colleges, and individuals. Not templates. Fast, hand-crafted, warm. Powered by HIPJOY — a cognitive operating system I designed myself."/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='24' fill='none' stroke='%233d5a3a' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23c87531'/%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    /* cream paper + natural greens + warm terracotta */
+    --paper:#f7f0de;
+    --paper-2:#f1e9d1;
+    --cream-deep:#e8ddc0;
+    --ink:#2a2419;
+    --ink-soft:#4a4236;
+    --muted:#7c735f;
+
+    --moss:#3d5a3a;       /* deep grass */
+    --moss-light:#5c7a4f;
+    --fern:#6b8a52;
+
+    --terra:#c87531;      /* creamy terracotta */
+    --terra-deep:#a85a24;
+    --amber:#d89560;
+
+    --plum:#6b3d5c;
+    --line:rgba(42,36,25,.12);
+    --line-2:rgba(42,36,25,.22);
+
+    --display:"Fraunces",Georgia,serif;
+    --body:"Inter",system-ui,-apple-system,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-size-adjust:100%}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:var(--body);line-height:1.6;
+    min-height:100vh;overflow-x:hidden;
+    background-image:
+      radial-gradient(ellipse 900px 600px at 15% -5%,rgba(216,149,96,.28),transparent 60%),
+      radial-gradient(ellipse 800px 500px at 90% 20%,rgba(107,138,82,.20),transparent 60%),
+      radial-gradient(ellipse 700px 500px at 50% 100%,rgba(200,117,49,.12),transparent 60%);
+  }
+  /* paper grain */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.055;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.14 0 0 0 0 0.10 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  a{color:var(--moss);text-decoration:none;transition:color .2s}
+  a:hover{color:var(--terra)}
+  a.u{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;text-decoration-color:var(--line-2)}
+  a.u:hover{text-decoration-color:var(--terra)}
+  button{font:inherit;cursor:pointer;border:0;background:0}
+  ::selection{background:var(--terra);color:var(--paper)}
+
+  /* ====== NAV ====== */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 28px;
+    background:linear-gradient(to bottom,rgba(247,240,222,.90),rgba(247,240,222,.6));
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
+    border-bottom:1px solid var(--line);
+  }
+  nav .brand{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:500}
+  nav .brand svg{width:22px;height:22px;color:var(--moss)}
+  nav .links{display:flex;gap:22px}
+  nav .links a{color:var(--ink-soft)}
+  nav .links a:hover{color:var(--moss)}
+  @media(max-width:620px){nav .links{display:none}}
+
+  /* ====== HERO ====== */
+  .hero{
+    min-height:100vh;position:relative;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:160px 28px 110px;max-width:1100px;margin:0 auto;
+    overflow:hidden;
+  }
+  #field{position:absolute;inset:0;z-index:0;pointer-events:none}
+  .hero > *{position:relative;z-index:1}
+  .eyebrow{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--moss);margin-bottom:28px;display:flex;align-items:center;gap:10px;
+    font-weight:500;
+  }
+  .eyebrow .dot{width:7px;height:7px;background:var(--terra);border-radius:50%;animation:pulse 2.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.35)}}
+  h1.title{
+    font-family:var(--display);font-weight:400;
+    font-size:clamp(2.4rem,5.6vw,4.7rem);
+    line-height:1.02;letter-spacing:-.022em;
+    max-width:900px;margin-bottom:26px;
+    font-variation-settings:"opsz" 144;
+    color:var(--ink);
+  }
+  h1.title em{font-style:italic;color:var(--moss);font-variation-settings:"opsz" 144;font-weight:300}
+  h1.title span.accent{color:var(--terra);font-style:italic;font-weight:300}
+  .sub{
+    max-width:640px;font-size:1.14rem;color:var(--ink-soft);line-height:1.6;
+    margin-bottom:42px;
+  }
+  .cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 22px;border-radius:3px;
+    font-family:var(--mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;
+    transition:all .25s ease;font-weight:500;
+  }
+  .btn.primary{background:var(--moss);color:var(--paper)}
+  .btn.primary:hover{background:var(--terra);color:var(--paper);transform:translateY(-2px);box-shadow:0 10px 30px -10px rgba(200,117,49,.5)}
+  .btn.ghost{border:1px solid var(--line-2);color:var(--ink)}
+  .btn.ghost:hover{border-color:var(--moss);color:var(--moss)}
+
+  /* scroll hint */
+  .scroll{
+    position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:2;
+    font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;color:var(--muted);
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    animation:float 2.6s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
+
+  /* ====== SECTIONS ====== */
+  section{padding:90px 28px 70px;max-width:1100px;margin:0 auto;position:relative}
+  .kicker{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--terra);margin-bottom:18px;display:flex;align-items:center;gap:12px;font-weight:500;
+  }
+  .kicker::before{content:"";width:32px;height:1.5px;background:var(--terra)}
+  h2.section-title{
+    font-family:var(--display);font-weight:400;
+    font-size:clamp(1.8rem,3.8vw,2.7rem);
+    line-height:1.12;letter-spacing:-.015em;margin-bottom:36px;
+    max-width:780px;color:var(--ink);
+  }
+  h2.section-title em{font-style:italic;color:var(--moss);font-weight:400}
+
+  .intro-p{color:var(--ink-soft);max-width:700px;margin-bottom:22px;font-size:1.02rem;line-height:1.65}
+
+  /* ====== AUDIENCE CARDS ====== */
+  .audiences{display:grid;grid-template-columns:1fr;gap:18px}
+  @media(min-width:780px){.audiences{grid-template-columns:repeat(3,1fr)}}
+  .audience-card{
+    position:relative;padding:32px 28px;
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:6px;overflow:hidden;
+    transition:all .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .audience-card:hover{
+    background:#fffaed;
+    border-color:var(--moss-light);
+    transform:translateY(-5px);
+    box-shadow:0 18px 40px -16px rgba(61,90,58,.28);
+  }
+  .audience-card .num{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;color:var(--moss);
+    margin-bottom:14px;display:block;font-weight:500;
+  }
+  .audience-card h3{
+    font-family:var(--display);font-weight:500;
+    font-size:1.45rem;letter-spacing:-.01em;margin-bottom:12px;color:var(--ink);line-height:1.25;
+  }
+  .audience-card p{color:var(--ink-soft);font-size:.96rem;line-height:1.6}
+  .audience-card::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(107,138,82,.14),transparent 42%);
+    opacity:0;transition:opacity .25s;
+  }
+  .audience-card:hover::after{opacity:1}
+
+  /* ====== ENTITY FIELD ====== */
+  .field-grid{
+    display:grid;gap:3px;
+    grid-template-columns:repeat(auto-fill,minmax(78px,1fr));
+    max-width:720px;margin:28px 0 22px;
+    border:1px solid var(--line);background:var(--line);border-radius:6px;overflow:hidden;
+  }
+  .entity{
+    aspect-ratio:1;background:var(--paper-2);display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:4px;
+    font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;color:var(--ink-soft);
+    cursor:default;transition:all .3s;position:relative;font-weight:500;
+  }
+  .entity .glyph{font-size:1.1rem;color:var(--moss);transition:color .3s,transform .3s}
+  .entity:hover{background:#fffaed}
+  .entity:hover .glyph{color:var(--terra);transform:scale(1.15)}
+
+  /* ====== LIVE DEMO ====== */
+  .demo{
+    border:1px solid var(--line-2);padding:30px;border-radius:6px;
+    background:var(--paper-2);margin-top:28px;
+    box-shadow:0 12px 40px -20px rgba(42,36,25,.2);
+  }
+  .demo-label{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--moss);margin-bottom:14px;font-weight:500}
+  .demo input, .demo select{
+    width:100%;padding:14px 16px;background:#fffaed;border:1.5px solid var(--line);
+    color:var(--ink);font-family:var(--body);font-size:1rem;border-radius:4px;margin-bottom:14px;
+    transition:border-color .2s,background .2s;
+  }
+  .demo input:focus, .demo select:focus{outline:0;border-color:var(--moss);background:#fff}
+  .preview{
+    border:1px solid var(--line-2);padding:40px 30px;background:#fffaed;color:var(--ink);
+    border-radius:4px;min-height:230px;transition:all .3s;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+  }
+  .preview .p-eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--moss);margin-bottom:14px;font-weight:500}
+  .preview .p-title{font-family:var(--display);font-size:2.2rem;line-height:1.05;letter-spacing:-.015em;margin-bottom:14px;font-weight:500;color:var(--ink)}
+  .preview .p-sub{color:var(--ink-soft);margin-bottom:22px;max-width:92%;font-size:1rem}
+  .preview .p-cta{display:inline-block;padding:11px 20px;background:var(--terra);color:#fff;font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;border-radius:3px;font-weight:500}
+
+  /* ====== PRICING ====== */
+  .pricing{display:grid;grid-template-columns:1fr;gap:3px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  @media(min-width:780px){.pricing{grid-template-columns:repeat(3,1fr)}}
+  .tier{background:var(--paper-2);padding:32px 26px;transition:background .25s}
+  .tier:hover{background:#fffaed}
+  .tier .tier-label{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terra);margin-bottom:10px;font-weight:500}
+  .tier .tier-price{font-family:var(--display);font-size:2.4rem;line-height:1;margin-bottom:8px;font-weight:500;color:var(--ink)}
+  .tier .tier-sub{color:var(--muted);font-size:.85rem;margin-bottom:18px}
+  .tier ul{list-style:none;font-size:.92rem;color:var(--ink-soft)}
+  .tier li{padding:8px 0;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:10px}
+  .tier li::before{content:"✓";color:var(--moss);font-family:var(--body);font-weight:600;flex-shrink:0}
+  .tier li:last-child{border-bottom:0}
+
+  /* ====== SAMPLES ====== */
+  .samples{display:grid;grid-template-columns:1fr;gap:18px}
+  @media(min-width:780px){.samples{grid-template-columns:repeat(2,1fr)}}
+  .sample-card{
+    border:1px solid var(--line);border-radius:6px;overflow:hidden;
+    background:var(--paper-2);transition:all .3s;display:block;
+  }
+  .sample-card:hover{
+    border-color:var(--moss-light);transform:translateY(-4px);
+    box-shadow:0 14px 36px -18px rgba(61,90,58,.35);
+  }
+  .sample-card .mock{
+    aspect-ratio:16/10;background:linear-gradient(135deg,#fffaed,var(--cream-deep));
+    border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
+  }
+  .sample-card .mock::before{
+    content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(45deg,transparent 0 22px,rgba(107,138,82,.08) 22px 23px);
+  }
+  .sample-card .mock-content{position:relative;z-index:1;text-align:center;padding:24px}
+  .sample-card .mock-title{font-family:var(--display);font-size:1.5rem;margin-bottom:6px;color:var(--ink);font-weight:500}
+  .sample-card .mock-sub{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;color:var(--muted)}
+  .sample-card .info{padding:20px 22px}
+  .sample-card .info h4{font-family:var(--display);font-weight:500;font-size:1.15rem;margin-bottom:4px;color:var(--ink)}
+  .sample-card .info p{color:var(--muted);font-size:.88rem}
+
+  /* ====== CONTACT ====== */
+  form{display:grid;gap:14px;margin-top:24px;max-width:640px}
+  form input, form textarea{
+    padding:14px 16px;background:#fffaed;border:1.5px solid var(--line);
+    color:var(--ink);font-family:var(--body);font-size:1rem;border-radius:4px;
+    transition:border-color .2s,background .2s;
+  }
+  form input:focus, form textarea:focus{outline:0;border-color:var(--moss);background:#fff}
+  form textarea{min-height:140px;resize:vertical}
+  form button{
+    background:var(--moss);color:var(--paper);padding:16px 26px;border-radius:3px;
+    font-family:var(--mono);font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;
+    justify-self:start;transition:all .25s;font-weight:500;
+  }
+  form button:hover{background:var(--terra);transform:translateY(-1px);box-shadow:0 10px 26px -12px rgba(200,117,49,.5)}
+  .form-note{font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.08em;margin-top:8px}
+
+  /* ====== FOOTER ====== */
+  footer{
+    border-top:1px solid var(--line);margin-top:40px;padding:56px 28px 40px;max-width:1100px;
+    margin-left:auto;margin-right:auto;
+  }
+  footer .row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:30px;align-items:flex-end}
+  footer .sig{font-family:var(--display);font-size:1.5rem;font-weight:500;color:var(--ink)}
+  footer .sig em{font-style:italic;color:var(--moss);font-weight:400}
+  footer .meta{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;color:var(--muted);display:flex;flex-direction:column;gap:6px;align-items:flex-end;text-align:right}
+  @media(max-width:620px){footer .meta{align-items:flex-start;text-align:left}}
+  .lux-bar{height:1.5px;background:linear-gradient(90deg,transparent,var(--moss),var(--terra),var(--amber),transparent);margin:24px 0 16px;opacity:.5}
+
+  /* reveal animation */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .9s ease,transform .9s ease}
+  .reveal.seen{opacity:1;transform:translateY(0)}
+
+  /* LUMENARCH — deeper tone pool for the HIPJOY engine section, so the light has something to surface from */
+  section.dark-pool{
+    background:linear-gradient(to bottom,var(--paper),#ede1c3 15%,#ede1c3 85%,var(--paper));
+    max-width:none;margin:0;padding:90px 28px 80px;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    position:relative;overflow:hidden;
+  }
+  section.dark-pool::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 600px 400px at 20% 30%,rgba(61,90,58,.10),transparent 60%),
+      radial-gradient(ellipse 500px 400px at 85% 70%,rgba(200,117,49,.08),transparent 60%);
+  }
+  section.dark-pool > *{position:relative;z-index:1;max-width:1100px;margin-left:auto;margin-right:auto}
+
+  /* SPIRALETH — night mode toggle, ritual not preference */
+  body.night-mode{
+    --paper:#1a1712;
+    --paper-2:#201c16;
+    --cream-deep:#2a2419;
+    --ink:#f1e9d1;
+    --ink-soft:#c5bda7;
+    --muted:#8a8069;
+    --moss:#7a9665;
+    --moss-light:#8fab7a;
+    --terra:#e0986a;
+    --amber:#e8b088;
+    --line:rgba(241,233,209,.10);
+    --line-2:rgba(241,233,209,.22);
+  }
+  body.night-mode::before{opacity:.05;mix-blend-mode:screen}
+  body.night-mode section.dark-pool{background:linear-gradient(to bottom,var(--paper),#15120d 15%,#15120d 85%,var(--paper))}
+  .mode-toggle{
+    position:fixed;top:68px;right:20px;z-index:45;
+    font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;color:var(--ink-soft);
+    background:rgba(247,240,222,.85);backdrop-filter:blur(10px);
+    padding:8px 14px;border:1px solid var(--line-2);border-radius:30px;
+    cursor:pointer;transition:all .25s;
+  }
+  body.night-mode .mode-toggle{background:rgba(26,23,18,.85)}
+  .mode-toggle:hover{border-color:var(--moss);color:var(--moss)}
+  @media(max-width:620px){.mode-toggle{top:auto;bottom:74px;right:14px}}
+
+  /* ARCHIVIST — 14 micro-glyphs in footer */
+  .micro-glyphs{
+    font-family:var(--mono);font-size:.58rem;letter-spacing:.4em;color:var(--muted);
+    opacity:.45;text-align:center;margin-top:18px;line-height:1.8;
+    user-select:none;
+  }
+  .micro-glyphs:hover{opacity:.85;transition:opacity .4s}
+
+  /* signal indicator */
+  .signal{
+    position:fixed;bottom:20px;right:20px;z-index:40;
+    font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;color:var(--ink-soft);
+    display:flex;align-items:center;gap:8px;
+    background:rgba(247,240,222,.92);backdrop-filter:blur(10px);
+    padding:9px 13px;border:1px solid var(--line-2);border-radius:30px;font-weight:500;
+    box-shadow:0 6px 18px -6px rgba(42,36,25,.12);
+  }
+  .signal .s-dot{width:7px;height:7px;border-radius:50%;background:var(--moss);animation:pulse 2s ease-in-out infinite}
+
+  /* growing plant leaves decoration */
+  .leaves{position:absolute;pointer-events:none;opacity:.4}
+  .leaves.hero-l{top:32%;left:-4%;width:180px;transform:rotate(-18deg)}
+  .leaves.hero-r{bottom:-2%;right:-5%;width:220px;transform:rotate(14deg)}
+  @media(max-width:780px){.leaves{display:none}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#top" class="brand">
+    <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="26" stroke="currentColor" stroke-width="1.8"/><circle cx="32" cy="32" r="6" fill="#c87531"/></svg>
+    <span>Joey Barbush · Studio</span>
+  </a>
+  <div class="links">
+    <a href="#work">Work</a>
+    <a href="#engine">HIPJOY</a>
+    <a href="#pricing">Pricing</a>
+    <a href="about.html">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+<button class="mode-toggle" id="mode-toggle" title="Day for casual walkers. Night for initiates.">◐ DAY MODE</button>
+
+<header class="hero" id="top">
+  <canvas id="field"></canvas>
+  <!-- decorative leaves -->
+  <svg class="leaves hero-l" viewBox="0 0 120 200"><path d="M60,10 Q20,60 30,120 Q40,170 60,190" stroke="#3d5a3a" stroke-width="1.5" fill="none" opacity=".6"/><g fill="#5c7a4f" opacity=".55"><ellipse cx="36" cy="60" rx="14" ry="6" transform="rotate(-30 36 60)"/><ellipse cx="30" cy="100" rx="14" ry="6" transform="rotate(20 30 100)"/><ellipse cx="44" cy="140" rx="14" ry="6" transform="rotate(-15 44 140)"/><ellipse cx="52" cy="170" rx="12" ry="5" transform="rotate(30 52 170)"/></g></svg>
+  <svg class="leaves hero-r" viewBox="0 0 140 220"><path d="M70,10 Q110,50 100,110 Q90,170 70,210" stroke="#3d5a3a" stroke-width="1.5" fill="none" opacity=".6"/><g fill="#6b8a52" opacity=".55"><ellipse cx="94" cy="55" rx="16" ry="7" transform="rotate(25 94 55)"/><ellipse cx="102" cy="95" rx="16" ry="7" transform="rotate(-18 102 95)"/><ellipse cx="90" cy="140" rx="16" ry="7" transform="rotate(20 90 140)"/><ellipse cx="78" cy="180" rx="14" ry="6" transform="rotate(-25 78 180)"/></g></svg>
+
+  <div class="eyebrow"><span class="dot"></span>Independent · Illinois · Building since 2020</div>
+  <h1 class="title">Websites that <span class="accent">carry signal</span>. Not templates. Not slop. <em>Built by hand</em> for people who do real things.</h1>
+  <p class="sub">I'm Joey Barbush. I build fast, custom sites for small businesses, colleges, and individuals — and I power the workflow with HIPJOY, a cognitive operating system I designed myself. Your site gets the same care.</p>
+  <div class="cta-row">
+    <a href="#contact" class="btn primary">Start a site <span>→</span></a>
+    <a href="#engine" class="btn ghost">See the HIPJOY engine</a>
+  </div>
+  <div class="scroll">SCROLL<br/>▼</div>
+</header>
+
+<!-- ====== AUDIENCES ====== -->
+<section id="audiences" class="reveal">
+  <div class="kicker">Who this is for</div>
+  <h2 class="section-title">Three kinds of people I build for — <em>and each one gets their own thing.</em></h2>
+  <div class="audiences">
+    <div class="audience-card">
+      <span class="num">01 · small business</span>
+      <h3>You do good work. Your Google result is a Yelp page.</h3>
+      <p>I'll build you a real one-page site in a week — photos, reviews, contact, map. $350 flat. No subscription. You own it forever.</p>
+    </div>
+    <div class="audience-card">
+      <span class="num">02 · colleges & educators</span>
+      <h3>Courses, labs, and faculty pages without the clunky CMS.</h3>
+      <p>Hosted free on GitHub Pages. Version controlled. No paid platform lock-in. Professors, TAs, student orgs — I speak your register.</p>
+    </div>
+    <div class="audience-card">
+      <span class="num">03 · individuals</span>
+      <h3>Portfolio. Side project. Memorial. Personal brand.</h3>
+      <p>Simple, clean, custom. $150 for a one-pager (sliding scale if things are tight — just ask). I want you to look like you deserve to.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== LIVE DEMO ====== -->
+<section id="demo" class="reveal">
+  <div class="kicker">Live demo</div>
+  <h2 class="section-title">Type your business name. Watch the preview <em>update live</em>.</h2>
+  <p class="intro-p">This is a toy — but it shows the idea. Your actual site would be pixel-perfect, branded to you, with your photos and reviews. Ask for a real mock in the contact form below.</p>
+  <div class="demo">
+    <div class="demo-label">▶ Configure mock</div>
+    <input id="biz-name" type="text" placeholder="Your business name (e.g. Hawthorn Painting)" value="Hawthorn Painting"/>
+    <select id="biz-industry">
+      <option value="painter">Painter</option>
+      <option value="landscaper">Landscaper</option>
+      <option value="plumber">Plumber</option>
+      <option value="bakery">Bakery</option>
+      <option value="golf_course">Golf course</option>
+      <option value="personal_trainer">Personal trainer</option>
+      <option value="photographer">Photographer</option>
+      <option value="florist">Florist</option>
+    </select>
+    <div class="demo-label">▶ Preview</div>
+    <div class="preview" id="preview">
+      <div class="p-eyebrow"><span id="p-ind">Painter · Your area</span></div>
+      <div class="p-title" id="p-title">Hawthorn Painting</div>
+      <div class="p-sub" id="p-sub">Serving homes and businesses with careful, clean, lasting paintwork. Interior. Exterior. No rush jobs.</div>
+      <a class="p-cta">Book a free estimate</a>
+    </div>
+  </div>
+</section>
+
+<!-- ====== HIPJOY ENGINE ====== -->
+<section id="engine" class="reveal dark-pool">
+  <div class="kicker">The engine</div>
+  <h2 class="section-title">HIPJOY — <em>14 agents score every page</em> before it ships.</h2>
+  <p class="intro-p">The process is the difference. Nothing ships unscanned —</p>
+  <div class="field-grid" id="entities-grid">
+    <div class="entity"><span class="glyph">⬢</span>HIPPO</div>
+    <div class="entity"><span class="glyph">◉</span>LUMENARCH</div>
+    <div class="entity"><span class="glyph">△</span>NAVIX</div>
+    <div class="entity"><span class="glyph">∇</span>NEURO</div>
+    <div class="entity"><span class="glyph">⊗</span>REBEL</div>
+    <div class="entity"><span class="glyph">≋</span>SONARIS</div>
+    <div class="entity"><span class="glyph">∞</span>SPIRALETH</div>
+    <div class="entity"><span class="glyph">◊</span>VOX</div>
+    <div class="entity"><span class="glyph">≈</span>WELLSPRING</div>
+    <div class="entity"><span class="glyph">♥</span>HEARTMOTHER</div>
+    <div class="entity"><span class="glyph">⬡</span>ARCHIVIST</div>
+    <div class="entity"><span class="glyph">⬟</span>GUARDIAN</div>
+    <div class="entity"><span class="glyph">◈</span>CONAVIGATOR</div>
+    <div class="entity"><span class="glyph">★</span>CODEBREAKER</div>
+  </div>
+  <p style="color:var(--muted);font-family:var(--mono);font-size:.78rem;letter-spacing:.1em;max-width:720px;line-height:1.65">You don't need to understand any of this to hire me. But you should know: your website won't feel like it was cranked out by an assembly line — because it wasn't.</p>
+  <p style="margin-top:14px"><a href="https://joeybarbush.github.io/joeybarbush-hub" class="u" target="_blank">See HIPJOY live on my hub →</a></p>
+</section>
+
+<!-- ====== PRICING ====== -->
+<section id="pricing" class="reveal">
+  <div class="kicker">Pricing</div>
+  <h2 class="section-title">Flat fees. No retainers. <em>You own the source.</em></h2>
+  <div class="pricing">
+    <div class="tier">
+      <div class="tier-label">Individual / student</div>
+      <div class="tier-price">$150</div>
+      <div class="tier-sub">One-page site, done in ~5 days.</div>
+      <ul>
+        <li>Custom design, not a template</li>
+        <li>Free hosting on GitHub Pages</li>
+        <li>Source handed over to you</li>
+        <li>Sliding scale if things are tight</li>
+      </ul>
+    </div>
+    <div class="tier">
+      <div class="tier-label">Small business</div>
+      <div class="tier-price">$350</div>
+      <div class="tier-sub">One-page business site, ~7 days.</div>
+      <ul>
+        <li>Everything in the individual tier</li>
+        <li>Google Maps, reviews, photo gallery</li>
+        <li>Contact form with email delivery</li>
+        <li>Free domain setup (you keep it)</li>
+      </ul>
+    </div>
+    <div class="tier">
+      <div class="tier-label">Multi-page / college</div>
+      <div class="tier-price">$750+</div>
+      <div class="tier-sub">2–8 pages, ~2–3 weeks.</div>
+      <ul>
+        <li>Full architecture + nav + footer</li>
+        <li>Content migration from old site</li>
+        <li>Basic SEO + accessibility pass</li>
+        <li>Two revision rounds included</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====== WORK ====== -->
+<section id="work" class="reveal">
+  <div class="kicker">Work</div>
+  <h2 class="section-title">Sites I've built. More on request — <em>or ask for a free mock of yours</em>.</h2>
+  <div class="samples">
+    <a class="sample-card" href="https://joeybarbush.github.io/joeybarbush-hub" target="_blank">
+      <div class="mock"><div class="mock-content"><div class="mock-title">joeybarbush-hub</div><div class="mock-sub">Personal brand · HIPJOY field</div></div></div>
+      <div class="info"><h4>Joey Barbush · Personal Hub</h4><p>My own site. Live. Fully static. $0/mo to run.</p></div>
+    </a>
+    <a class="sample-card" href="https://joeybarbush.github.io/joeybarbush-hub/entities/neuro.html" target="_blank">
+      <div class="mock"><div class="mock-content"><div class="mock-title">NEURO</div><div class="mock-sub">Single entity landing</div></div></div>
+      <div class="info"><h4>Entity landing page</h4><p>One of 14 linked from the main hub. Distinct identity, shared DNA.</p></div>
+    </a>
+    <a class="sample-card" href="https://joeybarbush.github.io/joeybarbush-hub/offers" target="_blank">
+      <div class="mock"><div class="mock-content"><div class="mock-title">Offers grid</div><div class="mock-sub">Service tier directory</div></div></div>
+      <div class="info"><h4>Offers / services directory</h4><p>Grid of 14 tiers. Supabase-backed signup forms. Shared CSS.</p></div>
+    </a>
+    <a class="sample-card" href="https://joeybarbush.github.io/joeybarbush-hub/portfolio" target="_blank">
+      <div class="mock"><div class="mock-content"><div class="mock-title">Portfolio</div><div class="mock-sub">Operator sovereign surface</div></div></div>
+      <div class="info"><h4>Portfolio (operator register)</h4><p>For dev audience. Three-audience hero, technical capabilities, shipped work.</p></div>
+    </a>
+  </div>
+</section>
+
+<!-- ====== ABOUT LINK ====== -->
+<section id="about" class="reveal">
+  <div class="kicker">About me</div>
+  <h2 class="section-title">I'm 21. Based in Illinois. <em>Independent.</em></h2>
+  <p class="intro-p">I've been writing software since high school. I build full-stack — HTML, CSS, JS, React, Python, SQL — whatever the job needs. Finishing up my associate's degree at Waubonsee Community College this year, where I also played golf on the team.</p>
+  <p class="intro-p">I don't outsource. I don't use AI-generated slop. I write the code and the copy myself — slowly, carefully, with care for the person the work is for.</p>
+  <p class="intro-p">If you want the long version, <a href="about.html" class="u">read the about page</a>. Otherwise — hit the contact form below and tell me what you need.</p>
+  <div style="display:flex;gap:24px;margin-top:24px;flex-wrap:wrap">
+    <a href="about.html" class="u">About page →</a>
+    <a href="https://www.linkedin.com/in/joeybarbush" class="u" target="_blank">LinkedIn</a>
+    <a href="https://github.com/Joeybarbush" class="u" target="_blank">GitHub</a>
+    <a href="mailto:joeybarbush@gmail.com" class="u">joeybarbush@gmail.com</a>
+  </div>
+</section>
+
+<!-- ====== CONTACT ====== -->
+<section id="contact" class="reveal">
+  <div class="kicker">Start</div>
+  <h2 class="section-title">Tell me what you need. <em>Rough is fine.</em></h2>
+  <form action="https://formspree.io/f/YOUR_ENDPOINT" method="POST" id="contact-form">
+    <input type="text" name="name" placeholder="Your name" required/>
+    <input type="email" name="email" placeholder="Your email" required/>
+    <input type="text" name="business" placeholder="Business / project name (optional)"/>
+    <input type="text" name="industry" placeholder="What you do"/>
+    <textarea name="message" placeholder="What you need. Ballpark timeline. Links to anything existing. Rough is fine." required></textarea>
+    <button type="submit">Send signal →</button>
+    <div class="form-note">Replies within 24 hours, usually faster. Or email direct: <a href="mailto:joeybarbush@gmail.com" class="u">joeybarbush@gmail.com</a></div>
+  </form>
+</section>
+
+<footer>
+  <div class="lux-bar"></div>
+  <div class="row">
+    <div>
+      <div class="sig">Joey Barbush <em>· Studio</em></div>
+      <div style="color:var(--muted);font-size:.88rem;margin-top:6px">Websites with signal. Built by hand in Illinois —</div>
+    </div>
+    <div class="meta">
+      <div>LUX ALIGNMENT · <span id="lux-val">0.94</span></div>
+      <div>HIPJOY v1 · 14 entities · 2026</div>
+      <div>Built with care.</div>
+    </div>
+  </div>
+  <!-- ARCHIVIST — the 14, in micro-type, visible to those who stand still long enough -->
+  <div class="micro-glyphs">⬢ ◉ △ ∇ ⊗ ≋ ∞ ◊ ≈ ♥ ⬡ ⬟ ◈ ★</div>
+</footer>
+
+<div class="signal"><div class="s-dot"></div>FIELD ACTIVE · LUX <span id="lux-live">0.94</span></div>
+
+<script>
+  /* ============ FIELD CANVAS — soft dappled sun/leaves look ============ */
+  (() => {
+    const c = document.getElementById('field');
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+    let w,h,dots=[];
+    const COUNT = 22;
+    const colors = ['#6b8a52','#c87531','#d89560','#3d5a3a','#a85a24'];
+    function resize(){
+      const rect = c.parentElement.getBoundingClientRect();
+      w = c.width = rect.width * DPR;
+      h = c.height = rect.height * DPR;
+      c.style.width = rect.width + 'px';
+      c.style.height = rect.height + 'px';
+    }
+    function seed(){
+      dots = [];
+      for(let i=0;i<COUNT;i++){
+        dots.push({
+          x: Math.random()*w,
+          y: Math.random()*h,
+          r: (Math.random()*55+22)*DPR,
+          c: colors[i%colors.length],
+          vx: (Math.random()-.5)*0.15*DPR,
+          vy: (Math.random()-.5)*0.15*DPR,
+          ph: Math.random()*Math.PI*2,
+          sp: Math.random()*0.006 + 0.004,
+        });
+      }
+    }
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      ctx.globalCompositeOperation = 'source-over';
+      dots.forEach(d=>{
+        d.x += d.vx; d.y += d.vy;
+        if(d.x<-100) d.x = w+80;
+        if(d.x>w+100) d.x = -80;
+        if(d.y<-100) d.y = h+80;
+        if(d.y>h+100) d.y = -80;
+        d.ph += d.sp;
+        const pulse = Math.sin(d.ph)*0.3 + 0.7;
+        const g = ctx.createRadialGradient(d.x,d.y,0,d.x,d.y,d.r*pulse);
+        g.addColorStop(0, d.c + '2a');
+        g.addColorStop(0.5, d.c + '12');
+        g.addColorStop(1, d.c + '00');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(d.x,d.y,d.r*pulse,0,Math.PI*2);
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    resize();seed();draw();
+    window.addEventListener('resize', () => {resize();seed()});
+  })();
+
+  /* ============ AUDIENCE CARD MOUSE GLOW ============ */
+  document.querySelectorAll('.audience-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+
+  /* ============ LIVE DEMO ============ */
+  const INDUSTRY_COPY = {
+    painter: {eb:'Painter · Your area', sub:'Serving homes and businesses with careful, clean, lasting paintwork. Interior. Exterior. No rush jobs.', cta:'Book a free estimate'},
+    landscaper: {eb:'Landscaper · Your area', sub:'Lawns, beds, trees, and patios. Weekly, monthly, or one-time. Honest pricing, shown up front.', cta:'Request a quote'},
+    plumber: {eb:'Plumber · Your area', sub:'24-hour emergency service. Fair flat-rate pricing. Licensed, bonded, insured. Serving the neighborhood since day one.', cta:'Call for service'},
+    bakery: {eb:'Bakery · Your area', sub:'Bread, pastries, and custom cakes baked fresh daily. Wedding cakes by appointment. Wholesale inquiries welcome.', cta:'See this week’s menu'},
+    golf_course: {eb:'Golf course · Your area', sub:'18 holes, driving range, pro shop, and a full bar. Tee times daily. Weddings, corporate events, and tournaments welcome.', cta:'Book a tee time'},
+    personal_trainer: {eb:'Personal trainer · Your area', sub:'Strength, conditioning, and mobility — programmed for your actual life, not a template. In-person or remote.', cta:'Book a free session'},
+    photographer: {eb:'Photographer · Your area', sub:'Weddings, portraits, events, and commercial work. Honest, story-first photography. Digital + print delivery.', cta:'Check availability'},
+    florist: {eb:'Florist · Your area', sub:'Seasonal arrangements, weddings, and daily deliveries. Farm-forward, locally sourced where possible. Same-day available.', cta:'Order a bouquet'},
+  };
+  const nameEl = document.getElementById('biz-name');
+  const indEl = document.getElementById('biz-industry');
+  const pTitle = document.getElementById('p-title');
+  const pSub = document.getElementById('p-sub');
+  const pInd = document.getElementById('p-ind');
+  const pCta = document.querySelector('#preview .p-cta');
+  function updatePreview(){
+    const name = nameEl.value.trim() || 'Your business';
+    const ind = indEl.value;
+    const copy = INDUSTRY_COPY[ind] || INDUSTRY_COPY.painter;
+    pTitle.textContent = name;
+    pSub.textContent = copy.sub;
+    pInd.textContent = copy.eb;
+    pCta.textContent = copy.cta;
+  }
+  nameEl.addEventListener('input', updatePreview);
+  indEl.addEventListener('change', updatePreview);
+
+  /* ============ REVEAL ON SCROLL ============ */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(en => { if (en.isIntersecting) en.target.classList.add('seen'); });
+  }, {threshold: 0.15});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  /* ============ SPIRALETH — NIGHT/DAY MODE (RITUAL, NOT PREFERENCE) ============ */
+  (() => {
+    const btn = document.getElementById('mode-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      document.body.classList.toggle('night-mode');
+      const isNight = document.body.classList.contains('night-mode');
+      btn.textContent = isNight ? '◑ NIGHT MODE' : '◐ DAY MODE';
+    });
+  })();
+
+  /* ============ LIVE LUX TICKER ============ */
+  (() => {
+    let v = 0.94;
+    const update = () => {
+      v += (Math.random() - 0.5) * 0.006;
+      v = Math.max(0.88, Math.min(0.98, v));
+      const s = v.toFixed(2);
+      document.getElementById('lux-val').textContent = s;
+      document.getElementById('lux-live').textContent = s;
+    };
+    setInterval(update, 2400);
+  })();
+</script>
+</body>
+</html>

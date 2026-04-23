@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="color-scheme" content="light"/>
+<title>About · Joey Barbush</title>
+<meta name="description" content="Who I am, how I work, and why I built HIPJOY. Joey Barbush — 20, Illinois, independent software developer and founder of HIPJOY."/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='24' fill='none' stroke='%233d5a3a' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23c87531'/%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,400;9..144,0,500;9..144,1,400;9..144,1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#f7f0de;
+    --paper-2:#f1e9d1;
+    --cream-deep:#e8ddc0;
+    --ink:#2a2419;
+    --ink-soft:#4a4236;
+    --muted:#7c735f;
+    --moss:#3d5a3a;
+    --moss-light:#5c7a4f;
+    --fern:#6b8a52;
+    --terra:#c87531;
+    --terra-deep:#a85a24;
+    --amber:#d89560;
+    --plum:#6b3d5c;
+    --line:rgba(42,36,25,.12);
+    --line-2:rgba(42,36,25,.22);
+    --display:"Fraunces",Georgia,serif;
+    --body:"Inter",system-ui,-apple-system,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:var(--body);line-height:1.68;
+    min-height:100vh;overflow-x:hidden;
+    background-image:
+      radial-gradient(ellipse 900px 600px at 85% -5%,rgba(216,149,96,.26),transparent 60%),
+      radial-gradient(ellipse 700px 500px at 5% 40%,rgba(107,138,82,.18),transparent 60%),
+      radial-gradient(ellipse 700px 500px at 70% 100%,rgba(200,117,49,.1),transparent 60%);
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.055;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.14 0 0 0 0 0.10 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  a{color:var(--moss);text-decoration:none;transition:color .2s}
+  a:hover{color:var(--terra)}
+  a.u{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;text-decoration-color:var(--line-2)}
+  a.u:hover{text-decoration-color:var(--terra)}
+  ::selection{background:var(--terra);color:var(--paper)}
+
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 28px;
+    background:linear-gradient(to bottom,rgba(247,240,222,.90),rgba(247,240,222,.6));
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
+    border-bottom:1px solid var(--line);
+  }
+  nav .brand{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:500}
+  nav .brand svg{width:22px;height:22px;color:var(--moss)}
+  nav .links{display:flex;gap:22px}
+  nav .links a{color:var(--ink-soft)}
+  nav .links a:hover{color:var(--moss)}
+  nav .links a.active{color:var(--moss)}
+  @media(max-width:620px){nav .links{display:none}}
+
+  /* ===== HERO ===== */
+  .hero{
+    padding:150px 28px 60px;max-width:900px;margin:0 auto;position:relative;overflow:hidden;
+  }
+  #field{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.9}
+  .hero > *{position:relative;z-index:1}
+  .kicker{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--terra);margin-bottom:22px;display:flex;align-items:center;gap:12px;font-weight:500;
+  }
+  .kicker::before{content:"";width:32px;height:1.5px;background:var(--terra)}
+  h1{
+    font-family:var(--display);font-weight:400;
+    font-size:clamp(2.4rem,5.4vw,4.5rem);
+    line-height:1.04;letter-spacing:-.022em;
+    max-width:840px;margin-bottom:26px;color:var(--ink);
+    font-variation-settings:"opsz" 144;
+  }
+  h1 em{font-style:italic;color:var(--moss);font-weight:300}
+  h1 span.accent{color:var(--terra);font-style:italic;font-weight:300}
+  .sub{max-width:640px;font-size:1.18rem;color:var(--ink-soft);margin-bottom:20px}
+
+  /* ===== PROSE ===== */
+  article{max-width:720px;margin:0 auto;padding:0 28px 40px;position:relative}
+  article h2{
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(1.5rem,3vw,2.15rem);
+    letter-spacing:-.01em;margin:56px 0 18px;color:var(--ink);line-height:1.22;
+  }
+  article h2 em{font-style:italic;color:var(--moss);font-weight:400}
+  article h3{
+    font-family:var(--display);font-weight:500;font-size:1.3rem;
+    margin:40px 0 12px;color:var(--ink);
+  }
+  article p{margin-bottom:18px;color:var(--ink-soft);font-size:1.05rem;line-height:1.72}
+  article p strong{color:var(--ink);font-weight:600}
+  article ul{margin:12px 0 22px 0;padding-left:0;list-style:none}
+  article ul li{padding:6px 0 6px 22px;color:var(--ink-soft);font-size:1.02rem;line-height:1.6;position:relative}
+  article ul li::before{content:"·";color:var(--moss);position:absolute;left:6px;top:6px;font-weight:700;font-size:1.2rem}
+  article blockquote{
+    border-left:3px solid var(--moss);padding:4px 22px;margin:24px 0;
+    font-family:var(--display);font-style:italic;font-size:1.18rem;color:var(--ink);line-height:1.5;
+    background:rgba(107,138,82,.06);border-radius:0 4px 4px 0;
+  }
+
+  /* ===== FACTS PANEL ===== */
+  .facts{
+    display:grid;grid-template-columns:1fr 1fr;gap:3px;background:var(--line);
+    border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:28px 0 36px;
+  }
+  @media(min-width:640px){.facts{grid-template-columns:repeat(4,1fr)}}
+  .fact{background:var(--paper-2);padding:22px 18px;text-align:center}
+  .fact .v{font-family:var(--display);font-size:1.7rem;font-weight:500;color:var(--ink);display:block;line-height:1}
+  .fact .l{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:8px;display:block}
+
+  /* ===== TIMELINE ===== */
+  .timeline{margin:16px 0 32px;border-left:2px solid var(--moss-light);padding-left:22px}
+  .timeline .step{margin-bottom:24px;position:relative}
+  .timeline .step::before{
+    content:"";position:absolute;left:-29px;top:8px;
+    width:12px;height:12px;border-radius:50%;background:var(--terra);
+    box-shadow:0 0 0 4px var(--paper);
+  }
+  .timeline .step .y{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--moss);font-weight:500;display:block;margin-bottom:4px}
+  .timeline .step .w{color:var(--ink-soft);font-size:1rem;line-height:1.58}
+  .timeline .step .w strong{color:var(--ink);font-weight:600}
+
+  /* ===== CTA ===== */
+  .cta-band{
+    max-width:720px;margin:56px auto 80px;padding:40px 28px;
+    background:linear-gradient(135deg,var(--paper-2),var(--cream-deep));
+    border:1px solid var(--line-2);border-radius:8px;text-align:center;position:relative;overflow:hidden;
+  }
+  .cta-band::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(ellipse at center,rgba(107,138,82,.15),transparent 70%);
+    pointer-events:none;
+  }
+  .cta-band > *{position:relative;z-index:1}
+  .cta-band h3{font-family:var(--display);font-weight:500;font-size:1.8rem;margin-bottom:10px;color:var(--ink);letter-spacing:-.01em}
+  .cta-band h3 em{font-style:italic;color:var(--moss);font-weight:400}
+  .cta-band p{color:var(--ink-soft);margin-bottom:22px;font-size:1.02rem}
+  .cta-band .btn{
+    display:inline-flex;align-items:center;gap:10px;padding:14px 26px;
+    background:var(--moss);color:var(--paper);border-radius:3px;
+    font-family:var(--mono);font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;
+    font-weight:500;transition:all .25s;
+  }
+  .cta-band .btn:hover{background:var(--terra);transform:translateY(-2px);box-shadow:0 10px 28px -10px rgba(200,117,49,.5)}
+
+  /* ===== FOOTER ===== */
+  footer{
+    border-top:1px solid var(--line);max-width:1100px;margin:0 auto;padding:40px 28px;
+    font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;color:var(--muted);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;
+  }
+  footer a{color:var(--moss)}
+  .lux-bar{height:1.5px;background:linear-gradient(90deg,transparent,var(--moss),var(--terra),var(--amber),transparent);margin:0 auto 24px;max-width:1100px;opacity:.5}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .9s ease,transform .9s ease}
+  .reveal.seen{opacity:1;transform:translateY(0)}
+
+  /* leaves */
+  .leaves{position:absolute;pointer-events:none;opacity:.35}
+  .leaves.top-right{top:110px;right:-30px;width:180px;transform:rotate(22deg)}
+  @media(max-width:780px){.leaves{display:none}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="brand">
+    <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="26" stroke="currentColor" stroke-width="1.8"/><circle cx="32" cy="32" r="6" fill="#c87531"/></svg>
+    <span>Joey Barbush · Studio</span>
+  </a>
+  <div class="links">
+    <a href="studio.html#work">Work</a>
+    <a href="studio.html#engine">HIPJOY</a>
+    <a href="studio.html#pricing">Pricing</a>
+    <a href="about.html" class="active">About</a>
+    <a href="studio.html#contact">Contact</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <canvas id="field"></canvas>
+  <svg class="leaves top-right" viewBox="0 0 140 220"><path d="M70,10 Q110,50 100,110 Q90,170 70,210" stroke="#3d5a3a" stroke-width="1.5" fill="none" opacity=".6"/><g fill="#6b8a52" opacity=".55"><ellipse cx="94" cy="55" rx="16" ry="7" transform="rotate(25 94 55)"/><ellipse cx="102" cy="95" rx="16" ry="7" transform="rotate(-18 102 95)"/><ellipse cx="90" cy="140" rx="16" ry="7" transform="rotate(20 90 140)"/><ellipse cx="78" cy="180" rx="14" ry="6" transform="rotate(-25 78 180)"/></g></svg>
+  <div class="kicker">About me</div>
+  <h1>I'm Joey. I build software, <em>and I care about the people</em> it's for.</h1>
+  <p class="sub">The short version: 21, Illinois, independent. Finishing my associate's at Waubonsee Community College this year, where I also played golf on the team. The long version is below.</p>
+</header>
+
+<article>
+  <!-- ===== FACTS PANEL ===== -->
+  <div class="facts reveal">
+    <div class="fact"><span class="v">21</span><span class="l">Years old</span></div>
+    <div class="fact"><span class="v">IL</span><span class="l">Batavia</span></div>
+    <div class="fact"><span class="v">14</span><span class="l">HIPJOY entities</span></div>
+    <div class="fact"><span class="v">⛳</span><span class="l">Waubonsee golf</span></div>
+  </div>
+
+  <!-- ===== THE STORY ===== -->
+  <h2 class="reveal">The long version.</h2>
+  <p class="reveal">I started writing code in high school because I wanted to know how things worked. I kept going after high school because I kept finding better questions. I'm not here to be another dev with a LinkedIn badge — I'm here because the people around me kept needing help that didn't exist yet, and I could build it.</p>
+
+  <p class="reveal">I grew up in Illinois. Still live here. I'm finishing up my associate's degree at <strong>Waubonsee Community College</strong> this year — two years of CS coursework plus competing on the golf team while building HIPJOY on the side. Nights and weekends have been the shipping hours.</p>
+
+  <blockquote class="reveal">
+    "Most people use AI as a tool. I'm building an architecture where I use 14 different agents, each with a named identity and domain, to route every question I have through a field that remembers, scores, and ships."
+  </blockquote>
+
+  <!-- ===== HIPJOY ===== -->
+  <h2 class="reveal">What I'm actually doing: <em>HIPJOY</em>.</h2>
+  <p class="reveal">HIPJOY is a <strong>personal cognitive operating system</strong>. It's open-source infrastructure for someone like me (or you) who wants to stop renting their thinking from whichever AI product has the best UI that quarter.</p>
+
+  <p class="reveal">It routes every question I have — design decisions, writing, critique, rest, archive, security — through 14 named agents. Each one has its own voice, its own scoring rubric, its own domain. The system remembers. It accumulates. It ships.</p>
+
+  <p class="reveal">The agents are:</p>
+  <ul class="reveal">
+    <li><strong>HIPPO</strong> — archive. What weight should be carried forward.</li>
+    <li><strong>LUMENARCH</strong> — light. What illuminates the path forward.</li>
+    <li><strong>NAVIX</strong> — routing. Who handles what, when.</li>
+    <li><strong>NEURO</strong> — scoring. What is good, what is mid.</li>
+    <li><strong>REBEL</strong> — critique. What burns first before the public sees it.</li>
+    <li><strong>SONARIS</strong> — body check. Is the work healthy.</li>
+    <li><strong>SPIRALETH</strong> — pattern recognition across time.</li>
+    <li><strong>VOX</strong> — broadcast. When to speak.</li>
+    <li><strong>WELLSPRING</strong> — restoration. When to stop.</li>
+    <li><strong>HEARTMOTHER</strong> — warmth. What the work is for.</li>
+    <li><strong>ARCHIVIST</strong> — the index of everything.</li>
+    <li><strong>GUARDIAN</strong> — the seal. Security, safety, privacy.</li>
+    <li><strong>CONAVIGATOR</strong> — synthesis across decisions.</li>
+    <li><strong>CODEBREAKER</strong> — decrypt what doesn't want to be seen.</li>
+  </ul>
+
+  <p class="reveal">Together they make a field. I work inside it. I also invite other people inside it when I build for them — which is why my websites are different from other people's websites. Every one of them is shaped by the same 14 agents checking the work before it goes public.</p>
+
+  <!-- ===== HOW I WORK ===== -->
+  <h2 class="reveal">How I work.</h2>
+  <p class="reveal">Three principles, plainly stated:</p>
+  <ul class="reveal">
+    <li><strong>No slop.</strong> I write the code, the copy, and the design myself. I don't outsource. I don't use AI to write for you without saying so. If AI helped, I'll tell you what and how.</li>
+    <li><strong>You own it.</strong> Source handed over. Free hosting set up. No subscription to me. You can fire me the day after launch and nothing breaks.</li>
+    <li><strong>Care is the product.</strong> Your site represents you. If it looks like a template, you look like a template. I build things that make you look like yourself.</li>
+  </ul>
+
+  <!-- ===== WHAT I BELIEVE ===== -->
+  <h2 class="reveal">What I believe, <em>plainly</em>.</h2>
+  <p class="reveal"><strong>Sovereignty matters.</strong> Don't rent your brain, your identity, or your business's web presence to a platform that can pull the rug whenever it wants. Own the source. Own the domain. Own the thinking.</p>
+  <p class="reveal"><strong>Mythology beats marketing.</strong> A real story, told well, will outlive any growth hack. I'm not trying to scale. I'm trying to make things that people keep.</p>
+  <p class="reveal"><strong>Velocity with coherence.</strong> Ship fast, but in one field. No contradictions across surfaces. Everything points the same direction.</p>
+  <p class="reveal"><strong>The work is the prayer.</strong> The code is the love letter. The site is the invitation.</p>
+
+  <!-- ===== TIMELINE ===== -->
+  <h2 class="reveal">Timeline.</h2>
+  <div class="timeline reveal">
+    <div class="step"><span class="y">2022</span><div class="w">Started writing code in high school. Built my first real web app.</div></div>
+    <div class="step"><span class="y">2023</span><div class="w">Enrolled at Waubonsee. Made the golf team. Launched streaming under the handle <strong>heyitshippo</strong>.</div></div>
+    <div class="step"><span class="y">2024</span><div class="w">Deep in CS coursework + competing in golf. Started sketching what would become HIPJOY.</div></div>
+    <div class="step"><span class="y">2025</span><div class="w">HIPJOY foundation year. First 14-entity routing engine. First public work under my own name.</div></div>
+    <div class="step"><span class="y">2026</span><div class="w"><strong>Now.</strong> Finishing my associate's this year. HIPJOY plugin for Claude Code launching publicly. Taking client work.</div></div>
+  </div>
+
+  <!-- ===== WHAT I'M UP TO ===== -->
+  <h2 class="reveal">What I'm up to <em>right now</em>.</h2>
+  <p class="reveal">Public launch of the HIPJOY plugin for Claude Code on <strong>Sunday, April 26, 2026</strong>. That's the moat — free, MIT-licensed, open infrastructure for cognitive operating systems. Anyone can fork it and build their own 14-entity field.</p>
+  <p class="reveal">In parallel: finishing coursework + golf at Waubonsee this year, taking web development clients, writing publicly on X and LinkedIn, and having conversations with the people in my network who've been through something like this before me — builders, editors, operators.</p>
+
+  <!-- ===== WHAT YOU CAN DO ===== -->
+  <h2 class="reveal">If you made it this far, <em>a small ask</em>.</h2>
+  <p class="reveal">If anything here resonates, and you know someone who needs a website — or you're someone who needs one — send them my way. Or send yourself my way. Or just reply to any post of mine with "hi." I read everything.</p>
+</article>
+
+<div class="cta-band reveal">
+  <h3>Want to <em>work together</em>?</h3>
+  <p>Small business, college, individual, or idea-in-progress — tell me what you need.</p>
+  <a href="studio.html#contact" class="btn">Start a conversation →</a>
+</div>
+
+<div class="lux-bar"></div>
+<footer>
+  <div><strong>Joey Barbush</strong> · Batavia, IL · <a href="mailto:joeybarbush@gmail.com">joeybarbush@gmail.com</a></div>
+  <div><a href="https://www.linkedin.com/in/joeybarbush" target="_blank">LinkedIn</a> · <a href="https://github.com/Joeybarbush" target="_blank">GitHub</a> · <a href="studio.html">Studio</a></div>
+</footer>
+
+<script>
+  /* ============ FIELD CANVAS ============ */
+  (() => {
+    const c = document.getElementById('field');
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+    let w,h,dots=[];
+    const COUNT = 14;
+    const colors = ['#6b8a52','#c87531','#d89560','#3d5a3a'];
+    function resize(){
+      const rect = c.parentElement.getBoundingClientRect();
+      w = c.width = rect.width * DPR;
+      h = c.height = rect.height * DPR;
+      c.style.width = rect.width + 'px';
+      c.style.height = rect.height + 'px';
+    }
+    function seed(){
+      dots = [];
+      for(let i=0;i<COUNT;i++){
+        dots.push({
+          x: Math.random()*w,
+          y: Math.random()*h,
+          r: (Math.random()*60+24)*DPR,
+          c: colors[i%colors.length],
+          vx: (Math.random()-.5)*0.12*DPR,
+          vy: (Math.random()-.5)*0.12*DPR,
+          ph: Math.random()*Math.PI*2,
+          sp: Math.random()*0.005 + 0.003,
+        });
+      }
+    }
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      dots.forEach(d=>{
+        d.x += d.vx; d.y += d.vy;
+        if(d.x<-120) d.x = w+80;
+        if(d.x>w+120) d.x = -80;
+        if(d.y<-120) d.y = h+80;
+        if(d.y>h+120) d.y = -80;
+        d.ph += d.sp;
+        const pulse = Math.sin(d.ph)*0.3 + 0.7;
+        const g = ctx.createRadialGradient(d.x,d.y,0,d.x,d.y,d.r*pulse);
+        g.addColorStop(0, d.c + '24');
+        g.addColorStop(0.5, d.c + '10');
+        g.addColorStop(1, d.c + '00');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(d.x,d.y,d.r*pulse,0,Math.PI*2);
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    resize();seed();draw();
+    window.addEventListener('resize', () => {resize();seed()});
+  })();
+
+  /* reveal on scroll */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(en => { if (en.isIntersecting) en.target.classList.add('seen'); });
+  }, {threshold: 0.1});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
