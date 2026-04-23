@@ -230,6 +230,106 @@
   .tier li::before{content:"✓";color:var(--moss);font-family:var(--body);font-weight:600;flex-shrink:0}
   .tier li:last-child{border-bottom:0}
 
+  /* ====== HOW IT WORKS ====== */
+  .steps{display:grid;grid-template-columns:1fr;gap:18px;margin-top:10px;counter-reset:step}
+  @media(min-width:780px){.steps{grid-template-columns:repeat(2,1fr)}}
+  @media(min-width:1080px){.steps{grid-template-columns:repeat(4,1fr)}}
+  .step-card{
+    position:relative;padding:28px 24px 24px;
+    background:var(--paper-2);border:1px solid var(--line);
+    border-radius:6px;transition:all .3s cubic-bezier(.2,.8,.2,1);
+    overflow:hidden;
+  }
+  .step-card:hover{background:#fffaed;border-color:var(--moss-light);transform:translateY(-3px);box-shadow:0 16px 34px -18px rgba(61,90,58,.28)}
+  .step-card::before{
+    content:"";position:absolute;top:0;left:0;width:100%;height:3px;
+    background:linear-gradient(90deg,var(--moss),var(--terra));
+    transform:scaleX(0);transform-origin:left;transition:transform .6s ease;
+  }
+  .step-card:hover::before{transform:scaleX(1)}
+  .step-card .step-num{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;color:var(--terra);
+    margin-bottom:10px;font-weight:600;
+  }
+  .step-card .step-title{
+    font-family:var(--display);font-size:1.25rem;font-weight:500;
+    line-height:1.2;margin-bottom:10px;color:var(--ink);
+  }
+  .step-card .step-body{color:var(--ink-soft);font-size:.92rem;line-height:1.55;margin-bottom:14px}
+  .step-card .step-time{
+    font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;
+    color:var(--moss);text-transform:uppercase;font-weight:500;
+  }
+
+  /* Pricing — featured tier + anchor pricing + notes */
+  .tier{position:relative}
+  .tier.featured{
+    background:linear-gradient(145deg,#fffaed,var(--cream-deep));
+    box-shadow:inset 0 0 0 2px var(--moss);
+    transform:translateY(-6px);
+  }
+  @media(max-width:780px){.tier.featured{transform:none}}
+  .tier-badge{
+    position:absolute;top:-11px;right:18px;
+    background:var(--moss);color:var(--paper);
+    font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;
+    padding:5px 11px;border-radius:20px;font-weight:500;
+  }
+  .tier-anchor{
+    font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;color:var(--muted);
+    margin-top:16px;padding-top:14px;border-top:1px solid var(--line);
+    font-style:italic;
+  }
+  .pricing-notes{
+    display:flex;flex-direction:column;gap:10px;
+    margin-top:28px;padding:22px 24px;
+    background:var(--paper-2);border:1px solid var(--line);border-radius:6px;
+    font-size:.92rem;color:var(--ink-soft);
+  }
+  .pricing-notes div strong{color:var(--ink)}
+
+  /* FAQ */
+  .faq{max-width:780px;margin:16px auto 0}
+  .faq details{
+    border-top:1px solid var(--line);padding:22px 0;transition:background .2s;
+  }
+  .faq details:last-child{border-bottom:1px solid var(--line)}
+  .faq summary{
+    font-family:var(--display);font-size:1.15rem;font-weight:500;color:var(--ink);
+    cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:20px;
+    user-select:none;
+  }
+  .faq summary::after{
+    content:"+";font-family:var(--mono);font-size:1.4rem;color:var(--moss);
+    transition:transform .3s,color .3s;font-weight:400;
+  }
+  .faq details[open] summary::after{content:"−";color:var(--terra)}
+  .faq details p{
+    color:var(--ink-soft);margin-top:14px;font-size:.98rem;line-height:1.65;
+    padding-left:2px;
+  }
+  .faq summary::-webkit-details-marker{display:none}
+
+  /* Recent-builds ticker (the life signal) */
+  .ticker{
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    background:var(--paper-2);padding:18px 0;overflow:hidden;
+    font-family:var(--mono);font-size:.78rem;letter-spacing:.1em;color:var(--ink-soft);
+    margin:60px 0 20px;
+  }
+  .ticker-inner{
+    display:flex;gap:48px;white-space:nowrap;
+    animation:tickerFlow 45s linear infinite;
+  }
+  .ticker-inner:hover{animation-play-state:paused}
+  .ticker-item{display:inline-flex;align-items:center;gap:10px}
+  .ticker-item .dot{width:6px;height:6px;border-radius:50%;background:var(--moss)}
+  .ticker-item strong{color:var(--ink);font-weight:500}
+  @keyframes tickerFlow{
+    from{transform:translateX(0)}
+    to{transform:translateX(-50%)}
+  }
+
   /* ====== SAMPLES ====== */
   .samples{display:grid;grid-template-columns:1fr;gap:18px}
   @media(min-width:780px){.samples{grid-template-columns:repeat(2,1fr)}}
@@ -415,6 +515,25 @@
   </div>
 </section>
 
+<!-- Rolling ticker — recent builds + live signal -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner">
+    <span class="ticker-item"><span class="dot"></span>NOW BUILDING · <strong>Hawthorn Painting</strong> · Aurora IL</span>
+    <span class="ticker-item"><span class="dot"></span>SHIPPED · <strong>Junction Log</strong> · newsletter</span>
+    <span class="ticker-item"><span class="dot"></span>SHIPPED · <strong>Barbush Studio</strong> · portfolio</span>
+    <span class="ticker-item"><span class="dot"></span>SHIPPED · <strong>HIPJOY Field Hub</strong> · 14 entity landings</span>
+    <span class="ticker-item"><span class="dot"></span>SLOT OPEN · May · <strong>2 bookings</strong></span>
+    <span class="ticker-item"><span class="dot"></span>SLOT OPEN · June · <strong>3 bookings</strong></span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item"><span class="dot"></span>NOW BUILDING · <strong>Hawthorn Painting</strong> · Aurora IL</span>
+    <span class="ticker-item"><span class="dot"></span>SHIPPED · <strong>Junction Log</strong> · newsletter</span>
+    <span class="ticker-item"><span class="dot"></span>SHIPPED · <strong>Barbush Studio</strong> · portfolio</span>
+    <span class="ticker-item"><span class="dot"></span>SHIPPED · <strong>HIPJOY Field Hub</strong> · 14 entity landings</span>
+    <span class="ticker-item"><span class="dot"></span>SLOT OPEN · May · <strong>2 bookings</strong></span>
+    <span class="ticker-item"><span class="dot"></span>SLOT OPEN · June · <strong>3 bookings</strong></span>
+  </div>
+</div>
+
 <!-- ====== LIVE DEMO ====== -->
 <section id="demo" class="reveal">
   <div class="kicker">Live demo</div>
@@ -468,44 +587,129 @@
   <p style="margin-top:14px"><a href="https://joeybarbush.github.io/joeybarbush-hub" class="u" target="_blank">See HIPJOY live on my hub →</a></p>
 </section>
 
+<!-- ====== HOW IT WORKS ====== -->
+<section id="how" class="reveal">
+  <div class="kicker">How it works</div>
+  <h2 class="section-title">Four steps. About a week. <em>You look great at the end.</em></h2>
+  <div class="steps">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-title">You tell me what you do</div>
+      <div class="step-body">Email, 10-minute call, or a paragraph in the contact form below. Rough is fine — I fill in the gaps.</div>
+      <div class="step-time">Day 1</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-title">I build a working mock</div>
+      <div class="step-body">Custom design, your photos, your voice. Not a template. You see a real link, not a Figma file.</div>
+      <div class="step-time">Days 2–4</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-title">One revision pass</div>
+      <div class="step-body">You point at what's off. I fix it. Most people need one round. A second round is free if needed.</div>
+      <div class="step-time">Days 5–6</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <div class="step-title">Ship + hand over</div>
+      <div class="step-body">Goes live on your domain (or free hosting). Source files handed over. You own everything. I disappear unless you want me around.</div>
+      <div class="step-time">Day 7</div>
+    </div>
+  </div>
+</section>
+
 <!-- ====== PRICING ====== -->
 <section id="pricing" class="reveal">
   <div class="kicker">Pricing</div>
-  <h2 class="section-title">Flat fees. No retainers. <em>You own the source.</em></h2>
+  <h2 class="section-title">Flat fees. No retainers. <em>You own everything when we're done.</em></h2>
+  <p class="intro-p">Real numbers, stated up front. No "call for quote." No scope creep. No subscriptions to me.</p>
   <div class="pricing">
+
     <div class="tier">
-      <div class="tier-label">Individual / student</div>
+      <div class="tier-label">Individual / student / creator</div>
       <div class="tier-price">$150</div>
-      <div class="tier-sub">One-page site, done in ~5 days.</div>
+      <div class="tier-sub">One-page site · ~5 days start to finish</div>
       <ul>
-        <li>Custom design, not a template</li>
-        <li>Free hosting on GitHub Pages</li>
-        <li>Source handed over to you</li>
-        <li>Sliding scale if things are tight</li>
+        <li>Custom design, not a template. Your actual voice, your actual work.</li>
+        <li>Portfolio, personal brand, side-project landing, memorial page, event.</li>
+        <li>Free hosting on GitHub Pages. You keep it forever.</li>
+        <li>Full source handed over. Nothing locked to me.</li>
+        <li>Sliding scale if things are tight — email and ask.</li>
       </ul>
+      <div class="tier-anchor">vs. Wix Premium ($192/yr forever + your time)</div>
     </div>
-    <div class="tier">
+
+    <div class="tier featured">
+      <div class="tier-badge">Most booked</div>
       <div class="tier-label">Small business</div>
       <div class="tier-price">$350</div>
-      <div class="tier-sub">One-page business site, ~7 days.</div>
+      <div class="tier-sub">One-page business site · ~7 days</div>
       <ul>
-        <li>Everything in the individual tier</li>
-        <li>Google Maps, reviews, photo gallery</li>
-        <li>Contact form with email delivery</li>
-        <li>Free domain setup (you keep it)</li>
+        <li>Everything in the individual tier, plus —</li>
+        <li>Google Maps embed, review pull-ins, photo gallery.</li>
+        <li>Working contact form. Emails go straight to your inbox.</li>
+        <li>Domain setup (yourbusiness.com) — you own it, I wire it up.</li>
+        <li>Shows up in Google as a real result, not a Yelp page.</li>
       </ul>
+      <div class="tier-anchor">vs. local web agency ($1,500–3,000, 4–6 weeks)</div>
     </div>
+
     <div class="tier">
-      <div class="tier-label">Multi-page / college</div>
+      <div class="tier-label">Multi-page / college / lab</div>
       <div class="tier-price">$750+</div>
-      <div class="tier-sub">2–8 pages, ~2–3 weeks.</div>
+      <div class="tier-sub">2–8 pages · ~2–3 weeks</div>
       <ul>
-        <li>Full architecture + nav + footer</li>
-        <li>Content migration from old site</li>
-        <li>Basic SEO + accessibility pass</li>
-        <li>Two revision rounds included</li>
+        <li>Full architecture: nav, footer, multiple pages, maybe a blog.</li>
+        <li>Professors, labs, student orgs, course pages, small product catalogs.</li>
+        <li>Content migration if you have an old site I'm replacing.</li>
+        <li>Basic SEO + accessibility pass.</li>
+        <li>Two revision rounds included. Extras at $75/hr if needed.</li>
       </ul>
+      <div class="tier-anchor">vs. university vendor ($3,000–10,000+)</div>
     </div>
+
+  </div>
+  <div class="pricing-notes">
+    <div>⬢ <strong>Half up front, half on delivery.</strong> Stripe or Zelle. No signed contract needed under $1K.</div>
+    <div>⬡ <strong>Not happy? Don't pay the second half.</strong> I keep the design, you walk. Fair.</div>
+    <div>◈ <strong>I do 2–3 sites a month.</strong> Book early if you have a deadline.</div>
+  </div>
+</section>
+
+<!-- ====== FAQ ====== -->
+<section id="faq" class="reveal">
+  <div class="kicker">Common questions</div>
+  <h2 class="section-title">Things people ask before they hit send.</h2>
+  <div class="faq">
+    <details>
+      <summary>Why this price, and not cheaper?</summary>
+      <p>Because I don't use templates, I don't outsource, and I write the copy with you. A $30 Wix template is cheaper upfront but costs you $200/year forever and looks like everyone else. My sites pay for themselves on the first booked customer.</p>
+    </details>
+    <details>
+      <summary>Why this price, and not more expensive?</summary>
+      <p>Because I'm an independent operator at 21, not a 10-person agency. My overhead is a laptop and coffee. I pass that savings to you. If you want a $5K agency engagement, I'm not your person.</p>
+    </details>
+    <details>
+      <summary>What do you NOT do?</summary>
+      <p>I don't do e-commerce checkout (Shopify is better for that). I don't do anything that needs user login / accounts unless we scope that separately. I don't do SEO marketing retainers. I don't do logo design — I'll use what you have or recommend someone.</p>
+    </details>
+    <details>
+      <summary>Who owns the site?</summary>
+      <p>You do. Full source files, full domain ownership, full hosting account. You can fire me the day after launch and nothing breaks. That's the deal.</p>
+    </details>
+    <details>
+      <summary>Do you use AI to build?</summary>
+      <p>I built HIPJOY, a cognitive OS that routes decisions through 14 named agents. So yes — AI helps me think faster. But every line of code and every sentence of copy passes through me. I don't ship anything I didn't read.</p>
+    </details>
+    <details>
+      <summary>How long until my site is live?</summary>
+      <p>Individual/student: ~5 days. Small business: ~7 days. Multi-page: ~2–3 weeks. If you need faster, ask — I sometimes have a same-week slot open.</p>
+    </details>
+    <details>
+      <summary>What if I don't know what I want?</summary>
+      <p>That's normal. I'll send you 2–3 rough directions after our first conversation, you pick one, we go from there. You don't need a finished vision — just a rough sense of what you do and who you serve.</p>
+    </details>
   </div>
 </section>
 
