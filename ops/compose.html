@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>HIPJOY OPS · Compose</title>
+<meta name="robots" content="noindex,nofollow"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='24' fill='none' stroke='%233d5a3a' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23c87531'/%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f7f0de;--paper-2:#f1e9d1;--cream-deep:#e8ddc0;
+    --ink:#2a2419;--ink-soft:#4a4236;--muted:#7c735f;
+    --moss:#3d5a3a;--moss-light:#5c7a4f;--fern:#6b8a52;
+    --terra:#c87531;--terra-deep:#a85a24;--amber:#d89560;
+    --line:rgba(42,36,25,.12);--line-2:rgba(42,36,25,.22);
+    --display:"Fraunces",Georgia,serif;
+    --body:"Inter",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--body);line-height:1.55;font-size:14px;-webkit-font-smoothing:antialiased;height:100vh;overflow:hidden}
+  a{color:var(--moss);text-decoration:none}
+  a:hover{color:var(--terra)}
+  button{font:inherit;cursor:pointer;border:0;background:0;color:inherit}
+  input,textarea,select{font:inherit}
+  ::selection{background:var(--terra);color:var(--paper)}
+
+  /* NAV */
+  nav.top{
+    background:var(--paper-2);border-bottom:1px solid var(--line);
+    padding:12px 20px;display:flex;justify-content:space-between;align-items:center;
+    font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+    height:48px;
+  }
+  nav.top .brand{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:600}
+  nav.top .brand svg{width:18px;height:18px;color:var(--moss)}
+  nav.top .brand em{font-style:normal;color:var(--terra)}
+  nav.top .crumbs{color:var(--muted)}
+  nav.top .crumbs a{color:var(--moss)}
+  nav.top .links{display:flex;gap:16px}
+  nav.top .links a{color:var(--ink-soft)}
+  nav.top .links a:hover{color:var(--moss)}
+
+  /* LAYOUT */
+  .split{display:grid;grid-template-columns:minmax(380px, 480px) 1fr;height:calc(100vh - 48px);overflow:hidden}
+  @media(max-width:960px){.split{grid-template-columns:1fr;height:auto;overflow:auto}}
+
+  .left{background:var(--paper-2);border-right:1px solid var(--line);overflow-y:auto;padding:22px 24px}
+  .right{background:var(--paper);overflow-y:auto;padding:22px 24px}
+
+  .kicker{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);margin-bottom:10px;font-weight:500}
+  h1{font-family:var(--display);font-size:1.7rem;font-weight:500;letter-spacing:-.01em;margin-bottom:4px;color:var(--ink);line-height:1.1}
+  .sub{color:var(--muted);font-size:.86rem;margin-bottom:22px}
+
+  /* FACT CARDS */
+  .facts{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:5px;overflow:hidden;margin-bottom:18px}
+  .fact{background:var(--paper);padding:10px 12px;min-height:54px;display:flex;flex-direction:column;justify-content:center}
+  .fact .l{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;font-weight:500}
+  .fact .v{font-family:var(--display);font-size:.95rem;font-weight:500;color:var(--ink);line-height:1.2;overflow:hidden;text-overflow:ellipsis}
+  .fact .v.missing{color:var(--muted);font-style:italic;font-family:var(--body);font-weight:400;font-size:.82rem}
+
+  /* SECTION */
+  .section{margin-bottom:22px}
+  .section .label{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--moss);margin-bottom:8px;font-weight:500}
+
+  /* INPUTS */
+  input[type=text],input[type=email],input[type=url],textarea,select{
+    width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:4px;
+    background:#fffaed;color:var(--ink);font-size:.88rem;
+    transition:border-color .15s;
+  }
+  input[type=text]:focus,input[type=email]:focus,input[type=url]:focus,textarea:focus,select:focus{
+    outline:0;border-color:var(--moss);background:#fff;
+  }
+  textarea{resize:vertical;min-height:100px;font-family:var(--body);line-height:1.5}
+  label.f{display:block;margin-bottom:12px}
+  label.f .txt{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;display:block;font-weight:500}
+
+  /* STATUS SEG */
+  .status-seg{display:flex;gap:1px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:4px}
+  .status-seg button{
+    flex:1;padding:7px 8px;background:var(--paper);border:0;
+    font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;
+    transition:all .15s;
+  }
+  .status-seg button.active{background:var(--moss);color:var(--paper)}
+  .status-seg button:hover:not(.active){background:#fffaed;color:var(--ink)}
+  .status-seg button.s-contacted.active{background:var(--terra)}
+  .status-seg button.s-replied.active{background:var(--fern)}
+  .status-seg button.s-dead.active{background:var(--terra-deep)}
+
+  /* BUTTONS */
+  .btn{
+    padding:9px 14px;border-radius:4px;background:var(--moss);color:var(--paper);
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;
+    transition:all .15s;display:inline-flex;align-items:center;gap:6px;
+  }
+  .btn:hover{background:var(--terra);transform:translateY(-1px)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line-2)}
+  .btn.ghost:hover{border-color:var(--moss);color:var(--moss);background:#fffaed}
+  .btn.small{padding:6px 11px;font-size:.66rem}
+  .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+
+  /* MOCK PREVIEW */
+  .right h2{font-family:var(--display);font-size:1.15rem;font-weight:500;margin-bottom:4px;color:var(--ink)}
+  .right .preview-meta{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;color:var(--muted);margin-bottom:14px}
+  .preview-frame{
+    background:#fff;border:1px solid var(--line-2);border-radius:5px;overflow:hidden;
+    min-height:480px;display:block;width:100%;box-shadow:0 14px 36px -18px rgba(42,36,25,.2);
+  }
+  .preview-toolbar{
+    display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;
+  }
+
+  /* EMAIL EDITOR */
+  .tpl-seg{
+    display:flex;gap:1px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:10px;
+  }
+  .tpl-seg button{
+    flex:1;padding:6px 10px;background:var(--paper);font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);font-weight:500;
+  }
+  .tpl-seg button.active{background:var(--moss);color:var(--paper)}
+
+  /* FOOTER SAVE */
+  .footer{
+    position:sticky;bottom:0;background:var(--paper-2);padding:10px 14px;
+    border:1px solid var(--line);border-radius:5px;margin-top:14px;
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+  }
+  .save-ind{font-family:var(--mono);font-size:.66rem;color:var(--muted);letter-spacing:.1em}
+  .save-ind.saved{color:var(--moss)}
+  .save-ind.dirty{color:var(--terra)}
+
+  .hint{color:var(--muted);font-size:.78rem;line-height:1.5;margin-top:6px;font-style:italic}
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <a href="dashboard.html" class="brand">
+    <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="26" stroke="currentColor" stroke-width="2"/><circle cx="32" cy="32" r="6" fill="#c87531"/></svg>
+    <span>HIPJOY <em>OPS</em></span>
+  </a>
+  <div class="crumbs">
+    <a href="dashboard.html">← Dashboard</a> · <span id="crumb-name">Lead</span>
+  </div>
+  <div class="links">
+    <a href="plan.md">Plan</a>
+    <a href="../studio.html" target="_blank">Studio ↗</a>
+  </div>
+</nav>
+
+<div class="split">
+
+<!-- LEFT: LEAD + EMAIL -->
+<aside class="left">
+  <div class="kicker">Workspace · compose</div>
+  <h1 id="lead-name">Loading…</h1>
+  <div class="sub" id="lead-subtitle">—</div>
+
+  <!-- FACTS -->
+  <div class="facts" id="facts"></div>
+
+  <!-- STATUS -->
+  <div class="section">
+    <div class="label">Status</div>
+    <div class="status-seg" id="status-seg">
+      <button class="s-prospect" data-s="prospect">Prospect</button>
+      <button class="s-contacted" data-s="contacted">Contacted</button>
+      <button class="s-replied" data-s="replied">Replied</button>
+      <button class="s-booked" data-s="booked">Booked</button>
+      <button class="s-dead" data-s="dead">Dead</button>
+    </div>
+    <div class="hint">Prospect = never touched. Contacted = email sent. Replied = they responded. Booked = $ committed. Dead = not pursuing.</div>
+  </div>
+
+  <!-- PITCH TIER + CHANNEL -->
+  <div class="section">
+    <div class="label">Pitch</div>
+    <label class="f">
+      <span class="txt">Pitch tier</span>
+      <select id="pitch-tier">
+        <option value="$150">$150 · Individual / student / creator (one-pager)</option>
+        <option value="$350" selected>$350 · Small business (one-pager)</option>
+        <option value="$750+">$750+ · Multi-page / college / lab</option>
+        <option value="Custom">Custom quote</option>
+      </select>
+    </label>
+    <label class="f">
+      <span class="txt">Contact method</span>
+      <select id="contact-method">
+        <option value="">—</option>
+        <option value="email">Email</option>
+        <option value="phone">Phone</option>
+        <option value="nextdoor">Nextdoor DM</option>
+        <option value="instagram">Instagram DM</option>
+        <option value="facebook">Facebook Messenger</option>
+        <option value="linkedin">LinkedIn</option>
+      </select>
+    </label>
+    <label class="f">
+      <span class="txt">Mock URL (after generate)</span>
+      <input type="url" id="mock-url" placeholder="joeybarbush.github.io/mocks/…" />
+    </label>
+  </div>
+
+  <!-- NOTES -->
+  <div class="section">
+    <div class="label">Operator notes</div>
+    <textarea id="notes" placeholder="Anything you learn from research, the call, the reply…"></textarea>
+  </div>
+
+  <!-- EMAIL DRAFT -->
+  <div class="section">
+    <div class="label">Email draft</div>
+    <div class="tpl-seg">
+      <button data-tpl="a" class="active">Template A · direct</button>
+      <button data-tpl="b">B · individual</button>
+      <button data-tpl="c">C · neighbor</button>
+    </div>
+    <label class="f">
+      <span class="txt">Subject</span>
+      <input type="text" id="email-subject" />
+    </label>
+    <label class="f">
+      <span class="txt">Body</span>
+      <textarea id="email-body" style="min-height:220px"></textarea>
+    </label>
+    <div class="btn-row">
+      <button class="btn small" id="copy-email">Copy to clipboard</button>
+      <button class="btn ghost small" id="mailto-open">Open in mail client</button>
+    </div>
+  </div>
+
+  <!-- FOOTER SAVE -->
+  <div class="footer">
+    <div class="save-ind saved" id="save-ind">◉ saved</div>
+    <div style="display:flex;gap:8px">
+      <button class="btn ghost small" onclick="window.location.href='dashboard.html'">← Back</button>
+      <button class="btn small" id="save-btn">Save changes</button>
+    </div>
+  </div>
+</aside>
+
+<!-- RIGHT: MOCK PREVIEW -->
+<main class="right">
+  <div class="kicker">Mock preview · <span id="preview-name">—</span></div>
+  <h2>Live mock site <span style="color:var(--muted);font-weight:400;font-size:.88rem">— updates as you change fields</span></h2>
+  <div class="preview-meta">Click inside the frame to interact · Download HTML to ship as a real mock at <code>joeybarbush.github.io/mocks/{slug}.html</code></div>
+
+  <iframe id="preview" class="preview-frame" title="Mock preview" srcdoc=""></iframe>
+
+  <div class="preview-toolbar">
+    <button class="btn" id="download-mock">Download HTML</button>
+    <button class="btn ghost" id="copy-html">Copy HTML</button>
+    <button class="btn ghost" id="open-fullscreen">Open in new tab</button>
+    <span style="flex:1"></span>
+    <label class="f" style="margin:0;max-width:220px">
+      <span class="txt">Accent color</span>
+      <select id="accent-color">
+        <option value="#c87531">Terracotta (default)</option>
+        <option value="#3d5a3a">Moss green</option>
+        <option value="#6b3d5c">Deep plum</option>
+        <option value="#2a5e7d">Slate blue</option>
+        <option value="#8a2d2d">Wine red</option>
+        <option value="#3a6c4a">Forest</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="section" style="margin-top:18px">
+    <div class="label">Customize copy</div>
+    <label class="f">
+      <span class="txt">Hero headline</span>
+      <input type="text" id="m-headline" placeholder="e.g. Serving the area since 1988." />
+    </label>
+    <label class="f">
+      <span class="txt">Tagline / subhead</span>
+      <textarea id="m-tagline" style="min-height:60px" placeholder="One or two short sentences — what you do, who for."></textarea>
+    </label>
+    <label class="f">
+      <span class="txt">Services list (one per line)</span>
+      <textarea id="m-services" style="min-height:80px" placeholder="Interior painting&#10;Exterior painting&#10;Deck + fence"></textarea>
+    </label>
+    <label class="f">
+      <span class="txt">CTA button</span>
+      <input type="text" id="m-cta" placeholder="Book a free estimate" />
+    </label>
+  </div>
+</main>
+
+</div>
+
+<script>
+// ============ STATE ============
+let ALL = [];
+let LEAD = null;
+let DIRTY = false;
+
+// ============ HELPERS ============
+function esc(s){ return (s||'').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function slugify(s){ return (s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
+function getParam(k){ return new URLSearchParams(window.location.search).get(k); }
+function save(){
+  localStorage.setItem('hipjoy_ops_leads', JSON.stringify({
+    updated_at: new Date().toISOString(), count: ALL.length, leads: ALL,
+  }));
+  DIRTY = false;
+  const ind = document.getElementById('save-ind');
+  ind.textContent = '◉ saved ' + new Date().toLocaleTimeString();
+  ind.className = 'save-ind saved';
+}
+function markDirty(){
+  DIRTY = true;
+  const ind = document.getElementById('save-ind');
+  ind.textContent = '◌ unsaved changes';
+  ind.className = 'save-ind dirty';
+}
+
+// ============ LOAD LEAD ============
+async function loadState(){
+  const stored = localStorage.getItem('hipjoy_ops_leads');
+  if (stored) {
+    try { ALL = JSON.parse(stored).leads || []; } catch(e){}
+  }
+  if (!ALL.length) {
+    try {
+      const r = await fetch('leads.json');
+      const j = await r.json();
+      ALL = j.leads || j;
+    } catch(e){ console.error(e); }
+  }
+  const id = getParam('id');
+  if (!id) { alert('No lead id in URL. Returning to dashboard.'); window.location.href='dashboard.html'; return; }
+  LEAD = ALL.find(l => l.id === id);
+  if (!LEAD) { alert('Lead not found.'); window.location.href='dashboard.html'; return; }
+  renderLead();
+  renderMock();
+}
+
+// ============ RENDER LEAD ============
+function renderLead(){
+  document.title = `HIPJOY OPS · ${LEAD.name}`;
+  document.getElementById('lead-name').textContent = LEAD.name;
+  document.getElementById('crumb-name').textContent = LEAD.name;
+  document.getElementById('preview-name').textContent = LEAD.name;
+  document.getElementById('lead-subtitle').textContent = `${LEAD.industry || 'unknown'} · heat ${LEAD.heat || 0}/100 · OSM ${LEAD.osm_id || '—'}`;
+
+  // facts grid
+  const facts = [
+    ['Phone', LEAD.phone],
+    ['Email', LEAD.email],
+    ['City', LEAD.city],
+    ['State', LEAD.state],
+    ['Street', LEAD.addr_street],
+    ['Postcode', LEAD.postcode],
+    ['Hours', LEAD.opening_hours],
+    ['Facebook', LEAD.facebook],
+    ['Instagram', LEAD.instagram],
+    ['Coords', LEAD.lat && LEAD.lon ? `${LEAD.lat.toFixed(3)}, ${LEAD.lon.toFixed(3)}` : ''],
+  ];
+  document.getElementById('facts').innerHTML = facts.map(([l,v]) => `
+    <div class="fact">
+      <span class="l">${l}</span>
+      <span class="v${v ? '' : ' missing'}">${v ? esc(v) : '—'}</span>
+    </div>`).join('');
+
+  // status
+  document.querySelectorAll('#status-seg button').forEach(b => {
+    b.classList.toggle('active', b.dataset.s === (LEAD.status || 'prospect'));
+  });
+
+  // pitch tier + channel + mock url
+  document.getElementById('pitch-tier').value = LEAD.pitch_tier || '$350';
+  document.getElementById('contact-method').value = LEAD.contact_method || '';
+  document.getElementById('mock-url').value = LEAD.mock_url || '';
+
+  // notes
+  document.getElementById('notes').value = LEAD.notes || '';
+
+  // email draft — pre-fill with Template A if empty
+  if (!LEAD.draft_email) applyTemplate('a');
+  else {
+    const lines = LEAD.draft_email.split('\n');
+    const subjLine = lines[0].startsWith('Subject:') ? lines[0].slice(8).trim() : '';
+    document.getElementById('email-subject').value = subjLine || `I built a quick mock of a site for ${LEAD.name}`;
+    document.getElementById('email-body').value = subjLine ? lines.slice(1).join('\n').trim() : LEAD.draft_email;
+  }
+
+  // mock customizer — pre-fill sane defaults if empty
+  if (!LEAD.mock_headline) autoFillMockCopy();
+  document.getElementById('m-headline').value = LEAD.mock_headline || '';
+  document.getElementById('m-tagline').value = LEAD.mock_tagline || '';
+  document.getElementById('m-services').value = (LEAD.mock_services || []).join('\n') || industrySvcs(LEAD.industry);
+  document.getElementById('m-cta').value = LEAD.mock_cta || industryCta(LEAD.industry);
+  document.getElementById('accent-color').value = LEAD.mock_accent || '#c87531';
+}
+
+function autoFillMockCopy(){
+  const ind = LEAD.industry;
+  const copy = INDUSTRY_COPY[ind] || INDUSTRY_COPY._default;
+  LEAD.mock_headline = LEAD.mock_headline || copy.headline.replace(/\{name\}/g, LEAD.name);
+  LEAD.mock_tagline = LEAD.mock_tagline || copy.tagline;
+  LEAD.mock_services = LEAD.mock_services || copy.services;
+  LEAD.mock_cta = LEAD.mock_cta || copy.cta;
+  LEAD.mock_accent = LEAD.mock_accent || '#c87531';
+}
+
+function industrySvcs(ind){ return (INDUSTRY_COPY[ind] || INDUSTRY_COPY._default).services.join('\n'); }
+function industryCta(ind){ return (INDUSTRY_COPY[ind] || INDUSTRY_COPY._default).cta; }
+
+const INDUSTRY_COPY = {
+  golf_course: {
+    headline: '18 holes, real pace of play.',
+    tagline: 'A classic course in your neighborhood. Tee times, pro shop, and a full bar. Weddings and tournaments welcome.',
+    services: ['18-hole course','Driving range','Pro shop + lessons','Event + tournament hosting','Full-service clubhouse'],
+    cta: 'Book a tee time'
+  },
+  painter: {
+    headline: 'Careful paintwork, lasting finish.',
+    tagline: 'Interior and exterior painting for homes and businesses. Fair quotes. Clean work. Serving the area since we started.',
+    services: ['Interior painting','Exterior painting','Deck + fence staining','Cabinet refinishing','Commercial work'],
+    cta: 'Book a free estimate'
+  },
+  landscaper: {
+    headline: 'Lawns worth looking at.',
+    tagline: 'Weekly maintenance, seasonal cleanups, one-time transformations. Honest pricing shown up front.',
+    services: ['Lawn mowing + maintenance','Garden beds + planting','Hardscaping + patios','Tree + shrub care','Seasonal cleanup'],
+    cta: 'Request a quote'
+  },
+  plumber: {
+    headline: '24-hour service. Flat-rate pricing.',
+    tagline: 'Licensed, bonded, insured. Serving the neighborhood since day one. No surprises, no hidden fees.',
+    services: ['Emergency service','Drain cleaning','Water heater repair + install','Fixture install','Commercial plumbing'],
+    cta: 'Call for service'
+  },
+  electrician: {
+    headline: 'Wired right, the first time.',
+    tagline: 'Residential and commercial electrical. Licensed, bonded, insured. Old houses welcome.',
+    services: ['Panel upgrades','Rewiring','Lighting install','EV charger install','Troubleshooting'],
+    cta: 'Book an estimate'
+  },
+  bakery: {
+    headline: 'Bread, pastry, and cakes.',
+    tagline: 'Baked fresh every morning. Custom cakes by appointment. Wholesale inquiries welcome.',
+    services: ['Daily bread + pastry','Custom cakes','Wedding cakes','Wholesale','Catering'],
+    cta: 'See this week\u2019s menu'
+  },
+  barber: {
+    headline: 'Classic cuts, no nonsense.',
+    tagline: 'Walk-ins and appointments. Hot towel shaves. The shop you tell your friends about.',
+    services: ['Haircuts','Beard + shave','Kids\u2019 cuts','Hot towel','Grooming products'],
+    cta: 'Book an appointment'
+  },
+  massage: {
+    headline: 'Relief you can feel.',
+    tagline: 'Therapeutic, relaxation, and sports massage. Licensed + insured. Open 7 days.',
+    services: ['Swedish + deep tissue','Sports massage','Couples massage','Prenatal','Hot stone'],
+    cta: 'Book a session'
+  },
+  photographer: {
+    headline: 'Story-first photography.',
+    tagline: 'Weddings, portraits, events, commercial. Honest, quiet, careful. Digital + print delivery.',
+    services: ['Weddings + events','Portraits + headshots','Commercial product','Real estate','Senior + family'],
+    cta: 'Check availability'
+  },
+  florist: {
+    headline: 'Seasonal flowers, done well.',
+    tagline: 'Daily arrangements, wedding design, sympathy. Farm-forward and locally sourced where possible.',
+    services: ['Daily arrangements','Wedding + event','Sympathy','Subscriptions','Workshops'],
+    cta: 'Order a bouquet'
+  },
+  _default: {
+    headline: 'Serving the area.',
+    tagline: 'Careful work. Fair prices. Independent and local. We pick up the phone.',
+    services: ['Core service 1','Core service 2','Core service 3'],
+    cta: 'Get in touch'
+  },
+};
+
+// ============ MOCK BUILDER ============
+function renderMock(){
+  const accent = document.getElementById('accent-color').value || '#c87531';
+  const name = LEAD.name;
+  const head = document.getElementById('m-headline').value || INDUSTRY_COPY[LEAD.industry]?.headline || 'Serving the area.';
+  const tag = document.getElementById('m-tagline').value || '';
+  const cta = document.getElementById('m-cta').value || 'Get in touch';
+  const svcs = document.getElementById('m-services').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const city = LEAD.city || '';
+  const phone = LEAD.phone || '';
+  const addr = [LEAD.addr_street, LEAD.city, LEAD.state, LEAD.postcode].filter(Boolean).join(', ');
+  const hours = LEAD.opening_hours || '';
+
+  const html = buildMockHtml({ name, head, tag, cta, svcs, city, phone, addr, hours, accent, industry: LEAD.industry });
+  const frame = document.getElementById('preview');
+  frame.srcdoc = html;
+  window._currentMockHtml = html;
+  window._currentMockSlug = slugify(name);
+}
+
+function buildMockHtml({ name, head, tag, cta, svcs, city, phone, addr, hours, accent, industry }) {
+  const svcsHtml = svcs.map(s => `<li>${esc(s)}</li>`).join('');
+  return `<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>${esc(name)}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f8f3e8;--ink:#1f1c15;--soft:#4a4236;--accent:${accent};--line:rgba(31,28,21,.12);--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased}
+header{max-width:900px;margin:0 auto;padding:40px 24px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+header .brand{font-family:var(--display);font-weight:500;font-size:1.15rem;letter-spacing:-.01em;color:var(--ink)}
+header .loc{font-size:.82rem;color:var(--soft)}
+.hero{max-width:900px;margin:0 auto;padding:60px 24px}
+.eyebrow{font-family:var(--body);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;font-weight:500}
+h1{font-family:var(--display);font-weight:500;font-size:clamp(2.2rem,5vw,3.4rem);letter-spacing:-.02em;line-height:1.05;color:var(--ink);max-width:700px;margin-bottom:18px}
+.sub{font-size:1.08rem;color:var(--soft);max-width:560px;margin-bottom:28px}
+.cta{display:inline-flex;padding:14px 22px;background:var(--accent);color:#fff;text-decoration:none;font-weight:500;letter-spacing:.04em;border-radius:3px;font-size:.92rem;transition:transform .2s}
+.cta:hover{transform:translateY(-1px)}
+.services{max-width:900px;margin:0 auto;padding:40px 24px;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:40px}
+@media(max-width:640px){.services{grid-template-columns:1fr}}
+.services h2{font-family:var(--display);font-weight:500;font-size:1.4rem;margin-bottom:14px;color:var(--ink)}
+.services ul{list-style:none}
+.services li{padding:8px 0;border-bottom:1px solid var(--line);color:var(--soft)}
+.services li::before{content:"+ ";color:var(--accent);font-weight:600}
+.info{display:flex;flex-direction:column;gap:10px;font-size:.94rem;color:var(--soft)}
+.info .item{padding:8px 0;border-bottom:1px solid var(--line)}
+.info .item .l{font-family:var(--body);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:2px;display:block;font-weight:500}
+footer{max-width:900px;margin:0 auto;padding:30px 24px 50px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+</style></head><body>
+<header><div class="brand">${esc(name)}</div><div class="loc">${esc(city) || '&nbsp;'}</div></header>
+<section class="hero">
+  <div class="eyebrow">${esc(industry.replace(/_/g,' '))} · ${esc(city || 'Your area')}</div>
+  <h1>${esc(head)}</h1>
+  <p class="sub">${esc(tag)}</p>
+  <a href="#contact" class="cta">${esc(cta)} →</a>
+</section>
+<section class="services">
+  <div>
+    <h2>What we do</h2>
+    <ul>${svcsHtml}</ul>
+  </div>
+  <div class="info">
+    <h2 style="margin-bottom:6px">Visit / contact</h2>
+    ${addr ? `<div class="item"><span class="l">Address</span>${esc(addr)}</div>` : ''}
+    ${phone ? `<div class="item"><span class="l">Phone</span><a href="tel:${esc(phone)}" style="color:inherit">${esc(phone)}</a></div>` : ''}
+    ${hours ? `<div class="item"><span class="l">Hours</span>${esc(hours)}</div>` : ''}
+    <div class="item"><span class="l">Online</span>This site is new — check back soon for more.</div>
+  </div>
+</section>
+<footer>
+  <div>© ${new Date().getFullYear()} ${esc(name)}${city ? ` · ${esc(city)}` : ''}</div>
+  <div>Built by <a href="https://joeybarbush.github.io/joeybarbush-hub/studio.html" style="color:var(--accent);text-decoration:none">Joey Barbush · Studio</a></div>
+</footer>
+</body></html>`;
+}
+
+// ============ EMAIL TEMPLATES ============
+function applyTemplate(tpl){
+  document.querySelectorAll('.tpl-seg button').forEach(b => b.classList.toggle('active', b.dataset.tpl === tpl));
+  const firstName = (LEAD.contact_name || '').split(' ')[0] || 'there';
+  const city = LEAD.city || 'your area';
+  const url = LEAD.mock_url || `https://joeybarbush.github.io/mocks/${slugify(LEAD.name)}`;
+  let subj, body;
+
+  if (tpl === 'a') {
+    subj = `I built a quick mock of a site for ${LEAD.name}`;
+    body = `Hi ${firstName},
+
+I saw ${LEAD.name} on Google Maps / Nextdoor and noticed you don't have a website yet. I'm a local web developer based in Illinois and I went ahead and built a quick mock of what a site for you could look like — figured it's easier to show than pitch.
+
+Link: ${url}
+
+If you like it, I'll polish it, put it on your own domain (or free hosting — your call), and hand it over. Flat fee: **$350 for a one-pager**, done in about a week.
+
+If not, no hard feelings — the mock is yours to keep either way.
+
+A little about me: I'm Joey Barbush, 21, based in Illinois. I build websites for small businesses, educators, and individuals. Independent, no outsourcing.
+
+• Services: https://joeybarbush.github.io/joeybarbush-hub/studio.html
+• LinkedIn: https://www.linkedin.com/in/joeybarbush
+• GitHub: https://github.com/Joeybarbush
+
+Happy to answer questions.
+
+Joey
+
+--
+Joey Barbush · Batavia, IL · joeybarbush@gmail.com
+Not interested? Reply STOP and I'll never email again.`;
+  } else if (tpl === 'b') {
+    subj = `Saw your work — built you a landing page`;
+    body = `Hi ${firstName},
+
+I saw what you're doing with ${LEAD.name} and liked it. I'm a local web developer and I built a quick one-page landing site for you — figured it's easier to show than pitch.
+
+Link: ${url}
+
+If you want it polished up and live, I can put it on your own domain or free hosting for **$150 flat** (sliding scale if things are tight — just ask). Usually done within a week.
+
+If not, no worries — it's yours to keep either way.
+
+About me: Joey Barbush, 21, Illinois, independent. I build simple sites for people who do real things.
+
+• Services: https://joeybarbush.github.io/joeybarbush-hub/studio.html
+• LinkedIn: https://www.linkedin.com/in/joeybarbush
+• GitHub: https://github.com/Joeybarbush
+
+Let me know what you think.
+
+Joey
+
+--
+Joey Barbush · Batavia, IL · joeybarbush@gmail.com`;
+  } else {
+    subj = `Neighbor → neighbor: built you a site mock`;
+    body = `Hey ${firstName},
+
+Joey here — I'm also in ${city}. I saw ${LEAD.name} on Nextdoor and noticed you don't have a website up yet.
+
+I'm a web developer, so I went ahead and built a quick mock of what a site could look like for you:
+
+${url}
+
+Neighbor rate: **$250 flat** for a polished one-pager (normally $350), done in a week. Put it on your own domain or free hosting, your call. If you don't want it, no big deal — the mock is yours regardless.
+
+More about me: https://joeybarbush.github.io/joeybarbush-hub/studio.html
+LinkedIn: https://www.linkedin.com/in/joeybarbush
+
+Hit me back if you're interested.
+
+Joey
+
+--
+Joey Barbush · Batavia, IL · joeybarbush@gmail.com`;
+  }
+
+  document.getElementById('email-subject').value = subj;
+  document.getElementById('email-body').value = body;
+  markDirty();
+}
+
+// ============ EVENTS ============
+document.querySelectorAll('#status-seg button').forEach(b => {
+  b.addEventListener('click', () => {
+    const s = b.dataset.s;
+    LEAD.status = s;
+    document.querySelectorAll('#status-seg button').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    if (s === 'contacted' || s === 'replied' || s === 'booked') {
+      LEAD.last_contacted_at = LEAD.last_contacted_at || new Date().toISOString().slice(0,10);
+    }
+    markDirty();
+  });
+});
+
+document.querySelectorAll('.tpl-seg button').forEach(b => {
+  b.addEventListener('click', () => applyTemplate(b.dataset.tpl));
+});
+
+['pitch-tier','contact-method','mock-url','notes','email-subject','email-body','m-headline','m-tagline','m-services','m-cta','accent-color'].forEach(id => {
+  document.getElementById(id).addEventListener('input', e => {
+    const el = e.target;
+    if (id === 'pitch-tier') LEAD.pitch_tier = el.value;
+    else if (id === 'contact-method') LEAD.contact_method = el.value;
+    else if (id === 'mock-url') LEAD.mock_url = el.value;
+    else if (id === 'notes') LEAD.notes = el.value;
+    else if (id === 'email-subject' || id === 'email-body') {
+      LEAD.draft_email = 'Subject: ' + document.getElementById('email-subject').value + '\n' + document.getElementById('email-body').value;
+    }
+    else if (id === 'm-headline') LEAD.mock_headline = el.value;
+    else if (id === 'm-tagline') LEAD.mock_tagline = el.value;
+    else if (id === 'm-services') LEAD.mock_services = el.value.split('\n').map(s=>s.trim()).filter(Boolean);
+    else if (id === 'm-cta') LEAD.mock_cta = el.value;
+    else if (id === 'accent-color') LEAD.mock_accent = el.value;
+    markDirty();
+    if (id.startsWith('m-') || id === 'accent-color') renderMock();
+  });
+});
+
+document.getElementById('save-btn').addEventListener('click', () => {
+  // write LEAD back into ALL
+  const idx = ALL.findIndex(l => l.id === LEAD.id);
+  if (idx >= 0) ALL[idx] = LEAD;
+  save();
+});
+
+// auto-save every 20s
+setInterval(() => {
+  if (DIRTY) {
+    const idx = ALL.findIndex(l => l.id === LEAD.id);
+    if (idx >= 0) ALL[idx] = LEAD;
+    save();
+  }
+}, 20000);
+
+document.getElementById('copy-email').addEventListener('click', async () => {
+  const text = 'Subject: ' + document.getElementById('email-subject').value + '\n\n' + document.getElementById('email-body').value;
+  try { await navigator.clipboard.writeText(text); alert('Email copied to clipboard.'); }
+  catch(e) { alert('Copy failed.'); }
+});
+
+document.getElementById('mailto-open').addEventListener('click', () => {
+  const subj = encodeURIComponent(document.getElementById('email-subject').value);
+  const body = encodeURIComponent(document.getElementById('email-body').value);
+  const to = encodeURIComponent(LEAD.email || '');
+  window.location.href = `mailto:${to}?subject=${subj}&body=${body}`;
+});
+
+document.getElementById('download-mock').addEventListener('click', () => {
+  const html = window._currentMockHtml;
+  const slug = window._currentMockSlug;
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${slug}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('copy-html').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(window._currentMockHtml); alert('HTML copied.'); }
+  catch(e) { alert('Copy failed.'); }
+});
+
+document.getElementById('open-fullscreen').addEventListener('click', () => {
+  const blob = new Blob([window._currentMockHtml], { type: 'text/html' });
+  window.open(URL.createObjectURL(blob), '_blank');
+});
+
+// warn on unsaved exit
+window.addEventListener('beforeunload', e => {
+  if (DIRTY) { e.preventDefault(); e.returnValue = ''; }
+});
+
+loadState();
+</script>
+</body>
+</html>
