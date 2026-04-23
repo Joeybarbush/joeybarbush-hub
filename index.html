@@ -381,6 +381,28 @@ nav{
 }
 .portal-card:hover .pc-arrow{opacity:1;transform:translateX(3px)}
 
+/* ── MISSION BLOCK ──────────────────────────────────────────────────────────── */
+.mission-block{
+  position:relative;z-index:2;
+  max-width:720px;margin:60px auto 40px;padding:0 24px;text-align:center;
+}
+.mission-kicker{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.52rem;letter-spacing:.32em;text-transform:uppercase;
+  color:rgba(168,201,155,.38);margin-bottom:.9rem;
+}
+.mission-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(1.1rem,3vw,1.6rem);font-weight:700;
+  letter-spacing:.04em;color:var(--text);line-height:1.25;margin-bottom:1rem;
+}
+.mission-title em{font-style:normal;color:var(--sage);text-shadow:0 0 24px rgba(168,201,155,.3)}
+.mission-body{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.78rem;line-height:1.85;
+  color:rgba(240,237,229,.52);max-width:620px;margin:0 auto;
+}
+
 /* ── MOBILE ─────────────────────────────────────────────────────────────────── */
 @media(max-width:640px){
   #hero{height:auto;min-height:100svh;padding-bottom:56px}
@@ -507,6 +529,9 @@ body::after {
     <a href="portfolio.html" class="nav-link dim">PORTFOLIO</a>
     <a href="studio.html" class="nav-link dim">STUDIO</a>
     <a href="about.html" class="nav-link dim">ABOUT</a>
+    <a href="log.html" class="nav-link dim">LOG</a>
+    <a href="broadcast.html" class="nav-link dim">BROADCAST</a>
+    <a href="research-notes.html" class="nav-link dim">RESEARCH</a>
     <a href="#portal" class="nav-hub-btn">ALL PAGES ↓</a>
   </div>
 </nav>
@@ -588,6 +613,13 @@ body::after {
     <span class="sbar-lbl">LUX — FIELD COHERENCE</span>
   </div>
 </div>
+
+<!-- ── MISSION BLOCK ── -->
+<section class="mission-block">
+  <div class="mission-kicker">The mission</div>
+  <h2 class="mission-title">Stop renting your thinking. <em>Own the infrastructure.</em></h2>
+  <p class="mission-body">HIPJOY is a personal cognitive operating system. 14 named agents — archive, light, routing, scoring, critique, body-check, pattern, broadcast, rest, warmth, index, seal, synthesis, decrypt. Each one scores the work before it ships. Plugin goes public Sunday, April 26.</p>
+</section>
 
 <!-- ── WHAT YOU CAN STRIP ── -->
 <section id="what-you-can" style="position:relative;z-index:2;background:#05050a;padding:clamp(2rem,5vw,4rem) clamp(1.2rem,4vw,3rem);border-top:1px solid rgba(240,237,229,.04);">
@@ -681,6 +713,27 @@ body::after {
       <span class="pc-sigil">◆</span>
       <div class="pc-name">OFFERS</div>
       <div class="pc-desc">Shadow pantheon revenue book — 14 tiers, FREE → $15K</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="log.html" class="portal-card" style="--pc-color:rgba(168,201,155,.6)">
+      <span class="pc-sigil">◎</span>
+      <div class="pc-name">DEV LOG</div>
+      <div class="pc-desc">Reverse-chronological build history — what shipped and when</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="broadcast.html" class="portal-card" style="--pc-color:rgba(244,132,95,.7)">
+      <span class="pc-sigil">◊</span>
+      <div class="pc-name">BROADCAST</div>
+      <div class="pc-desc">Post archive — LinkedIn + X dispatches from the field</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="research-notes.html" class="portal-card" style="--pc-color:rgba(155,79,220,.7)">
+      <span class="pc-sigil">∇</span>
+      <div class="pc-name">RESEARCH</div>
+      <div class="pc-desc">Public-safe research notes — market data, lead sources, reading</div>
       <div class="pc-arrow">→</div>
     </a>
 
