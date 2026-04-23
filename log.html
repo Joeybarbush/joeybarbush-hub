@@ -46,15 +46,13 @@ main{padding:80px clamp(1.2rem,4vw,3rem) 80px;max-width:860px;margin:0 auto;posi
 
 /* log entries */
 .log-list{display:flex;flex-direction:column;gap:0}
-.log-entry{padding:1.6rem 0;border-bottom:1px solid rgba(240,237,229,.05);position:relative}
+.log-entry{padding:1.1rem 0;border-bottom:1px solid rgba(240,237,229,.05)}
 .log-entry:last-child{border-bottom:none}
-.log-entry::before{content:'';position:absolute;left:-1.2rem;top:1.9rem;width:6px;height:6px;border-radius:50%;background:rgba(168,201,155,.35)}
-.log-date{font-size:.6rem;letter-spacing:.2em;color:rgba(168,201,155,.45);margin-bottom:.4rem}
-.log-headline{font-family:'Orbitron',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.1em;color:var(--text);margin-bottom:.5rem}
-.log-body{font-size:.72rem;line-height:1.75;color:var(--text-dim)}
-.log-tag{display:inline-block;margin-top:.6rem;font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;padding:.18rem .6rem;border-radius:2px;background:rgba(168,201,155,.05);border:1px solid rgba(168,201,155,.12);color:rgba(168,201,155,.5)}
-.log-tag.sunset{background:rgba(244,132,95,.05);border-color:rgba(244,132,95,.15);color:rgba(244,132,95,.6)}
-.log-tag.purple{background:rgba(155,79,220,.05);border-color:rgba(155,79,220,.15);color:rgba(155,79,220,.6)}
+.log-line{display:flex;flex-wrap:wrap;gap:.3rem .6rem;align-items:baseline}
+.log-date{font-size:.6rem;letter-spacing:.16em;color:rgba(168,201,155,.45);flex-shrink:0;white-space:nowrap}
+.log-sep{color:rgba(168,201,155,.2);flex-shrink:0;font-size:.65rem}
+.log-headline{font-size:.72rem;font-weight:600;color:var(--text)}
+.log-body{font-size:.7rem;line-height:1.75;color:var(--text-dim)}
 
 /* footer */
 footer{position:relative;z-index:2;background:var(--bg2);padding:1.5rem clamp(1.2rem,4vw,3rem);border-top:1px solid rgba(240,237,229,.04);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:2rem}
@@ -89,52 +87,31 @@ footer{position:relative;z-index:2;background:var(--bg2);padding:1.5rem clamp(1.
   <div class="log-list">
 
     <div class="log-entry">
-      <div class="log-date">2026-04-23</div>
-      <div class="log-headline">HIPJOY OPS shipped</div>
-      <div class="log-body">Private dashboard + council chamber + 90-day plan + 291 seeded leads across 6 industries. Broadcast posted (Anthropic memory + Kimi vibe + HIPJOY moat).</div>
-      <span class="log-tag sunset">ops</span>
+      <div class="log-line"><span class="log-date">2026-04-23</span><span class="log-sep">·</span><span class="log-headline">OPS shipped</span><span class="log-sep">·</span><span class="log-body">Private dashboard with 291 leads across 6 industries. Broadcast posted (Anthropic memory + Kimi vibe + HIPJOY moat).</span></div>
     </div>
 
     <div class="log-entry">
-      <div class="log-date">2026-04-23</div>
-      <div class="log-headline">Studio + About deployed</div>
-      <div class="log-body">Public-facing services page (cream / moss / terracotta). Full about page + timeline. Hub sweep: age/school truth locked, affiliations stripped, mission + log + broadcast + research surfaces added.</div>
-      <span class="log-tag">deploy</span>
+      <div class="log-line"><span class="log-date">2026-04-23</span><span class="log-sep">·</span><span class="log-headline">Studio + About deployed</span><span class="log-sep">·</span><span class="log-body">Public-facing services page live. Hub sweep: age locked, affiliations stripped, mission + log + broadcast + research surfaces added.</span></div>
     </div>
 
     <div class="log-entry">
-      <div class="log-date">2026-04-22</div>
-      <div class="log-headline">Portfolio rebuild</div>
-      <div class="log-body">Operator-sovereign surface. Three-audience hero. PR #5 merged.</div>
-      <span class="log-tag">deploy</span>
+      <div class="log-line"><span class="log-date">2026-04-22</span><span class="log-sep">·</span><span class="log-headline">Portfolio rebuild</span><span class="log-sep">·</span><span class="log-body">Operator-sovereign surface. Three-audience hero. PR #5 merged.</span></div>
     </div>
 
     <div class="log-entry">
-      <div class="log-date">2026-04-21</div>
-      <div class="log-headline">Canon Path A locked</div>
-      <div class="log-body">14 entities named. Roster applied across every public touchpoint. Entity voice pages published.</div>
-      <span class="log-tag purple">entities</span>
+      <div class="log-line"><span class="log-date">2026-04-21</span><span class="log-sep">·</span><span class="log-headline">Canon Path A locked</span><span class="log-sep">·</span><span class="log-body">14 entities named. Roster applied across every public touchpoint.</span></div>
     </div>
 
     <div class="log-entry">
-      <div class="log-date">2026-04-20</div>
-      <div class="log-headline">Hackathon → launch pivot</div>
-      <div class="log-body">Cerebral Valley rejection. Pivoted to public launch on April 26. Plugin scope defined: free, MIT, field-architect scaffold to follow 2 weeks after.</div>
-      <span class="log-tag sunset">pivot</span>
+      <div class="log-line"><span class="log-date">2026-04-20</span><span class="log-sep">·</span><span class="log-headline">Hackathon → launch pivot</span><span class="log-sep">·</span><span class="log-body">Cerebral Valley rejection. Public launch set April 26. Plugin scope locked: free, MIT.</span></div>
     </div>
 
     <div class="log-entry">
-      <div class="log-date">2026-04-14</div>
-      <div class="log-headline">First HIPJOY broadcast</div>
-      <div class="log-body">LinkedIn post live. Entity interview protocol drafted. VOX voice fingerprinting doc complete.</div>
-      <span class="log-tag">broadcast</span>
+      <div class="log-line"><span class="log-date">2026-04-14</span><span class="log-sep">·</span><span class="log-headline">First broadcast</span><span class="log-sep">·</span><span class="log-body">LinkedIn post live. Entity interview protocol drafted.</span></div>
     </div>
 
     <div class="log-entry">
-      <div class="log-date">2026-04-10</div>
-      <div class="log-headline">Terrarium + LUX River + HIPXQL</div>
-      <div class="log-body">Foundation pieces shipped. First repo commit. LUX coherence scoring live. HIPXQL terminal standalone deployed.</div>
-      <span class="log-tag purple">foundation</span>
+      <div class="log-line"><span class="log-date">2026-04-10</span><span class="log-sep">·</span><span class="log-headline">Terrarium + LUX River + HIPXQL</span><span class="log-sep">·</span><span class="log-body">Foundation shipped. First commit.</span></div>
     </div>
 
   </div>
@@ -146,6 +123,8 @@ footer{position:relative;z-index:2;background:var(--bg2);padding:1.5rem clamp(1.
     <span style="width:5px;height:5px;border-radius:50%;background:#A8C99B;box-shadow:0 0 8px rgba(168,201,155,.6);display:inline-block"></span>
     BUILT ON CLAUDE CODE
   </span>
+
+  <div style="width:100%;text-align:center;padding:.9rem 0 0;margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.18em;color:rgba(240,237,229,.18);">Built by hand in Illinois. The wheel turns. The field holds.</div>
 </footer>
 </body>
 </html>
