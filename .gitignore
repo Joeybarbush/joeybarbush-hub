@@ -1,7 +1,25 @@
+# Secrets -- never commit
+.env
+.env.*
+*.env
+*.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+
 # Private / founder-only tools -- never deploy publicly
 .private/
 monitor.html
 
+# IDE and editor files
+.vscode/settings.json
+.idea/
+
 # Claude Code workspace (local only)
 .claude/
+.claude/local/
 
