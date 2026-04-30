@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COM 100. Speech Transcript and Cut-Ready Note Cards. Joey Barbush</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:       #F4F1E8;
+    --paper-warm:  #FBF9F4;
+    --sage:        #5F7559;
+    --sage-deep:   #38483A;
+    --sage-soft:   #94A581;
+    --bronze:      #B58B4A;
+    --bronze-deep: #8E6A33;
+    --ink:         #2D2A24;
+    --ink-deep:    #1A1916;
+    --rule:        rgba(45, 42, 36, 0.18);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #C9C4B8;
+    color: var(--ink);
+    padding: 24px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .toolbar {
+    position: sticky; top: 0;
+    background: var(--ink-deep);
+    color: var(--paper);
+    padding: 14px 22px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    z-index: 100;
+    box-shadow: 0 4px 16px rgba(0,0,0,.18);
+  }
+  .toolbar h1 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 36;
+    font-size: 17pt;
+    font-weight: 500;
+    margin-right: auto;
+  }
+  .toolbar a {
+    color: var(--sage-soft);
+    text-decoration: none;
+    font-size: 10pt;
+    letter-spacing: 1px;
+    border-bottom: 1px solid transparent;
+    padding: 4px 0;
+  }
+  .toolbar a:hover { border-bottom-color: var(--sage-soft); }
+  .toolbar button {
+    padding: 9px 18px;
+    background: var(--bronze);
+    color: var(--ink-deep);
+    border: none;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10pt;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .toolbar button:hover { background: #c79a55; }
+
+  /* SCRIPT PAGE */
+  .script-page {
+    background: var(--paper-warm);
+    width: 8.5in;
+    margin: 0 auto 24px;
+    padding: 0.7in 0.85in;
+    box-shadow: 0 4px 20px rgba(0,0,0,.12);
+    page-break-after: always;
+  }
+  .script-page h1 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 96;
+    font-size: 26pt;
+    font-weight: 600;
+    margin-bottom: 0.05em;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+  }
+  .script-page .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5pt;
+    color: var(--sage);
+    margin-bottom: 22pt;
+    padding-bottom: 12pt;
+    border-bottom: 1px solid var(--rule);
+    letter-spacing: 0.5px;
+  }
+  .script-page h2 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 36;
+    font-size: 16pt;
+    font-weight: 600;
+    color: var(--sage-deep);
+    margin: 22pt 0 12pt;
+    padding-bottom: 5pt;
+    border-bottom: 1.5px solid var(--bronze);
+  }
+  .script-page h2:first-of-type { margin-top: 4pt; }
+  .script-page p {
+    font-size: 12.5pt;
+    line-height: 1.75;
+    margin-bottom: 11pt;
+    color: var(--ink);
+    font-weight: 400;
+  }
+  .script-page .stage {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9pt;
+    color: var(--sage);
+    margin: 8pt 0 8pt 0;
+    letter-spacing: 0.5px;
+    padding: 5pt 0 5pt 12pt;
+    border-left: 2px solid var(--bronze);
+    background: rgba(181, 139, 74, 0.04);
+  }
+  .script-page b { color: var(--sage-deep); font-weight: 600; }
+  .script-page .anchor {
+    background: linear-gradient(transparent 62%, rgba(181, 139, 74, 0.32) 62%);
+    padding: 0 2px;
+    font-weight: 500;
+  }
+  .source-list {
+    margin-top: 22pt;
+    padding-top: 14pt;
+    border-top: 2px solid var(--sage-deep);
+    font-size: 10pt;
+    color: var(--ink);
+  }
+  .source-list h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 13pt;
+    font-weight: 600;
+    color: var(--sage-deep);
+    margin-bottom: 8pt;
+  }
+  .source-list ul { list-style: none; }
+  .source-list li {
+    margin-bottom: 5pt;
+    padding-left: 1.4em;
+    text-indent: -1.4em;
+    line-height: 1.45;
+  }
+  .source-list li b { color: var(--sage-deep); }
+
+  .repo-row {
+    margin-top: 20pt;
+    padding-top: 14pt;
+    border-top: 2px solid var(--sage-deep);
+  }
+  .repo-row h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 13pt;
+    font-weight: 600;
+    color: var(--sage-deep);
+    margin-bottom: 8pt;
+  }
+  .repo-row .repo-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5pt;
+    color: var(--ink);
+    margin-bottom: 4pt;
+    line-height: 1.5;
+  }
+  .repo-row .repo-line b { color: var(--bronze-deep); }
+
+  /* NOTE CARD GRID */
+  .cards-page {
+    width: 8.5in;
+    height: 11in;
+    margin: 0 auto 24px;
+    background: var(--paper-warm);
+    padding: 0.5in;
+    box-shadow: 0 4px 20px rgba(0,0,0,.12);
+    page-break-after: always;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 0;
+    position: relative;
+  }
+  .card {
+    border: 1.2px dashed var(--rule);
+    padding: 0.32in;
+    width: 6in;
+    height: 4in;
+    margin: 0 auto;
+    background: var(--paper);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .card.dark {
+    background: var(--sage-deep);
+    color: var(--paper);
+    border-color: rgba(244, 241, 232, 0.18);
+  }
+  .card-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    color: var(--sage);
+    letter-spacing: 2px;
+    margin-bottom: 4pt;
+  }
+  .card.dark .card-num { color: var(--sage-soft); }
+  .card-section {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 36;
+    font-size: 11pt;
+    font-weight: 600;
+    color: var(--sage-deep);
+    margin-bottom: 6pt;
+    padding-bottom: 2pt;
+    border-bottom: 1.5px solid var(--bronze);
+  }
+  .card.dark .card-section { color: var(--bronze); border-bottom-color: var(--bronze); }
+  .card .body {
+    font-size: 9.5pt;
+    line-height: 1.5;
+    flex: 1;
+    overflow: hidden;
+  }
+  .card .body p { margin-bottom: 4pt; }
+  .card .body b { color: var(--sage-deep); font-weight: 600; }
+  .card.dark .body b { color: var(--bronze); }
+  .card .body em.anchor {
+    background: rgba(181, 139, 74, 0.30);
+    padding: 0 2px;
+    font-style: normal;
+    font-weight: 500;
+  }
+  .card.dark .body em.anchor {
+    background: rgba(232, 178, 58, 0.30);
+  }
+  .card .body .stage {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.5pt;
+    color: var(--sage);
+    letter-spacing: 0.5px;
+    margin: 3pt 0;
+    padding-left: 6pt;
+    border-left: 1.5px solid var(--bronze);
+  }
+  .card.dark .body .stage { color: var(--sage-soft); }
+
+  .cut-line {
+    position: absolute;
+    left: 0.5in; right: 0.5in;
+    top: 50%;
+    height: 0;
+    border-top: 1.5px dashed var(--sage);
+    text-align: center;
+    color: var(--sage);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    letter-spacing: 2.5px;
+  }
+  .cut-line span {
+    background: var(--paper-warm);
+    padding: 0 12px;
+    position: relative;
+    top: -8px;
+  }
+
+  @media print {
+    @page { size: letter; margin: 0; }
+    body { background: white; padding: 0; }
+    .toolbar { display: none; }
+    .script-page, .cards-page {
+      margin: 0;
+      box-shadow: none;
+      width: 8.5in;
+      page-break-after: always;
+    }
+    .card {
+      background: var(--paper) !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .card.dark {
+      background: var(--sage-deep) !important;
+      color: var(--paper) !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <h1>COM 100. Speech transcript and cut-ready note cards.</h1>
+  <a href="com100.html">open slide deck</a>
+  <button onclick="window.print()">PRINT EVERYTHING</button>
+</div>
+
+<!-- ============================================== -->
+<!-- PAGE 1. FULL SPEAKING TRANSCRIPT               -->
+<!-- ============================================== -->
+<div class="script-page">
+  <h1>Aiming AI at What Matters</h1>
+  <div class="meta">JOEY BARBUSH . COM 100, SEC 014 . APRIL 30, 2026 . APPROX 6:30 SPEAKING TIME</div>
+
+  <h2>I. The Hook</h2>
+  <div class="stage">step up. breathe. find one face in the back row. let silence sit half a second.</div>
+  <p>Imagine an AI that could <span class="anchor">predict a hurricane ten days out</span>, in under a minute. Or scan a chest X-ray and <span class="anchor">catch a tumor that a tired doctor missed</span>. Or discover a brand new battery material that finally makes clean energy cheaper than fossil fuels.</p>
+  <div class="stage">PAUSE. let it land. two full beats.</div>
+  <p>That AI is <b>not science fiction</b>. It already exists in research labs right now. And the only reason we are not using it everywhere is that the companies building most of our AI would rather sell you <span class="anchor">another targeted ad</span>.</p>
+
+  <h2>II. The Frame</h2>
+  <p>Today I want to talk about why AI is being aimed at the wrong problems. And why every single one of you should care. When I asked this class what tech funding should actually go toward, <b>four of you said healthcare so people can afford their prescriptions</b>. Others said environmental research, education, and ending famine. AI is exactly the technology that could move the needle on every one of those, if we actually funded it the right way.</p>
+  <p>I have spent the last several weeks researching. I pulled data from the <b>Stanford Institute for Human-Centered Artificial Intelligence</b>, peer-reviewed studies in the <b>journal Science</b>, and the federal <b>Networking and Information Technology Research and Development program</b>. What I found is that we are not failing because AI is incapable. We are failing because we are letting <span class="anchor">shareholders decide what gets built</span>.</p>
+  <div class="stage">count on fingers. slow it down.</div>
+  <p>I am walking you through three things. <b>First.</b> AI is already capable of solving humanity's biggest problems but it is being aimed at ads instead. <b>Second.</b> The cause is corporate incentives that do not line up with the public good. <b>Third.</b> A federal AI Research Trust modeled on NASA is the solution.</p>
+
+  <h2>III. The Proof</h2>
+  <p>According to the <b>2024 AI Index Report</b> from Stanford HAI, Google DeepMind's <b>GraphCast</b> model now produces <span class="anchor">ten-day weather forecasts in under a minute</span>, and outperforms the conventional forecasting systems climate scientists have relied on for decades. That is exactly the tool we need to prepare for stronger storms.</p>
+  <p>The same Stanford report documents that the <b>GNoME</b> model has discovered roughly <span class="anchor">2.2 million new crystal structures</span>. Better batteries. Cleaner energy storage. Materials we need for solar and wind to actually replace fossil fuels at scale.</p>
+  <div class="stage">BEAT. pivot tone.</div>
+  <p>So the technology is ready. But the same report found that <span class="anchor">nearly 90 percent of notable AI models in 2024 came from industry</span>. Up from 60 percent the year before. Decisions about what AI gets built are being made almost entirely inside corporations whose primary obligation is to <b>shareholders</b>.</p>
+  <div class="stage">LOOK AT THE CLASS</div>
+  <p>When <b>89 percent of you</b> in this class rated solving real-world problems as critically important, you were saying healthcare access, environmental protection, and education should be the priority. But that is not where AI funding is going. And that is the problem we have to fix.</p>
+
+  <h2>IV. The Cause</h2>
+  <p>The reason we are pointing AI at the wrong problems is <b>not American talent</b>. A peer-reviewed 2023 study in the journal <b>Science</b> by Ahmed, Wahed, and Thompson found that industry, not academia, now produces the largest and most influential AI models. Because private companies have access to vastly more compute, data, and skilled researchers than universities or the federal government.</p>
+  <p>Companies like <b>OpenAI, Google, and Meta</b> optimize AI to sell ads, generate content, and increase engagement. Not to cure diseases. Not to protect the environment. Because that is what their shareholders pay them to do.</p>
+  <p>Meanwhile federal AI funding is <span class="anchor">too small to redirect priorities on its own</span>. The NITRD program reports the total US federal AI R&amp;D investment for fiscal year 2024 is roughly <b>3.1 billion dollars</b>, scattered across more than a dozen agencies. No single unified national strategy aimed at public good applications.</p>
+  <div class="stage">transition. build hope.</div>
+  <p>If the private sector cannot solve this, we need a model that has actually worked before. And luckily for us, we have one.</p>
+
+  <h2>V. The Solution</h2>
+  <p>The fix is a <b>federally funded AI Research Trust</b> that works the same way <b>NASA did during the space race</b>. You put public money behind the problems that matter to people and the planet. And you stop waiting for a corporation to accidentally stumble into solving them while chasing ad revenue.</p>
+  <p>According to a 2022 cost analysis in the journal <b>Space Policy</b>, the Apollo program cost about <span class="anchor">25.8 billion dollars in 1960s money. Roughly 257 billion in 2023 dollars</span>. The result was not just moon landings. It was <b>GPS</b>. <b>Satellite communications</b>. <b>Modern medical imaging</b>. Thousands of innovations that built the technology economy we are still living off of.</p>
+  <p>More recently, a 2023 Congressional Research Service report on the <b>2022 CHIPS and Science Act</b> confirmed Congress authorized roughly <b>280 billion dollars</b> for semiconductor manufacturing and scientific research. The political mechanism for major public investment in strategic technology already exists. We just have not pointed it at AI for the public good yet.</p>
+  <div class="stage">LOOK UP. count each priority with weight.</div>
+  <p>A National AI Research Trust funded at <b>50 billion dollars per year</b> would target <span class="anchor">climate modeling and clean energy</span>. <span class="anchor">Healthcare diagnostics and prescription affordability</span>. <span class="anchor">Accessibility tools for people with disabilities</span>. Food and water security. AI for under-resourced schools. Mental health support. Same kinds of problems 89 percent of you said matter most.</p>
+  <p>This is not about replacing OpenAI or Google. It is about making sure the government funds the research that saves lives and protects the planet, even when it does not turn a profit. <b>Because if we do not, nobody else will.</b></p>
+
+  <h2>VI. The Open Path</h2>
+  <p>And it is not just policy. There are open-source projects you can fork right now. <b>GraphCast</b> is on GitHub. <b>MONAI</b>, the medical imaging framework, is on GitHub. <b>PySyft</b>, for privacy-preserving AI on healthcare data, is on GitHub. <b>AlphaFold</b>, the protein structure model that drug discovery now runs on, is on GitHub. You can clone any of them today, learn from the code, and contribute.</p>
+
+  <h2>VII. The Close</h2>
+  <div class="stage">slow down. close stronger.</div>
+  <p>AI can already help solve climate, healthcare, and accessibility problems. But it is being aimed at ads. The cause is corporate incentives. The solution is a federal AI Research Trust modeled on NASA. Proven before. Will work again, if we have the will to fund it.</p>
+  <div class="stage">BIG PAUSE. final movement.</div>
+  <p>America built the internet. Built the smartphone. Basically invented modern computing. But right now we are aiming the most powerful technology ever built at making people scroll longer and click more ads. While the planet is on fire. And millions of people cannot afford their medicine. <b>You don't have to wait for Congress.</b></p>
+  <div class="stage">LOOK AT EVERY ROW</div>
+  <p>As students, you are the next generation that builds this technology. Use AI for what counts. Build a class project that helps disabled students access learning materials. Contribute to an open-source healthcare or climate AI project. Write your representative. Choose a major or career that points your skills at problems worth solving, for people and the planet.</p>
+  <div class="stage">LANDING. slow.</div>
+  <p>The space race taught us. When America decides something matters, we do not wait for the market to figure it out. <span class="anchor">We fund it. We build it. We use it to lift people up.</span></p>
+  <p style="font-family: 'Fraunces', serif; font-size: 14pt; font-weight: 600; margin-top: 14pt; color: var(--sage-deep);">The next generation that does that, is sitting in this room.</p>
+  <div class="stage">hold. breathe. then.</div>
+  <p style="text-align: center; font-family: 'Fraunces', serif; font-size: 14pt; font-weight: 600; margin-top: 14pt; color: var(--ink);">Thank you.</p>
+
+  <div class="repo-row">
+    <h3>Open-source repos referenced</h3>
+    <div class="repo-line">github.com/google-deepmind/<b>graphcast</b> . 10-day weather forecasting model from slide 3</div>
+    <div class="repo-line">github.com/Project-MONAI/<b>MONAI</b> . medical imaging deep-learning framework</div>
+    <div class="repo-line">github.com/OpenMined/<b>PySyft</b> . privacy-preserving AI on sensitive data</div>
+    <div class="repo-line">github.com/google-deepmind/<b>alphafold</b> . protein structure for drug discovery</div>
+  </div>
+
+  <div class="source-list">
+    <h3>Cited sources</h3>
+    <ul>
+      <li><b>Stanford HAI (2024).</b> 2024 AI Index Report. GraphCast 10-day forecast, GNoME 2.2M crystal structures, 90 percent industry origin.</li>
+      <li><b>Ahmed, N., Wahed, M., and Thompson, N. C. (2023).</b> The growing influence of industry in AI research. Science.</li>
+      <li><b>NITRD Subcommittee (2023, 2024).</b> Federal Networking and Information Technology Research and Development AI R&amp;D budget. FY2024 approximately 3.1 billion dollars across federal agencies.</li>
+      <li><b>Dreier, C. (2022).</b> An improved cost analysis of the Apollo program. Space Policy. 25.8 billion in 1960s dollars, 257 billion in 2023 dollars.</li>
+      <li><b>Congressional Research Service (2023).</b> The CHIPS and Science Act of 2022. Approximately 280 billion authorized.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- PAGE 2. CARDS 1 AND 2                          -->
+<!-- ============================================== -->
+<div class="cards-page">
+  <div class="card">
+    <div class="card-num">CARD 1 OF 6 . OPENING</div>
+    <div class="card-section">The Hook</div>
+    <div class="body">
+      <div class="stage">step up. breathe. one face in the back.</div>
+      <p>"Imagine an AI that could <em class="anchor">predict a hurricane ten days out</em>, in under a minute. Or scan a chest X-ray and catch a tumor that a tired doctor missed. Or discover a brand new battery material that finally makes clean energy cheaper than fossil fuels."</p>
+      <div class="stage">PAUSE. two beats.</div>
+      <p>"That AI is <b>not science fiction</b>. It already exists. And the only reason we are not using it everywhere is that the companies building most of our AI would rather sell you another targeted ad."</p>
+    </div>
+  </div>
+  <div class="cut-line"><span>CUT HERE</span></div>
+  <div class="card">
+    <div class="card-num">CARD 2 OF 6 . FRAME</div>
+    <div class="card-section">Credibility and Preview</div>
+    <div class="body">
+      <p>"When I asked this class what tech funding should go toward, <em class="anchor">four of you said healthcare</em>. Others said environment, education, ending famine. AI could move the needle on every one of those, if we funded it right."</p>
+      <p>"I researched <b>Stanford HAI</b>, the journal <b>Science</b>, and the federal <b>NITRD</b> program. We are not failing because AI is incapable. We are failing because <em class="anchor">shareholders decide what gets built</em>."</p>
+      <div class="stage">count on fingers.</div>
+      <p>"Three things. AI is ready. Wrong incentives. NASA-modeled fix."</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- PAGE 3. CARDS 3 AND 4                          -->
+<!-- ============================================== -->
+<div class="cards-page">
+  <div class="card">
+    <div class="card-num">CARD 3 OF 6 . POINT ONE</div>
+    <div class="card-section">The Proof</div>
+    <div class="body">
+      <p>"According to the <b>2024 AI Index from Stanford HAI</b>, Google DeepMind's <b>GraphCast</b> produces <em class="anchor">ten-day weather forecasts in under a minute</em>, and beats the conventional systems climate scientists have used for decades."</p>
+      <p>"The same report says <b>GNoME</b> has discovered <em class="anchor">2.2 million new crystal structures</em>. Better batteries. Cleaner energy. Materials for solar and wind at scale."</p>
+      <div class="stage">BEAT. pivot tone.</div>
+      <p>"But that report also found <em class="anchor">nearly 90 percent of notable 2024 AI models came from industry</em>. Up from 60 percent the year before."</p>
+      <div class="stage">LOOK AT CLASS</div>
+      <p>"And <b>89 percent of YOU</b> said real-world problems matter most."</p>
+    </div>
+  </div>
+  <div class="cut-line"><span>CUT HERE</span></div>
+  <div class="card dark">
+    <div class="card-num">CARD 4 OF 6 . POINT TWO</div>
+    <div class="card-section">The Cause</div>
+    <div class="body">
+      <p>"The reason we point AI at the wrong problems is <b>not American talent</b>. A 2023 study in <b>Science</b> by Ahmed, Wahed, and Thompson found industry now produces the biggest AI models. They have the compute. They have the data. They have the talent."</p>
+      <p>"<b>OpenAI, Google, Meta</b> optimize for ads, content, engagement. Not cures. Because shareholders pay them for that."</p>
+      <p>"Federal AI R&amp;D for FY24 is only <em class="anchor">3.1 billion dollars</em>, scattered across a dozen agencies. No unified strategy."</p>
+      <div class="stage">transition. build hope.</div>
+      <p>"We need a model that has worked before."</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- PAGE 4. CARDS 5 AND 6                          -->
+<!-- ============================================== -->
+<div class="cards-page">
+  <div class="card">
+    <div class="card-num">CARD 5 OF 6 . POINT THREE</div>
+    <div class="card-section">The Solution</div>
+    <div class="body">
+      <p>"The fix is a <b>federal AI Research Trust</b>, NASA-modeled. <b>Apollo</b> cost <em class="anchor">257 billion in today's dollars</em>. Result: GPS, satellites, medical imaging, the technology economy."</p>
+      <p>"The <b>2022 CHIPS Act</b> authorized roughly 280 billion for semiconductors. The political mechanism exists."</p>
+      <div class="stage">LOOK UP. weight on each.</div>
+      <p>"At <b>50 billion per year</b>, a Trust funds: climate, healthcare, accessibility, food and water, schools, mental health. Same problems <b>89 percent of you</b> said matter most."</p>
+      <p>"Not replacing OpenAI. Funding what they will not. <em class="anchor">If we don't, nobody else will</em>."</p>
+    </div>
+  </div>
+  <div class="cut-line"><span>CUT HERE</span></div>
+  <div class="card dark">
+    <div class="card-num">CARD 6 OF 6 . OPEN PATH AND CLOSE</div>
+    <div class="card-section">The Landing</div>
+    <div class="body">
+      <p>"And it is not just policy. <b>GraphCast, MONAI, PySyft, AlphaFold</b> are all on GitHub. You can fork them today."</p>
+      <div class="stage">LOOK AT EVERY ROW</div>
+      <p>"As students, you build this. Help disabled classmates. Contribute to open-source healthcare or climate AI. Choose a major worth solving for. Use AI for what counts, starting today."</p>
+      <div class="stage">BIG PAUSE.</div>
+      <p>"When America decides something matters, we don't wait for the market. <em class="anchor">We fund it. We build it. We use it to lift people up</em>."</p>
+      <p style="font-weight: 600; color: var(--bronze); font-family: 'Fraunces', serif; font-size: 11pt;">"The next generation that does that, is sitting in this room."</p>
+      <div class="stage">hold. breathe.</div>
+      <p style="text-align: center; font-weight: 600;">"Thank you."</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
