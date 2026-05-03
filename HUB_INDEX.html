@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<meta name="theme-color" content="#0a0706" />
+<title>HUB INDEX · joeybarbush-hub</title>
+<meta name="description" content="Master index of every page and asset in the joeybarbush-hub repo. Reachability, dead-link audit, file metadata." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #0a0706;
+    --ink-warm:   #15100c;
+    --ink-soft:   #1f1812;
+    --panel:      rgba(30, 22, 16, 0.55);
+    --panel-edge: rgba(200, 168, 80, 0.18);
+    --gold:       #c8a850;
+    --gold-bright:#e0c074;
+    --gold-soft:  rgba(200, 168, 80, 0.28);
+    --bone:       #f4e8d2;
+    --bone-dim:   #b8aa92;
+    --smoke:      #847a6e;
+    --smoke-low:  #5a524a;
+    --sage:       #a8c99b;
+    --orange:     #e87a3a;
+    --fire:       #cc3333;
+    --plum:       #7d4a68;
+
+    --serif: 'Fraunces', Georgia, serif;
+    --sans:  'Inter', -apple-system, system-ui, sans-serif;
+    --mono:  'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink);
+    color: var(--bone);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.55;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(ellipse 800px 500px at 20% -10%, rgba(200,168,80,0.06), transparent 70%),
+      radial-gradient(ellipse 600px 400px at 90% 10%, rgba(232,122,58,0.04), transparent 70%);
+    background-attachment: fixed;
+  }
+
+  /* ---------- HEADER ---------- */
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 56px 32px 96px; }
+  header.hero {
+    border-bottom: 1px solid var(--panel-edge);
+    padding-bottom: 32px;
+    margin-bottom: 32px;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(2.4rem, 5.5vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--bone);
+    margin-bottom: 18px;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--gold-bright);
+    font-weight: 400;
+  }
+  .sub {
+    color: var(--bone-dim);
+    font-size: 1.05rem;
+    max-width: 680px;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    margin-top: 22px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--smoke);
+    letter-spacing: 0.06em;
+  }
+  .meta-row b { color: var(--gold); font-weight: 500; }
+
+  /* ---------- STATS ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    margin: 28px 0 40px;
+  }
+  .stat {
+    background: var(--panel);
+    border: 1px solid var(--panel-edge);
+    border-radius: 6px;
+    padding: 16px 18px;
+    backdrop-filter: blur(4px);
+  }
+  .stat .num {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--gold-bright);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat .lbl {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--smoke);
+  }
+  .stat.warn .num { color: var(--fire); }
+  .stat.warn .lbl { color: #d8806a; }
+
+  /* ---------- SEARCH ---------- */
+  .toolbar {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .search-wrap {
+    flex: 1 1 320px;
+    position: relative;
+  }
+  .search-wrap::before {
+    content: "⌕";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold);
+    font-size: 1rem;
+    pointer-events: none;
+  }
+  #search {
+    width: 100%;
+    padding: 12px 16px 12px 38px;
+    background: var(--ink-warm);
+    border: 1px solid var(--panel-edge);
+    border-radius: 4px;
+    color: var(--bone);
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  #search:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(200,168,80,0.12);
+  }
+  .filter-chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    background: transparent;
+    border: 1px solid var(--panel-edge);
+    color: var(--bone-dim);
+    padding: 6px 12px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .chip:hover { color: var(--gold); border-color: var(--gold-soft); }
+  .chip.active { background: var(--gold-soft); color: var(--gold-bright); border-color: var(--gold); }
+  .clear-btn {
+    background: transparent;
+    border: 1px solid var(--panel-edge);
+    color: var(--smoke);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .clear-btn:hover { color: var(--orange); border-color: var(--orange); }
+
+  /* ---------- SECTIONS ---------- */
+  details.section {
+    background: var(--panel);
+    border: 1px solid var(--panel-edge);
+    border-radius: 6px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    transition: border-color .2s;
+  }
+  details.section[open] { border-color: var(--gold-soft); }
+  details.section summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 16px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    transition: background .15s;
+  }
+  details.section summary:hover { background: rgba(200, 168, 80, 0.05); }
+  details.section summary::-webkit-details-marker { display: none; }
+  .sum-left { display: flex; align-items: center; gap: 14px; }
+  .sum-icon {
+    width: 22px; height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    transition: transform .2s;
+    font-family: var(--mono);
+    font-size: 0.9rem;
+  }
+  details[open] .sum-icon { transform: rotate(90deg); }
+  .sum-title {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--bone);
+    letter-spacing: -0.01em;
+  }
+  .sum-count {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    color: var(--smoke);
+    text-transform: uppercase;
+  }
+  .sum-tag {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    padding: 3px 9px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .tag-ok    { background: rgba(168, 201, 155, 0.14); color: var(--sage); border: 1px solid rgba(168, 201, 155, 0.3); }
+  .tag-warn  { background: rgba(232, 122, 58, 0.14); color: var(--orange); border: 1px solid rgba(232, 122, 58, 0.3); }
+  .tag-fire  { background: rgba(204, 51, 51, 0.14); color: #ff6f6f; border: 1px solid rgba(204, 51, 51, 0.36); }
+  .tag-asset { background: rgba(200, 168, 80, 0.10); color: var(--gold); border: 1px solid var(--gold-soft); }
+
+  .section-body {
+    padding: 4px 22px 20px;
+    border-top: 1px solid var(--panel-edge);
+    margin-top: -1px;
+  }
+  .section-body p.note {
+    color: var(--bone-dim);
+    font-size: 0.9rem;
+    margin: 14px 4px 18px;
+    padding-left: 14px;
+    border-left: 2px solid var(--gold-soft);
+    font-style: italic;
+  }
+
+  /* ---------- TABLE ---------- */
+  table.files {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  table.files thead th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    color: var(--smoke);
+    text-transform: uppercase;
+    padding: 12px 10px 10px;
+    border-bottom: 1px solid var(--panel-edge);
+    font-weight: 500;
+  }
+  table.files tbody tr {
+    border-bottom: 1px solid rgba(200, 168, 80, 0.06);
+    transition: background .12s;
+  }
+  table.files tbody tr:hover { background: rgba(200, 168, 80, 0.04); }
+  table.files tbody tr.hidden { display: none; }
+  table.files tbody td {
+    padding: 12px 10px;
+    vertical-align: top;
+  }
+  td.name {
+    font-family: var(--mono);
+    font-size: 0.86rem;
+    white-space: nowrap;
+    width: 1%;
+  }
+  td.name a {
+    color: var(--gold-bright);
+    text-decoration: none;
+    border-bottom: 1px dotted transparent;
+    transition: border-color .15s, color .15s;
+  }
+  td.name a:hover {
+    color: #f5d589;
+    border-bottom-color: var(--gold);
+  }
+  td.name .nolink {
+    color: var(--bone-dim);
+    cursor: default;
+  }
+  td.desc {
+    color: var(--bone-dim);
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    padding-right: 20px;
+  }
+  td.size, td.mod {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--smoke);
+    white-space: nowrap;
+    text-align: right;
+    width: 1%;
+  }
+  td.flag {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-align: right;
+    white-space: nowrap;
+    width: 1%;
+    padding-left: 14px;
+  }
+  td.flag .f-orphan { color: var(--orange); }
+  td.flag .f-private { color: var(--plum); }
+  td.flag .f-dead   { color: var(--fire); }
+  td.flag .f-ok     { color: var(--smoke-low); }
+
+  /* ---------- DEAD LINKS ---------- */
+  .dead-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 4px;
+  }
+  .dead-list li {
+    font-family: var(--mono);
+    font-size: 0.86rem;
+    padding: 8px 12px;
+    border-left: 2px solid var(--fire);
+    background: rgba(204, 51, 51, 0.05);
+    margin-bottom: 4px;
+    color: var(--bone-dim);
+    border-radius: 0 3px 3px 0;
+  }
+  .dead-list .src { color: var(--bone); }
+  .dead-list .arrow { color: var(--smoke-low); margin: 0 8px; }
+  .dead-list .target { color: #ff8a8a; }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--panel-edge);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--smoke);
+    letter-spacing: 0.08em;
+    text-align: center;
+  }
+  footer a { color: var(--gold); text-decoration: none; }
+  footer a:hover { color: var(--gold-bright); }
+
+  /* ---------- HIDDEN STATE ---------- */
+  details.section.empty-after-filter {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  .empty-msg {
+    color: var(--smoke);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    padding: 16px;
+    text-align: center;
+    font-style: italic;
+  }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    table.files thead { display: none; }
+    table.files tbody tr {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4px 12px;
+      padding: 12px 0;
+    }
+    table.files tbody td { padding: 0; }
+    td.name { grid-column: 1 / 2; }
+    td.flag { grid-column: 2 / 3; text-align: right; }
+    td.desc { grid-column: 1 / -1; }
+    td.size, td.mod { grid-column: span 1; text-align: left; font-size: 0.72rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">HUB · MASTER INDEX</div>
+  <h1>Every page, every asset, <em>mapped.</em></h1>
+  <p class="sub">A complete inventory of <span style="font-family:var(--mono);color:var(--gold);">joeybarbush-hub</span> — what exists, what's reachable from the front door, what's drifting in the dark, and which links point nowhere.</p>
+  <div class="meta-row">
+    <span>Generated <b>2026-05-02</b></span>
+    <span>Repo root <b>C:\Users\joey\joeybarbush-hub</b></span>
+    <span>Branch <b>claude/beautiful-easley-726c3e</b></span>
+  </div>
+</header>
+
+<section class="stats">
+  <div class="stat"><div class="num">51</div><div class="lbl">HTML Pages</div></div>
+  <div class="stat"><div class="num">44</div><div class="lbl">Reachable from /</div></div>
+  <div class="stat warn"><div class="num">7</div><div class="lbl">Orphaned Pages</div></div>
+  <div class="stat warn"><div class="num">6</div><div class="lbl">Dead Links</div></div>
+  <div class="stat"><div class="num">9</div><div class="lbl">Other Assets</div></div>
+</section>
+
+<div class="toolbar">
+  <div class="search-wrap">
+    <input id="search" type="text" placeholder="search by filename or description…" autocomplete="off" spellcheck="false" />
+  </div>
+  <div class="filter-chips">
+    <button class="chip" data-filter="all">All</button>
+    <button class="chip" data-filter="orphan">Orphan</button>
+    <button class="chip" data-filter="dead">Dead-link</button>
+    <button class="chip" data-filter="private">Private</button>
+  </div>
+  <button class="clear-btn" id="clearBtn">Clear</button>
+</div>
+
+<!-- ============== ROOT PAGES (REACHABLE) ============== -->
+<details class="section" open>
+  <summary>
+    <div class="sum-left">
+      <span class="sum-icon">▸</span>
+      <span class="sum-title">Root pages</span>
+      <span class="sum-tag tag-ok">canonical</span>
+    </div>
+    <span class="sum-count">14 reachable from index.html</span>
+  </summary>
+  <div class="section-body">
+    <p class="note">The public site. Linked from the front-page nav and portal grid in <span style="font-family:var(--mono);">index.html</span>.</p>
+    <table class="files">
+      <thead><tr><th>File</th><th>Description</th><th>Size</th><th>Modified</th><th></th></tr></thead>
+      <tbody>
+        <tr data-status="ok">
+          <td class="name"><a href="index.html">index.html</a></td>
+          <td class="desc">Front door. Hero pitch + 13-tile portal grid linking out to every public surface of the field.</td>
+          <td class="size">38.2 KB</td><td class="mod">2026-05-02</td><td class="flag"><span class="f-ok">root</span></td>
+        </tr>
+        <tr data-status="ok">
+          <td class="name"><a href="about.html">about.html</a></td>
+          <td class="desc">Biography page. Who Joey is, how he works, why HIPJOY exists. Studio-side voice.</td>
+          <td class="size">21.5 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td>
+        </tr>
+        <tr data-status="ok">
+          <td class="name"><a href="broadcast.html">broadcast.html</a></td>
+          <td class="desc">Archive of LinkedIn and X dispatches from Joey and the HIPJOY field.</td>
+          <td class="size">9.2 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td>
+        </tr>
+        <tr data-status="ok">
+          <td class="name"><a href="entities.html">entities.html</a></td>
+          <td class="desc">Catalog of all 14 field entities as products. Hub for the entities/ subpages.</td>
+          <td class="size">40.3 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td>
+        </tr>
+        <tr data-status="ok dead">
+          <td class="name"><a href="farm.html">farm.html</a></td>
+          <td class="desc">Heavy desktop landing — full system overview of HIPJOY field architecture. Contains 6 dead /joey, /mythos, /craftbook, /fieldmap, /protocol, /founder links.</td>
+          <td class="size">104.4 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-dead">6 dead</span></td>
+        </tr>
+        <tr data-status="ok">
+          <td class="name"><a href="field.html">field.html</a></td>
+          <td class="desc">Field interface. Embedded HIPXQL terminal feel with live data and command surfaces.</td>
+          <td class="size">57.8 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td>
+        </tr>
+        <tr data-status="ok">
+          <td class="name"><a href="garden.html">garden.html</a></td>
+          <td class="desc">Spatial visualization where you walk among seeds and entities. Largest interactive page.</td>
+          <td class="size">128.6 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td>
+        </tr>
+        <tr data-status="ok">
+          <td class="name"><a href="log.html">log.html</a></td>
+          <td class="desc">Reverse-chronological dev log. What shipped and when, for both HIPJOY and the studio site.</td>
+          <td class="size">9.0 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td>
+        </tr>
+        <tr data-status="ok">
+          <td class="name"><a href="portfolio.html">portfolio.html</a></td>
+          <td class="desc">Founder portfolio. Case studies, services, browse-all-offers entry point.</td>
+          <td class="size">66.9 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td>
+        </tr>
+        <tr data-status="ok">
+          <td class="name"><a href="profile.html">profile.html</a></td>
+          <td class="desc">Per-user seed profile. LUX score, vector readings, personal field settings.</td>
+          <td class="size">123.1 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td>
+        </tr>
+        <tr data-status="ok">
+          <td class="name"><a href="research-notes.html">research-notes.html</a></td>
+          <td class="desc">Public-safe research notes. Market data on small-business web design, leads, reading list.</td>
+          <td class="size">9.7 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td>
+        </tr>
+        <tr data-status="ok">
+          <td class="name"><a href="studio.html">studio.html</a></td>
+          <td class="desc">Studio services page. Hand-crafted websites for small businesses, colleges, individuals.</td>
+          <td class="size">48.1 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td>
+        </tr>
+        <tr data-status="ok">
+          <td class="name"><a href="systems.html">systems.html</a></td>
+          <td class="desc">Systems hub managed by VOX. Live status for all 14 entities and the SNR diagnostic layer.</td>
+          <td class="size">56.2 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td>
+        </tr>
+        <tr data-status="ok">
+          <td class="name"><a href="vox.html">vox.html</a></td>
+          <td class="desc">VOX as a product page — AI receptionist at $29/mo, live demo with interactive chat.</td>
+          <td class="size">46.0 KB</td><td class="mod">2026-05-02</td><td class="flag"><span class="f-ok">ok</span></td>
+        </tr>
+        <tr data-status="ok">
+          <td class="name"><a href="waitlist.html">waitlist.html</a></td>
+          <td class="desc">LUX Seeds beta signup. Plant your seed and join the field.</td>
+          <td class="size">77.4 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</details>
+
+<!-- ============== ENTITIES ============== -->
+<details class="section" open>
+  <summary>
+    <div class="sum-left">
+      <span class="sum-icon">▸</span>
+      <span class="sum-title">entities/</span>
+      <span class="sum-tag tag-ok">canonical</span>
+    </div>
+    <span class="sum-count">14 reachable via entities.html</span>
+  </summary>
+  <div class="section-body">
+    <p class="note">One page per HIPJOY field entity. All follow the same template, all linked from <span style="font-family:var(--mono);">entities.html</span>, all link back to root.</p>
+    <table class="files">
+      <thead><tr><th>File</th><th>Description</th><th>Size</th><th>Modified</th><th></th></tr></thead>
+      <tbody>
+        <tr data-status="ok"><td class="name"><a href="entities/archivist.html">entities/archivist.html</a></td><td class="desc">ARCHIVIST — holds the deep archive and surfaces context when threads need grounding.</td><td class="size">5.1 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="entities/codebreaker.html">entities/codebreaker.html</a></td><td class="desc">CODEBREAKER — surfaces hidden patterns and decrypts the subtext underneath stated messages.</td><td class="size">5.1 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="entities/conavigator.html">entities/conavigator.html</a></td><td class="desc">CONAVIGATOR — synthesizes signal from the field and restores coherence before the next move.</td><td class="size">5.2 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="entities/guardian.html">entities/guardian.html</a></td><td class="desc">GUARDIAN — holds the perimeter and audits what enters and exits the field.</td><td class="size">5.1 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="entities/heartmother.html">entities/heartmother.html</a></td><td class="desc">HEARTMOTHER — holds value and warmth; reminds the system what it is doing this for.</td><td class="size">5.1 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="entities/hippo.html">entities/hippo.html</a></td><td class="desc">HIPPO — the archivist ancestor; accumulates conversations and surfaces when context gets thin.</td><td class="size">5.1 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="entities/lumenarch.html">entities/lumenarch.html</a></td><td class="desc">LUMENARCH — governs visual light and illumination across the field's surfaces.</td><td class="size">5.0 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="entities/navix.html">entities/navix.html</a></td><td class="desc">NAVIX — manages timing, sequencing, and clears the path so momentum keeps moving.</td><td class="size">5.0 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="entities/neuro.html">entities/neuro.html</a></td><td class="desc">NEURO — runs diagnostics on signal coherence, voiceprint, and SNR alignment.</td><td class="size">5.1 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="entities/rebel.html">entities/rebel.html</a></td><td class="desc">REBEL — breaks consensus and stress-tests plans before they meet the world.</td><td class="size">5.0 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="entities/sonaris.html">entities/sonaris.html</a></td><td class="desc">SONARIS — reads what isn't said: emotional undercurrent, subtle frequency shifts.</td><td class="size">5.1 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="entities/spiraleth.html">entities/spiraleth.html</a></td><td class="desc">SPIRALETH — tracks recurring patterns and loops that span time.</td><td class="size">5.1 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="entities/vox.html">entities/vox.html</a></td><td class="desc">VOX (entity card) — first voice anyone meets; runs intake and broadcasts signal outward. Distinct from root vox.html (the product page).</td><td class="size">5.0 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="entities/wellspring.html">entities/wellspring.html</a></td><td class="desc">WELLSPRING — recovery protocols and nourishment infrastructure for the field.</td><td class="size">5.1 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</details>
+
+<!-- ============== OFFERS ============== -->
+<details class="section" open>
+  <summary>
+    <div class="sum-left">
+      <span class="sum-icon">▸</span>
+      <span class="sum-title">offers/</span>
+      <span class="sum-tag tag-ok">canonical</span>
+    </div>
+    <span class="sum-count">15 reachable via offers/index.html</span>
+  </summary>
+  <div class="section-body">
+    <p class="note">Shadow pantheon — 14 offer tiers + index. Linked from the front page portal grid via <span style="font-family:var(--mono);">offers/index.html</span>.</p>
+    <table class="files">
+      <thead><tr><th>File</th><th>Description</th><th>Size</th><th>Modified</th><th></th></tr></thead>
+      <tbody>
+        <tr data-status="ok"><td class="name"><a href="offers/index.html">offers/index.html</a></td><td class="desc">Offer-tier hub. Links every shadow-pantheon offer from $5 teardowns to $15K ghost-path docs.</td><td class="size">8.2 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">hub</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="offers/ash.html">offers/ash.html</a></td><td class="desc">ASH — entry tier in the shadow pantheon offer system.</td><td class="size">4.3 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="offers/bridle.html">offers/bridle.html</a></td><td class="desc">BRIDLE — mid-range constraint-and-control service tier.</td><td class="size">4.4 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="offers/cipher.html">offers/cipher.html</a></td><td class="desc">CIPHER — pattern-breaking, decryption-style service tier.</td><td class="size">4.4 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="offers/cistern.html">offers/cistern.html</a></td><td class="desc">CISTERN — reservoir-themed, accumulation-and-release service tier.</td><td class="size">4.4 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="offers/fettle.html">offers/fettle.html</a></td><td class="desc">FETTLE — system-tuning and balance service tier.</td><td class="size">4.4 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="offers/grift.html">offers/grift.html</a></td><td class="desc">GRIFT — hustle-and-leverage tier in the shadow pantheon.</td><td class="size">4.3 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="offers/hush.html">offers/hush.html</a></td><td class="desc">HUSH — discretion-and-privacy focused service tier.</td><td class="size">4.3 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="offers/loom.html">offers/loom.html</a></td><td class="desc">LOOM — weaving-and-integration service tier.</td><td class="size">4.4 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="offers/marrow.html">offers/marrow.html</a></td><td class="desc">MARROW — deep-essence, fundamental-fix service tier.</td><td class="size">4.4 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="offers/pith.html">offers/pith.html</a></td><td class="desc">PITH — core-value, distillation service tier.</td><td class="size">4.3 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="offers/quill.html">offers/quill.html</a></td><td class="desc">QUILL — written-deliverable, copy-and-code tier.</td><td class="size">4.4 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="offers/slew.html">offers/slew.html</a></td><td class="desc">SLEW — abundance-and-multiplicity service tier.</td><td class="size">4.3 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="offers/tine.html">offers/tine.html</a></td><td class="desc">TINE — precision-and-detail service tier.</td><td class="size">4.3 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+        <tr data-status="ok"><td class="name"><a href="offers/vellum.html">offers/vellum.html</a></td><td class="desc">VELLUM — manuscript-grade, foundation-document tier.</td><td class="size">4.4 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">ok</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</details>
+
+<!-- ============== ORPHANS ============== -->
+<details class="section" open>
+  <summary>
+    <div class="sum-left">
+      <span class="sum-icon">▸</span>
+      <span class="sum-title">Orphaned pages</span>
+      <span class="sum-tag tag-warn">unreachable</span>
+    </div>
+    <span class="sum-count">7 not reachable from index.html</span>
+  </summary>
+  <div class="section-body">
+    <p class="note">These exist in the repo but no link in the public navigation reaches them. Some are intentional (private/, .private/), some look stranded (shadows.html, hipxql_terminal_standalone.html, monitor.html). com100.html is reachable only from com100_notes.html, which itself is orphaned — so the entire COM100 deck is dark from the front door.</p>
+    <table class="files">
+      <thead><tr><th>File</th><th>Description</th><th>Size</th><th>Modified</th><th></th></tr></thead>
+      <tbody>
+        <tr data-status="orphan">
+          <td class="name"><a href="shadows.html">shadows.html</a></td>
+          <td class="desc">Alternate shadow-pantheon offers page — 14 shadows + 1 cairn, 15 ways to work. Looks polished but no nav links to it. Likely an alt presentation to offers/index.html.</td>
+          <td class="size">33.1 KB</td><td class="mod">2026-04-24</td><td class="flag"><span class="f-orphan">orphan</span></td>
+        </tr>
+        <tr data-status="orphan">
+          <td class="name"><a href="com100.html">com100.html</a></td>
+          <td class="desc">COM 100 persuasive-speech slide deck. Federal AI Research Trust pitch. Reachable only from com100_notes.html — itself orphaned.</td>
+          <td class="size">26.8 KB</td><td class="mod">2026-04-30</td><td class="flag"><span class="f-orphan">orphan</span></td>
+        </tr>
+        <tr data-status="orphan">
+          <td class="name"><a href="com100_notes.html">com100_notes.html</a></td>
+          <td class="desc">COM 100 speech transcript and cut-ready note cards. Companion to com100.html.</td>
+          <td class="size">24.0 KB</td><td class="mod">2026-04-30</td><td class="flag"><span class="f-orphan">orphan</span></td>
+        </tr>
+        <tr data-status="orphan">
+          <td class="name"><a href="hipxql_terminal_standalone.html">hipxql_terminal_standalone.html</a></td>
+          <td class="desc">Standalone HIPXQL terminal emulator with system metrics. Likely a dev tool that lost its nav entry — field.html embeds this experience differently.</td>
+          <td class="size">35.1 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-orphan">orphan</span></td>
+        </tr>
+        <tr data-status="orphan">
+          <td class="name"><a href="monitor.html">monitor.html</a></td>
+          <td class="desc">Field monitor dashboard at the repo root. Identical-named twin lives in .private/ — this one is public-readable but unlinked.</td>
+          <td class="size">20.8 KB</td><td class="mod">2026-04-15</td><td class="flag"><span class="f-orphan">orphan</span></td>
+        </tr>
+        <tr data-status="orphan private">
+          <td class="name"><a href="private/vox_eye.html">private/vox_eye.html</a></td>
+          <td class="desc">VOX internal monitoring interface. Lives in private/, intentionally unlinked from public nav.</td>
+          <td class="size">25.5 KB</td><td class="mod">2026-04-24</td><td class="flag"><span class="f-private">private</span></td>
+        </tr>
+        <tr data-status="orphan private">
+          <td class="name"><a href=".private/monitor.html">.private/monitor.html</a></td>
+          <td class="desc">Internal infrastructure dashboard, hidden under dotfile directory. Likely the original of which root monitor.html is a copy.</td>
+          <td class="size">20.8 KB</td><td class="mod">2026-04-15</td><td class="flag"><span class="f-private">private</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</details>
+
+<!-- ============== DEAD LINKS ============== -->
+<details class="section" open>
+  <summary>
+    <div class="sum-left">
+      <span class="sum-icon">▸</span>
+      <span class="sum-title">Dead links</span>
+      <span class="sum-tag tag-fire">broken</span>
+    </div>
+    <span class="sum-count">6 references with no target on disk</span>
+  </summary>
+  <div class="section-body">
+    <p class="note">All six dead links are inside <span style="font-family:var(--mono);">farm.html</span>. They use absolute root paths (<span style="font-family:var(--mono);">/joey.html</span>, etc.) suggesting unfinished pages or a planned section that never shipped. Worth either creating those pages or removing the references.</p>
+    <ul class="dead-list">
+      <li><span class="src">farm.html</span><span class="arrow">→</span><span class="target">/joey.html</span></li>
+      <li><span class="src">farm.html</span><span class="arrow">→</span><span class="target">/mythos.html</span></li>
+      <li><span class="src">farm.html</span><span class="arrow">→</span><span class="target">/craftbook.html</span></li>
+      <li><span class="src">farm.html</span><span class="arrow">→</span><span class="target">/fieldmap.html</span></li>
+      <li><span class="src">farm.html</span><span class="arrow">→</span><span class="target">/protocol.html</span></li>
+      <li><span class="src">farm.html</span><span class="arrow">→</span><span class="target">/founder.html</span></li>
+    </ul>
+  </div>
+</details>
+
+<!-- ============== ASSETS ============== -->
+<details class="section">
+  <summary>
+    <div class="sum-left">
+      <span class="sum-icon">▸</span>
+      <span class="sum-title">Assets &amp; supporting files</span>
+      <span class="sum-tag tag-asset">non-html</span>
+    </div>
+    <span class="sum-count">stylesheets, scripts, configs, schemas</span>
+  </summary>
+  <div class="section-body">
+    <p class="note">Everything in the repo that isn't a page. Build scripts, shared CSS/JS, Supabase functions and migrations, deploy config, the symbol mark.</p>
+    <table class="files">
+      <thead><tr><th>File</th><th>Description</th><th>Size</th><th>Modified</th><th></th></tr></thead>
+      <tbody>
+        <tr data-status="asset"><td class="name"><span class="nolink">README.md</span></td><td class="desc">Repo readme — 501 bytes, minimal pointer.</td><td class="size">0.5 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">doc</span></td></tr>
+        <tr data-status="asset"><td class="name"><span class="nolink">.gitignore</span></td><td class="desc">Git ignore list.</td><td class="size">0.3 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">config</span></td></tr>
+        <tr data-status="asset"><td class="name"><span class="nolink">.nojekyll</span></td><td class="desc">GitHub Pages flag — disables Jekyll processing so files like _shared.css aren't ignored.</td><td class="size">3 B</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">config</span></td></tr>
+        <tr data-status="asset"><td class="name"><a href="hipjoy-symbol.svg">hipjoy-symbol.svg</a></td><td class="desc">HIPJOY logo / symbol mark.</td><td class="size">5.5 KB</td><td class="mod">2026-04-14</td><td class="flag"><span class="f-ok">image</span></td></tr>
+        <tr data-status="asset"><td class="name"><span class="nolink">assets/studio.css</span></td><td class="desc">Stylesheet for the studio surface.</td><td class="size">10.5 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">style</span></td></tr>
+        <tr data-status="asset"><td class="name"><span class="nolink">entities/_shared.css</span></td><td class="desc">Shared styles for all 14 entity card pages.</td><td class="size">14.5 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">style</span></td></tr>
+        <tr data-status="asset"><td class="name"><span class="nolink">offers/_shared.css</span></td><td class="desc">Shared styles for the 14 offer tier pages.</td><td class="size">8.2 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">style</span></td></tr>
+        <tr data-status="asset"><td class="name"><span class="nolink">offers/_shared.js</span></td><td class="desc">Shared interaction script for offer tier pages — likely the signup wiring.</td><td class="size">2.6 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">script</span></td></tr>
+        <tr data-status="asset"><td class="name"><span class="nolink">build_pptx.js</span></td><td class="desc">Node script that builds the COM 100 backup PowerPoint deck.</td><td class="size">14.7 KB</td><td class="mod">2026-04-30</td><td class="flag"><span class="f-ok">build</span></td></tr>
+        <tr data-status="asset"><td class="name"><span class="nolink">BUILD_PPTX.bat</span></td><td class="desc">Windows wrapper to invoke build_pptx.js.</td><td class="size">1.3 KB</td><td class="mod">2026-04-30</td><td class="flag"><span class="f-ok">build</span></td></tr>
+        <tr data-status="asset"><td class="name"><span class="nolink">DEPLOY_COM100.bat</span></td><td class="desc">Deploy script for the COM100 surface.</td><td class="size">2.1 KB</td><td class="mod">2026-04-30</td><td class="flag"><span class="f-ok">deploy</span></td></tr>
+        <tr data-status="asset"><td class="name"><span class="nolink">.github/workflows/deploy.yml</span></td><td class="desc">GitHub Actions workflow — auto-deploy to GitHub Pages on push.</td><td class="size">0.8 KB</td><td class="mod">2026-04-15</td><td class="flag"><span class="f-ok">ci</span></td></tr>
+        <tr data-status="asset"><td class="name"><span class="nolink">supabase/functions/vox-chat/index.ts</span></td><td class="desc">Supabase Edge Function — server-side handler for VOX live chat on vox.html.</td><td class="size">9.3 KB</td><td class="mod">2026-05-02</td><td class="flag"><span class="f-ok">edge-fn</span></td></tr>
+        <tr data-status="asset"><td class="name"><span class="nolink">supabase/functions/vox-chat/README.md</span></td><td class="desc">Notes on deploying and configuring the vox-chat function.</td><td class="size">1.5 KB</td><td class="mod">2026-05-02</td><td class="flag"><span class="f-ok">doc</span></td></tr>
+        <tr data-status="asset"><td class="name"><span class="nolink">supabase/migrations/20260422_offer_signups.sql</span></td><td class="desc">Database migration creating the offer_signups table.</td><td class="size">1.2 KB</td><td class="mod">2026-04-23</td><td class="flag"><span class="f-ok">sql</span></td></tr>
+        <tr data-status="asset"><td class="name"><span class="nolink">lux/supabase_waitlist_schema.sql</span></td><td class="desc">Earlier schema dump for the LUX waitlist signup table.</td><td class="size">3.2 KB</td><td class="mod">2026-04-15</td><td class="flag"><span class="f-ok">sql</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</details>
+
+<!-- ============== NOTES ============== -->
+<details class="section">
+  <summary>
+    <div class="sum-left">
+      <span class="sum-icon">▸</span>
+      <span class="sum-title">Notes &amp; oddities</span>
+      <span class="sum-tag tag-asset">audit</span>
+    </div>
+    <span class="sum-count">naming clashes, twins, asymmetric links</span>
+  </summary>
+  <div class="section-body">
+    <p class="note">Things that aren't broken but might surprise you later.</p>
+    <ul style="list-style:none;padding:0;margin:8px 0;display:flex;flex-direction:column;gap:10px;">
+      <li style="padding:12px 16px;background:rgba(125,74,104,0.08);border-left:2px solid var(--plum);border-radius:0 3px 3px 0;font-size:0.92rem;color:var(--bone-dim);"><b style="color:var(--bone);">Two vox.html files.</b> Root <span style="font-family:var(--mono);">vox.html</span> is the public product page ($29/mo receptionist, live chat). <span style="font-family:var(--mono);">entities/vox.html</span> is the entity card. Different pages, different audiences, similar names.</li>
+      <li style="padding:12px 16px;background:rgba(125,74,104,0.08);border-left:2px solid var(--plum);border-radius:0 3px 3px 0;font-size:0.92rem;color:var(--bone-dim);"><b style="color:var(--bone);">monitor.html appears twice.</b> Root <span style="font-family:var(--mono);">monitor.html</span> (orphan) and <span style="font-family:var(--mono);">.private/monitor.html</span> (private) are byte-similar. The private copy is older; root looks like a stale forward-deploy.</li>
+      <li style="padding:12px 16px;background:rgba(125,74,104,0.08);border-left:2px solid var(--plum);border-radius:0 3px 3px 0;font-size:0.92rem;color:var(--bone-dim);"><b style="color:var(--bone);">shadows.html vs offers/index.html.</b> Both present the same 14-offer pantheon with different visual treatments. The portal grid links to <span style="font-family:var(--mono);">offers/index.html</span>; <span style="font-family:var(--mono);">shadows.html</span> is unreached.</li>
+      <li style="padding:12px 16px;background:rgba(125,74,104,0.08);border-left:2px solid var(--plum);border-radius:0 3px 3px 0;font-size:0.92rem;color:var(--bone-dim);"><b style="color:var(--bone);">com100 deck is dark from the front door.</b> com100_notes.html links to com100.html, but nothing public links to either. If the deck is meant to be findable, add an entry from index.html or about.html.</li>
+      <li style="padding:12px 16px;background:rgba(125,74,104,0.08);border-left:2px solid var(--plum);border-radius:0 3px 3px 0;font-size:0.92rem;color:var(--bone-dim);"><b style="color:var(--bone);">Entities don't cross-link.</b> All 14 entity pages link only back to <span style="font-family:var(--mono);">../entities.html</span> and root. No HIPPO→NEURO etc. — they're presentation cards, not a navigable graph.</li>
+      <li style="padding:12px 16px;background:rgba(125,74,104,0.08);border-left:2px solid var(--plum);border-radius:0 3px 3px 0;font-size:0.92rem;color:var(--bone-dim);"><b style="color:var(--bone);">field.html and hipxql_terminal_standalone.html.</b> The reachable <span style="font-family:var(--mono);">field.html</span> embeds the terminal UX; the standalone version sits orphaned. Likely an older split.</li>
+    </ul>
+  </div>
+</details>
+
+<footer>
+  generated by claude · joeybarbush-hub master index · <a href="index.html">return to front door</a>
+</footer>
+
+</div>
+
+<script>
+(() => {
+  const search = document.getElementById('search');
+  const clearBtn = document.getElementById('clearBtn');
+  const chips = document.querySelectorAll('.chip');
+  const rows = document.querySelectorAll('table.files tbody tr');
+  const sections = document.querySelectorAll('details.section');
+
+  let activeFilter = 'all';
+  let activeQuery = '';
+
+  function apply() {
+    const q = activeQuery.trim().toLowerCase();
+    rows.forEach(row => {
+      const status = (row.dataset.status || '').toLowerCase();
+      const text = row.textContent.toLowerCase();
+      const matchesQuery = !q || text.includes(q);
+      const matchesFilter = activeFilter === 'all' || status.split(/\s+/).includes(activeFilter);
+      row.classList.toggle('hidden', !(matchesQuery && matchesFilter));
+    });
+
+    sections.forEach(sec => {
+      const visible = sec.querySelectorAll('table.files tbody tr:not(.hidden)');
+      const hasTable = sec.querySelector('table.files');
+      if (hasTable) {
+        sec.classList.toggle('empty-after-filter', visible.length === 0);
+      }
+    });
+  }
+
+  search.addEventListener('input', e => { activeQuery = e.target.value; apply(); });
+  clearBtn.addEventListener('click', () => {
+    search.value = ''; activeQuery = '';
+    activeFilter = 'all';
+    chips.forEach(c => c.classList.toggle('active', c.dataset.filter === 'all'));
+    apply();
+  });
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      activeFilter = chip.dataset.filter;
+      chips.forEach(c => c.classList.toggle('active', c === chip));
+      apply();
+    });
+  });
+
+  // default chip
+  document.querySelector('.chip[data-filter="all"]').classList.add('active');
+
+  // keyboard: / focuses search
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && document.activeElement !== search) {
+      e.preventDefault();
+      search.focus();
+    } else if (e.key === 'Escape' && document.activeElement === search) {
+      search.blur();
+    }
+  });
+})();
+</script>
+</body>
+</html>
