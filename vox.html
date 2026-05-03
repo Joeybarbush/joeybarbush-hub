@@ -109,7 +109,7 @@ nav{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:cen
 .phone-name{font-size:.74rem;color:var(--text);font-weight:600;line-height:1.3}
 .phone-online{font-size:.58rem;color:var(--sage);letter-spacing:.06em;margin-top:2px}
 
-.chat{padding:14px 12px;display:flex;flex-direction:column;gap:9px;min-height:290px;overflow:hidden}
+/* .chat -- see updated rule below in PERSONA TABS section */
 .msg{display:flex;flex-direction:column;max-width:82%;opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease}
 .msg.show{opacity:1;transform:none}
 .msg.them{align-self:flex-start}
@@ -127,6 +127,24 @@ nav{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:cen
 .dot:nth-child(2){animation-delay:.15s}
 .dot:nth-child(3){animation-delay:.3s}
 @keyframes bounce-dot{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+
+/* PERSONA TABS */
+.persona-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;justify-content:center}
+.persona-tab{background:rgba(255,255,255,.04);border:1px solid rgba(168,201,155,.18);color:var(--text-dim);font-family:var(--mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;padding:9px 16px;border-radius:3px;cursor:pointer;transition:all .18s}
+.persona-tab:hover{color:var(--sage);border-color:var(--sage-dim)}
+.persona-tab.active{background:rgba(168,201,155,.12);border-color:var(--sage);color:var(--sage)}
+
+/* CHAT INPUT */
+.chat-input-row{display:flex;gap:6px;padding:8px 10px 10px;border-top:1px solid rgba(255,255,255,.05)}
+.chat-input-row input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:9px 14px;color:var(--text);font-family:var(--mono);font-size:.74rem;outline:none;transition:border-color .18s}
+.chat-input-row input:focus{border-color:rgba(168,201,155,.45)}
+.chat-input-row button{width:34px;height:34px;border-radius:50%;border:none;background:var(--sage);color:#0d0f0e;font-size:16px;font-weight:700;cursor:pointer;flex-shrink:0;transition:transform .15s,box-shadow .15s}
+.chat-input-row button:hover{transform:scale(1.06);box-shadow:0 0 14px rgba(168,201,155,.5)}
+.chat-input-row button:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.chat-hint{font-size:.6rem;color:rgba(255,255,255,.32);text-align:center;padding:0 14px 14px;font-style:italic;letter-spacing:.04em}
+.chat{padding:14px 12px;display:flex;flex-direction:column;gap:9px;min-height:240px;max-height:320px;overflow-y:auto}
+.chat::-webkit-scrollbar{width:4px}
+.chat::-webkit-scrollbar-thumb{background:rgba(168,201,155,.2);border-radius:2px}
 
 .timer-wrap{margin-top:32px;display:flex;align-items:baseline;gap:8px}
 .timer-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim)}
@@ -297,58 +315,41 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
   </div>
 </section>
 
-<!-- SMS DEMO -->
+<!-- LIVE DEMO -->
 <section class="demo">
-  <div class="demo-eyebrow">// live demonstration</div>
-  <div class="demo-title">Watch VOX Book in Real Time</div>
-  <div class="demo-sub">From first message to confirmed booking.</div>
+  <div class="demo-eyebrow">// live demonstration · text vox now</div>
+  <div class="demo-title">Try VOX Right Now</div>
+  <div class="demo-sub">No phone. No signup. Real AI. Pick a business, type a question.</div>
+
+  <div class="persona-tabs" id="persona-tabs">
+    <button class="persona-tab active" data-persona="pro_shop">Pro Shop</button>
+    <button class="persona-tab" data-persona="landscaping">Landscaping</button>
+    <button class="persona-tab" data-persona="barbershop">Barbershop</button>
+  </div>
 
   <div class="phone">
     <div class="phone-notch"><div class="phone-pill"></div></div>
     <div class="phone-status">
-      <span>9:41 AM</span>
+      <span id="phone-clock">9:41 AM</span>
       <span style="letter-spacing:.06em">●●●</span>
     </div>
     <div class="phone-header">
       <div class="phone-avatar">◊</div>
       <div>
-        <div class="phone-name">VOX Receptionist</div>
+        <div class="phone-name" id="phone-name">VOX · St. Andrews Pro Shop</div>
         <div class="phone-online">● ONLINE NOW</div>
       </div>
     </div>
-    <div class="chat" id="chat">
-      <div class="msg them" id="m1">
-        <div class="msg-who">Customer</div>
-        <div class="msg-bubble">Hi, can I book a massage for tomorrow at 2pm?</div>
-      </div>
-      <div class="typing-row" id="t1"><div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
-      <div class="msg us" id="m2">
-        <div class="msg-who">VOX</div>
-        <div class="msg-bubble">Available: 2:00 PM &amp; 3:30 PM tomorrow. Which works?</div>
-      </div>
-      <div class="msg them" id="m3">
-        <div class="msg-who">Customer</div>
-        <div class="msg-bubble">2pm please</div>
-      </div>
-      <div class="typing-row" id="t2"><div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
-      <div class="msg us" id="m4">
-        <div class="msg-who">VOX</div>
-        <div class="msg-bubble">Name for the booking?</div>
-      </div>
-      <div class="msg them" id="m5">
-        <div class="msg-who">Customer</div>
-        <div class="msg-bubble">Sarah Chen</div>
-      </div>
-      <div class="typing-row" id="t3"><div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
-      <div class="msg us" id="m6">
-        <div class="msg-who">VOX</div>
-        <div class="msg-bubble">✓ Booked. Sarah Chen · Massage · Tomorrow 2:00 PM. Confirmation sent.</div>
-      </div>
+    <div class="chat" id="chat" aria-live="polite"></div>
+    <div class="chat-input-row">
+      <input type="text" id="chat-input" placeholder="Type a message..." maxlength="280" autocomplete="off">
+      <button id="chat-send" aria-label="Send">→</button>
     </div>
+    <div class="chat-hint" id="chat-hint">Try: "Got any 2pm tee times today?"</div>
   </div>
 
   <div class="timer-wrap">
-    <span class="timer-label">Booking time</span>
+    <span class="timer-label">Last reply</span>
     <span class="timer-val" id="timer">0.0</span>
     <span class="timer-unit">s</span>
   </div>
@@ -382,72 +383,279 @@ setInterval(() => {
   }, 350);
 }, 2800);
 
-// SMS DEMO
-const steps = [
-  { id: 'm1', delay: 600 },
-  { id: 't1', delay: 1600 },
-  { id: 't1_hide', delay: 600 },
-  { id: 'm2', delay: 100 },
-  { id: 'm3', delay: 1500 },
-  { id: 't2', delay: 1400 },
-  { id: 't2_hide', delay: 600 },
-  { id: 'm4', delay: 100 },
-  { id: 'm5', delay: 1300 },
-  { id: 't3', delay: 1600 },
-  { id: 't3_hide', delay: 700 },
-  { id: 'm6', delay: 100 },
-  { id: 'done', delay: 3800 },
-];
+// ── LIVE VOX CHAT ──
+// Backend chain: Supabase Edge Function (primary) → Railway server (legacy) → offline pattern matcher.
+// Override via <meta name="vox-api" content="https://..."> on the host page.
+const VOX_SUPABASE_FN = 'https://mdbzenhhljwmkdcmtawd.supabase.co/functions/v1/vox-chat';
+// anon key — same one used by the signup modal below; safe to hard-code (it's exposed to the browser anyway)
+const VOX_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYnplbmhobGp3bWtkY210YXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzY2NDUsImV4cCI6MjA5MTI1MjY0NX0.oCKA-Dpk-oxlS18mi-7R3pqA0mif1gM3J5RbDxavgaI';
+const VOX_API_BASE = (document.querySelector('meta[name="vox-api"]')?.content
+  || (location.hostname === 'localhost' ? 'http://localhost:8080' : '')).replace(/\/$/,'');
 
-let timerRaf, timerStart;
+const PERSONA_GREETINGS = {
+  pro_shop:    { name: "VOX · St. Andrews Pro Shop",     greet: "Hey! This is VOX for St. Andrews Pro Shop. We're with another caller -- what can we help you with?", hint: 'Try: "Got any 2pm tee times today?"' },
+  landscaping: { name: "VOX · Schollmeyer Landscaping",  greet: "Hey! This is VOX for Schollmeyer Landscaping. Jeff got your missed call -- what are you looking to get done?", hint: 'Try: "Need a quote for spring cleanup."' },
+  barbershop:  { name: "VOX · The Cut Above",            greet: "Hey, this is VOX for The Cut Above. The chair's full right now -- what can I help with?", hint: 'Try: "Walk-in spot tonight after 5?"' },
+};
 
-function resetChat() {
-  ['m1','m2','m3','m4','m5','m6'].forEach(id => document.getElementById(id).classList.remove('show'));
-  ['t1','t2','t3'].forEach(id => document.getElementById(id).classList.remove('show'));
-  cancelAnimationFrame(timerRaf);
-  document.getElementById('timer').textContent = '0.0';
+// Persona-aware offline fallback. Tracks what we already learned from history
+// so the conversation feels stateful even without the backend.
+const OFFLINE_FACTS = {
+  pro_shop:    { biz: "St. Andrews", owner: "Joey",    services: "tee times, range buckets ($8), pro-shop pickups", hours: "dawn to dusk, range open all day" },
+  landscaping: { biz: "Schollmeyer", owner: "Jeff",    services: "mowing, mulch, fall cleanup, sod, design",          hours: "M-Sat daylight to dark, estimates 1-2 weeks out" },
+  barbershop:  { biz: "The Cut Above", owner: "shop",  services: "cuts $30, fade $35, beard line-up $15, hot towel $40", hours: "Tu-Fri 10-7, Sat 9-5, closed Sun/Mon" },
+};
+
+function offlineReply(persona, userText, hist) {
+  const t = userText.toLowerCase();
+  const f = OFFLINE_FACTS[persona] || OFFLINE_FACTS.pro_shop;
+  // Only consider USER turns when scanning for facts the caller has already given —
+  // assistant greetings ("I'm VOX") would otherwise leak into name detection.
+  const userSaid = (hist || []).filter(m => m.role === 'user').map(m => (m.content || '').toLowerCase()).join(' ');
+  const allSaid = userText + ' ' + userSaid;
+  const NAME_RE = /\b(?:my name is|i'?m|this is|it'?s)\s+([a-z][a-z'-]{1,20})/i;
+  const haveName = NAME_RE.test(allSaid);
+  const haveTime = /(\d{1,2}\s*(am|pm|:\d{2})|tomorrow|today|tonight|saturday|sunday|monday|tuesday|wednesday|thursday|friday|weekend|next week|asap)/i.test(allSaid);
+  const haveService = /(book|appointment|schedule|reserve|tee time|cut|trim|cleanup|mulch|mow|fade|shave|quote|estimate)/i.test(allSaid);
+
+  if (/(are you (a |an )?(real|human|bot|ai|robot|person)|who am i talking to|is this a person)/.test(t)) {
+    const sentence = f.owner === 'shop'
+      ? `The barbers see everything I send and follow up.`
+      : `${f.owner} sees everything I send and follows up.`;
+    return `I'm VOX, an AI helper for ${f.biz}. ${sentence}`;
+  }
+  if (/^(hi|hey|hello|yo|sup|hiya)\b/i.test(t) && (hist || []).length <= 2) {
+    return `Hey, what can I get sorted for you today?`;
+  }
+  if (/(hour|open|close|when.*open)/i.test(t)) {
+    return `${f.hours[0].toUpperCase() + f.hours.slice(1)}. When works for you?`;
+  }
+  if (/(price|cost|how much|rate|charge)/i.test(t)) {
+    if (persona === 'barbershop') return `Cuts $30, fade $35, beard line-up $15, hot towel shave $40. What were you thinking?`;
+    if (persona === 'pro_shop')   return `Range bucket's $8. Tee time pricing varies by day — staff will confirm. What were you looking to book?`;
+    return `${f.owner} gives free estimates in person — keeps it accurate. What were you looking to get done?`;
+  }
+  if (/^(thanks|thank you|appreciate)/i.test(t)) {
+    return `You got it. Someone will follow up soon.`;
+  }
+  if (haveName && haveTime && haveService) {
+    const m = NAME_RE.exec(userText) || NAME_RE.exec(userSaid);
+    const raw = m ? m[1] : 'you';
+    const name = raw.charAt(0).toUpperCase() + raw.slice(1);
+    const closer = f.owner === 'shop' ? 'the barbers will' : (f.owner.toLowerCase() === name.toLowerCase() ? 'staff will' : f.owner + ' will');
+    return `Got it, ${name} — ${closer} text back to lock that in within a few minutes.`;
+  }
+  if (haveTime && haveService && !haveName) {
+    return `Cool, that should work. What name should I put on it?`;
+  }
+  if (haveService && !haveTime) {
+    return `Got it. What day and time were you hoping for?`;
+  }
+  if (haveTime && !haveService) {
+    return `Sweet. What were you looking to book exactly?`;
+  }
+  if (/^(yes|yeah|sure|ok|okay|yep|yup)\b/i.test(t)) {
+    return `Cool. Anything else I can pass along to ${f.owner === 'shop' ? 'the shop' : f.owner}?`;
+  }
+  return `Got it. Can you give me your name and roughly when you'd like to come in?`;
 }
 
-function runTimer() {
-  timerStart = performance.now();
+let currentPersona = 'pro_shop';
+let history = []; // [{role:'user'|'assistant', content}]
+let timerRaf = null;
+let lastSendAt = 0;
+
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('chat-input');
+const sendBtn = document.getElementById('chat-send');
+const phoneNameEl = document.getElementById('phone-name');
+const hintEl = document.getElementById('chat-hint');
+const timerEl = document.getElementById('timer');
+const phoneClock = document.getElementById('phone-clock');
+
+function setClock() {
+  const d = new Date();
+  let h = d.getHours(), m = d.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  phoneClock.textContent = `${h}:${m.toString().padStart(2,'0')} ${ampm}`;
+}
+setClock();
+setInterval(setClock, 30000);
+
+function bubble(role, text, opts = {}) {
+  const wrap = document.createElement('div');
+  wrap.className = `msg ${role === 'user' ? 'them' : 'us'} show`;
+  const who = document.createElement('div');
+  who.className = 'msg-who';
+  who.textContent = role === 'user' ? 'You' : 'VOX';
+  const b = document.createElement('div');
+  b.className = 'msg-bubble';
+  b.textContent = text;
+  wrap.appendChild(who);
+  wrap.appendChild(b);
+  chatEl.appendChild(wrap);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return wrap;
+}
+
+function typing(show) {
+  let row = document.getElementById('live-typing');
+  if (show) {
+    if (row) return;
+    row = document.createElement('div');
+    row.className = 'typing-row show';
+    row.id = 'live-typing';
+    row.innerHTML = '<div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+    chatEl.appendChild(row);
+    chatEl.scrollTop = chatEl.scrollHeight;
+  } else if (row) {
+    row.remove();
+  }
+}
+
+function startTimer() {
+  const start = performance.now();
+  cancelAnimationFrame(timerRaf);
   function tick(now) {
-    const s = ((now - timerStart) / 1000).toFixed(1);
-    document.getElementById('timer').textContent = s;
+    timerEl.textContent = ((now - start) / 1000).toFixed(1);
     timerRaf = requestAnimationFrame(tick);
   }
   timerRaf = requestAnimationFrame(tick);
 }
-
-function runChat() {
-  resetChat();
-  runTimer();
-  let acc = 0;
-  const timeouts = [];
-  steps.forEach(step => {
-    acc += step.delay;
-    timeouts.push(setTimeout(() => {
-      if (step.id === 'done') {
-        cancelAnimationFrame(timerRaf);
-        timeouts.forEach(clearTimeout);
-        setTimeout(runChat, 1200);
-        return;
-      }
-      if (step.id.endsWith('_hide')) {
-        document.getElementById(step.id.replace('_hide', '')).classList.remove('show');
-        return;
-      }
-      document.getElementById(step.id).classList.add('show');
-      if (step.id === 'm6') cancelAnimationFrame(timerRaf);
-      document.getElementById('chat').scrollTop = 999;
-    }, acc));
-  });
+function stopTimer() {
+  cancelAnimationFrame(timerRaf);
 }
 
-// Start when demo scrolls into view
-const obs = new IntersectionObserver(entries => {
-  if (entries[0].isIntersecting) { runChat(); obs.disconnect(); }
-}, { threshold: 0.25 });
-obs.observe(document.getElementById('chat'));
+function loadPersona(persona) {
+  currentPersona = persona;
+  history = [];
+  chatEl.innerHTML = '';
+  const meta = PERSONA_GREETINGS[persona] || PERSONA_GREETINGS.pro_shop;
+  phoneNameEl.textContent = meta.name;
+  hintEl.textContent = meta.hint;
+  bubble('assistant', meta.greet);
+  history.push({ role: 'assistant', content: meta.greet });
+  timerEl.textContent = '0.0';
+}
+
+// Backends to try, in order. Sticky: once one succeeds we keep using it; once
+// one fails we skip it for the rest of the session.
+const BACKENDS = [
+  {
+    id: 'supabase',
+    enabled: true,
+    async call(persona, messages) {
+      const res = await fetch(VOX_SUPABASE_FN, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': VOX_SUPABASE_KEY,
+          'Authorization': `Bearer ${VOX_SUPABASE_KEY}`,
+        },
+        body: JSON.stringify({ persona, messages }),
+      });
+      if (!res.ok) throw new Error('supabase ' + res.status);
+      const data = await res.json();
+      if (!data.reply) throw new Error('supabase empty reply');
+      return data.reply;
+    },
+  },
+  {
+    id: 'railway',
+    enabled: !!VOX_API_BASE,
+    async call(persona, messages) {
+      const res = await fetch(`${VOX_API_BASE}/api/demo`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ persona, messages }),
+      });
+      if (!res.ok) throw new Error('railway ' + res.status);
+      const data = await res.json();
+      if (!data.reply) throw new Error('railway empty reply');
+      return data.reply;
+    },
+  },
+];
+
+async function fetchReply(persona, messages) {
+  for (const backend of BACKENDS) {
+    if (!backend.enabled) continue;
+    try {
+      const ctrl = new AbortController();
+      const timeout = setTimeout(() => ctrl.abort(), 8000);
+      const reply = await Promise.race([
+        backend.call(persona, messages),
+        new Promise((_, reject) => ctrl.signal.addEventListener('abort', () => reject(new Error('timeout')))),
+      ]);
+      clearTimeout(timeout);
+      return { reply, source: backend.id };
+    } catch (e) {
+      console.warn(`[VOX] ${backend.id} backend failed:`, e.message);
+      backend.enabled = false; // don't retry this backend this session
+    }
+  }
+  return null;
+}
+
+async function sendMessage() {
+  const text = inputEl.value.trim();
+  if (!text) return;
+  if (Date.now() - lastSendAt < 600) return; // anti-spam
+  lastSendAt = Date.now();
+
+  inputEl.value = '';
+  bubble('user', text);
+  history.push({ role: 'user', content: text });
+  sendBtn.disabled = true;
+  inputEl.disabled = true;
+  typing(true);
+  startTimer();
+
+  let reply;
+  const result = await fetchReply(currentPersona, history);
+  if (result) {
+    reply = result.reply;
+  } else {
+    // Tiny delay so the typing indicator feels natural, then templated fallback.
+    await new Promise(r => setTimeout(r, 700));
+    reply = offlineReply(currentPersona, text, history);
+  }
+
+  stopTimer();
+  typing(false);
+  bubble('assistant', reply);
+  history.push({ role: 'assistant', content: reply });
+
+  sendBtn.disabled = false;
+  inputEl.disabled = false;
+  inputEl.focus();
+
+  if (history.length >= 18) {
+    bubble('assistant', "(Demo cap reached -- sign up to keep VOX live for your business.)");
+    sendBtn.disabled = true;
+    inputEl.disabled = true;
+  }
+}
+
+sendBtn.addEventListener('click', sendMessage);
+inputEl.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+document.querySelectorAll('.persona-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.persona-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    loadPersona(btn.dataset.persona);
+    inputEl.focus();
+  });
+});
+
+loadPersona('pro_shop');
 </script>
 
 
