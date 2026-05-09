@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HIPJOY Nav → Wrigley Field</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: #0d0d12;
+    color: #e8e8f0;
+    min-height: 100vh;
+    padding: 12px;
+  }
+  .header {
+    text-align: center;
+    padding: 16px 8px 12px;
+    border-bottom: 2px solid #7c3aed;
+  }
+  .header h1 {
+    font-size: 1.4rem;
+    color: #a78bfa;
+    letter-spacing: 1px;
+  }
+  .game-info {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 1px solid #7c3aed;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 12px 0;
+    text-align: center;
+  }
+  .game-info .teams {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .game-info .teams .cubs { color: #0e3386; }
+  .game-info .teams .reds { color: #c6011f; }
+  .game-info .details {
+    color: #a78bfa;
+    font-size: 0.95rem;
+    margin-top: 4px;
+  }
+  .route-card {
+    background: #1a1a2e;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 12px 0;
+    border-left: 4px solid #7c3aed;
+  }
+  .route-card h2 {
+    font-size: 1rem;
+    color: #a78bfa;
+    margin-bottom: 10px;
+  }
+  .route-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+  }
+  .step .icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .step .walk { background: #374151; }
+  .step .train { background: #c6011f; }
+  .step .arrive { background: #7c3aed; }
+  .step .info { flex: 1; }
+  .step .time {
+    color: #9ca3af;
+    font-size: 0.8rem;
+  }
+  .connector {
+    width: 32px;
+    display: flex;
+    justify-content: center;
+  }
+  .connector .line {
+    width: 2px;
+    height: 16px;
+    background: #374151;
+  }
+  .total-time {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #a78bfa;
+    font-weight: 600;
+    margin: 8px 0 4px;
+  }
+  .map-container {
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 12px 0;
+    border: 1px solid #2d2d44;
+  }
+  .map-container iframe {
+    width: 100%;
+    height: 280px;
+    border: none;
+  }
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    margin: 10px 0;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #7c3aed, #5b21b6);
+    color: #fff;
+  }
+  .btn-secondary {
+    background: #1a1a2e;
+    color: #a78bfa;
+    border: 1px solid #7c3aed;
+  }
+  .tips {
+    background: #1a1a2e;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 0.85rem;
+    color: #9ca3af;
+  }
+  .tips strong { color: #a78bfa; }
+  .footer {
+    text-align: center;
+    padding: 12px;
+    color: #4b4b6b;
+    font-size: 0.75rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>⚡ HIPJOY NAV ⚡</h1>
+</div>
+
+<div class="game-info">
+  <div class="teams"><span class="cubs">CUBS</span> vs <span class="reds">REDS</span></div>
+  <div class="details">Today · 6:10 PM · Bleacher Seats</div>
+</div>
+
+<div class="route-card">
+  <h2>🚇 Fastest Route</h2>
+  <div class="route-steps">
+    <div class="step">
+      <div class="icon walk">🚶</div>
+      <div class="info">
+        <div><strong>Ogilvie</strong> → Walk to <strong>Lake Station</strong></div>
+        <div class="time">~8 min walk (0.4 mi east on Randolph)</div>
+      </div>
+    </div>
+    <div class="connector"><div class="line"></div></div>
+    <div class="step">
+      <div class="icon train">🔴</div>
+      <div class="info">
+        <div><strong>Lake</strong> → <strong>Red Line</strong> toward Howard</div>
+        <div class="time">~20 min · 7 stops</div>
+      </div>
+    </div>
+    <div class="connector"><div class="line"></div></div>
+    <div class="step">
+      <div class="icon walk">🚶</div>
+      <div class="info">
+        <div>Exit at <strong>Addison</strong> station</div>
+        <div class="time">~5 min walk to Wrigley</div>
+      </div>
+    </div>
+    <div class="connector"><div class="line"></div></div>
+    <div class="step">
+      <div class="icon arrive">⚾</div>
+      <div class="info">
+        <div><strong>Wrigley Field</strong> — Bleacher entrance on Sheffield</div>
+        <div class="time">1060 W Addison St</div>
+      </div>
+    </div>
+  </div>
+  <div class="total-time">⏱ ~35 min total</div>
+</div>
+
+<div class="map-container">
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d23756.5!2d-87.655!3d41.92!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x880e2cb5b0e5e1e7%3A0x958e9e9a55d294ae!2sOgilvie+Transportation+Center%2C+Chicago%2C+IL!3m2!1d41.8828!2d-87.6407!4m5!1s0x880fd3b2e59adf21%3A0x1cea3ee176ddd646!2sWrigley+Field%2C+Chicago%2C+IL!3m2!1d41.9484!2d-87.6553!5e0!3m2!1sen!2sus!4v1"
+    allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+  </iframe>
+</div>
+
+<a href="https://www.google.com/maps/dir/Ogilvie+Transportation+Center,+Chicago,+IL/Wrigley+Field,+1060+W+Addison+St,+Chicago,+IL+60613/@41.9156,-87.6553,13z/data=!3e3" target="_blank" class="btn btn-primary">
+  📍 Open in Google Maps
+</a>
+
+<a href="https://www.transitchicago.com/tracker/" target="_blank" class="btn btn-secondary">
+  🚇 CTA Train Tracker
+</a>
+
+<div class="tips">
+  <strong>Quick tips:</strong><br>
+  • Ventra card or tap-to-pay at turnstile ($2.50/ride)<br>
+  • Red Line runs every 5–8 min<br>
+  • Bleacher gate opens 90 min before first pitch<br>
+  • Bleacher entrance is on Sheffield Ave (east side)
+</div>
+
+<div class="footer">HIPJOY FIELD · Go Cubs Go 🐻</div>
+
+</body>
+</html>

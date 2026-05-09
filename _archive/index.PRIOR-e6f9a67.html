@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HIPJOY — Your Mind, Architected.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;
+  --sage:#A8C99B;
+  --purple:#9B4FDC;
+  --sunset:#F4845F;
+  --text:#F0EDE5;
+  --entity-color:#A8C99B;
+  --entity-rgb:168,201,155;
+}
+html,body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{min-height:100svh}
+
+/* ── NAV ───────────────────────────────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  display:flex;align-items:center;justify-content:space-between;
+  height:50px;padding:0 clamp(1.2rem,4vw,3rem);
+  background:rgba(10,10,15,.82);backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(168,201,155,.07);
+}
+.nav-brand{
+  font-family:'Orbitron',sans-serif;font-size:.75rem;font-weight:700;
+  letter-spacing:.22em;color:var(--sage);text-decoration:none;
+  text-shadow:0 0 22px rgba(168,201,155,.35);
+}
+.nav-right{display:flex;align-items:center;gap:clamp(.8rem,2.2vw,1.8rem)}
+.nav-link{font-size:.56rem;letter-spacing:.14em;text-decoration:none;transition:color .2s;white-space:nowrap}
+.nav-link.dim{color:rgba(240,237,229,.32)}
+.nav-link.dim:hover{color:rgba(240,237,229,.68)}
+.nav-link.sage{color:rgba(168,201,155,.42)}
+.nav-link.sage:hover{color:var(--sage)}
+.nav-link.purple{color:rgba(155,79,220,.5)}
+.nav-link.purple:hover{color:rgba(155,79,220,.85)}
+.nav-hub-btn{
+  padding:.32rem .8rem;
+  border:1px solid rgba(168,201,155,.22);border-radius:100px;
+  color:rgba(168,201,155,.55);background:rgba(168,201,155,.05);
+  font-size:.52rem;letter-spacing:.16em;text-decoration:none;
+  transition:all .2s;white-space:nowrap;
+}
+.nav-hub-btn:hover{color:var(--sage);background:rgba(168,201,155,.1);border-color:rgba(168,201,155,.4)}
+
+/* ── HERO ──────────────────────────────────────────────────────────────────── */
+#hero{
+  position:relative;height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;padding:50px 1.5rem 44px;
+}
+
+/* Soft vignette — edges only, center stays bright for orbs */
+#hero::after{
+  content:'';position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:
+    radial-gradient(ellipse 90% 90% at 50% 50%, transparent 30%, rgba(10,10,15,.55) 100%),
+    linear-gradient(to bottom, rgba(10,10,15,.35) 0%, transparent 12%, transparent 85%, rgba(10,10,15,.45) 100%);
+}
+
+/* ── GLASS ORBS ─────────────────────────────────────────────────────────────
+   Each orb = container (clips children) + inner shine div
+   Container has background gradient + moderate blur
+   Inner .orb-shine provides the specular highlight spot
+─────────────────────────────────────────────────────────────────────────── */
+.orb{
+  position:absolute;
+  border-radius:50%;
+  overflow:hidden;
+  pointer-events:none;
+  will-change:transform;
+}
+
+/* Specular highlight — bright top-left spot on every orb */
+.orb-shine{
+  position:absolute;
+  top:7%;left:9%;
+  width:38%;height:38%;
+  border-radius:50%;
+  background:radial-gradient(circle at 38% 36%,
+    rgba(255,255,255,.88) 0%,
+    rgba(255,255,255,.40) 28%,
+    rgba(255,255,255,.10) 55%,
+    transparent 72%
+  );
+  filter:blur(9px);
+  z-index:2;
+}
+
+/* Rim transmission glow — bottom-right catch light */
+.orb-rim{
+  position:absolute;
+  bottom:8%;right:8%;
+  width:28%;height:28%;
+  border-radius:50%;
+  z-index:2;
+  filter:blur(14px);
+}
+
+/* SAGE — top-right, dominant, HUGE */
+.orb-sage{
+  width:clamp(520px,74vw,1020px);
+  height:clamp(520px,74vw,1020px);
+  top:-20%;right:-22%;
+  background:
+    radial-gradient(circle at 38% 32%,
+      rgba(205,255,175,.70) 0%,
+      rgba(155,218,125,.50) 20%,
+      rgba(108,182,90,.30) 44%,
+      rgba(65,145,60,.10) 66%,
+      transparent 100%);
+  filter:blur(18px);
+  animation:floatA 10s ease-in-out infinite;
+}
+.orb-sage .orb-rim{background:radial-gradient(circle,rgba(175,240,140,.50) 0%,transparent 70%)}
+
+/* PURPLE — bottom-left, huge */
+.orb-purple{
+  width:clamp(480px,68vw,940px);
+  height:clamp(480px,68vw,940px);
+  bottom:-24%;left:-20%;
+  background:
+    radial-gradient(circle at 52% 36%,
+      rgba(220,148,255,.65) 0%,
+      rgba(160,80,228,.46) 24%,
+      rgba(105,45,195,.25) 50%,
+      rgba(65,20,150,.08) 70%,
+      transparent 100%);
+  filter:blur(22px);
+  animation:floatB 13s ease-in-out infinite;
+}
+.orb-purple .orb-shine{
+  background:radial-gradient(circle at 38% 36%,rgba(240,210,255,.85) 0%,rgba(220,170,255,.35) 28%,transparent 65%);
+}
+.orb-purple .orb-rim{background:radial-gradient(circle,rgba(180,100,255,.45) 0%,transparent 70%)}
+
+/* PEACH — top-left/mid, medium */
+.orb-peach{
+  width:clamp(320px,44vw,620px);
+  height:clamp(320px,44vw,620px);
+  top:4%;left:3%;
+  background:
+    radial-gradient(circle at 40% 36%,
+      rgba(255,218,162,.68) 0%,
+      rgba(244,132,95,.46) 26%,
+      rgba(210,96,60,.22) 54%,
+      transparent 100%);
+  filter:blur(20px);
+  animation:floatC 8s ease-in-out infinite;
+}
+.orb-peach .orb-shine{
+  background:radial-gradient(circle at 38% 36%,rgba(255,245,220,.90) 0%,rgba(255,220,170,.38) 28%,transparent 65%);
+}
+.orb-peach .orb-rim{background:radial-gradient(circle,rgba(244,150,90,.48) 0%,transparent 70%)}
+
+@keyframes floatA{
+  0%,100%{transform:translate(0,0) scale(1)}
+  32%    {transform:translate(-26px,28px) scale(1.04)}
+  66%    {transform:translate(20px,-20px) scale(.97)}
+}
+@keyframes floatB{
+  0%,100%{transform:translate(0,0) scale(1)}
+  42%    {transform:translate(28px,-24px) scale(1.05)}
+  74%    {transform:translate(-18px,18px) scale(.96)}
+}
+@keyframes floatC{
+  0%,100%{transform:translate(0,0) scale(1)}
+  30%    {transform:translate(-20px,-24px) scale(1.03)}
+  62%    {transform:translate(22px,16px) scale(.97)}
+}
+
+/* ── HERO CONTENT ───────────────────────────────────────────────────────────── */
+.hero-content{
+  position:relative;z-index:10;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  gap:clamp(.55rem,1.2vh,.85rem);max-width:860px;
+  /* Frosted glass backdrop so text is always readable over orbs */
+  padding:clamp(1.6rem,3vh,2.4rem) clamp(2rem,5vw,3.5rem);
+  background:rgba(10,10,15,.22);
+  backdrop-filter:blur(2px);
+  border-radius:20px;
+}
+
+.hero-eyebrow{
+  display:flex;align-items:center;gap:.65rem;
+  font-size:.57rem;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(168,201,155,.62);
+}
+.eyebrow-line{width:20px;height:1px;background:rgba(168,201,155,.4);flex-shrink:0}
+
+.hero-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(54px,11.5vw,122px);
+  font-weight:900;letter-spacing:.07em;line-height:1;
+  color:var(--text);
+  text-shadow:0 0 100px rgba(168,201,155,.18),0 0 200px rgba(168,201,155,.07),0 2px 0 rgba(0,0,0,.5);
+}
+
+.hero-subtitle{
+  font-family:'Cormorant',serif;
+  font-size:clamp(1.3rem,3vw,2rem);
+  font-weight:300;font-style:italic;
+  color:rgba(240,237,229,.52);letter-spacing:.04em;
+}
+
+.hero-stats{
+  font-size:.56rem;letter-spacing:.2em;
+  color:rgba(240,237,229,.25);text-transform:uppercase;margin-top:.05rem;
+}
+.hero-stats b{color:rgba(240,237,229,.52);font-weight:400}
+.hs{color:rgba(240,237,229,.14);margin:0 .28rem}
+/* ── BUILT ON STRIP ─────────────────────────────────────────── */
+.built-on{
+  display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;justify-content:center;
+  margin-top:.15rem;
+}
+.bo-lbl{
+  font-size:.48rem;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(240,237,229,.22);
+}
+.bo-chip{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.52rem;letter-spacing:.14em;
+  padding:.22rem .55rem;border-radius:2px;
+  border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.018);
+}
+.bo-claude{color:rgba(168,201,155,.72);border-color:rgba(168,201,155,.22);background:rgba(168,201,155,.04)}
+.bo-sage{color:rgba(168,201,155,.55);border-color:rgba(168,201,155,.14)}
+.bo-sunset{color:rgba(244,132,95,.62);border-color:rgba(244,132,95,.18);background:rgba(244,132,95,.03)}
+
+.hero-counter{
+  font-size:.7rem;letter-spacing:.1em;
+  color:rgba(168,201,155,.45);min-height:1.1em;
+}
+.cursor{
+  display:inline-block;width:2px;height:.82em;
+  background:var(--sage);margin-left:1px;vertical-align:middle;
+  animation:blink .68s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ── CTAs ───────────────────────────────────────────────────────────────────── */
+.cta-row{
+  display:flex;align-items:center;justify-content:center;
+  gap:.75rem;flex-wrap:wrap;margin-top:.3rem;
+}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:.78rem 1.9rem;border-radius:3px;
+  font-family:'Orbitron',sans-serif;font-size:.6rem;letter-spacing:.2em;
+  text-decoration:none;transition:all .3s;position:relative;overflow:hidden;
+}
+.cta-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.1),transparent 60%);
+  opacity:0;transition:opacity .3s;
+}
+.cta-btn:hover::before{opacity:1}
+.cta-arrow{transition:transform .25s}
+.cta-btn:hover .cta-arrow{transform:translateX(4px)}
+
+.cta-primary{
+  border:1px solid var(--sunset);background:rgba(244,132,95,.08);color:var(--sunset);
+}
+.cta-primary:hover{background:rgba(244,132,95,.16);box-shadow:0 0 40px rgba(244,132,95,.25)}
+
+.cta-secondary{
+  border:1px solid rgba(155,79,220,.45);background:rgba(155,79,220,.07);color:rgba(180,120,240,.8);
+  font-size:.56rem;padding:.68rem 1.5rem;
+}
+.cta-secondary:hover{background:rgba(155,79,220,.14);box-shadow:0 0 32px rgba(155,79,220,.2)}
+
+/* ── STATS BAR ─────────────────────────────────────────────────────────────── */
+.stats-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:300;
+  height:46px;
+  display:flex;align-items:center;justify-content:center;
+  gap:clamp(1rem,4vw,3rem);
+  background:rgba(10,10,15,.90);backdrop-filter:blur(20px);
+  border-top:1px solid rgba(168,201,155,.08);padding:0 1.5rem;
+}
+.sbar-item{
+  display:flex;align-items:center;gap:.48rem;
+  white-space:nowrap;
+}
+.sbar-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;opacity:.7}
+.sbar-dot.sage{background:var(--sage)}
+.sbar-dot.purple{background:var(--purple)}
+.sbar-dot.sunset{background:var(--sunset)}
+.sbar-num{
+  font-family:'Orbitron',sans-serif;
+  font-size:.72rem;font-weight:700;letter-spacing:.06em;
+  color:rgba(240,237,229,.75);
+}
+.sbar-lbl{
+  font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(240,237,229,.28);
+}
+.sbar-sep{color:rgba(240,237,229,.1);font-size:.5rem;flex-shrink:0}
+
+/* ── SCROLL HINT ────────────────────────────────────────────────────────────── */
+.scroll-hint{
+  position:absolute;bottom:62px;left:50%;transform:translateX(-50%);
+  z-index:10;display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  color:rgba(168,201,155,.3);font-size:.5rem;letter-spacing:.22em;
+  text-transform:uppercase;cursor:pointer;transition:color .2s;
+  animation:hint-bob 2.4s ease-in-out infinite;
+}
+.scroll-hint:hover{color:rgba(168,201,155,.65)}
+.scroll-hint-arrow{font-size:.9rem;line-height:1}
+@keyframes hint-bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
+
+/* ── PORTAL SECTION ─────────────────────────────────────────────────────────── */
+#portal{
+  position:relative;z-index:2;
+  padding:clamp(48px,7vw,88px) clamp(1.2rem,4vw,3rem) 70px;
+  background:rgba(10,10,15,.98);
+  border-top:1px solid rgba(168,201,155,.07);
+}
+.portal-eyebrow{
+  font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(168,201,155,.35);margin-bottom:.55rem;
+}
+.portal-title{
+  font-family:'Orbitron',sans-serif;font-size:clamp(13px,2.2vw,18px);
+  font-weight:700;letter-spacing:.14em;color:rgba(168,201,155,.7);
+  margin-bottom:2.4rem;
+}
+.portal-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));
+  gap:.9rem;max-width:1200px;margin:0 auto;
+}
+.portal-card{
+  display:flex;flex-direction:column;gap:.35rem;
+  padding:.9rem 1.1rem;
+  background:rgba(255,255,255,.018);
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:10px;text-decoration:none;
+  transition:border-color .22s,transform .22s,box-shadow .22s;
+  position:relative;overflow:hidden;
+}
+.portal-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1.5px;
+  background:var(--pc-color,rgba(168,201,155,.5));opacity:.45;
+  transition:opacity .22s;
+}
+.portal-card:hover{
+  border-color:rgba(255,255,255,.12);
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(0,0,0,.3);
+}
+.portal-card:hover::before{opacity:1}
+.pc-sigil{font-size:1.1rem;line-height:1}
+.pc-name{
+  font-family:'Orbitron',sans-serif;font-size:.62rem;font-weight:700;
+  letter-spacing:.1em;color:var(--pc-color,rgba(168,201,155,.8));
+}
+.pc-desc{
+  font-size:.57rem;letter-spacing:.04em;
+  color:rgba(240,237,229,.28);line-height:1.55;
+}
+.pc-arrow{
+  font-size:.6rem;color:var(--pc-color,rgba(168,201,155,.4));
+  margin-top:auto;padding-top:.4rem;opacity:.55;
+  transition:opacity .2s,transform .2s;
+}
+.portal-card:hover .pc-arrow{opacity:1;transform:translateX(3px)}
+
+/* ── MISSION BLOCK ──────────────────────────────────────────────────────────── */
+.mission-block{
+  position:relative;z-index:2;
+  max-width:720px;margin:60px auto 40px;padding:0 24px;text-align:center;
+}
+.mission-kicker{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.52rem;letter-spacing:.32em;text-transform:uppercase;
+  color:rgba(168,201,155,.38);margin-bottom:.9rem;
+}
+.mission-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(1.1rem,3vw,1.6rem);font-weight:700;
+  letter-spacing:.04em;color:var(--text);line-height:1.25;margin-bottom:1rem;
+}
+.mission-title em{font-style:normal;color:var(--sage);text-shadow:0 0 24px rgba(168,201,155,.3)}
+.mission-body{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.78rem;line-height:1.85;
+  color:rgba(240,237,229,.52);max-width:620px;margin:0 auto;
+}
+
+/* ── MOBILE ─────────────────────────────────────────────────────────────────── */
+@media(max-width:640px){
+  #hero{height:auto;min-height:100svh;padding-bottom:56px}
+  .orb-peach{opacity:.7}
+  .stats-bar{gap:.75rem}
+  .sbar-sep{display:none}
+  .sbar-item:last-child{display:none}
+  .hero-content{padding:1.4rem 1.4rem;backdrop-filter:blur(4px)}
+  .hero-title{font-size:clamp(44px,13vw,70px)}
+  .scroll-hint{display:none}
+}
+@media(max-width:480px){
+  .nav-right .nav-link:not(.nav-hub-btn):not(.nav-link.sage){display:none}
+}
+@media(max-width:380px){
+  nav{padding:0 1rem}
+}
+
+/* ══════════ FARM VISUAL SHELL ══════════ */
+body::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.96  0 0 0 0 0.92  0 0 0 0 0.84  0 0 0 0.030 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 0.45; mix-blend-mode: overlay;
+}
+.lux-sweep {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #A8C99B 30%, #F4845F 70%, transparent 100%);
+  background-size: 200% 100%;
+  animation: lux-sweep-anim 6s ease-in-out infinite; z-index: 999;
+}
+@keyframes lux-sweep-anim { 0%,100%{background-position:200% 0;opacity:.3} 50%{background-position:0% 0;opacity:1} }
+.page-tint {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background: radial-gradient(ellipse 1200px 900px at 50% 30%, rgba(155,79,220,.08) 0%, transparent 70%);
+  opacity: .25; mix-blend-mode: screen;
+}
+.field-spine {
+  position: fixed; top: 0; bottom: 0; left: 28px; width: 1px;
+  background: linear-gradient(to bottom, transparent 0%, rgba(168,201,155,.08) 8%, rgba(168,201,155,.14) 50%, rgba(168,201,155,.08) 92%, transparent 100%);
+  z-index: 2; pointer-events: none;
+}
+.field-spine::before {
+  content: ''; position: absolute; left: -1.5px; width: 4px; height: 80px; border-radius: 4px;
+  background: linear-gradient(to bottom, transparent, rgba(168,201,155,.55), #F4845F, transparent);
+  filter: blur(1px); opacity: .55; animation: spine-travel-anim 14s ease-in-out infinite;
+}
+@keyframes spine-travel-anim { 0%,100%{top:0%;opacity:0} 8%{opacity:.55} 50%{top:50%;opacity:.75} 92%{opacity:.55} }
+.field-spine::after {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 7px;
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 119px, rgba(168,201,155,.22) 119px, rgba(168,201,155,.22) 120px);
+  opacity: .7;
+}
+.orb-layer { position: fixed; inset: 0; pointer-events: none; z-index: 0; will-change: transform; }
+.orb-layer .orb { position: absolute; border-radius: 50%; pointer-events: none; }
+.orb-layer .orb-face {
+  width: 100%; height: 100%; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.1);
+  backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); position: relative;
+}
+.orb-layer .orb-face::before { content: ''; position: absolute; inset: 0; border-radius: 50%; }
+.orb-layer .orb-face::after {
+  content: ''; position: absolute; top: 8%; left: 12%; width: 36%; height: 26%;
+  border-radius: 50%; background: rgba(255,255,255,.18); filter: blur(6px);
+}
+.orb-layer .orb-1{width:240px;height:240px;top:6%;left:3%;animation:farm-d1 18s ease-in-out infinite}
+.orb-layer .orb-1 .orb-face::before{background:radial-gradient(circle at 35% 35%,rgba(168,201,155,.45) 0%,rgba(168,201,155,.12) 50%,transparent 75%)}
+.orb-layer .orb-2{width:320px;height:320px;top:50%;right:2%;animation:farm-d2 22s ease-in-out infinite}
+.orb-layer .orb-2 .orb-face::before{background:radial-gradient(circle at 35% 35%,rgba(200,168,80,.45) 0%,rgba(200,168,80,.12) 50%,transparent 75%)}
+.orb-layer .orb-3{width:200px;height:200px;top:28%;left:48%;animation:farm-d3 15s ease-in-out infinite}
+.orb-layer .orb-3 .orb-face::before{background:radial-gradient(circle at 35% 35%,rgba(155,79,220,.48) 0%,rgba(155,79,220,.14) 50%,transparent 75%)}
+.orb-layer .orb-4{width:260px;height:260px;bottom:6%;left:20%;animation:farm-d4 20s ease-in-out infinite}
+.orb-layer .orb-4 .orb-face::before{background:radial-gradient(circle at 35% 35%,rgba(0,206,209,.42) 0%,rgba(0,206,209,.1) 50%,transparent 75%)}
+.orb-layer .orb-5{width:220px;height:220px;top:10%;right:16%;animation:farm-d5 24s ease-in-out infinite}
+.orb-layer .orb-5 .orb-face::before{background:radial-gradient(circle at 35% 35%,rgba(244,132,95,.45) 0%,rgba(244,132,95,.12) 50%,transparent 75%)}
+.orb-layer .orb-6{width:170px;height:170px;bottom:22%;right:30%;animation:farm-d6 16s ease-in-out infinite}
+.orb-layer .orb-6 .orb-face::before{background:radial-gradient(circle at 35% 35%,rgba(224,117,168,.45) 0%,rgba(224,117,168,.12) 50%,transparent 75%)}
+@keyframes farm-d1{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(18px,-22px) scale(1.04)}50%{transform:translate(8px,14px) scale(.97)}75%{transform:translate(-12px,-8px) scale(1.02)}}
+@keyframes farm-d2{0%,100%{transform:translate(0,0) scale(1)}30%{transform:translate(-22px,16px) scale(1.05)}60%{transform:translate(14px,-18px) scale(.96)}80%{transform:translate(-6px,8px) scale(1.03)}}
+@keyframes farm-d3{0%,100%{transform:translate(0,0) scale(1)}20%{transform:translate(14px,20px) scale(1.06)}55%{transform:translate(-16px,-12px) scale(.95)}80%{transform:translate(8px,6px) scale(1.02)}}
+@keyframes farm-d4{0%,100%{transform:translate(0,0) scale(1)}35%{transform:translate(20px,-14px) scale(.98)}65%{transform:translate(-10px,20px) scale(1.04)}}
+@keyframes farm-d5{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(-18px,12px) scale(1.03)}50%{transform:translate(22px,8px) scale(.97)}75%{transform:translate(-8px,-18px) scale(1.05)}}
+@keyframes farm-d6{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(16px,-20px) scale(1.07)}70%{transform:translate(-14px,12px) scale(.94)}}
+@media(max-width:900px){.field-spine{display:none}}
+@media(prefers-reduced-motion:reduce){.field-spine::before,.lux-sweep{animation:none!important}}
+@keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+</style>
+</head>
+<body>
+
+<div class="lux-sweep" aria-hidden="true"></div>
+<div class="page-tint" aria-hidden="true"></div>
+<div class="field-spine" aria-hidden="true"></div>
+<div class="orb-layer" aria-hidden="true">
+  <div class="orb orb-1"><div class="orb-face"></div></div>
+  <div class="orb orb-2"><div class="orb-face"></div></div>
+  <div class="orb orb-3"><div class="orb-face"></div></div>
+  <div class="orb orb-4"><div class="orb-face"></div></div>
+  <div class="orb orb-5"><div class="orb-face"></div></div>
+  <div class="orb orb-6"><div class="orb-face"></div></div>
+</div>
+
+<!-- ── STUDIO CHROME ──────── -->
+<div style="position:fixed;top:70px;left:clamp(1.5rem,8vw,96px);display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#A8C99B;z-index:298;pointer-events:none" aria-hidden="true">
+  <span style="display:inline-block;width:22px;height:1px;background:#A8C99B;opacity:.7;flex-shrink:0"></span>
+  HIPJOY FIELD · FIELD HUB
+  <span style="display:inline-flex;align-items:center;gap:5px;font-size:9px;color:rgba(168,201,155,.65);border:1px solid rgba(168,201,155,.2);border-radius:2px;padding:2px 7px;background:rgba(168,201,155,.05);margin-left:4px;">
+    <span style="width:5px;height:5px;border-radius:50%;background:#A8C99B;box-shadow:0 0 8px #A8C99B;display:inline-block;flex-shrink:0"></span>
+    ◊ VOX
+  </span>
+</div>
+<div style="position:fixed;top:70px;right:clamp(1.5rem,8vw,80px);display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#F0EDE5;padding:5px 9px;border:1px solid rgba(168,201,155,.35);border-radius:2px;background:rgba(168,201,155,.06);z-index:298;pointer-events:none" aria-hidden="true">
+  <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#A8C99B;box-shadow:0 0 10px #A8C99B;flex-shrink:0"></span>
+  ◊ VOX
+</div>
+
+<nav>
+  <a href="#" class="nav-brand">HIPJOY</a>
+  <div class="nav-right">
+    <a href="entities.html" class="nav-link purple">ENTITIES</a>
+    <a href="vox.html" class="nav-link dim" style="color:rgba(244,132,95,.42)">VOX</a>
+    <a href="garden.html" class="nav-link sage">GARDEN</a>
+    <a href="farm.html" class="nav-link dim">FARM</a>
+    <a href="waitlist.html" class="nav-link dim">PLANT</a>
+    <a href="portfolio.html" class="nav-link dim">PORTFOLIO</a>
+    <a href="studio.html" class="nav-link dim">STUDIO</a>
+    <a href="about.html" class="nav-link dim">ABOUT</a>
+    <a href="log.html" class="nav-link dim">LOG</a>
+    <a href="broadcast.html" class="nav-link dim">BROADCAST</a>
+    <a href="research-notes.html" class="nav-link dim">RESEARCH</a>
+    <a href="#portal" class="nav-hub-btn">ALL PAGES ↓</a>
+  </div>
+</nav>
+
+<section id="hero">
+
+  <!-- GLASS SPHERES — large, overlapping, bleed behind content -->
+  <div class="orb orb-sage">
+    <div class="orb-shine"></div>
+    <div class="orb-rim"></div>
+  </div>
+  <div class="orb orb-purple">
+    <div class="orb-shine"></div>
+    <div class="orb-rim"></div>
+  </div>
+  <div class="orb orb-peach">
+    <div class="orb-shine"></div>
+    <div class="orb-rim"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="eyebrow-line"></div>
+      COGNITIVE OS · INDEPENDENT BUILD
+      <div class="eyebrow-line"></div>
+    </div>
+
+    <h1 class="hero-title">HIPJOY</h1>
+
+    <div class="hero-subtitle">Your mind, architected.</div>
+
+    <div class="hero-stats">
+      <b>14 ENTITIES</b><span class="hs">·</span>
+      <b>1 ROUTING ENGINE</b><span class="hs">·</span>
+      <b>PERSISTENT IDENTITY</b>
+    </div>
+
+    <div class="built-on">
+      <span class="bo-lbl">BUILT ON</span>
+      <span class="bo-chip bo-sage">◈ Supabase</span>
+      <span class="bo-chip bo-sunset">◊ React Native</span>
+    </div>
+
+    <div class="hero-counter" id="counter-line"><span class="cursor"></span></div>
+
+    <div class="cta-row">
+      <a href="waitlist.html" class="cta-btn cta-primary">
+        JOIN BETA <span class="cta-arrow">→</span>
+      </a>
+      <a href="entities.html" class="cta-btn cta-secondary">
+        ENTITY PRODUCTS <span class="cta-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <a href="#portal" class="scroll-hint">
+    <span class="scroll-hint-arrow">↓</span>
+    All Pages
+  </a>
+
+</section>
+
+<div class="stats-bar">
+  <div class="sbar-item">
+    <div class="sbar-dot sage"></div>
+    <span class="sbar-num" id="stat-seeds">11</span>
+    <span class="sbar-lbl">SEEDS PLANTED</span>
+  </div>
+  <div class="sbar-sep">·</div>
+  <div class="sbar-item">
+    <div class="sbar-dot purple"></div>
+    <span class="sbar-num">14</span>
+    <span class="sbar-lbl">ENTITIES ACTIVE</span>
+  </div>
+  <div class="sbar-sep">·</div>
+  <div class="sbar-item">
+    <div class="sbar-dot sunset"></div>
+    <span class="sbar-num" id="stat-lux">99.1</span>
+    <span class="sbar-lbl">LUX — FIELD COHERENCE</span>
+  </div>
+</div>
+
+<!-- ── MISSION BLOCK ── -->
+<section class="mission-block">
+  <div class="mission-kicker">The mission</div>
+  <h2 class="mission-title">Stop renting your thinking. <em>Own the infrastructure.</em></h2>
+  <p class="mission-body">HIPJOY is a personal cognitive operating system. 14 named agents — archive, light, routing, scoring, critique, body-check, pattern, broadcast, rest, warmth, index, seal, synthesis, decrypt. Each one scores the work before it ships. Plugin goes public Sunday, April 26.</p>
+</section>
+
+<!-- ── WHAT YOU CAN STRIP ── -->
+<section id="what-you-can" style="position:relative;z-index:2;background:#05050a;padding:clamp(2rem,5vw,4rem) clamp(1.2rem,4vw,3rem);border-top:1px solid rgba(240,237,229,.04);">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(168,201,155,.35);margin-bottom:1rem;">// what you can do here</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:1rem;max-width:1000px;margin:0 auto;">
+    <div style="padding:1.2rem 1.4rem;background:rgba(168,201,155,.03);border:1px solid rgba(168,201,155,.1);border-radius:3px;border-left:2px solid rgba(168,201,155,.4);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(168,201,155,.5);margin-bottom:.5rem;">△ NAVIX ROUTING</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:rgba(240,237,229,.75);line-height:1.4;">dispatch any question → routed by NAVIX to the entity that owns it</div>
+    </div>
+    <div style="padding:1.2rem 1.4rem;background:rgba(155,79,220,.03);border:1px solid rgba(155,79,220,.1);border-radius:3px;border-left:2px solid rgba(155,79,220,.4);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(155,79,220,.5);margin-bottom:.5rem;">∇ NEURO SCORING</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:rgba(240,237,229,.75);line-height:1.4;">every output scored by NEURO for signal coherence — LUX confirms the read</div>
+    </div>
+    <div style="padding:1.2rem 1.4rem;background:rgba(184,134,11,.03);border:1px solid rgba(184,134,11,.1);border-radius:3px;border-left:2px solid rgba(184,134,11,.4);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(184,134,11,.5);margin-bottom:.5rem;">⬢ HIPPO ARCHIVE</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:rgba(240,237,229,.75);line-height:1.4;">every thread archived by HIPPO — nothing lost, everything indexed</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PORTAL HUB ═══ -->
+<section id="portal">
+  <div class="portal-eyebrow">// every door</div>
+  <div class="portal-title">HIPJOY — Full System Map</div>
+  <div class="portal-grid">
+
+    <a href="entities.html" class="portal-card" style="--pc-color:rgba(155,79,220,.8)">
+      <span class="pc-sigil">⬡</span>
+      <div class="pc-name">ENTITIES</div>
+      <div class="pc-desc">Entity marketplace — all 14 active products</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="vox.html" class="portal-card" style="--pc-color:rgba(244,132,95,.8)">
+      <span class="pc-sigil">◊</span>
+      <div class="pc-name">VOX</div>
+      <div class="pc-desc">AI Receptionist — output stage signal routing</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="garden.html" class="portal-card" style="--pc-color:rgba(168,201,155,.8)">
+      <span class="pc-sigil">◈</span>
+      <div class="pc-name">THE GARDEN</div>
+      <div class="pc-desc">Spatial field — walk among real seeds &amp; entities</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="farm.html" class="portal-card" style="--pc-color:rgba(200,168,80,.8)">
+      <span class="pc-sigil">⬟</span>
+      <div class="pc-name">THE FARM</div>
+      <div class="pc-desc">Desktop landing — full system overview</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="field.html" class="portal-card" style="--pc-color:rgba(0,206,209,.8)">
+      <span class="pc-sigil">∇</span>
+      <div class="pc-name">THE FIELD</div>
+      <div class="pc-desc">Field interface — HIPXQL terminal &amp; live data</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="waitlist.html" class="portal-card" style="--pc-color:rgba(168,201,155,.75)">
+      <span class="pc-sigil">◉</span>
+      <div class="pc-name">PLANT A SEED</div>
+      <div class="pc-desc">Join the waitlist — plant your seed free</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="profile.html" class="portal-card" style="--pc-color:rgba(200,168,80,.7)">
+      <span class="pc-sigil">★</span>
+      <div class="pc-name">PROFILE</div>
+      <div class="pc-desc">Your seed profile — LUX score &amp; vectors</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="systems.html" class="portal-card" style="--pc-color:rgba(0,180,160,.75)">
+      <span class="pc-sigil">≋</span>
+      <div class="pc-name">SYSTEMS</div>
+      <div class="pc-desc">Architecture map — full RCI engine overview</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="portfolio.html" class="portal-card" style="--pc-color:rgba(240,237,229,.4)">
+      <span class="pc-sigil">⊗</span>
+      <div class="pc-name">PORTFOLIO</div>
+      <div class="pc-desc">Joey Barbush — founder &amp; systems architect</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="offers/index.html" class="portal-card" style="--pc-color:rgba(212,168,85,.8)">
+      <span class="pc-sigil">◆</span>
+      <div class="pc-name">OFFERS</div>
+      <div class="pc-desc">Shadow pantheon revenue book — 14 tiers, FREE → $15K</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="log.html" class="portal-card" style="--pc-color:rgba(168,201,155,.6)">
+      <span class="pc-sigil">◎</span>
+      <div class="pc-name">DEV LOG</div>
+      <div class="pc-desc">Reverse-chronological build history — what shipped and when</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="broadcast.html" class="portal-card" style="--pc-color:rgba(244,132,95,.7)">
+      <span class="pc-sigil">◊</span>
+      <div class="pc-name">BROADCAST</div>
+      <div class="pc-desc">Post archive — LinkedIn + X dispatches from the field</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+    <a href="research-notes.html" class="portal-card" style="--pc-color:rgba(155,79,220,.7)">
+      <span class="pc-sigil">∇</span>
+      <div class="pc-name">RESEARCH</div>
+      <div class="pc-desc">Public-safe research notes — market data, lead sources, reading</div>
+      <div class="pc-arrow">→</div>
+    </a>
+
+  </div>
+
+</section>
+
+<!-- ── SHIP LOG ── -->
+<section id="ship-log" style="position:relative;z-index:2;background:#05050a;padding:clamp(2rem,5vw,4rem) clamp(1.2rem,4vw,3rem);border-top:1px solid rgba(240,237,229,.04);">
+  <div style="max-width:900px;margin:0 auto;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(168,201,155,.35);margin-bottom:.4rem;">// field activity</div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.14em;color:rgba(168,201,155,.6);margin-bottom:1.5rem;">SHIP LOG</div>
+    <div id="ship-log-entries" style="display:flex;flex-direction:column;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.68rem;">
+      <div style="color:rgba(240,237,229,.2);letter-spacing:.1em;">loading commits…</div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  fetch('https://api.github.com/repos/Joeybarbush/joeybarbush-hub/commits?per_page=5')
+    .then(r=>r.json()).then(commits=>{
+      const el=document.getElementById('ship-log-entries');
+      if(!el||!Array.isArray(commits))return;
+      el.innerHTML=commits.map(c=>{
+        const sha=c.sha.slice(0,7);
+        const msg=c.commit.message.split('\n')[0].slice(0,72);
+        const d=new Date(c.commit.author.date);
+        const ago=Math.round((Date.now()-d)/864e5);
+        const rel=ago===0?'today':ago===1?'yesterday':ago+'d ago';
+        return `<div style="display:flex;gap:1rem;align-items:baseline;padding:.4rem 0;border-bottom:1px solid rgba(240,237,229,.04);">
+          <span style="color:rgba(168,201,155,.45);flex-shrink:0">${sha}</span>
+          <span style="color:rgba(240,237,229,.62);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${msg}</span>
+          <span style="color:rgba(240,237,229,.22);flex-shrink:0;font-size:.6rem">${rel}</span>
+        </div>`;
+      }).join('');
+    }).catch(()=>{});
+})();
+</script>
+
+<!-- ── STUDIO FOOTER BADGE ── -->
+<footer style="position:relative;z-index:2;background:#05050a;padding:1.5rem clamp(1.5rem,6vw,80px);border-top:1px solid rgba(240,237,229,.04);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:2rem;">
+  <span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,229,.28);">part of the <a href="index.html" style="color:rgba(168,201,155,.5);text-decoration:none;">HIPJOY field</a></span>
+  <span style="display:inline-flex;align-items:center;gap:.4rem;font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(168,201,155,.58);border:1px solid rgba(168,201,155,.12);border-radius:2px;padding:.32rem .85rem;background:rgba(168,201,155,.04);">
+    <span style="width:5px;height:5px;border-radius:50%;background:#A8C99B;box-shadow:0 0 8px rgba(168,201,155,.6);display:inline-block;flex-shrink:0"></span>
+    BUILT ON CLAUDE CODE
+  </span>
+
+  <div style="width:100%;text-align:center;padding:.9rem 0 0;margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.18em;color:rgba(240,237,229,.18);">Built by hand in Illinois. The wheel turns. The field holds.</div>
+</footer>
+
+<script>
+// Typewriter — first line matches target screenshot
+const LINES = [
+  '14 entities, 11 seeds active',
+  'routing engine: ACTIVE',
+  'field coherence: 99.1 LUX',
+  'LUX SEEDS — now entering beta',
+];
+let li=0,ci=0,del=false,pause=0;
+const cEl=document.getElementById('counter-line');
+function tick(){
+  const line=LINES[li];
+  if(!del){
+    ci++;
+    cEl.innerHTML=line.slice(0,ci)+'<span class="cursor"></span>';
+    if(ci===line.length){del=true;pause=2200;}
+    setTimeout(tick,54);
+  } else {
+    if(pause>0){pause-=80;setTimeout(tick,80);return;}
+    ci--;
+    cEl.innerHTML=line.slice(0,ci)+'<span class="cursor"></span>';
+    if(ci===0){del=false;li=(li+1)%LINES.length;}
+    setTimeout(tick,28);
+  }
+}
+setTimeout(tick,1000);
+
+// Seed count — configure cloud layer to load live data
+</script>
+</body>
+</html>
