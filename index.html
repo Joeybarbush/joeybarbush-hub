@@ -92,16 +92,93 @@
   .hero-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 16px 22px;
     font-family: var(--mono);
     font-size: 12px;
     color: var(--ink-quiet);
     letter-spacing: 0.04em;
   }
-  .hero-meta span::before { content: '· '; color: var(--hair-strong); margin-right: 4px; }
-  .hero-meta span:first-child::before { content: ''; margin: 0; }
-  .hero-meta a { color: var(--ink-soft); }
-  .hero-meta a:hover { color: var(--moss); }
+  .hero-meta a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--moss);
+    border-bottom: none;
+    transition: color .15s;
+  }
+  .hero-meta a:hover { border-bottom-color: transparent; }
+  .hero-meta a svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    flex-shrink: 0;
+    transition: color .15s;
+  }
+  .hero-meta a.brand-linkedin:hover  { color: #0A66C2; }
+  .hero-meta a.brand-github:hover    { color: #181717; }
+  .hero-meta a.brand-x:hover         { color: #000; }
+  .hero-meta a.brand-instagram:hover { color: #E4405F; }
+  .hero-meta a.brand-email:hover     { color: var(--moss-soft); }
+  .hero-meta a.brand-phone:hover     { color: var(--moss-soft); }
+
+  /* Signal cards */
+  .signal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 600px) { .signal-grid { grid-template-columns: 1fr; } }
+  .signal-card {
+    display: block;
+    padding: 18px 20px;
+    background: var(--paper-2);
+    border: 0.5px solid var(--hair-strong);
+    border-radius: 4px;
+    color: var(--ink);
+    text-decoration: none;
+    transition: border-color .15s, transform .15s;
+  }
+  .signal-card:hover {
+    border-color: var(--moss);
+    border-bottom-color: var(--moss);
+  }
+  .signal-card .ic {
+    color: var(--moss);
+    margin-bottom: 10px;
+    display: inline-flex;
+    transition: color .15s;
+  }
+  .signal-card .ic svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+    display: block;
+  }
+  .signal-card .platform {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--moss);
+    margin: 0 0 2px;
+  }
+  .signal-card .handle {
+    font-family: var(--serif);
+    font-size: 17px;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    margin: 0 0 6px;
+  }
+  .signal-card .ctx {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin: 0;
+  }
+  .signal-card.brand-linkedin:hover .ic  { color: #0A66C2; }
+  .signal-card.brand-github:hover .ic    { color: #181717; }
+  .signal-card.brand-x:hover .ic         { color: #000; }
+  .signal-card.brand-instagram:hover .ic { color: #E4405F; }
 
   /* Sections */
   section { margin-bottom: 56px; }
@@ -321,11 +398,30 @@
     <h1>Joey Barbush</h1>
     <p class="tagline">Founder &amp; systems architect. Building HIPJOY, a sovereign cognitive operating system, from a workstation in North Aurora.</p>
     <div class="hero-meta">
-      <span>North Aurora, IL</span>
-      <span><a href="mailto:joeybarbush@gmail.com">joeybarbush@gmail.com</a></span>
-      <span><a href="https://github.com/Joeybarbush" target="_blank" rel="noopener">github.com/Joeybarbush</a></span>
-      <span><a href="https://linkedin.com/in/joey-barbush-115575403" target="_blank" rel="noopener">LinkedIn</a></span>
-      <span><a href="https://twitter.com/Joey_Barbush" target="_blank" rel="noopener">@Joey_Barbush</a></span>
+      <a class="brand-email" href="mailto:joeybarbush@gmail.com" aria-label="Email">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2zm-2 0l-8 5-8-5zm0 12H4V8l8 5 8-5z"/></svg>
+        joeybarbush@gmail.com
+      </a>
+      <a class="brand-phone" href="tel:+13312135614" aria-label="Phone">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.98.98 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+        (331) 213-5614
+      </a>
+      <a class="brand-linkedin" href="https://linkedin.com/in/joey-barbush-115575403" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+        joey-barbush
+      </a>
+      <a class="brand-github" href="https://github.com/Joeybarbush" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-2.13c-3.2.7-3.87-1.36-3.87-1.36-.53-1.34-1.29-1.69-1.29-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.78 1.19 1.78 1.19 1.04 1.78 2.72 1.27 3.38.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.27-5.24-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17a10.94 10.94 0 015.74 0c2.19-1.48 3.15-1.17 3.15-1.17.62 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.36-5.25 5.65.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+        Joeybarbush
+      </a>
+      <a class="brand-x" href="https://twitter.com/Joey_Barbush" target="_blank" rel="noopener" aria-label="X">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        @Joey_Barbush
+      </a>
+      <a class="brand-instagram" href="https://instagram.com/joeybarbush" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.71 3.71 0 01-1.38-.9 3.71 3.71 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0-2.16C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.87 5.87 0 00-2.13 1.38A5.87 5.87 0 00.63 4.14c-.3.76-.5 1.64-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.32.83.74 1.53 1.38 2.13.6.64 1.3 1.06 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.87 5.87 0 002.13-1.38 5.87 5.87 0 001.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.87 5.87 0 00-1.38-2.13A5.87 5.87 0 0019.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zm0 10.16a4 4 0 110-8 4 4 0 010 8zm6.41-11.85a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>
+        @joeybarbush
+      </a>
     </div>
   </header>
 
@@ -502,23 +598,43 @@
 
   <section id="signals">
     <h2>Public Signals</h2>
-    <div class="grid-2">
-      <div class="skill-group">
-        <h4>GitHub</h4>
-        <p><a href="https://github.com/Joeybarbush" target="_blank" rel="noopener">github.com/Joeybarbush</a> &middot; six public/private repos including <em>joeybarbush-hub</em> (this site&rsquo;s source) and <em>hipx-workspace</em>.</p>
-      </div>
-      <div class="skill-group">
-        <h4>LinkedIn</h4>
-        <p><a href="https://linkedin.com/in/joey-barbush-115575403" target="_blank" rel="noopener">linkedin.com/in/joey-barbush-115575403</a> &middot; HIPJOY founder posts since launch. Active warm contacts in healthcare, finance, and tooling.</p>
-      </div>
-      <div class="skill-group">
-        <h4>Twitter / X</h4>
-        <p><a href="https://twitter.com/Joey_Barbush" target="_blank" rel="noopener">@Joey_Barbush</a> &middot; build-in-public for the HIPJOY field. First message from a verified account asking to join the build, April 2026.</p>
-      </div>
-      <div class="skill-group">
-        <h4>Plugin Marketplace</h4>
-        <p>HIPJOY Lumen distributed via Claude Code plugin registry as of 2026-04-26.</p>
-      </div>
+    <div class="signal-grid">
+      <a class="signal-card brand-email" href="mailto:joeybarbush@gmail.com">
+        <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2zm-2 0l-8 5-8-5zm0 12H4V8l8 5 8-5z"/></svg></span>
+        <p class="platform">Email</p>
+        <p class="handle">joeybarbush@gmail.com</p>
+        <p class="ctx">Direct line. Best place for inquiries, intro requests, deeper conversations.</p>
+      </a>
+      <a class="signal-card brand-phone" href="tel:+13312135614">
+        <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.98.98 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg></span>
+        <p class="platform">Phone</p>
+        <p class="handle">(331) 213-5614</p>
+        <p class="ctx">Voice or text. North Aurora, IL &middot; Central time. Reach for warm calls.</p>
+      </a>
+      <a class="signal-card brand-linkedin" href="https://linkedin.com/in/joey-barbush-115575403" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg></span>
+        <p class="platform">LinkedIn</p>
+        <p class="handle">joey-barbush-115575403</p>
+        <p class="ctx">HIPJOY founder posts since launch. Active warm contacts in healthcare, finance, and tooling.</p>
+      </a>
+      <a class="signal-card brand-github" href="https://github.com/Joeybarbush" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-2.13c-3.2.7-3.87-1.36-3.87-1.36-.53-1.34-1.29-1.69-1.29-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.78 1.19 1.78 1.19 1.04 1.78 2.72 1.27 3.38.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.27-5.24-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17a10.94 10.94 0 015.74 0c2.19-1.48 3.15-1.17 3.15-1.17.62 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.36-5.25 5.65.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg></span>
+        <p class="platform">GitHub</p>
+        <p class="handle">Joeybarbush</p>
+        <p class="ctx">Six repos including <em>joeybarbush-hub</em> (this site&rsquo;s source) and <em>hipx-workspace</em>.</p>
+      </a>
+      <a class="signal-card brand-x" href="https://twitter.com/Joey_Barbush" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>
+        <p class="platform">X / Twitter</p>
+        <p class="handle">@Joey_Barbush</p>
+        <p class="ctx">Build-in-public for the HIPJOY field. First verified-account inbound, April 2026.</p>
+      </a>
+      <a class="signal-card brand-instagram" href="https://instagram.com/joeybarbush" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.71 3.71 0 01-1.38-.9 3.71 3.71 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0-2.16C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.87 5.87 0 00-2.13 1.38A5.87 5.87 0 00.63 4.14c-.3.76-.5 1.64-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.32.83.74 1.53 1.38 2.13.6.64 1.3 1.06 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.87 5.87 0 002.13-1.38 5.87 5.87 0 001.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.87 5.87 0 00-1.38-2.13A5.87 5.87 0 0019.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zm0 10.16a4 4 0 110-8 4 4 0 010 8zm6.41-11.85a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></span>
+        <p class="platform">Instagram</p>
+        <p class="handle">@joeybarbush</p>
+        <p class="ctx">4,253 followers, active. Visual surface of the field &middot; daily textures.</p>
+      </a>
     </div>
   </section>
 
