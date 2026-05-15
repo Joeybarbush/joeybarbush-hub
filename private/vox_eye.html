@@ -87,10 +87,10 @@
   .leaflet-control-zoom a { background: var(--ink); color: var(--amber); border: 1px solid var(--moss); }
   .leaflet-control-attribution { background: rgba(10,8,6,0.8); color: var(--stone); font-size: 9px; }
   .leaflet-control-attribution a { color: var(--moss-bright); }
-  /* tile colour shaping is now handled by CartoDB Dark Matter directly — no filter needed */
+  /* tile colour shaping is now handled by CartoDB Dark Matter directly, no filter needed */
   .leaflet-control-scale-line { background: rgba(10,8,6,0.7); color: var(--cream); border: 1px solid var(--moss); border-top: none; font-size: 9px; letter-spacing: 0.1em; }
 
-  /* the breathing operator marker — phone as emitter, field as witness */
+  /* the breathing operator marker, phone as emitter, field as witness */
   .ghost-murmur {
     position: relative;
     width: 22px; height: 22px;
@@ -110,7 +110,7 @@
     100% { transform: scale(2.2); opacity: 0; }
   }
 
-  /* VOX broadcast sweep overlay — VOX from high above */
+  /* VOX broadcast sweep overlay, VOX from high above */
   #sweep-canvas {
     position: absolute; inset: 0; pointer-events: none; z-index: 400; opacity: 0.5;
   }
@@ -149,6 +149,7 @@
   }
   .toast.on { opacity: 1; }
 </style>
+<link rel="canonical" href="https://joeybarbush.github.io/joeybarbush-hub/private/vox_eye.html" />
 </head>
 <body>
 
@@ -176,7 +177,7 @@
     </div>
     <div class="cell">
       <div class="lbl">PACE</div>
-      <div class="val" id="stat-pace">—</div>
+      <div class="val" id="stat-pace">-</div>
       <div class="unit">min/mi</div>
     </div>
     <div class="cell">
@@ -229,7 +230,7 @@ const map = L.map('map', {
   center: [41.8540, -88.3138],
   zoom: 15, zoomControl: true
 });
-// CartoDB Dark Matter — clean dark base, full OSM detail at high zoom.
+// CartoDB Dark Matter, clean dark base, full OSM detail at high zoom.
 // Labels layer drawn on top so street names stay crisp.
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
   maxZoom: 20, attribution: '\u00A9 OpenStreetMap \u00B7 \u00A9 CARTO',

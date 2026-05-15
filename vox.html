@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>VOX — AI Receptionist · $29/mo · HIPJOY</title>
+<title>VOX: AI Receptionist · $29/mo · HIPJOY</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -226,6 +226,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
 @keyframes farm-d5{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(-18px,12px) scale(1.03)}50%{transform:translate(22px,8px) scale(.97)}75%{transform:translate(-8px,-18px) scale(1.05)}}
 @keyframes farm-d6{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(16px,-20px) scale(1.07)}70%{transform:translate(-14px,12px) scale(.94)}}
 </style>
+<link rel="canonical" href="https://joeybarbush.github.io/joeybarbush-hub/vox.html" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23f7f5ee'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Georgia,serif' font-size='40' font-weight='500' fill='%232c5f4a'%3EJ%3C/text%3E%3C/svg%3E" />
 </head>
 <body>
 <div class="lux-sweep" aria-hidden="true"></div>
@@ -270,7 +272,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
     <h1 class="hero-headline">AUTONOMY<br><span>BLOOMING.</span></h1>
     <p class="hero-sub">
       The <em>$29/mo protocol</em> for businesses that never want to miss a signal.
-      VOX answers, books, and closes — 24/7, no breaks, no excuses.
+      VOX answers, books, and closes. 24/7, no breaks, no excuses.
     </p>
     <button class="btn-primary" onclick="openModal()">INITIALIZE VOX <span class="btn-arrow">→</span></button>
   </div>
@@ -387,7 +389,7 @@ setInterval(() => {
 // Backend chain: Supabase Edge Function (primary) → Railway server (legacy) → offline pattern matcher.
 // Override via <meta name="vox-api" content="https://..."> on the host page.
 const VOX_SUPABASE_FN = 'https://mdbzenhhljwmkdcmtawd.supabase.co/functions/v1/vox-chat';
-// anon key — same one used by the signup modal below; safe to hard-code (it's exposed to the browser anyway)
+// anon key, same one used by the signup modal below; safe to hard-code (it's exposed to the browser anyway)
 const VOX_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYnplbmhobGp3bWtkY210YXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzY2NDUsImV4cCI6MjA5MTI1MjY0NX0.oCKA-Dpk-oxlS18mi-7R3pqA0mif1gM3J5RbDxavgaI';
 const VOX_API_BASE = (document.querySelector('meta[name="vox-api"]')?.content
   || (location.hostname === 'localhost' ? 'http://localhost:8080' : '')).replace(/\/$/,'');
@@ -409,7 +411,7 @@ const OFFLINE_FACTS = {
 function offlineReply(persona, userText, hist) {
   const t = userText.toLowerCase();
   const f = OFFLINE_FACTS[persona] || OFFLINE_FACTS.pro_shop;
-  // Only consider USER turns when scanning for facts the caller has already given —
+  // Only consider USER turns when scanning for facts the caller has already given -
   // assistant greetings ("I'm VOX") would otherwise leak into name detection.
   const userSaid = (hist || []).filter(m => m.role === 'user').map(m => (m.content || '').toLowerCase()).join(' ');
   const allSaid = userText + ' ' + userSaid;
@@ -432,8 +434,8 @@ function offlineReply(persona, userText, hist) {
   }
   if (/(price|cost|how much|rate|charge)/i.test(t)) {
     if (persona === 'barbershop') return `Cuts $30, fade $35, beard line-up $15, hot towel shave $40. What were you thinking?`;
-    if (persona === 'pro_shop')   return `Range bucket's $8. Tee time pricing varies by day — staff will confirm. What were you looking to book?`;
-    return `${f.owner} gives free estimates in person — keeps it accurate. What were you looking to get done?`;
+    if (persona === 'pro_shop')   return `Range bucket's $8. Tee time pricing varies by day, staff will confirm. What were you looking to book?`;
+    return `${f.owner} gives free estimates in person, keeps it accurate. What were you looking to get done?`;
   }
   if (/^(thanks|thank you|appreciate)/i.test(t)) {
     return `You got it. Someone will follow up soon.`;
@@ -443,7 +445,7 @@ function offlineReply(persona, userText, hist) {
     const raw = m ? m[1] : 'you';
     const name = raw.charAt(0).toUpperCase() + raw.slice(1);
     const closer = f.owner === 'shop' ? 'the barbers will' : (f.owner.toLowerCase() === name.toLowerCase() ? 'staff will' : f.owner + ' will');
-    return `Got it, ${name} — ${closer} text back to lock that in within a few minutes.`;
+    return `Got it, ${name}. ${closer} text back to lock that in within a few minutes.`;
   }
   if (haveTime && haveService && !haveName) {
     return `Cool, that should work. What name should I put on it?`;

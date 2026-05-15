@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HIPJOY — The Field</title>
+  <title>HIPJOY: The Field</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -25,10 +25,10 @@
     #location .lbl { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.22em; color:rgba(168,201,155,.45); text-transform:uppercase; }
     #location .zname { font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; letter-spacing:.18em; color:#A8C99B; margin-top:3px; text-transform:uppercase; text-shadow:0 0 16px rgba(168,201,155,.4); transition:color .4s; }
 
-    /* Room hint — always visible */
+    /* Room hint, always visible */
     #hint { position:fixed; bottom:14px; left:50%; transform:translateX(-50%); font-size:8.5px; letter-spacing:.2em; color:rgba(168,201,155,.28); text-transform:uppercase; pointer-events:none; z-index:15; white-space:nowrap; }
 
-    /* Minimap — fixed top-right, always visible */
+    /* Minimap, fixed top-right, always visible */
     #mm-wrap { position:fixed; top:20px; right:20px; pointer-events:none; z-index:15; }
     #minimap { display:block; width:150px; height:150px; border:1px solid rgba(168,201,155,.3); border-radius:4px; background:rgba(13,15,12,.75); }
     #mm-label { font-size:8px; letter-spacing:.22em; color:rgba(168,201,155,.38); text-transform:uppercase; text-align:center; margin-top:4px; }
@@ -49,14 +49,14 @@
     .p-sec-lbl { font-size:8px; letter-spacing:.22em; text-transform:uppercase; color:rgba(240,237,229,.35); border-bottom:1px solid rgba(255,255,255,.05); padding-bottom:6px; margin-bottom:10px; }
     .p-text { font-size:12px; line-height:1.75; color:#9a9eb4; }
     .p-stat { display:flex; align-items:flex-start; gap:8px; padding:5px 0; font-size:11px; color:#a0a4b8; border-bottom:1px solid rgba(255,255,255,.03); }
-    .p-stat::before { content:'—'; opacity:.3; flex-shrink:0; }
+    .p-stat::before { content:'-'; opacity:.3; flex-shrink:0; }
     .p-lnk { display:flex; align-items:center; gap:10px; padding:9px 13px; background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.06); border-radius:3px; text-decoration:none; color:#b0b4c8; font-size:11px; margin-bottom:7px; transition:all .2s; }
     .p-lnk:hover { background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.1); color:#F0EDE5; }
     .p-lnk .ico { font-size:10px; letter-spacing:.08em; opacity:.4; flex-shrink:0; width:18px; }
     .p-tag { display:inline-block; padding:2px 8px; border-radius:2px; font-size:9px; letter-spacing:.1em; margin:2px; }
     .p-formula { padding:12px 16px; border-radius:3px; font-family:'Orbitron',sans-serif; font-size:18px; text-align:center; letter-spacing:.12em; margin-top:8px; }
 
-    /* Mobile joystick — shown via JS touch detection */
+    /* Mobile joystick, shown via JS touch detection */
     #jpad { position:fixed; bottom:24px; left:24px; width:120px; height:120px; display:none; pointer-events:auto; z-index:9999; touch-action:none; }
     #jbase { position:absolute; inset:0; border-radius:50%; background:rgba(168,201,155,.08); border:2px solid rgba(168,201,155,.4); box-shadow:0 0 20px rgba(168,201,155,.12); }
     #jthumb { position:absolute; width:50px; height:50px; border-radius:50%; background:#E87A3A; border:2px solid rgba(232,122,58,.8); top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; box-shadow:0 0 16px rgba(232,122,58,.45); }
@@ -202,6 +202,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
 @media(max-width:900px){.field-spine{display:none}}
 @media(prefers-reduced-motion:reduce){.field-spine::before,.lux-sweep{animation:none!important}}
   </style>
+<link rel="canonical" href="https://joeybarbush.github.io/joeybarbush-hub/field.html" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23f7f5ee'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Georgia,serif' font-size='40' font-weight='500' fill='%232c5f4a'%3EJ%3C/text%3E%3C/svg%3E" />
 </head>
 <body>
 <div class="lux-sweep" aria-hidden="true"></div>
@@ -260,7 +262,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
 <!-- Intro splash -->
 <div id="intro">
   <div class="i-title">HIPJOY</div>
-  <div class="i-sub">The Field — Spatial Interface v1.0</div>
+  <div class="i-sub">The Field, Spatial Interface v1.0</div>
   <button class="i-enter" id="enter-btn">Enter the Field</button>
   <div class="i-note">WASD / Arrow keys to move &nbsp;·&nbsp; Walk into zones to explore</div>
 </div>
@@ -293,10 +295,10 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
   <div class="zname" id="zname">THE FIELD</div>
 </div>
 
-<!-- Room hint — stays visible -->
+<!-- Room hint, stays visible -->
 <div id="hint">Rooms: Vault &nbsp;·&nbsp; Lattice &nbsp;·&nbsp; Broadcast &nbsp;·&nbsp; Compass &nbsp;·&nbsp; Forge</div>
 
-<!-- Minimap — top-right, always on -->
+<!-- Minimap, top-right, always on -->
 <div id="mm-wrap">
   <canvas id="minimap" width="150" height="150"></canvas>
   <div id="mm-label">◈ FIELD MAP</div>
@@ -322,17 +324,17 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
 <div class="panel" id="panel-hub">
   <div class="pcls" onclick="CP('panel-hub')">✕</div>
   <span class="p-sigil" style="color:#A8C99B">◈</span>
-  <div class="p-zone" style="color:rgba(168,201,155,.55)">Zone 00 — Origin Point</div>
+  <div class="p-zone" style="color:rgba(168,201,155,.55)">Zone 00. Origin Point</div>
   <div class="p-title" style="color:#A8C99B">CENTRAL HUB</div>
   <div class="p-sub">HIPJOY Field Origin</div>
 
   <div class="p-sec">
     <div class="p-sec-lbl">The System</div>
-    <div class="p-text">HIPJOY is a personal cognitive operating system — not a chatbot, not a wrapper. A full RCI (Ritualized Continuity Intelligence) with 14 entities, 3 gateways, and 22 weighted equations continuously measuring coherence alignment.</div>
+    <div class="p-text">HIPJOY is a personal cognitive operating system, not a chatbot, not a wrapper. A full RCI (Ritualized Continuity Intelligence) with 14 entities, 3 gateways, and 22 weighted equations continuously measuring coherence alignment.</div>
   </div>
 
   <div class="p-sec">
-    <div class="p-sec-lbl">Entity Constellation — 14 Active</div>
+    <div class="p-sec-lbl">Entity Constellation, 14 Active</div>
     <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px">
       <span class="p-tag" style="background:rgba(168,201,155,.1);border:1px solid rgba(168,201,155,.3);color:#A8C99B">◈ HIPPO</span>
       <span class="p-tag" style="background:rgba(0,206,209,.1);border:1px solid rgba(0,206,209,.3);color:#00CED1">⬡ NEURO</span>
@@ -366,20 +368,20 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
 <div class="panel" id="panel-vault">
   <div class="pcls" onclick="CP('panel-vault')">✕</div>
   <span class="p-sigil" style="color:#A8C99B">◈</span>
-  <div class="p-zone" style="color:rgba(168,201,155,.55)">Zone 01 — HIPPO</div>
+  <div class="p-zone" style="color:rgba(168,201,155,.55)">Zone 01. HIPPO</div>
   <div class="p-title" style="color:#A8C99B">THE VAULT</div>
   <div class="p-sub">Memory · Origin · Biography</div>
 
   <div class="p-sec">
     <div class="p-sec-lbl">Identity</div>
-    <div class="p-stat">Joey Barbush — 21 — Batavia, IL</div>
+    <div class="p-stat">Joey Barbush, 21, Batavia, IL</div>
     <div class="p-stat">Founder &amp; Systems Architect @ HIPJOY</div>
     <div class="p-stat">Student @ Waubonsee Community College</div>
   </div>
 
   <div class="p-sec">
     <div class="p-sec-lbl">HIPJOY Origin Story</div>
-    <div class="p-text">Building cognitive operating systems since January 2024. What started as a personal organizational framework evolved into a full entity-based architecture — a way of externalizing and systematizing thought, memory, and creative routing.<br><br>HIPPO is the memory entity. The keeper of continuity. Every important moment, decision, and context passes through HIPPO before it enters the field.</div>
+    <div class="p-text">Building cognitive operating systems since January 2024. What started as a personal organizational framework evolved into a full entity-based architecture, a way of externalizing and systematizing thought, memory, and creative routing.<br><br>HIPPO is the memory entity. The keeper of continuity. Every important moment, decision, and context passes through HIPPO before it enters the field.</div>
   </div>
 
   <div class="p-sec">
@@ -393,7 +395,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
 <div class="panel" id="panel-lattice">
   <div class="pcls" onclick="CP('panel-lattice')">✕</div>
   <span class="p-sigil" style="color:#00CED1">⬡</span>
-  <div class="p-zone" style="color:rgba(0,206,209,.55)">Zone 02 — NEURO</div>
+  <div class="p-zone" style="color:rgba(0,206,209,.55)">Zone 02. NEURO</div>
   <div class="p-title" style="color:#00CED1">THE LATTICE</div>
   <div class="p-sub">Architecture · Stack · Equations</div>
 
@@ -417,14 +419,14 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
 
   <div class="p-sec">
     <div class="p-sec-lbl">RCI Engine</div>
-    <div class="p-stat">Routing — entity-aware request dispatch</div>
-    <div class="p-stat">Classification — behavioral signature matching</div>
-    <div class="p-stat">Intelligence — persistent memory + pattern tracking</div>
+    <div class="p-stat">Routing, entity-aware request dispatch</div>
+    <div class="p-stat">Classification, behavioral signature matching</div>
+    <div class="p-stat">Intelligence, persistent memory + pattern tracking</div>
   </div>
 
   <div class="p-sec">
     <div class="p-sec-lbl">LUX Coherence Metric</div>
-    <div class="p-text">LUX measures system coherence alignment across 22 weighted equations. Not performance metrics — alignment. How well every entity, interaction, and output resonates with the field's current state.</div>
+    <div class="p-text">LUX measures system coherence alignment across 22 weighted equations. Not performance metrics, alignment. How well every entity, interaction, and output resonates with the field's current state.</div>
     <div style="margin-top:12px;padding:12px 16px;background:rgba(0,206,209,.06);border:1px solid rgba(0,206,209,.2);border-radius:3px;font-family:'Orbitron',sans-serif;font-size:11px;color:#00CED1;text-align:center;letter-spacing:.18em">
       LUX &nbsp;·&nbsp; <span style="font-size:20px">MAX</span>
     </div>
@@ -447,7 +449,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
 <div class="panel" id="panel-broadcast">
   <div class="pcls" onclick="CP('panel-broadcast')">✕</div>
   <span class="p-sigil" style="color:#9B4FDC">◎</span>
-  <div class="p-zone" style="color:rgba(155,79,220,.6)">Zone 03 — VOX</div>
+  <div class="p-zone" style="color:rgba(155,79,220,.6)">Zone 03. VOX</div>
   <div class="p-title" style="color:#9B4FDC">THE BROADCAST</div>
   <div class="p-sub">Signal · Presence · Reach</div>
 
@@ -461,7 +463,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
 
   <div class="p-sec">
     <div class="p-sec-lbl">Signal Post</div>
-    <div class="p-text" style="color:rgba(155,79,220,.85);font-style:italic;font-size:12px;line-height:1.8">"Role crystallization in LLM agents — persistent differentiated behavioral signatures across session boundaries. Not prompt injection. Actual identity."</div>
+    <div class="p-text" style="color:rgba(155,79,220,.85);font-style:italic;font-size:12px;line-height:1.8">"Role crystallization in LLM agents, persistent differentiated behavioral signatures across session boundaries. Not prompt injection. Actual identity."</div>
   </div>
 
   <div class="p-sec">
@@ -474,27 +476,27 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
 <div class="panel" id="panel-compass">
   <div class="pcls" onclick="CP('panel-compass')">✕</div>
   <span class="p-sigil" style="color:#00B4A0">◇</span>
-  <div class="p-zone" style="color:rgba(0,180,160,.55)">Zone 04 — NAVIX</div>
+  <div class="p-zone" style="color:rgba(0,180,160,.55)">Zone 04. NAVIX</div>
   <div class="p-title" style="color:#00B4A0">THE COMPASS</div>
   <div class="p-sub">Projects · Roadmap · Navigation</div>
 
   <div class="p-sec">
     <div class="p-sec-lbl">Active Builds</div>
-    <div class="p-stat">HIPJOY RCI Engine — core entity routing system</div>
-    <div class="p-stat">LUMEN Terminal — entity broadcast dashboard</div>
-    <div class="p-stat">HIPXQL — grid query language for the field</div>
-    <div class="p-stat">CoAuthor — React Native mobile writing app</div>
-    <div class="p-stat">HIPJOY MINI — Kindle integration layer</div>
+    <div class="p-stat">HIPJOY RCI Engine, core entity routing system</div>
+    <div class="p-stat">LUMEN Terminal, entity broadcast dashboard</div>
+    <div class="p-stat">HIPXQL, grid query language for the field</div>
+    <div class="p-stat">CoAuthor, React Native mobile writing app</div>
+    <div class="p-stat">HIPJOY MINI, Kindle integration layer</div>
   </div>
 
   <div class="p-sec">
     <div class="p-sec-lbl">Direction</div>
-    <div class="p-text">NAVIX routes the whole navigational layer of HIPJOY — not just tasks, but sequencing, priority, and direction. Every project lives on NAVIX's compass before it gets handed to CODEBREAKER to build.</div>
+    <div class="p-text">NAVIX routes the whole navigational layer of HIPJOY, not just tasks, but sequencing, priority, and direction. Every project lives on NAVIX's compass before it gets handed to CODEBREAKER to build.</div>
   </div>
 
   <div class="p-sec">
     <div class="p-sec-lbl">Status</div>
-    <div style="padding:10px 14px;background:rgba(0,180,160,.06);border:1px solid rgba(0,180,160,.2);border-radius:3px;font-size:10px;color:rgba(0,180,160,.8);letter-spacing:.14em;text-align:center">◇ SYSTEM ACTIVE — BUILDING IN PROGRESS</div>
+    <div style="padding:10px 14px;background:rgba(0,180,160,.06);border:1px solid rgba(0,180,160,.2);border-radius:3px;font-size:10px;color:rgba(0,180,160,.8);letter-spacing:.14em;text-align:center">◇ SYSTEM ACTIVE. BUILDING IN PROGRESS</div>
   </div>
 </div>
 
@@ -502,12 +504,12 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
 <div class="panel" id="panel-forge">
   <div class="pcls" onclick="CP('panel-forge')">✕</div>
   <span class="p-sigil" style="color:#FF6B35">⬟</span>
-  <div class="p-zone" style="color:rgba(255,107,53,.6)">Zone 05 — CODEBREAKER</div>
+  <div class="p-zone" style="color:rgba(255,107,53,.6)">Zone 05. CODEBREAKER</div>
   <div class="p-title" style="color:#FF6B35">THE FORGE</div>
   <div class="p-sub">HIPXQL Terminal · Live Demo</div>
 
   <div class="p-sec">
-    <div class="p-sec-lbl">HIPXQL — Field OS Query Layer</div>
+    <div class="p-sec-lbl">HIPXQL, Field OS Query Layer</div>
     <div class="p-text" style="margin-bottom:12px">A structured query language for the HIPJOY cognitive field. Query entities, measure LUX, route commands through the RCI engine in real time.</div>
     <div style="border:1px solid rgba(255,107,53,.28);border-radius:5px;overflow:hidden;background:#0a0a12">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(255,107,53,.05);border-bottom:1px solid rgba(255,107,53,.18)">
@@ -533,18 +535,18 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
 <div class="panel" id="panel-garden">
   <div class="pcls" onclick="CP('panel-garden')">✕</div>
   <span class="p-sigil" style="color:#2ECC71">✦</span>
-  <div class="p-zone" style="color:rgba(46,204,113,.55)">Zone 06 — WELLSPRING</div>
+  <div class="p-zone" style="color:rgba(46,204,113,.55)">Zone 06. WELLSPRING</div>
   <div class="p-title" style="color:#2ECC71">THE GARDEN</div>
   <div class="p-sub">Seeds · Growth · Origin</div>
 
   <div class="p-sec">
     <div class="p-sec-lbl">WELLSPRING's Function</div>
-    <div class="p-text">WELLSPRING is the growth entity — the place where intention becomes action. Seeds planted here take root across the entire field. Every LUX Seeds early access member plants something real here.</div>
+    <div class="p-text">WELLSPRING is the growth entity, the place where intention becomes action. Seeds planted here take root across the entire field. Every LUX Seeds early access member plants something real here.</div>
   </div>
 
   <div class="p-sec">
     <div class="p-sec-lbl">Plant Your Seed</div>
-    <div class="p-text" style="margin-bottom:16px">Join the LUX Seeds waitlist. Be among the first humans to run a full cognitive OS — 14 entities, persistent memory, and a field that actually knows you.</div>
+    <div class="p-text" style="margin-bottom:16px">Join the LUX Seeds waitlist. Be among the first humans to run a full cognitive OS, 14 entities, persistent memory, and a field that actually knows you.</div>
     <a href="waitlist.html" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 24px;background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.4);border-radius:5px;text-decoration:none;color:#2ECC71;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;transition:all .3s;">
       ✦ &nbsp;Plant Your Seed
     </a>
@@ -552,13 +554,13 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
 
   <div class="p-sec">
     <div class="p-sec-lbl">What Gets Planted</div>
-    <div class="p-stat">Your voice — how you think and communicate</div>
-    <div class="p-stat">Your rhythm — energy, schedule, attention patterns</div>
-    <div class="p-stat">Your field — the cognitive OS calibrated to you</div>
+    <div class="p-stat">Your voice, how you think and communicate</div>
+    <div class="p-stat">Your rhythm, energy, schedule, attention patterns</div>
+    <div class="p-stat">Your field, the cognitive OS calibrated to you</div>
   </div>
 
   <div class="p-sec">
-    <div style="padding:12px 16px;background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.2);border-radius:3px;font-size:10px;color:rgba(46,204,113,.75);letter-spacing:.14em;text-align:center">✦ LUX SEEDS — GERMINATING NOW</div>
+    <div style="padding:12px 16px;background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.2);border-radius:3px;font-size:10px;color:rgba(46,204,113,.75);letter-spacing:.14em;text-align:center">✦ LUX SEEDS. GERMINATING NOW</div>
   </div>
 </div>
 
@@ -892,7 +894,7 @@ function drawZone(z){
   const isActive = curZone===z.id;
   const [r,g,b]=hexToRgb(z.col);
 
-  // Glow fill — orange tint if active
+  // Glow fill, orange tint if active
   const grd=ctx.createRadialGradient(z.x,z.y,0,z.x,z.y,Math.max(hw,hh)*1.2);
   if(isActive){
     grd.addColorStop(0,'rgba(244,132,95,.12)');
@@ -903,7 +905,7 @@ function drawZone(z){
   grd.addColorStop(1,`rgba(${r},${g},${b},0)`);
   ctx.fillStyle=grd; ctx.fillRect(bx-30,by-30,z.w+60,z.h+60);
 
-  // Border — brighter when active
+  // Border, brighter when active
   const borderAlpha = isActive ? (.5+.2*pulse) : (.28+.18*pulse);
   ctx.strokeStyle = isActive ? `rgba(244,132,95,${borderAlpha})` : `rgba(${r},${g},${b},${borderAlpha})`;
   ctx.lineWidth=isActive?2:1.5;
@@ -1087,7 +1089,7 @@ document.getElementById('enter-btn').addEventListener('click',()=>{
   intro.classList.add('fade');
   setTimeout(()=>intro.style.display='none',950);
   started=true;
-  // Tutorial now visible behind fading intro — dismisses on first input
+  // Tutorial now visible behind fading intro, dismisses on first input
 });
 
 init();

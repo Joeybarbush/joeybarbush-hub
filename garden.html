@@ -677,6 +677,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
 @media(max-width:900px){.field-spine{display:none}}
 @media(prefers-reduced-motion:reduce){.field-spine::before,.lux-sweep{animation:none!important}}
 </style>
+<link rel="canonical" href="https://joeybarbush.github.io/joeybarbush-hub/garden.html" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23f7f5ee'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Georgia,serif' font-size='40' font-weight='500' fill='%232c5f4a'%3EJ%3C/text%3E%3C/svg%3E" />
 </head>
 <body>
 <div class="lux-sweep" aria-hidden="true"></div>
@@ -738,7 +740,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:6;back
       </div>
       <div class="wc-step">
         <div class="wc-step-icon">◉</div>
-        <div class="wc-step-text"><b>SEEDS</b>Each floating orb is a seed — a real person. Color = their entity alignment. Walk close to open their profile and leave a note.</div>
+        <div class="wc-step-text"><b>SEEDS</b>Each floating orb is a seed, a real person. Color = their entity alignment. Walk close to open their profile and leave a note.</div>
       </div>
       <div class="wc-step">
         <div class="wc-step-icon">★</div>
@@ -1338,7 +1340,7 @@ function draw(t){
     ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.fillText(s.sigil,isx,isy);
 
-    // Labels below orb — colored by seed type
+    // Labels below orb, colored by seed type
     const lblY = isy + orbR + 6;
     ctx.font=`bold ${near?11:9}px 'JetBrains Mono',monospace`;
     ctx.fillStyle=`rgba(${r},${g},${b},${near?.98:.78})`;
@@ -1849,7 +1851,7 @@ function loop(t){
     if(!_gardenSignedIn) document.getElementById('plant-cta-bar').classList.remove('hide');
     // First visit welcome
     maybeShowWelcome();
-    // Field hint — show briefly if no welcome overlay
+    // Field hint, show briefly if no welcome overlay
     if(localStorage.getItem('hj_garden_visited')){
       const hint = document.getElementById('field-hint');
       if(hint){ setTimeout(()=>hint.classList.add('show'),1800); setTimeout(()=>hint.classList.remove('show'),8000); }

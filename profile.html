@@ -515,7 +515,7 @@ main{min-height:100vh;padding:5.5rem 1rem 2.5rem;position:relative;z-index:1;max
 @keyframes luxPulse{0%,100%{filter:drop-shadow(0 0 6px rgba(168,201,155,.3))}50%{filter:drop-shadow(0 0 16px rgba(168,201,155,.6))}}
 .lux-gauge{animation:luxPulse 2.8s ease-in-out infinite}
 
-/* METRIC HINT — walkthrough labels */
+/* METRIC HINT, walkthrough labels */
 .metric-hint{font-size:.55rem;color:rgba(168,201,155,.28);letter-spacing:.07em;line-height:1.5;margin-top:.18rem;font-style:italic}
 .metric-label-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.2rem}
 .metric-badge{font-family:Orbitron;font-size:.52rem;letter-spacing:.08em;padding:.1rem .45rem;border-radius:4px;border:1px solid rgba(168,201,155,.15);color:rgba(168,201,155,.5);background:rgba(168,201,155,.04)}
@@ -607,6 +607,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
 @keyframes farm-d5{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(-18px,12px) scale(1.03)}50%{transform:translate(22px,8px) scale(.97)}75%{transform:translate(-8px,-18px) scale(1.05)}}
 @keyframes farm-d6{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(16px,-20px) scale(1.07)}70%{transform:translate(-14px,12px) scale(.94)}}
 </style>
+<link rel="canonical" href="https://joeybarbush.github.io/joeybarbush-hub/profile.html" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23f7f5ee'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Georgia,serif' font-size='40' font-weight='500' fill='%232c5f4a'%3EJ%3C/text%3E%3C/svg%3E" />
 </head>
 <body>
 <div class="lux-sweep" aria-hidden="true"></div>
@@ -851,15 +853,15 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;back
       <div style="display:flex;flex-direction:column;gap:.42rem">
         <div class="tier-row">
           <span class="metric-badge" style="background:rgba(100,180,255,.08);border-color:rgba(100,180,255,.2);color:rgba(100,180,255,.7)">💧 WATER</span>
-          <span class="tier-text">Answer a field question from your entity — earns <b style="color:var(--sage)">+LUX</b> and raises your vectors</span>
+          <span class="tier-text">Answer a field question from your entity, earns <b style="color:var(--sage)">+LUX</b> and raises your vectors</span>
         </div>
         <div class="tier-row">
           <span class="metric-badge" style="background:rgba(232,122,58,.08);border-color:rgba(232,122,58,.2);color:var(--orange)">✕ SHARE</span>
-          <span class="tier-text">Post your seed on X or LinkedIn — earns <b style="color:var(--orange)">+2 LUX</b> and <b style="color:rgba(100,180,255,.8)">+1 water</b> per share</span>
+          <span class="tier-text">Post your seed on X or LinkedIn, earns <b style="color:var(--orange)">+2 LUX</b> and <b style="color:rgba(100,180,255,.8)">+1 water</b> per share</span>
         </div>
         <div class="tier-row">
           <span class="metric-badge" style="background:rgba(155,79,220,.08);border-color:rgba(155,79,220,.2);color:#9B4FDC">∞ TASKS</span>
-          <span class="tier-text">Complete daily field tasks — each one boosts your weakest vector toward crystallization</span>
+          <span class="tier-text">Complete daily field tasks, each one boosts your weakest vector toward crystallization</span>
         </div>
         <div class="tier-row">
           <span class="metric-badge" style="background:rgba(200,168,80,.08);border-color:rgba(200,168,80,.2);color:#C8A850">★ LUX</span>
@@ -2217,7 +2219,7 @@ async function doResetPassword() {
   // guard: confirm session is live before updateUser
   const { data: { session: activeSession } } = await sb.auth.getSession();
   if (!activeSession) {
-    errEl.textContent = 'Session expired — please request a new reset link.';
+    errEl.textContent = 'Session expired, please request a new reset link.';
     errEl.style.display = 'block';
     btn.textContent = 'UPDATE PASSWORD'; btn.disabled = false;
     return;

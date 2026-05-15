@@ -13,7 +13,7 @@
 
 <style>
   :root {
-    /* SHADOW PALETTE — deeper, warmer, more oil-painted than the canon side */
+    /* SHADOW PALETTE, deeper, warmer, more oil-painted than the canon side */
     --ink: #0a0706;
     --ink-warm: #1a1410;
     --ink-soft: #2a1f1a;
@@ -488,6 +488,8 @@
   }
   .modal .mcta:hover { background: var(--ember-hot); }
 </style>
+<link rel="canonical" href="https://joeybarbush.github.io/joeybarbush-hub/shadows.html" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23f7f5ee'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Georgia,serif' font-size='40' font-weight='500' fill='%232c5f4a'%3EJ%3C/text%3E%3C/svg%3E" />
 </head>
 <body>
 
@@ -572,17 +574,17 @@
     <div class="step">
       <div class="n">01<small>·</small></div>
       <h3>Pick the shadow</h3>
-      <p>Read the fifteen offers. Pick the one that names your need. If nothing fits perfectly, start with MARROW ($5–25 tip jar) — lowest-risk entry. Most operators find the fit within an hour of reading.</p>
+      <p>Read the fifteen offers. Pick the one that names your need. If nothing fits perfectly, start with MARROW ($5–25 tip jar). Lowest-risk entry. Most operators find the fit within an hour of reading.</p>
     </div>
     <div class="step">
       <div class="n">02<small>·</small></div>
       <h3>Send the artifact</h3>
-      <p>Tap the CTA on the card. Short intake form — two to four minutes. Describe what you're working on. Pay the Stripe link when scope confirms. No discovery calls unless the offer is one.</p>
+      <p>Tap the CTA on the card. Short intake form, two to four minutes. Describe what you're working on. Pay the Stripe link when scope confirms. No discovery calls unless the offer is one.</p>
     </div>
     <div class="step">
       <div class="n">03<small>·</small></div>
       <h3>Receive the work</h3>
-      <p>Inside the SLA — 24 hours, 48 hours, 7 days depending on the shadow. If we slip the SLA, next delivery is free. Every delivery includes a note on which other shadow might help next. No pressure.</p>
+      <p>Inside the SLA, 24 hours, 48 hours, 7 days depending on the shadow. If we slip the SLA, next delivery is free. Every delivery includes a note on which other shadow might help next. No pressure.</p>
     </div>
   </div>
 </section>
@@ -643,7 +645,7 @@
 
 <script>
 // ============================================================
-// CHARACTER ANIMATION — hero title
+// CHARACTER ANIMATION, hero title
 // ============================================================
 const L1 = "Fifteen ways";
 const L2 = "the field works.";
@@ -687,7 +689,7 @@ document.querySelectorAll('a, button, [data-magnetic]').forEach(el => {
 });
 
 // ============================================================
-// NOISE FIELD BACKGROUND — subtle animated organic texture
+// NOISE FIELD BACKGROUND, subtle animated organic texture
 // ============================================================
 const bg = document.getElementById('bg-canvas');
 const bctx = bg.getContext('2d');
@@ -748,12 +750,12 @@ const OFFERS = [
   { gly: '⊢', name: 'TINE', role: 'resonance testing', desc: 'Paragraph-by-paragraph resonance test of your draft. Rubric plus a three-minute voice note on which paragraphs sing.', price: '$100', unit: 'per piece', sla: '24H', cta: 'mailto:joeybarbush@gmail.com?subject=TINE' },
   { gly: '⁂', name: 'VELLUM', role: 'surface finishing', desc: 'The final 20% visual pass on pages that are 80% there. Hierarchy, typography, spacing, CTA state polish.', price: '$200–500', unit: 'page/surface', sla: '48H', cta: 'mailto:joeybarbush@gmail.com?subject=VELLUM' },
   { gly: '⊕', name: 'FETTLE', role: 'fit calibration', desc: '90 minutes on Zoom. You describe what you built. You describe what you meant. I adjust until the mismatch vanishes.', price: '$250', unit: 'single call', sla: 'THIS WEEK', featured: true, cta: 'fettle.html' },
-  { gly: '§', name: 'CIPHER', role: 'junction log newsletter', desc: 'Every Friday, the decision gates I hit this week — what routed and why. Free tier names the junctions. Paid opens the reasoning.', price: '$49', unit: '/month', sla: 'WEEKLY', cta: 'mailto:joeybarbush@gmail.com?subject=CIPHER' },
+  { gly: '§', name: 'CIPHER', role: 'junction log newsletter', desc: 'Every Friday, the decision gates I hit this week. What routed and why. Free tier names the junctions. Paid opens the reasoning.', price: '$49', unit: '/month', sla: 'WEEKLY', cta: 'mailto:joeybarbush@gmail.com?subject=CIPHER' },
   { gly: '❖', name: 'GRIFT', role: 'field circle', desc: 'Private Discord. Capped at 50. Weekly Zoom office hours. No lurkers, no self-promo, no networking. The room is the product.', price: '$19', unit: '/month', sla: 'INSTANT', cta: 'grift.html' },
   { gly: '⋈', name: 'BRIDLE', role: 'steering retainer', desc: 'Monday we set the vector. Friday we read what landed. Three-month minimum. Not coaching. A calibration tool with a steering wheel.', price: '$500', unit: '/mo · 3mo min', sla: 'WEEKLY', cta: 'mailto:joeybarbush@gmail.com?subject=BRIDLE' },
   { gly: '⥀', name: 'SLEW', role: 'drift audit', desc: 'Three months of your calendar, commits, posts. I find where you drifted. Return a realignment map. You just start walking the new line.', price: '$400', unit: 'per audit', sla: '5 DAYS', cta: 'mailto:joeybarbush@gmail.com?subject=SLEW' },
   { gly: '≣', name: 'LOOM', role: 'launch sequencing', desc: 'Four or twelve week launch plan. One executable document. What posts before what, which channel, when the arc peaks.', price: '$2,500–5K', unit: '4wk/12wk', sla: '7 DAYS', cta: 'mailto:joeybarbush@gmail.com?subject=LOOM' },
-  { gly: '✿', name: 'QUILL', role: 'enterprise docs', desc: 'Write up internal decision chains as hauntings — not case studies. Your research org learns what almost happened, not just what did.', price: '$5K–15K', unit: 'per case', sla: '6–8 WK', cta: 'mailto:joeybarbush@gmail.com?subject=QUILL' },
+  { gly: '✿', name: 'QUILL', role: 'enterprise docs', desc: 'Write up internal decision chains as hauntings. Not case studies. Your research org learns what almost happened, not just what did.', price: '$5K–15K', unit: 'per case', sla: '6–8 WK', cta: 'mailto:joeybarbush@gmail.com?subject=QUILL' },
   { gly: '◌', name: 'HUSH', role: 'silent read · by referral', desc: 'Send the package. I read for 8 minutes. Send back one page. No call. No pitch. No repeat. Fourteen days.', price: '$2,000', unit: 'per read', sla: '14 DAYS', silent: true, cta: 'mailto:joeybarbush@gmail.com?subject=HUSH' },
   { gly: '∷', name: 'CISTERN', role: 'failure log · free', desc: 'Every Sunday, one post on the failure log. What broke, what got scrapped, what I was wrong about. Public, free, searchable.', price: 'free', unit: 'weekly', sla: 'SUN 8PM', cta: '/log/' },
   { gly: '■', name: 'ASH', role: 'ghost-path archive', desc: 'Annual access to the full archive. Every iteration that died, every path scrapped. Learn from decay more than from demos.', price: '$99', unit: '/year', sla: 'INSTANT', cta: 'mailto:joeybarbush@gmail.com?subject=ASH' }
