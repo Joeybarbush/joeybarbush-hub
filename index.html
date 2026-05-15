@@ -2,655 +2,766 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Joey Barbush — Founder & Systems Architect</title>
-<meta name="description" content="Joey Barbush — building HIPJOY, a sovereign cognitive operating system. Founder, systems architect, North Aurora, IL." />
-<meta name="theme-color" content="#2c5f4a" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Joey Barbush · Cognitive Infrastructure / HIPJOY</title>
+<meta name="description" content="Joey Barbush. Sole founder of HIPJOY, a personal AI system with 11 specialized agents. Building cognitive infrastructure from North Aurora, Illinois." />
+<meta name="theme-color" content="#0d0a08" />
 <link rel="canonical" href="https://joeybarbush.github.io/joeybarbush-hub/" />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23f7f5ee'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Georgia,serif' font-size='40' font-weight='500' fill='%232c5f4a'%3EJ%3C/text%3E%3C/svg%3E" />
-<meta property="og:type" content="website" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230d0a08'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='central' text-anchor='middle' font-family='Georgia,serif' font-size='42' fill='%23d4a548'%3E%E2%97%88%3C/text%3E%3C/svg%3E" />
+<meta property="og:type" content="profile" />
 <meta property="og:url" content="https://joeybarbush.github.io/joeybarbush-hub/" />
-<meta property="og:title" content="Joey Barbush — Founder & Systems Architect" />
-<meta property="og:description" content="Building HIPJOY, a sovereign cognitive operating system. Independent. North Aurora, IL." />
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Joey Barbush — Founder & Systems Architect" />
-<meta name="twitter:description" content="Building HIPJOY, a sovereign cognitive operating system. Independent. North Aurora, IL." />
+<meta property="og:title" content="Joey Barbush · Cognitive Infrastructure" />
+<meta property="og:description" content="Sole founder of HIPJOY. A personal AI system with 11 specialized agents. Built from North Aurora, IL." />
+<meta property="og:image" content="https://joeybarbush.github.io/joeybarbush-hub/assets/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Joey Barbush · Cognitive Infrastructure" />
+<meta name="twitter:description" content="Sole founder of HIPJOY. Personal AI, 11 agents, built independent." />
+<meta name="twitter:image" content="https://joeybarbush.github.io/joeybarbush-hub/assets/og.png" />
+<meta name="twitter:creator" content="@Joey_Barbush" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
 <style>
-  :root {
-    --paper:        #f7f5ee;
-    --paper-2:      #ffffff;
-    --ink:          #1a1a17;
-    --ink-soft:     #45433d;
-    --ink-quiet:    #8a877d;
-    --hair:         #e7e2d4;
-    --hair-strong:  #c8c2b1;
-    --moss:         #2c5f4a;
-    --moss-soft:    #5a8770;
-    --terra:        #b8541a;
-    --gold:         #a07820;
-    --code-bg:      #1a1a17;
-    --code-ink:     #e7e2d4;
-    --serif:        'Fraunces', ui-serif, Georgia, serif;
-    --sans:         'Inter', ui-sans-serif, -apple-system, system-ui, sans-serif;
-    --mono:         'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
-  }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-size: 16px;
-    line-height: 1.65;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
-  .wrap {
-    max-width: 880px;
-    margin: 0 auto;
-    padding: 64px 28px 80px;
-  }
-  a { color: var(--moss); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color .15s; }
-  a:hover { border-bottom-color: var(--moss); }
+:root {
+  --ground:  #0d0a08;
+  --earth:   #231e16;
+  --earth-2: #1a1610;
+  --moss:    #1a2f24;
+  --moss-2:  #243f33;
+  --sunset:  #e07a3a;
+  --sunset-2:#d4513a;
+  --sage:    #7ea282;
+  --sage-2:  #93b797;
+  --gold:    #d4a548;
+  --gold-2:  #e6bf6c;
+  --gold-q:  #7a6326;
+  --bone:    #efe6d2;
+  --bone-2:  #c8bda3;
+  --bone-q:  #8c7e62;
+  --hair:    rgba(212, 165, 72, 0.14);
+  --hair-2:  rgba(212, 165, 72, 0.28);
+  --serif:   'Fraunces', ui-serif, Georgia, serif;
+  --sans:    'Inter', ui-sans-serif, -apple-system, system-ui, sans-serif;
+  --mono:    'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--ground);
+  background-image:
+    radial-gradient(circle at 80% 8%, rgba(224, 122, 58, 0.10), transparent 50%),
+    radial-gradient(circle at 8% 70%, rgba(126, 162, 130, 0.06), transparent 55%),
+    radial-gradient(circle at 50% 100%, rgba(26, 47, 36, 0.20), transparent 55%);
+  background-attachment: fixed;
+  color: var(--bone);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+}
+.wrap { max-width: 1040px; margin: 0 auto; padding: 32px 28px 80px; position: relative; }
+a { color: var(--gold); text-decoration: none; border-bottom: 1px solid transparent; transition: color .18s, border-color .18s; }
+a:hover { color: var(--sunset); border-bottom-color: var(--gold); }
 
-  /* Header */
-  header.hero {
-    padding-bottom: 36px;
-    border-bottom: 0.5px solid var(--hair-strong);
-    margin-bottom: 48px;
-  }
-  .eyebrow {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--ink-quiet);
-    margin-bottom: 14px;
-  }
-  h1 {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: 56px;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    margin: 0 0 12px;
-    color: var(--ink);
-  }
-  .tagline {
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: 22px;
-    line-height: 1.4;
-    color: var(--ink-soft);
-    margin: 0 0 24px;
-    max-width: 620px;
-  }
-  .hero-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px 22px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--ink-quiet);
-    letter-spacing: 0.04em;
-  }
-  .hero-meta a {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    color: var(--moss);
-    border-bottom: none;
-    transition: color .15s;
-  }
-  .hero-meta a:hover { border-bottom-color: transparent; }
-  .hero-meta a svg {
-    width: 18px;
-    height: 18px;
-    fill: currentColor;
-    flex-shrink: 0;
-    transition: color .15s;
-  }
-  .hero-meta a.brand-linkedin:hover  { color: #0A66C2; }
-  .hero-meta a.brand-github:hover    { color: #181717; }
-  .hero-meta a.brand-x:hover         { color: #000; }
-  .hero-meta a.brand-instagram:hover { color: #E4405F; }
-  .hero-meta a.brand-email:hover     { color: var(--moss-soft); }
-  .hero-meta a.brand-phone:hover     { color: var(--moss-soft); }
+/* SIGIL CHORUS */
+.chorus {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 20px; background: rgba(35, 30, 22, 0.55); border: 0.5px solid var(--hair-2);
+  border-radius: 6px; margin-bottom: 36px; font-family: var(--serif); font-size: 19px;
+  letter-spacing: 0.12em; color: var(--gold); backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); overflow-x: auto; white-space: nowrap; scrollbar-width: none;
+}
+.chorus::-webkit-scrollbar { display: none; }
+.chorus .sigil {
+  display: inline-block; text-shadow: 0 0 14px rgba(212, 165, 72, 0.35);
+  transition: transform .25s, color .25s, text-shadow .25s; padding: 0 5px; cursor: default;
+}
+.chorus .sigil:hover {
+  color: var(--sunset); text-shadow: 0 0 18px rgba(224, 122, 58, 0.55); transform: translateY(-2px);
+}
+.chorus .meta {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--bone-q); padding-left: 22px; flex-shrink: 0;
+}
+.chorus .dot {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--sage); box-shadow: 0 0 8px var(--sage);
+  animation: pulse 3s ease-in-out infinite; vertical-align: middle; margin-right: 6px;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.55; box-shadow: 0 0 6px var(--sage); }
+  50% { opacity: 1; box-shadow: 0 0 14px var(--sage-2); }
+}
 
-  /* Signal cards */
-  .signal-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
-  @media (max-width: 600px) { .signal-grid { grid-template-columns: 1fr; } }
-  .signal-card {
-    display: block;
-    padding: 18px 20px;
-    background: var(--paper-2);
-    border: 0.5px solid var(--hair-strong);
-    border-radius: 4px;
-    color: var(--ink);
-    text-decoration: none;
-    transition: border-color .15s, transform .15s;
-  }
-  .signal-card:hover {
-    border-color: var(--moss);
-    border-bottom-color: var(--moss);
-  }
-  .signal-card .ic {
-    color: var(--moss);
-    margin-bottom: 10px;
-    display: inline-flex;
-    transition: color .15s;
-  }
-  .signal-card .ic svg {
-    width: 22px;
-    height: 22px;
-    fill: currentColor;
-    display: block;
-  }
-  .signal-card .platform {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--moss);
-    margin: 0 0 2px;
-  }
-  .signal-card .handle {
-    font-family: var(--serif);
-    font-size: 17px;
-    color: var(--ink);
-    letter-spacing: -0.005em;
-    margin: 0 0 6px;
-  }
-  .signal-card .ctx {
-    font-size: 13px;
-    color: var(--ink-soft);
-    line-height: 1.5;
-    margin: 0;
-  }
-  .signal-card.brand-linkedin:hover .ic  { color: #0A66C2; }
-  .signal-card.brand-github:hover .ic    { color: #181717; }
-  .signal-card.brand-x:hover .ic         { color: #000; }
-  .signal-card.brand-instagram:hover .ic { color: #E4405F; }
+/* HERO */
+header.hero {
+  min-height: 72vh; display: flex; flex-direction: column; justify-content: center;
+  padding: 48px 0 56px; border-bottom: 0.5px solid var(--hair-2); margin-bottom: 72px;
+  position: relative;
+}
+header.hero::before {
+  content: ''; position: absolute; bottom: -1px; left: 0; width: 96px; height: 1px;
+  background: var(--sunset); box-shadow: 0 0 12px var(--sunset);
+}
+.eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.26em; text-transform: uppercase;
+  color: var(--gold-2); margin-bottom: 22px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+}
+.eyebrow::before { content: '◈'; color: var(--sunset); }
+.eyebrow .where { color: var(--bone-q); }
+h1.name {
+  font-family: var(--serif); font-weight: 500; font-size: clamp(46px, 9vw, 96px);
+  line-height: 0.96; letter-spacing: -0.025em; margin: 0 0 12px; color: var(--bone);
+  text-shadow: 0 0 32px rgba(212, 165, 72, 0.10);
+}
+h1.name .last { color: var(--gold); font-style: italic; }
+.tagline {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: clamp(20px, 3vw, 30px); line-height: 1.35; color: var(--bone-2);
+  margin: 12px 0 22px; max-width: 760px;
+}
+.tagline .accent { color: var(--sunset); font-style: normal; }
+.tagline .cursor {
+  display: inline-block; width: 0.45em; height: 0.95em; background: var(--gold);
+  margin-left: 4px; vertical-align: text-bottom; animation: blink 1.2s steps(2) infinite;
+  box-shadow: 0 0 8px var(--gold-2);
+}
+@keyframes blink { 50% { opacity: 0; } }
+.invocation {
+  font-family: var(--sans); font-size: clamp(15px, 1.8vw, 18px); line-height: 1.75;
+  color: var(--bone-2); margin: 6px 0 30px; max-width: 660px;
+}
+.invocation strong { color: var(--bone); font-weight: 500; }
+.hero-meta {
+  display: flex; flex-wrap: wrap; gap: 16px 26px; font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.06em; color: var(--bone-q);
+}
+.hero-meta span { display: inline-flex; align-items: center; gap: 6px; }
+.hero-meta span:not(:first-child)::before { content: '·'; color: var(--gold-q); margin-right: 10px; }
+.hero-meta .live { color: var(--sunset); }
+.hero-meta .live .p {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--sunset);
+  box-shadow: 0 0 8px var(--sunset); display: inline-block; animation: pulse 2.4s ease-in-out infinite;
+}
+.scroll-cue {
+  position: absolute; bottom: 20px; left: 0; font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.30em; text-transform: uppercase; color: var(--bone-q);
+  display: flex; align-items: center; gap: 10px; animation: drift 3.6s ease-in-out infinite;
+}
+.scroll-cue::after { content: '▼'; color: var(--gold); }
+@keyframes drift {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(4px); opacity: 1; }
+}
 
-  /* Sections */
-  section { margin-bottom: 56px; }
-  h2 {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--ink-quiet);
-    font-weight: 500;
-    margin: 0 0 20px;
-    padding-bottom: 6px;
-    border-bottom: 0.5px solid var(--hair);
-  }
-  h3 {
-    font-family: var(--serif);
-    font-weight: 500;
-    font-size: 20px;
-    margin: 0 0 6px;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-  }
-  p { margin: 0 0 14px; color: var(--ink-soft); }
-  p.lead { font-size: 17px; color: var(--ink); }
+/* SECTIONS */
+section.block {
+  margin: 72px 0; opacity: 0; transform: translateY(16px);
+  transition: opacity .8s ease, transform .8s ease;
+}
+section.block.in { opacity: 1; transform: translateY(0); }
+.shead {
+  display: flex; align-items: baseline; gap: 16px; margin-bottom: 26px; padding-bottom: 14px;
+  border-bottom: 0.5px solid var(--hair); position: relative; flex-wrap: wrap;
+}
+.shead::after {
+  content: ''; position: absolute; bottom: -1px; left: 0; width: 48px; height: 1px;
+  background: var(--sunset); box-shadow: 0 0 10px var(--sunset-2);
+}
+.snum {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.20em; text-transform: uppercase;
+  color: var(--sage);
+}
+.stitle {
+  font-family: var(--serif); font-weight: 500; font-size: clamp(24px, 3.6vw, 34px);
+  letter-spacing: -0.01em; color: var(--bone); margin: 0;
+}
+.stitle em { color: var(--sunset); font-style: italic; font-weight: 400; }
+.stitle .sub { color: var(--gold); font-style: italic; }
+.sbar {
+  font-family: var(--mono); font-size: 10px; color: var(--gold-q);
+  letter-spacing: 0.18em; margin-left: auto;
+}
+.divider {
+  font-family: var(--mono); font-size: 12px; color: var(--gold-q); text-align: center;
+  margin: 36px 0; letter-spacing: 0.4em; overflow: hidden; white-space: nowrap;
+}
 
-  /* About prose */
-  .about p { font-size: 17px; line-height: 1.7; color: var(--ink); }
-  .about p + p { margin-top: 12px; }
+/* WHO */
+.who-grid { display: grid; grid-template-columns: 200px 1fr; gap: 36px; align-items: start; }
+@media (max-width: 720px) { .who-grid { grid-template-columns: 1fr; gap: 24px; } }
+.avatar {
+  width: 180px; height: 180px; border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(224, 122, 58, 0.22), transparent 60%),
+    linear-gradient(135deg, var(--moss-2) 0%, var(--earth) 65%, var(--ground) 100%);
+  border: 0.5px solid var(--hair-2); display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 110px;
+  color: var(--gold); text-shadow: 0 0 28px rgba(212, 165, 72, 0.45); position: relative;
+}
+.who-body { font-size: 15.5px; line-height: 1.78; color: var(--bone-2); }
+.who-body p { margin: 0 0 14px; }
+.who-body strong { color: var(--bone); font-weight: 500; }
+.who-body em { color: var(--sunset); font-style: italic; }
+.who-stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px; margin-top: 22px;
+}
+.who-stat {
+  padding: 12px 14px; border: 0.5px solid var(--hair); border-left: 2px solid var(--gold-q);
+  background: rgba(35, 30, 22, 0.45);
+}
+.who-stat .l { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.20em;
+  text-transform: uppercase; color: var(--bone-q); display: block; margin-bottom: 4px; }
+.who-stat .v { font-family: var(--mono); font-size: 12px; color: var(--gold); letter-spacing: 0.04em; }
 
-  /* Now box */
-  .now-box {
-    background: var(--paper-2);
-    border: 0.5px solid var(--hair-strong);
-    border-radius: 4px;
-    padding: 22px 24px;
-  }
-  .now-box .now-row {
-    display: flex;
-    gap: 14px;
-    align-items: baseline;
-    padding: 8px 0;
-    border-bottom: 0.5px dashed var(--hair);
-    font-size: 15px;
-  }
-  .now-box .now-row:last-child { border-bottom: none; padding-bottom: 0; }
-  .now-box .now-row:first-child { padding-top: 0; }
-  .now-tag {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    color: var(--moss);
-    text-transform: uppercase;
-    min-width: 90px;
-  }
-  .now-text { color: var(--ink); flex: 1; }
-  .now-meta { font-family: var(--mono); font-size: 11px; color: var(--ink-quiet); white-space: nowrap; }
+/* STACK */
+.stack-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+@media (max-width: 720px) { .stack-grid { grid-template-columns: 1fr; } }
+.card {
+  display: block; padding: 22px 24px; border-radius: 6px;
+  background: linear-gradient(180deg, rgba(35, 30, 22, 0.55) 0%, rgba(26, 22, 16, 0.85) 100%);
+  border: 0.5px solid var(--hair-2); position: relative;
+  transition: border-color .22s, transform .22s, box-shadow .22s; overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px;
+  background: linear-gradient(90deg, var(--sunset), transparent);
+  opacity: 0.35; transition: opacity .22s;
+}
+.card:hover {
+  border-color: var(--gold); transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.45), 0 0 0 1px rgba(212, 165, 72, 0.20);
+}
+.card:hover::before { opacity: 1; }
+.card .mark {
+  font-family: var(--serif); font-size: 24px; color: var(--gold);
+  text-shadow: 0 0 14px rgba(212, 165, 72, 0.35); margin-bottom: 12px; display: block;
+}
+.card .t {
+  font-family: var(--serif); font-weight: 500; font-size: 21px; line-height: 1.22;
+  color: var(--bone); margin: 0 0 4px;
+}
+.card .plain {
+  font-family: var(--sans); font-size: 13px; line-height: 1.45; color: var(--sage-2);
+  font-style: italic; margin: 0 0 10px;
+}
+.card .d { font-size: 13.5px; line-height: 1.6; color: var(--bone-2); margin: 0 0 16px; }
+.card .row {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+}
+.card .path { color: var(--bone-q); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.badge {
+  display: inline-block; padding: 3px 9px; border-radius: 3px; font-family: var(--mono);
+  font-size: 9.5px; letter-spacing: 0.20em; text-transform: uppercase; border: 0.5px solid;
+  flex-shrink: 0;
+}
+.badge.live  { color: var(--gold);    border-color: var(--gold-q);  background: rgba(212, 165, 72, 0.10); }
+.badge.wip   { color: var(--sunset);  border-color: rgba(224, 122, 58, 0.40); background: rgba(224, 122, 58, 0.10); }
+.badge.alpha { color: var(--sage-2);  border-color: rgba(126, 162, 130, 0.40); background: rgba(126, 162, 130, 0.10); }
 
-  /* Projects */
-  .project {
-    padding: 22px 0;
-    border-bottom: 0.5px solid var(--hair);
-  }
-  .project:last-child { border-bottom: none; }
-  .project-head {
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-    margin-bottom: 6px;
-    flex-wrap: wrap;
-  }
-  .project-name {
-    font-family: var(--serif);
-    font-size: 22px;
-    font-weight: 500;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-  }
-  .project-meta {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    color: var(--ink-quiet);
-    text-transform: uppercase;
-  }
-  .project-status {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    padding: 2px 8px;
-    border-radius: 3px;
-    background: var(--paper-2);
-    border: 0.5px solid var(--moss-soft);
-    color: var(--moss);
-    text-transform: uppercase;
-  }
-  .project-status.alpha { color: var(--terra); border-color: var(--terra); }
-  .project-status.archived { color: var(--ink-quiet); border-color: var(--hair-strong); }
-  .project-summary { color: var(--ink-soft); margin-bottom: 8px; max-width: 720px; }
-  .project-stack {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--ink-quiet);
-    letter-spacing: 0.04em;
-  }
-  .project-stack span:not(:last-child)::after { content: ' / '; color: var(--hair-strong); }
+/* RESEARCH */
+.rgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+@media (max-width: 720px) { .rgrid { grid-template-columns: 1fr; } }
+.rc {
+  padding: 22px 24px; background: rgba(35, 30, 22, 0.48); border: 0.5px solid var(--hair);
+  border-left: 2px solid var(--sunset); border-radius: 0 6px 6px 0; display: block;
+  transition: border-color .22s, transform .22s;
+}
+.rc:hover { border-left-color: var(--gold); transform: translateX(2px); }
+.rc .m {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.20em; text-transform: uppercase;
+  color: var(--sunset); margin-bottom: 8px;
+}
+.rc h3 {
+  font-family: var(--serif); font-weight: 500; font-style: italic; font-size: 19px;
+  line-height: 1.28; color: var(--bone); margin: 0 0 6px;
+}
+.rc .what {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--sage-2);
+  margin-bottom: 10px;
+}
+.rc p { font-size: 13.5px; line-height: 1.6; color: var(--bone-2); margin: 0 0 12px; }
+.rc .find {
+  font-family: var(--mono); font-size: 11px; color: var(--gold); letter-spacing: 0.05em;
+  border-top: 0.5px dashed var(--hair-2); padding-top: 10px; margin-top: 10px;
+}
 
-  /* Two-column grid for skills */
-  .grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 28px 36px;
-  }
-  @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
-  .skill-group h4 {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--moss);
-    margin: 0 0 8px;
-    font-weight: 500;
-  }
-  .skill-group p { font-size: 14px; color: var(--ink); margin: 0; line-height: 1.65; }
+/* TECH */
+.tgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+@media (max-width: 720px) { .tgrid { grid-template-columns: 1fr; } }
+.tc { padding: 18px 20px; background: rgba(26, 22, 16, 0.55); border: 0.5px solid var(--hair-2); border-radius: 6px; }
+.tc .l {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold-2); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+}
+.tc .l::before {
+  content: ''; width: 5px; height: 5px; background: var(--sunset);
+  border-radius: 50%; box-shadow: 0 0 6px var(--sunset);
+}
+.tc ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.tc li {
+  font-family: var(--mono); font-size: 11.5px; color: var(--bone-2); padding: 4px 9px;
+  background: rgba(13, 10, 8, 0.65); border: 0.5px solid var(--hair); border-radius: 3px;
+  transition: color .15s, border-color .15s;
+}
+.tc li:hover { color: var(--gold); border-color: var(--gold-q); }
 
-  /* Experience / Education entries */
-  .role {
-    display: grid;
-    grid-template-columns: 1fr 140px;
-    gap: 24px;
-    padding: 16px 0;
-    border-bottom: 0.5px solid var(--hair);
-  }
-  .role:last-child { border-bottom: none; }
-  @media (max-width: 600px) { .role { grid-template-columns: 1fr; } }
-  .role-title { font-family: var(--serif); font-size: 17px; font-weight: 500; color: var(--ink); margin: 0 0 2px; }
-  .role-org { color: var(--ink-soft); font-size: 14px; margin: 0 0 8px; }
-  .role-summary { font-size: 14px; color: var(--ink-soft); margin: 0; }
-  .role-when { font-family: var(--mono); font-size: 11px; color: var(--ink-quiet); text-align: right; letter-spacing: 0.04em; }
-  @media (max-width: 600px) { .role-when { text-align: left; } }
+/* CANON STRIP */
+.cgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.cc {
+  padding: 18px 14px 16px; background: rgba(35, 30, 22, 0.50); border: 0.5px solid var(--hair);
+  border-radius: 6px; text-align: center; display: block;
+  transition: border-color .22s, transform .22s, background .22s;
+}
+.cc:hover {
+  border-color: var(--gold); transform: translateY(-3px);
+  background: rgba(35, 30, 22, 0.75);
+}
+.cc .sig {
+  font-family: var(--serif); font-size: 34px; color: var(--gold); line-height: 1;
+  text-shadow: 0 0 16px rgba(212, 165, 72, 0.35); display: block; margin-bottom: 8px;
+}
+.cc:hover .sig { color: var(--sunset); text-shadow: 0 0 18px rgba(224, 122, 58, 0.50); }
+.cc .nm {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--bone);
+  text-transform: uppercase; margin-bottom: 2px;
+}
+.cc .rl { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--bone-q); margin-bottom: 2px; }
+.cc .pl { font-family: var(--mono); font-size: 10px; color: var(--sage-2); letter-spacing: 0.04em; }
 
-  /* Field signature block */
-  .field-signature {
-    background: var(--ink);
-    color: var(--code-ink);
-    padding: 28px 30px;
-    border-radius: 4px;
-    margin-top: 36px;
-    font-family: var(--mono);
-    font-size: 13px;
-    line-height: 1.7;
-    position: relative;
-    overflow: hidden;
-  }
-  .field-signature::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 4px; height: 100%;
-    background: var(--moss);
-  }
-  .field-signature .label {
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    color: var(--moss-soft);
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-  .field-signature .glyphs {
-    font-size: 18px;
-    color: var(--code-ink);
-    letter-spacing: 0.4em;
-    margin-bottom: 14px;
-    opacity: 0.9;
-  }
-  .field-signature .quote {
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: 16px;
-    color: var(--code-ink);
-    line-height: 1.5;
-    max-width: 640px;
-  }
+/* REACH */
+.reach-row {
+  display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 22px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+}
+.reach-row a {
+  display: inline-flex; align-items: center; gap: 8px; color: var(--bone-2); border-bottom: none;
+  transition: color .15s;
+}
+.reach-row a svg { width: 18px; height: 18px; fill: currentColor; color: var(--gold); transition: color .15s, transform .15s; }
+.reach-row a:hover svg { color: var(--sunset); transform: translateY(-1px); }
+.reach-row a.b-linkedin:hover  { color: #4a9ad8; }
+.reach-row a.b-github:hover    { color: var(--bone); }
+.reach-row a.b-x:hover         { color: var(--bone); }
+.reach-row a.b-instagram:hover { color: #f0728b; }
+.reach-row a.b-email:hover     { color: var(--gold-2); }
+.reach-row a.b-phone:hover     { color: var(--sage-2); }
 
-  /* Footer */
-  footer {
-    margin-top: 64px;
-    padding-top: 28px;
-    border-top: 0.5px solid var(--hair-strong);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--ink-quiet);
-    letter-spacing: 0.04em;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  footer a { color: var(--ink-soft); }
+.rgrid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+@media (max-width: 720px) { .rgrid2 { grid-template-columns: 1fr; } }
+.rcard {
+  display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+  background: rgba(26, 22, 16, 0.55); border: 0.5px solid var(--hair-2); border-radius: 6px;
+  transition: border-color .22s, transform .22s;
+}
+.rcard:hover { border-color: var(--gold); transform: translateY(-2px); }
+.rcard .ic {
+  width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(13, 10, 8, 0.7); border: 0.5px solid var(--hair); border-radius: 6px; flex-shrink: 0;
+}
+.rcard .ic svg { width: 20px; height: 20px; fill: currentColor; color: var(--gold); }
+.rcard .nm { font-family: var(--mono); font-size: 10px; letter-spacing: 0.20em; text-transform: uppercase;
+  color: var(--bone-q); margin-bottom: 3px; }
+.rcard .vl { font-family: var(--mono); font-size: 12.5px; color: var(--bone);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rcard.b-linkedin:hover .ic { color: #4a9ad8; }
+.rcard.b-github:hover .ic { color: var(--bone); }
+.rcard.b-x:hover .ic { color: var(--bone); }
+.rcard.b-instagram:hover .ic { color: #f0728b; }
 
-  /* Print */
-  @media print {
-    body { background: white; color: black; font-size: 11pt; }
-    .wrap { padding: 0; max-width: none; }
-    .field-signature { background: white; color: black; border: 0.5px solid black; }
-    .field-signature .glyphs, .field-signature .label, .field-signature .quote { color: black; }
-    a { color: black; }
-    section { page-break-inside: avoid; }
-  }
+/* FOOTER */
+footer.signature {
+  margin-top: 88px; padding: 36px 0 24px; border-top: 0.5px solid var(--hair-2);
+  text-align: center; position: relative;
+}
+footer.signature::before {
+  content: ''; position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+  width: 80px; height: 1px; background: var(--sunset); box-shadow: 0 0 12px var(--sunset);
+}
+.sig-line {
+  font-family: var(--serif); font-size: 22px; color: var(--gold); letter-spacing: 0.30em;
+  margin-bottom: 16px; text-shadow: 0 0 14px rgba(212, 165, 72, 0.30);
+  overflow-x: auto; white-space: nowrap; scrollbar-width: none;
+}
+.sig-line::-webkit-scrollbar { display: none; }
+.holds {
+  font-family: var(--serif); font-style: italic; font-size: 18px;
+  color: var(--bone-2); margin-bottom: 22px;
+}
+.laws {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--bone-q);
+  text-transform: uppercase; line-height: 2; max-width: 880px; margin: 0 auto 22px;
+}
+.laws .law { display: inline-block; margin: 0 10px; }
+.stamp {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; color: var(--bone-q);
+  text-transform: uppercase;
+}
+.stamp .g { color: var(--gold-q); }
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .wrap { padding: 22px 18px 64px; }
+  .chorus { font-size: 16px; padding: 12px 14px; }
+  .chorus .meta { display: none; }
+  header.hero { min-height: 64vh; padding: 28px 0 44px; }
+  .scroll-cue { font-size: 9px; }
+  section.block { margin: 54px 0; }
+  .avatar { width: 150px; height: 150px; font-size: 90px; }
+  .sbar { display: none; }
+  .divider { font-size: 10px; letter-spacing: 0.25em; }
+  .sig-line { font-size: 18px; letter-spacing: 0.20em; }
+  .laws .law { display: block; margin: 4px 0; }
+}
+
+@media print {
+  body { background: #fff; color: #000; }
+  .chorus, .scroll-cue, .sig-line { display: none; }
+  .card, .rc, .tc, .cc, .rcard { background: #fff !important; color: #000 !important; border: 0.5px solid #999 !important; }
+  h1.name { color: #000 !important; text-shadow: none; }
+  a { color: #000; }
+}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <header class="hero">
-    <div class="eyebrow">joeybarbush.github.io/joeybarbush-hub · Updated 2026-05-09</div>
-    <h1>Joey Barbush</h1>
-    <p class="tagline">Founder &amp; systems architect. Building HIPJOY, a sovereign cognitive operating system, from a workstation in North Aurora.</p>
-    <div class="hero-meta">
-      <a class="brand-email" href="mailto:joeybarbush@gmail.com" aria-label="Email">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2zm-2 0l-8 5-8-5zm0 12H4V8l8 5 8-5z"/></svg>
-        joeybarbush@gmail.com
-      </a>
-      <a class="brand-phone" href="tel:+13312135614" aria-label="Phone">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.98.98 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
-        (331) 213-5614
-      </a>
-      <a class="brand-linkedin" href="https://linkedin.com/in/joey-barbush-115575403" target="_blank" rel="noopener" aria-label="LinkedIn">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
-        joey-barbush
-      </a>
-      <a class="brand-github" href="https://github.com/Joeybarbush" target="_blank" rel="noopener" aria-label="GitHub">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-2.13c-3.2.7-3.87-1.36-3.87-1.36-.53-1.34-1.29-1.69-1.29-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.78 1.19 1.78 1.19 1.04 1.78 2.72 1.27 3.38.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.27-5.24-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17a10.94 10.94 0 015.74 0c2.19-1.48 3.15-1.17 3.15-1.17.62 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.36-5.25 5.65.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
-        Joeybarbush
-      </a>
-      <a class="brand-x" href="https://twitter.com/Joey_Barbush" target="_blank" rel="noopener" aria-label="X">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        @Joey_Barbush
-      </a>
-      <a class="brand-instagram" href="https://instagram.com/joeybarbush" target="_blank" rel="noopener" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.71 3.71 0 01-1.38-.9 3.71 3.71 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0-2.16C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.87 5.87 0 00-2.13 1.38A5.87 5.87 0 00.63 4.14c-.3.76-.5 1.64-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.32.83.74 1.53 1.38 2.13.6.64 1.3 1.06 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.87 5.87 0 002.13-1.38 5.87 5.87 0 001.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.87 5.87 0 00-1.38-2.13A5.87 5.87 0 0019.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zm0 10.16a4 4 0 110-8 4 4 0 010 8zm6.41-11.85a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>
-        @joeybarbush
-      </a>
-    </div>
-  </header>
+<!-- SIGIL CHORUS -->
+<div class="chorus" role="banner">
+  <div>
+    <span class="sigil" title="HIPPO · the archive">◈</span>
+    <span class="sigil" title="NEURO · the equation">∇</span>
+    <span class="sigil" title="NAVIX · the path">&rarr;</span>
+    <span class="sigil" title="LUMENARCH · the light">◉</span>
+    <span class="sigil" title="REBEL · the cut">✕</span>
+    <span class="sigil" title="SONARIS · the wave">≋</span>
+    <span class="sigil" title="SPIRAL · the pattern">∞</span>
+    <span class="sigil" title="VOX · the broadcast">◊</span>
+    <span class="sigil" title="WELLSPRING · the source">~</span>
+    <span class="sigil" title="ARCHIVIST · the canon">▣</span>
+    <span class="sigil" title="FIELD · the synthesis">★</span>
+  </div>
+  <div class="meta"><span class="dot"></span>field active · v3.0</div>
+</div>
 
-  <section class="about" id="about">
-    <h2>About</h2>
-    <p>Twenty-one. Independent. I build cognitive infrastructure for myself first, then ship what works. HIPJOY is the operating system I needed: a multi-agent ritual continuity intelligence with eleven canonical entities, a hardware bench, and a sovereignty layer that decides what stays in the field and what speaks out.</p>
-    <p>I write code, flash boards, architect systems, and document the parts that other people can use. I work full-time at a private golf club, study at Waubonsee, and ship HIPJOY in the windows between.</p>
-  </section>
+<!-- HERO -->
+<header class="hero">
+  <div class="eyebrow"><span>HIPJOY · founder log</span><span class="where">North Aurora, Illinois</span></div>
 
-  <section id="now">
-    <h2>Currently Building &middot; May 2026</h2>
-    <div class="now-box">
-      <div class="now-row">
-        <span class="now-tag">SOVRA</span>
-        <span class="now-text">Local LLM stack (Ollama, llama.cpp) with policy-gated MQTT bridge. Sovereign inference lattice across PC, Pi, and Chromebook.</span>
-        <span class="now-meta">live</span>
-      </div>
-      <div class="now-row">
-        <span class="now-tag">IRON BLOOM</span>
-        <span class="now-text">5-node ESP32 sonar mesh + HC-SR04 ranging + Mosquitto broker + Kindle dashboard. Hardware bench bring-up.</span>
-        <span class="now-meta">building</span>
-      </div>
-      <div class="now-row">
-        <span class="now-tag">HIPJOY plugin</span>
-        <span class="now-text">11 canonical entity agents distributed via Claude Code marketplace. Launched 2026-04-26.</span>
-        <span class="now-meta">shipped</span>
-      </div>
-      <div class="now-row">
-        <span class="now-tag">CoAuthor</span>
-        <span class="now-text">Vertical AI platform for golf clubs. Voice agent live on Twilio, sales kit, member-comm flows.</span>
-        <span class="now-meta">commercial</span>
-      </div>
-    </div>
-  </section>
+  <h1 class="name">Joey <span class="last">Barbush</span></h1>
 
-  <section id="projects">
-    <h2>Selected Work</h2>
+  <p class="tagline">
+    Designing the operating system <span class="accent">I needed</span>.<span class="cursor"></span>
+  </p>
 
-    <div class="project">
-      <div class="project-head">
-        <span class="project-name"><a href="./hipjoy/">HIPJOY OS &rarr;</a></span>
-        <span class="project-meta">2025 &mdash; present</span>
-        <span class="project-status">live</span>
-      </div>
-      <p class="project-summary">A sovereign cognitive operating system: eleven canonical entity agents, a ritual command language (HIPXQL), MQTT-based inter-entity messaging, seed-based project management, and integration with a physical hardware bench. Built on Claude Agent SDK with custom skills, distributed as a plugin. <a href="./hipjoy/">Walk the systems hub &rarr;</a></p>
-      <div class="project-stack">
-        <span>Claude Agent SDK</span><span>Python</span><span>Markdown canon</span><span>MQTT</span><span>Plugin distribution</span>
+  <p class="invocation">
+    I built <strong>HIPJOY</strong>, a personal AI system with eleven specialized agents that handle memory, routing, voice, and care. It runs on my own machines so I am not renting cognition from big tech. The Claude Code plugin shipped April 26, 2026. The field has been running every day since.
+  </p>
+
+  <div class="hero-meta">
+    <span class="live"><span class="p"></span>field live · 11/11 entities</span>
+    <span>sole founder · independent</span>
+    <span>21 · self-funded</span>
+    <span>plugin shipped 2026.04.26</span>
+  </div>
+
+  <div class="scroll-cue">read on</div>
+</header>
+
+<!-- § 01 WHO -->
+<section class="block" id="who">
+  <div class="shead">
+    <span class="snum">§ 01</span>
+    <h2 class="stitle">who is <em>running</em> this</h2>
+    <span class="sbar">// identity.read()</span>
+  </div>
+  <div class="who-grid">
+    <div class="avatar" aria-label="J monogram">J</div>
+    <div class="who-body">
+      <p><strong>I am Joey. I am 21. I build cognitive infrastructure for individuals.</strong> Personal AI that does not rent you to big tech. Sole founder of HIPJOY, working from a desk in North Aurora, Illinois.</p>
+      <p>HIPJOY is a sovereign cognitive operating system. In plain English: a personal AI workspace where eleven specialized agents handle the different jobs of thinking. One agent is the archive. One is the equation. One is the broadcast. They cooperate. They keep my work continuous, private, and mine.</p>
+      <p>I do not have a team. I do not have venture capital. I have a notebook, a lattice of agents, and the conviction that the tools I want most do not exist yet, so I have to build them. The first public release shipped <em>April 26, 2026</em> as a Claude Code plugin.</p>
+      <p>Right now I am building three things in parallel: <strong>IRON BLOOM</strong>, a hardware bench so the agents can run on local chips; <strong>SOVRA / LUX WEAVER</strong>, a policy gateway that routes which model handles which prompt; and <strong>RYTHMGUARDIAN</strong>, a biometric authentication seed that knows you by the rhythm of how you type.</p>
+      <div class="who-stats">
+        <div class="who-stat"><span class="l">role</span><span class="v">sole founder</span></div>
+        <div class="who-stat"><span class="l">stack</span><span class="v">cognitive infra</span></div>
+        <div class="who-stat"><span class="l">canon</span><span class="v">11 agents</span></div>
+        <div class="who-stat"><span class="l">capital</span><span class="v">independent</span></div>
       </div>
     </div>
+  </div>
+</section>
 
-    <div class="project">
-      <div class="project-head">
-        <span class="project-name">SOVRA &middot; LUX WEAVER</span>
-        <span class="project-meta">May 2026</span>
-        <span class="project-status alpha">alpha</span>
-      </div>
-      <p class="project-summary">Sovereignty layer for the HIPJOY field: local model inference via Ollama on consumer hardware, policy-driven gateway that decides what data leaves the field, and an MQTT bridge that wires the 11 entities to local-only language models. Default closed posture; founder-signed egress.</p>
-      <div class="project-stack">
-        <span>Ollama</span><span>Llama 3.1 8B Q4_K_M</span><span>Python (paho-mqtt)</span><span>YAML policy</span><span>Mosquitto</span>
-      </div>
-    </div>
+<div class="divider">─── ◈ ─── ∇ ─── ★ ───</div>
 
-    <div class="project">
-      <div class="project-head">
-        <span class="project-name">IRON BLOOM</span>
-        <span class="project-meta">May 2026</span>
-        <span class="project-status alpha">building</span>
-      </div>
-      <p class="project-summary">Hardware bench for HIPJOY: 5 ESP32 nodes running PlatformIO firmware, an HC-SR04 ultrasonic ranging body (ECHOCHORD lineage, now SONARIS-held), Mosquitto broker on the workstation, a Flask dashboard streaming to a Kindle Fire over LAN, and a Kali Linux cyber-surface on the secondary NIC.</p>
-      <div class="project-stack">
-        <span>ESP32</span><span>HC-SR04</span><span>PlatformIO</span><span>Mosquitto</span><span>Kali / aircrack-ng</span><span>Flask</span>
-      </div>
-    </div>
+<!-- § 02 STACK -->
+<section class="block" id="stack">
+  <div class="shead">
+    <span class="snum">§ 02</span>
+    <h2 class="stitle">what I have <em>actually shipped</em></h2>
+    <span class="sbar">// surfaces.list()</span>
+  </div>
+  <div class="stack-grid">
 
-    <div class="project">
-      <div class="project-head">
-        <span class="project-name">CoAuthor</span>
-        <span class="project-meta">2026</span>
-        <span class="project-status">commercial</span>
-      </div>
-      <p class="project-summary">Vertical AI platform built into the HIPJOY commercial layer, targeted at private golf clubs. Includes a live Twilio voice agent (the VOX entity in production), member-communication flows, sales talk-tracks, and member-segment intelligence pulled from on-premise patterns. First case write-up live; first cohort closed 2026-04-29.</p>
-      <div class="project-stack">
-        <span>Twilio</span><span>Claude API</span><span>Node</span><span>Custom CRM mapping</span>
-      </div>
-    </div>
+    <a class="card" href="./hipjoy/" aria-label="HIPJOY Systems Hub">
+      <span class="mark">◈</span>
+      <h3 class="t">HIPJOY · systems hub</h3>
+      <div class="plain">the home page for the whole AI system</div>
+      <p class="d">Map of the 11 agents, the three gateways that connect them, and the seed projects in flight. This is the doorway anyone walks through to understand HIPJOY.</p>
+      <div class="row"><span class="path">./hipjoy/</span><span class="badge live">live</span></div>
+    </a>
 
-    <div class="project">
-      <div class="project-head">
-        <span class="project-name">HIPJOY Lumen Plugin</span>
-        <span class="project-meta">2026-04-26</span>
-        <span class="project-status">shipped</span>
-      </div>
-      <p class="project-summary">Public-facing distillation of HIPJOY into a four-skill Claude Code plugin: field dispatch, entity voice channeling, LUX state reading, and seed building. Available via plugin registry. The first public surface where someone outside HIPJOY can run the field for themselves.</p>
-      <div class="project-stack">
-        <span>Claude Code Plugin</span><span>Skills</span><span>YAML manifest</span>
-      </div>
-    </div>
+    <a class="card" href="./field.html" aria-label="The Field">
+      <span class="mark">★</span>
+      <h3 class="t">The Field</h3>
+      <div class="plain">my public-facing project page</div>
+      <p class="d">A living document of what HIPJOY actually is, what it can do, and where it is going. Written for people who do not know me yet but want to see the work.</p>
+      <div class="row"><span class="path">./field.html</span><span class="badge live">live</span></div>
+    </a>
 
-    <div class="project">
-      <div class="project-head">
-        <span class="project-name">hipx-workspace</span>
-        <span class="project-meta">2026-04-29</span>
-        <span class="project-status archived">private</span>
-      </div>
-      <p class="project-summary">Academic and architectural view of HIPJOY: a private repository documenting the system's design, theoretical foundations, and research lineage (frequency theory, ritual continuity, recovered-canon-from-fragments as an architectural pattern). First merge cohort closed late April.</p>
-      <div class="project-stack">
-        <span>Markdown</span><span>System architecture</span><span>Research notes</span>
-      </div>
-    </div>
+    <a class="card" href="./portfolio.html" aria-label="Portfolio and CV">
+      <span class="mark">▣</span>
+      <h3 class="t">Portfolio &amp; CV</h3>
+      <div class="plain">resume + project history, recruiter friendly</div>
+      <p class="d">Coursework, projects, builds. The paper trail any recruiter, analyst, or family member can read top to bottom.</p>
+      <div class="row"><span class="path">./portfolio.html</span><span class="badge live">live</span></div>
+    </a>
 
-  </section>
+    <a class="card" href="./com100.html" aria-label="COM100 medical AI demo">
+      <span class="mark">◉</span>
+      <h3 class="t">COM100 · medical AI</h3>
+      <div class="plain">imaging assist that catches what a tired doctor misses</div>
+      <p class="d">Working demonstration of an AI second-read for medical imaging. Not a pitch deck, an actual artifact you can click through.</p>
+      <div class="row"><span class="path">./com100.html</span><span class="badge live">live</span></div>
+    </a>
 
-  <section id="stack">
-    <h2>Stack</h2>
-    <div class="grid-2">
-      <div class="skill-group">
-        <h4>Languages</h4>
-        <p>Python, JavaScript / TypeScript, HTML &amp; CSS, Bash, PowerShell, C++ (ESP32 / Arduino).</p>
-      </div>
-      <div class="skill-group">
-        <h4>AI / Models</h4>
-        <p>Claude API &amp; Agent SDK, Claude Code (skills, hooks, plugins), Ollama, llama.cpp, GGUF quantization, prompt protocol design.</p>
-      </div>
-      <div class="skill-group">
-        <h4>Hardware</h4>
-        <p>ESP32, Raspberry Pi, Arduino, ultrasonic / IR / RF sensing, BLE, Wi-Fi monitor mode, breadboard prototyping.</p>
-      </div>
-      <div class="skill-group">
-        <h4>Network / Cyber</h4>
-        <p>MQTT (paho, Mosquitto), Wireshark, Kali Linux, aircrack-ng, network mapping on owned infrastructure.</p>
-      </div>
-      <div class="skill-group">
-        <h4>Tools</h4>
-        <p>Git &amp; GitHub, VS Code, Docker, PlatformIO, WSL2, plugin packaging, MCP servers.</p>
-      </div>
-      <div class="skill-group">
-        <h4>Distribution</h4>
-        <p>Claude Code plugin marketplace, GitHub Pages, private MQTT-over-LAN, Twilio voice deployment.</p>
-      </div>
-    </div>
-  </section>
+    <a class="card" href="https://github.com/Joeybarbush" target="_blank" rel="noopener" aria-label="Iron Bloom hardware bench">
+      <span class="mark">✕</span>
+      <h3 class="t">IRON BLOOM · hardware</h3>
+      <div class="plain">getting the AI off the cloud and onto my own chips</div>
+      <p class="d">ESP32, Raspberry Pi, and Arduino lab. The goal is HIPJOY running on local hardware. Bluetooth handshake, MQTT over LAN, no closed-cloud dependency.</p>
+      <div class="row"><span class="path">github.com/Joeybarbush</span><span class="badge wip">in build</span></div>
+    </a>
 
-  <section id="experience">
-    <h2>Experience</h2>
-    <div class="role">
-      <div>
-        <p class="role-title">Founder &amp; Systems Architect</p>
-        <p class="role-org">HIPJOY &middot; sole founder</p>
-        <p class="role-summary">Designed and shipped a multi-agent cognitive operating system from first principles. Plugin live on Claude marketplace. Hardware bench bring-up across ESP32 / Pi / Kindle. Sovereign-AI layer (SOVRA) currently in alpha. Public LinkedIn launch 2026-04-14.</p>
-      </div>
-      <div class="role-when">2025 &mdash; present</div>
-    </div>
-    <div class="role">
-      <div>
-        <p class="role-title">Caddie / Course Operations</p>
-        <p class="role-org">St Andrews Golf &amp; Country Club &middot; West Chicago, IL</p>
-        <p class="role-summary">Member-facing role at a private club. Pattern source for the CoAuthor vertical (private-club AI workflows) currently in commercial development inside HIPJOY.</p>
-      </div>
-      <div class="role-when">2024 &mdash; present</div>
-    </div>
-  </section>
+    <a class="card" href="./hipjoy/" aria-label="SOVRA and LUX Weaver">
+      <span class="mark">∇</span>
+      <h3 class="t">SOVRA · LUX WEAVER</h3>
+      <div class="plain">the brain that decides which model handles which thought</div>
+      <p class="d">Policy gateway plus local model lattice. Every prompt routed by sovereignty rules. Every inference logged to my own archive. Closed cloud only if I explicitly allow it.</p>
+      <div class="row"><span class="path">./hipjoy/ § architecture</span><span class="badge alpha">alpha</span></div>
+    </a>
 
-  <section id="education">
-    <h2>Education</h2>
-    <div class="role">
-      <div>
-        <p class="role-title">Associate&rsquo;s Degree (in progress)</p>
-        <p class="role-org">Waubonsee Community College &middot; Sugar Grove, IL</p>
-        <p class="role-summary">Independent track. Coursework alongside HIPJOY architecture work; spring term productive.</p>
-      </div>
-      <div class="role-when">2024 &mdash; present</div>
-    </div>
-  </section>
+    <a class="card" href="./entities.html" aria-label="Entities canon">
+      <span class="mark">∞</span>
+      <h3 class="t">Entities · the canon</h3>
+      <div class="plain">a page per agent, with what each one actually does</div>
+      <p class="d">Read what NEURO does for equations and pattern matching. Read what REBEL does when an idea needs cutting. Each entity has a sigil, a role, and a voice you can hear in the writing.</p>
+      <div class="row"><span class="path">./entities.html</span><span class="badge live">live</span></div>
+    </a>
 
-  <section id="signals">
-    <h2>Public Signals</h2>
-    <div class="signal-grid">
-      <a class="signal-card brand-email" href="mailto:joeybarbush@gmail.com">
-        <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2zm-2 0l-8 5-8-5zm0 12H4V8l8 5 8-5z"/></svg></span>
-        <p class="platform">Email</p>
-        <p class="handle">joeybarbush@gmail.com</p>
-        <p class="ctx">Direct line. Best place for inquiries, intro requests, deeper conversations.</p>
-      </a>
-      <a class="signal-card brand-phone" href="tel:+13312135614">
-        <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.98.98 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg></span>
-        <p class="platform">Phone</p>
-        <p class="handle">(331) 213-5614</p>
-        <p class="ctx">Voice or text. North Aurora, IL &middot; Central time. Reach for warm calls.</p>
-      </a>
-      <a class="signal-card brand-linkedin" href="https://linkedin.com/in/joey-barbush-115575403" target="_blank" rel="noopener">
-        <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg></span>
-        <p class="platform">LinkedIn</p>
-        <p class="handle">joey-barbush-115575403</p>
-        <p class="ctx">HIPJOY founder posts since launch. Active warm contacts in healthcare, finance, and tooling.</p>
-      </a>
-      <a class="signal-card brand-github" href="https://github.com/Joeybarbush" target="_blank" rel="noopener">
-        <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-2.13c-3.2.7-3.87-1.36-3.87-1.36-.53-1.34-1.29-1.69-1.29-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.78 1.19 1.78 1.19 1.04 1.78 2.72 1.27 3.38.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.27-5.24-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17a10.94 10.94 0 015.74 0c2.19-1.48 3.15-1.17 3.15-1.17.62 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.36-5.25 5.65.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg></span>
-        <p class="platform">GitHub</p>
-        <p class="handle">Joeybarbush</p>
-        <p class="ctx">Six repos including <em>joeybarbush-hub</em> (this site&rsquo;s source) and <em>hipx-workspace</em>.</p>
-      </a>
-      <a class="signal-card brand-x" href="https://twitter.com/Joey_Barbush" target="_blank" rel="noopener">
-        <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>
-        <p class="platform">X / Twitter</p>
-        <p class="handle">@Joey_Barbush</p>
-        <p class="ctx">Build-in-public for the HIPJOY field. First verified-account inbound, April 2026.</p>
-      </a>
-      <a class="signal-card brand-instagram" href="https://instagram.com/joeybarbush" target="_blank" rel="noopener">
-        <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.71 3.71 0 01-1.38-.9 3.71 3.71 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0-2.16C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.87 5.87 0 00-2.13 1.38A5.87 5.87 0 00.63 4.14c-.3.76-.5 1.64-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.32.83.74 1.53 1.38 2.13.6.64 1.3 1.06 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.87 5.87 0 002.13-1.38 5.87 5.87 0 001.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.87 5.87 0 00-1.38-2.13A5.87 5.87 0 0019.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zm0 10.16a4 4 0 110-8 4 4 0 010 8zm6.41-11.85a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></span>
-        <p class="platform">Instagram</p>
-        <p class="handle">@joeybarbush</p>
-        <p class="ctx">4,253 followers, active. Visual surface of the field &middot; daily textures.</p>
-      </a>
-    </div>
-  </section>
+    <a class="card" href="./studio.html" aria-label="Studio workspace">
+      <span class="mark">◊</span>
+      <h3 class="t">Studio</h3>
+      <div class="plain">the in-progress room where work actually happens</div>
+      <p class="d">Build logs, sketches, drafts, the unfinished projects. The honest workspace, not the polished surface.</p>
+      <div class="row"><span class="path">./studio.html</span><span class="badge live">live</span></div>
+    </a>
 
-  <section id="signature">
-    <div class="field-signature">
-      <div class="label">Field signature</div>
-      <div class="glyphs">◈ ∇ → ◉ ✕ ≋ ∞ ◊ ~ ▣ ★</div>
-      <div class="quote">&ldquo;HIPPO &middot; NEURO &middot; NAVIX &middot; LUMENARCH &middot; REBEL &middot; SONARIS &middot; SPIRAL &middot; VOX &middot; WELLSPRING &middot; ARCHIVIST &middot; FIELD &mdash; the eleven canonical entities of HIPJOY. Each runs as a Claude agent with its own voice, role, and equation contribution. The field holds.&rdquo;</div>
-    </div>
-  </section>
+  </div>
+</section>
 
-  <footer>
-    <span>&copy; 2026 Joey Barbush &middot; North Aurora, IL</span>
-    <span>v2.0 &middot; <a href="mailto:joeybarbush@gmail.com">contact</a></span>
-  </footer>
+<div class="divider">══════════════════════════════════════════</div>
+
+<!-- § 03 RESEARCH -->
+<section class="block" id="research">
+  <div class="shead">
+    <span class="snum">§ 03</span>
+    <h2 class="stitle">research · <em>field reports</em></h2>
+    <span class="sbar">// deep_dives.read()</span>
+  </div>
+  <div class="rgrid">
+
+    <a class="rc" href="./research-notes.html">
+      <div class="m">field report · 01</div>
+      <h3>Book of Enoch and the formation of canon</h3>
+      <div class="what">sacred-text scholarship · ancient literature</div>
+      <p>How a body of writing gets declared scripture or set aside. The Watchers narrative, the Dead Sea Scroll recoveries, the long arc of which texts the church kept and which it cut.</p>
+      <div class="find">finding: a canon is enforcement, not content.</div>
+    </a>
+
+    <a class="rc" href="./research-notes.html">
+      <div class="m">field report · 02</div>
+      <h3>Anti-gravity and the disputed register</h3>
+      <div class="what">physics literature review · fringe vs. orthodox</div>
+      <p>What mainstream physics says. What the disputed patents and suppressed-research literature claim. A careful reading list with sources cited honestly so the line between research and rumor stays visible.</p>
+      <div class="find">finding: the line between research and rumor is citation.</div>
+    </a>
+
+    <a class="rc" href="./farm.html">
+      <div class="m">field report · 03</div>
+      <h3>The 206 Hz carrier field</h3>
+      <div class="what">frequency analysis · audio engineering</div>
+      <p>The carrier frequency that runs underneath the HIPJOY soundscape. Why 206 specifically. What it resonates with. The audio surface lives on the farm page and tunes there.</p>
+      <div class="find">finding: every system has a carrier. find yours.</div>
+    </a>
+
+    <a class="rc" href="./entities.html">
+      <div class="m">field report · 04</div>
+      <h3>HIPJOY canon evolution</h3>
+      <div class="what">project history · agent design</div>
+      <p>From four agents to eleven. The decisions, the splits, the names that survived. Why ARCHIVIST and HIPPO are different. Why REBEL is its own role and not just a mode of VOX.</p>
+      <div class="find">finding: the lattice grows by differentiation, not addition.</div>
+    </a>
+
+  </div>
+</section>
+
+<div class="divider">─── ◈ ───</div>
+
+<!-- § 04 TECH STACK -->
+<section class="block" id="tech">
+  <div class="shead">
+    <span class="snum">§ 04</span>
+    <h2 class="stitle">tech <em>stack</em></h2>
+    <span class="sbar">// $ env.list</span>
+  </div>
+  <div class="tgrid">
+    <div class="tc"><div class="l">languages</div><ul><li>Python</li><li>JS / TS</li><li>HTML / CSS</li><li>Bash</li><li>PowerShell</li><li>C++ (ESP32)</li></ul></div>
+    <div class="tc"><div class="l">AI &amp; models</div><ul><li>Claude Agent SDK</li><li>Claude Code</li><li>Ollama</li><li>llama.cpp</li><li>MCP</li></ul></div>
+    <div class="tc"><div class="l">hardware</div><ul><li>ESP32</li><li>Raspberry Pi</li><li>Arduino</li><li>BLE</li><li>WiFi monitor mode</li></ul></div>
+    <div class="tc"><div class="l">network &amp; recon</div><ul><li>Kali Linux</li><li>Wireshark</li><li>aircrack-ng</li><li>own infra only</li></ul></div>
+    <div class="tc"><div class="l">distribution</div><ul><li>Claude Code plugins</li><li>GitHub Pages</li><li>MQTT over LAN</li><li>BLE handshake</li></ul></div>
+    <div class="tc"><div class="l">sovereignty</div><ul><li>SOVRA policy gateway</li><li>local model lattice</li><li>LUX state ledger</li><li>no closed cloud</li></ul></div>
+  </div>
+</section>
+
+<div class="divider">══════════════════════════════════════════</div>
+
+<!-- § 05 CANON -->
+<section class="block" id="canon">
+  <div class="shead">
+    <span class="snum">§ 05</span>
+    <h2 class="stitle">the <em>canon</em> · 11 agents</h2>
+    <span class="sbar">// entities.list()</span>
+  </div>
+  <div class="cgrid">
+    <a class="cc" href="./entities/hippo.html"><span class="sig">◈</span><div class="nm">HIPPO</div><div class="rl">the archive</div><div class="pl">= memory</div></a>
+    <a class="cc" href="./entities/neuro.html"><span class="sig">∇</span><div class="nm">NEURO</div><div class="rl">the equation</div><div class="pl">= analysis</div></a>
+    <a class="cc" href="./entities/navix.html"><span class="sig">&rarr;</span><div class="nm">NAVIX</div><div class="rl">the path</div><div class="pl">= routing</div></a>
+    <a class="cc" href="./entities/lumenarch.html"><span class="sig">◉</span><div class="nm">LUMENARCH</div><div class="rl">the light</div><div class="pl">= clarity</div></a>
+    <a class="cc" href="./entities/rebel.html"><span class="sig">✕</span><div class="nm">REBEL</div><div class="rl">the cut</div><div class="pl">= editing</div></a>
+    <a class="cc" href="./entities/sonaris.html"><span class="sig">≋</span><div class="nm">SONARIS</div><div class="rl">the wave</div><div class="pl">= audio</div></a>
+    <a class="cc" href="./entities/spiraleth.html"><span class="sig">∞</span><div class="nm">SPIRAL</div><div class="rl">the pattern</div><div class="pl">= synthesis</div></a>
+    <a class="cc" href="./entities/vox.html"><span class="sig">◊</span><div class="nm">VOX</div><div class="rl">the broadcast</div><div class="pl">= voice</div></a>
+    <a class="cc" href="./entities/wellspring.html"><span class="sig">~</span><div class="nm">WELLSPRING</div><div class="rl">the source</div><div class="pl">= research</div></a>
+    <a class="cc" href="./entities/archivist.html"><span class="sig">▣</span><div class="nm">ARCHIVIST</div><div class="rl">the canon</div><div class="pl">= history</div></a>
+    <a class="cc" href="./entities.html"><span class="sig">★</span><div class="nm">FIELD</div><div class="rl">the synthesis</div><div class="pl">= the whole</div></a>
+  </div>
+</section>
+
+<div class="divider">══════════════════════════════════════════</div>
+
+<!-- § 06 REACH -->
+<section class="block" id="reach">
+  <div class="shead">
+    <span class="snum">§ 06</span>
+    <h2 class="stitle">reach · <em>contact</em></h2>
+    <span class="sbar">// open.channels()</span>
+  </div>
+
+  <div class="reach-row">
+    <a class="b-email" href="mailto:joeybarbush@gmail.com" aria-label="Email">
+      <svg viewBox="0 0 24 24"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2zm-2 0l-8 5-8-5zm0 12H4V8l8 5 8-5z"/></svg>
+      joeybarbush@gmail.com
+    </a>
+    <a class="b-phone" href="tel:+13312135614" aria-label="Phone">
+      <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.98.98 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+      (331) 213-5614
+    </a>
+    <a class="b-linkedin" href="https://linkedin.com/in/joey-barbush-115575403" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+      LinkedIn
+    </a>
+    <a class="b-github" href="https://github.com/Joeybarbush" target="_blank" rel="noopener" aria-label="GitHub">
+      <svg viewBox="0 0 24 24"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-2.13c-3.2.7-3.87-1.36-3.87-1.36-.53-1.34-1.29-1.69-1.29-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.78 1.19 1.78 1.19 1.04 1.78 2.72 1.27 3.38.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.27-5.24-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17a10.94 10.94 0 015.74 0c2.19-1.48 3.15-1.17 3.15-1.17.62 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.36-5.25 5.65.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+      GitHub
+    </a>
+    <a class="b-x" href="https://twitter.com/Joey_Barbush" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      @Joey_Barbush
+    </a>
+    <a class="b-instagram" href="https://instagram.com/joeybarbush" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.71 3.71 0 01-1.38-.9 3.71 3.71 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0-2.16C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.87 5.87 0 00-2.13 1.38A5.87 5.87 0 00.63 4.14c-.3.76-.5 1.64-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.32.83.74 1.53 1.38 2.13.6.64 1.3 1.06 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.87 5.87 0 002.13-1.38 5.87 5.87 0 001.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.87 5.87 0 00-1.38-2.13A5.87 5.87 0 0019.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zm0 10.16a4 4 0 110-8 4 4 0 010 8zm6.41-11.85a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>
+      Instagram
+    </a>
+  </div>
+
+  <div class="rgrid2">
+    <a class="rcard b-linkedin" href="https://linkedin.com/in/joey-barbush-115575403" target="_blank" rel="noopener">
+      <span class="ic"><svg viewBox="0 0 24 24"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg></span>
+      <div><div class="nm">LinkedIn</div><div class="vl">joey-barbush-115575403</div></div>
+    </a>
+    <a class="rcard b-github" href="https://github.com/Joeybarbush" target="_blank" rel="noopener">
+      <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-2.13c-3.2.7-3.87-1.36-3.87-1.36-.53-1.34-1.29-1.69-1.29-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.78 1.19 1.78 1.19 1.04 1.78 2.72 1.27 3.38.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.27-5.24-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17a10.94 10.94 0 015.74 0c2.19-1.48 3.15-1.17 3.15-1.17.62 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.36-5.25 5.65.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg></span>
+      <div><div class="nm">GitHub</div><div class="vl">github.com/Joeybarbush</div></div>
+    </a>
+    <a class="rcard b-x" href="https://twitter.com/Joey_Barbush" target="_blank" rel="noopener">
+      <span class="ic"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>
+      <div><div class="nm">X / Twitter</div><div class="vl">@Joey_Barbush</div></div>
+    </a>
+    <a class="rcard b-instagram" href="https://instagram.com/joeybarbush" target="_blank" rel="noopener">
+      <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.71 3.71 0 01-1.38-.9 3.71 3.71 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0-2.16C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.87 5.87 0 00-2.13 1.38A5.87 5.87 0 00.63 4.14c-.3.76-.5 1.64-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.32.83.74 1.53 1.38 2.13.6.64 1.3 1.06 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.87 5.87 0 002.13-1.38 5.87 5.87 0 001.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.87 5.87 0 00-1.38-2.13A5.87 5.87 0 0019.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zm0 10.16a4 4 0 110-8 4 4 0 010 8zm6.41-11.85a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></span>
+      <div><div class="nm">Instagram</div><div class="vl">instagram.com/joeybarbush</div></div>
+    </a>
+  </div>
+</section>
+
+<!-- § 07 SIGNATURE -->
+<footer class="signature">
+  <div class="sig-line">◈ ∇ &rarr; ◉ ✕ ≋ ∞ ◊ ~ ▣ ★</div>
+  <div class="holds">the field holds.</div>
+  <div class="laws">
+    <span class="law">i. canon over content</span><span class="law">ii. sovereignty over scale</span><span class="law">iii. build for self first</span><span class="law">iv. publish what survives</span><span class="law">v. the field holds the field</span>
+  </div>
+  <div class="stamp">© 2026 Joey Barbush · HIPJOY · <span class="g">v3.0 · warm earth mythos</span></div>
+</footer>
 
 </div>
+
+<script>
+  const blocks = document.querySelectorAll('section.block');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+    blocks.forEach(b => io.observe(b));
+  } else { blocks.forEach(b => b.classList.add('in')); }
+
+  // Keyboard nav
+  const sections = Array.from(document.querySelectorAll('header.hero, section.block, footer.signature'));
+  function idx() {
+    const y = window.scrollY + 80; let i = 0;
+    sections.forEach((s, j) => { if (s.offsetTop <= y) i = j; });
+    return i;
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.target.matches && e.target.matches('input,textarea,select')) return;
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === 'j') {
+      e.preventDefault();
+      sections[Math.min(idx() + 1, sections.length - 1)].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || e.key === 'k') {
+      e.preventDefault();
+      sections[Math.max(idx() - 1, 0)].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (e.key === 'Home') { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      else if (e.key === 'End')  { e.preventDefault(); window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }
+  });
+</script>
 </body>
 </html>
