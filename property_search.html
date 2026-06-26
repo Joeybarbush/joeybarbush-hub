@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HIPJOY :: Property Field View · Universal Search</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="HIPJOY universal property search -- public-data field view for underwriting. No PII collected. Free public APIs only.">
+
+<!-- MapLibre GL JS -->
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+
+<style>
+/* ============================================================
+   mythos.css :: HIPJOY field aesthetic
+   ============================================================ */
+:root {
+  --void: #07080a;
+  --void-2: #0d0f14;
+  --glass: rgba(13, 15, 20, 0.78);
+  --glass-edge: rgba(212, 175, 55, 0.18);
+  --gold: #d4af37;
+  --gold-soft: #b8941d;
+  --lumen: #e6c860;
+  --rebel: #ff5a4e;
+  --wellspring: #5eead4;
+  --neuro: #9b87f5;
+  --voxblue: #60a5fa;
+  --ash: #6b6f76;
+  --bone: #e8e6e0;
+  --text: #d4d2cc;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'IBM Plex Mono', 'Menlo', 'Consolas', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+#map {
+  position: absolute;
+  inset: 0;
+  background: var(--void);
+}
+
+/* ============================================================
+   SEARCH BAR -- top, ritual band
+   ============================================================ */
+.searchbar {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 12;
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  pointer-events: none;
+}
+
+.sigil-band {
+  background: var(--glass);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--glass-edge);
+  border-radius: 4px;
+  padding: 12px 18px;
+  pointer-events: auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04);
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sigil-row {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 0.26em;
+  opacity: 0.85;
+}
+
+.sigil-row .sigil {
+  display: inline-block;
+  margin-right: 4px;
+  color: var(--lumen);
+  text-shadow: 0 0 8px rgba(230, 200, 96, 0.55);
+}
+
+.search-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.search-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: rgba(7, 8, 10, 0.6);
+  border: 1px solid var(--glass-edge);
+  color: var(--bone);
+  padding: 10px 14px;
+  font-family: 'IBM Plex Mono', 'Menlo', 'Consolas', monospace;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  border-radius: 3px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold-soft), inset 0 0 14px rgba(212,175,55,0.05);
+}
+
+.search-input::placeholder { color: var(--ash); }
+
+.search-btn {
+  background: rgba(212, 175, 55, 0.10);
+  border: 1px solid var(--gold-soft);
+  color: var(--gold);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 0 18px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.search-btn:hover {
+  background: rgba(212, 175, 55, 0.18);
+  color: var(--lumen);
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.32);
+}
+
+.search-btn:disabled {
+  opacity: 0.4;
+  cursor: wait;
+}
+
+.status-line {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ash);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  min-height: 12px;
+}
+
+.status-line .gold { color: var(--gold-soft); }
+.status-line .ok { color: var(--wellspring); }
+.status-line .warn { color: var(--rebel); }
+
+/* layer switch -- top right */
+.layer-switch {
+  background: var(--glass);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--glass-edge);
+  border-radius: 4px;
+  padding: 8px;
+  pointer-events: auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.layer-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ash);
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.layer-btn:hover { color: var(--bone); border-color: var(--glass-edge); }
+.layer-btn.active {
+  color: var(--gold);
+  border-color: var(--gold-soft);
+  background: rgba(212, 175, 55, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(212, 175, 55, 0.18);
+}
+
+/* ============================================================
+   PANELS -- bottom left / right
+   ============================================================ */
+.panel {
+  position: absolute;
+  bottom: 16px;
+  z-index: 10;
+  background: var(--glass);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--glass-edge);
+  border-radius: 4px;
+  padding: 16px 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04);
+  font-size: 12px;
+  width: 340px;
+  max-height: 68vh;
+  overflow-y: auto;
+}
+
+.panel.left { left: 16px; }
+.panel.right { right: 16px; }
+
+.panel-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--glass-edge);
+  padding-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-title .sigil-mini {
+  color: var(--lumen);
+  font-size: 14px;
+  text-shadow: 0 0 6px rgba(230, 200, 96, 0.5);
+}
+
+.fact-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 5px 0;
+  border-bottom: 1px dashed rgba(212, 175, 55, 0.08);
+  gap: 14px;
+}
+
+.fact-row:last-child { border-bottom: none; }
+
+.fact-label {
+  color: var(--ash);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+
+.fact-value {
+  color: var(--bone);
+  text-align: right;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.fact-value.gold { color: var(--gold); }
+.fact-value.lumen { color: var(--lumen); }
+.fact-value.wellspring { color: var(--wellspring); }
+.fact-value.rebel { color: var(--rebel); }
+.fact-value.neuro { color: var(--neuro); }
+.fact-value.ash { color: var(--ash); }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+.badge.ok { background: rgba(94, 234, 212, 0.12); color: var(--wellspring); border: 1px solid rgba(94, 234, 212, 0.3); }
+.badge.warn { background: rgba(212, 175, 55, 0.12); color: var(--gold); border: 1px solid rgba(212, 175, 55, 0.3); }
+.badge.risk { background: rgba(255, 90, 78, 0.12); color: var(--rebel); border: 1px solid rgba(255, 90, 78, 0.3); }
+.badge.ash { background: rgba(107, 111, 118, 0.15); color: var(--ash); border: 1px solid rgba(107,111,118,0.3); }
+
+/* external links */
+.link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 6px;
+}
+.link-chip {
+  background: rgba(96, 165, 250, 0.10);
+  border: 1px solid rgba(96, 165, 250, 0.32);
+  color: var(--voxblue);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  padding: 5px 9px;
+  text-decoration: none;
+  border-radius: 2px;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+.link-chip:hover {
+  background: rgba(96, 165, 250, 0.22);
+  color: var(--bone);
+  box-shadow: 0 0 12px rgba(96, 165, 250, 0.35);
+}
+.link-chip.gold {
+  background: rgba(212,175,55,0.10);
+  border-color: var(--gold-soft);
+  color: var(--gold);
+}
+.link-chip.gold:hover { background: rgba(212,175,55,0.20); color: var(--lumen); box-shadow: 0 0 12px rgba(212,175,55,0.35); }
+
+/* recent searches */
+.recent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 6px;
+}
+.recent-chip {
+  background: rgba(155, 135, 245, 0.08);
+  border: 1px solid rgba(155, 135, 245, 0.28);
+  color: var(--neuro);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  padding: 5px 9px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.recent-chip:hover { color: var(--bone); border-color: var(--neuro); }
+
+/* footer ritual line */
+.footer-ritual {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 11;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--ash);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  pointer-events: none;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+.footer-ritual .gold { color: var(--gold-soft); }
+
+/* pin pulse */
+.house-pin {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold) 30%, transparent 70%);
+  position: relative;
+}
+.house-pin::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  opacity: 0.6;
+  animation: pulse 2.4s ease-out infinite;
+}
+.house-pin::after {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  opacity: 0.3;
+  animation: pulse 2.4s ease-out infinite 0.4s;
+}
+@keyframes pulse {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* maplibre overrides */
+.maplibregl-ctrl-bottom-right,
+.maplibregl-ctrl-bottom-left { display: none !important; }
+
+.maplibregl-popup-content {
+  background: var(--glass) !important;
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--glass-edge);
+  color: var(--text);
+  padding: 14px 18px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+.maplibregl-popup-tip { display: none; }
+
+.popup-row { display: flex; justify-content: space-between; gap: 12px; padding: 3px 0; }
+.popup-row .l { color: var(--ash); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; }
+.popup-row .v { color: var(--bone); }
+
+/* print/PDF button */
+.print-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  margin-top: 250px;
+  z-index: 11;
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-edge);
+  color: var(--ash);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+.print-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* loading suggestions dropdown */
+.suggest {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: var(--glass);
+  backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--glass-edge);
+  border-radius: 3px;
+  z-index: 20;
+  max-height: 240px;
+  overflow-y: auto;
+  display: none;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+}
+.suggest.open { display: block; }
+.suggest-item {
+  padding: 8px 14px;
+  border-bottom: 1px dashed rgba(212,175,55,0.08);
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+}
+.suggest-item:hover { background: rgba(212,175,55,0.08); color: var(--bone); }
+.suggest-item:last-child { border-bottom: none; }
+.search-wrap { position: relative; flex: 1 1 auto; min-width: 0; }
+
+@media (max-width: 900px) {
+  .searchbar { flex-direction: column; gap: 8px; }
+  .layer-switch { flex-direction: row; flex-wrap: wrap; }
+  .layer-btn { font-size: 9px; padding: 5px 8px; }
+  .panel { width: calc(100vw - 32px); max-width: 100%; max-height: 38vh; }
+  .panel.right { right: 16px; left: 16px; bottom: 16px; }
+  .panel.left { bottom: 50vh; }
+  .print-btn { margin-top: 0; top: auto; bottom: 110vh; right: 16px; }
+}
+
+/* ============================================================
+   PRINT MODE :: 1-page client-facing summary
+   ============================================================ */
+@media print {
+  body { background: white; color: black; overflow: visible !important; height: auto; }
+  #map, .layer-switch, .print-btn, .footer-ritual, .maplibregl-ctrl, .suggest { display: none !important; }
+  .searchbar { position: relative; padding: 0 0 16px 0; }
+  .sigil-band { background: white; color: black; border: 1px solid #ccc; }
+  .sigil-row { color: #8b6f1f; }
+  .search-input { border: 1px solid #999; color: black; background: #fafafa; }
+  .search-btn { display: none; }
+  .panel {
+    position: relative;
+    background: white;
+    color: black;
+    border: 1px solid #ccc;
+    width: 100%;
+    max-width: 100%;
+    max-height: none;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    margin: 12px 0;
+  }
+  .panel-title { color: #8b6f1f; border-bottom-color: #ccc; }
+  .fact-row { border-bottom-color: #eee; }
+  .fact-label { color: #666; }
+  .fact-value { color: black; }
+  .badge { border-color: #aaa !important; background: #f5f5f5 !important; color: black !important; }
+  .link-chip { background: white !important; color: #0044aa !important; border-color: #0044aa !important; }
+  .recent { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- MAP -->
+<div id="map"></div>
+
+<!-- TOP :: SEARCH BAR + LAYER SWITCH -->
+<div class="searchbar">
+  <div class="sigil-band">
+    <div class="sigil-row">
+      <span class="sigil">&#x25C8;</span><span class="sigil">&#x2207;</span><span class="sigil">&#x224B;</span><span class="sigil">&rarr;</span><span class="sigil">&#x2605;</span><span class="sigil">&#x25CA;</span>
+      &nbsp;&nbsp;HIPJOY :: Property Field View &middot; Universal Search
+    </div>
+    <div class="search-input-row">
+      <div class="search-wrap">
+        <input id="addrInput" class="search-input" type="text" autocomplete="off"
+          placeholder="Enter US address  -- e.g.  2408 Ridge View Ln, Plainfield IL 60586">
+        <div id="suggest" class="suggest"></div>
+      </div>
+      <button id="searchBtn" class="search-btn">&#x21B5; Search</button>
+    </div>
+    <div id="status" class="status-line">Ready &middot; <span class="gold">public data only</span> &middot; no PII stored</div>
+  </div>
+
+  <div class="layer-switch">
+    <button class="layer-btn active" data-layer="satellite">&#x25A4; Satellite</button>
+    <button class="layer-btn" data-layer="3d">&#x2605; 3D Topo</button>
+    <button class="layer-btn" data-layer="buildings">&#x25C8; 3D Buildings</button>
+    <button class="layer-btn" data-layer="osm">&rarr; OpenStreet</button>
+    <button class="layer-btn" data-layer="dark">&#x25C9; Dark Field</button>
+    <button class="layer-btn" data-layer="hybrid">&#x2207; Hybrid</button>
+  </div>
+</div>
+
+<button class="print-btn" onclick="window.print()">&#x25A4; Save / Print PDF</button>
+
+<!-- LEFT PANEL :: ADDRESS + GEO -->
+<div class="panel left" id="leftPanel">
+  <div class="panel-title">
+    <span class="sigil-mini">&#x25C8;</span>
+    ADDRESS :: GEO FIELD
+  </div>
+  <div id="addrFacts">
+    <div class="fact-row"><span class="fact-label">Status</span><span class="fact-value ash">Awaiting search...</span></div>
+    <div class="fact-row"><span class="fact-label">Hint</span><span class="fact-value ash">Type an address above &amp; press Enter</span></div>
+  </div>
+
+  <div class="panel-title" style="margin-top:14px;">
+    <span class="sigil-mini">&#x224B;</span>
+    SONARIS :: BUILDING READ
+  </div>
+  <div id="bldgFacts">
+    <div class="fact-row"><span class="fact-label">Footprint</span><span class="fact-value ash">--</span></div>
+  </div>
+
+  <div class="panel-title" style="margin-top:14px;">
+    <span class="sigil-mini">&#x221E;</span>
+    RECENT SEARCHES
+    <span style="font-size:9px; color:var(--ash); margin-left:auto; letter-spacing:0.1em;">browser only</span>
+  </div>
+  <div id="recent" class="recent">
+    <span style="font-size:10px; color:var(--ash); letter-spacing:0.08em;">(none yet)</span>
+  </div>
+</div>
+
+<!-- RIGHT PANEL :: RISK + EXTERNAL LOOKUPS -->
+<div class="panel right" id="rightPanel">
+  <div class="panel-title">
+    <span class="sigil-mini">&#x2715;</span>
+    REBEL :: RISK PROFILE
+  </div>
+  <div id="riskFacts">
+    <div class="fact-row"><span class="fact-label">FEMA Zone</span><span class="fact-value ash">--</span></div>
+    <div class="fact-row"><span class="fact-label">Fire Station</span><span class="fact-value ash">--</span></div>
+    <div class="fact-row"><span class="fact-label">Weather (NWS)</span><span class="fact-value ash">--</span></div>
+  </div>
+
+  <div class="panel-title" style="margin-top:14px;">
+    <span class="sigil-mini">&rarr;</span>
+    NAVIX :: EXTERNAL LOOKUPS
+  </div>
+  <div id="extLinks" class="link-row">
+    <span style="font-size:10px; color:var(--ash); letter-spacing:0.08em;">(search an address first)</span>
+  </div>
+
+  <div class="panel-title" style="margin-top:14px;">
+    <span class="sigil-mini">&#x25C8;</span>
+    HIPPO :: ASSESSOR &amp; CLERK
+  </div>
+  <div id="assessorLinks" class="link-row">
+    <span style="font-size:10px; color:var(--ash); letter-spacing:0.08em;">(search an address first)</span>
+  </div>
+</div>
+
+<div class="footer-ritual">
+  &#x26CF; <span class="gold">HIPJOY :: FIELD VIEW</span> &middot; built by Joey Barbush &middot; State Farm intern (VAKUIB) &middot; public data only &middot; no PII collected
+</div>
+
+<script>
+// ============================================================
+// HIPJOY Property Field View -- Universal Search
+// All public APIs. No keys. Browser-only state.
+// ============================================================
+
+// -------- DOM refs --------
+const $ = id => document.getElementById(id);
+const addrInput  = $('addrInput');
+const searchBtn  = $('searchBtn');
+const statusEl   = $('status');
+const suggestEl  = $('suggest');
+const addrFacts  = $('addrFacts');
+const bldgFacts  = $('bldgFacts');
+const riskFacts  = $('riskFacts');
+const extLinks   = $('extLinks');
+const assessorLinks = $('assessorLinks');
+const recentEl   = $('recent');
+
+// -------- State --------
+let map = null;
+let currentLayer = 'satellite';
+let currentResult = null; // last successful result
+
+const RECENT_KEY = 'hipjoy.recent.searches.v1';
+const MAX_RECENT = 10;
+
+// ============================================================
+// MAP LAYERS
+// ============================================================
+const LAYERS = {
+  satellite: {
+    name: 'Esri World Imagery',
+    style: {
+      version: 8,
+      sources: {
+        'esri-sat': {
+          type: 'raster',
+          tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+          tileSize: 256,
+          attribution: 'Esri | Maxar | Earthstar Geographics'
+        }
+      },
+      layers: [{ id: 'esri-sat-layer', type: 'raster', source: 'esri-sat' }]
+    },
+    pitch: 0, bearing: 0
+  },
+  '3d': {
+    name: '3D Topo',
+    style: {
+      version: 8,
+      sources: {
+        'osm-topo': {
+          type: 'raster',
+          tiles: ['https://a.tile.opentopomap.org/{z}/{x}/{y}.png'],
+          tileSize: 256,
+          attribution: 'OpenTopoMap | OSM'
+        },
+        'terrain-source': {
+          type: 'raster-dem',
+          tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],
+          tileSize: 256,
+          encoding: 'terrarium',
+          maxzoom: 15
+        }
+      },
+      layers: [{ id: 'osm-topo-layer', type: 'raster', source: 'osm-topo' }],
+      terrain: { source: 'terrain-source', exaggeration: 1.5 }
+    },
+    pitch: 60, bearing: -25
+  },
+  buildings: {
+    name: 'OpenFreeMap 3D Buildings',
+    style: 'https://tiles.openfreemap.org/styles/liberty',
+    pitch: 65, bearing: -20,
+    add3dBuildings: true
+  },
+  osm: {
+    name: 'OpenStreetMap',
+    style: {
+      version: 8,
+      sources: {
+        'osm': {
+          type: 'raster',
+          tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+          tileSize: 256,
+          attribution: 'OSM contributors'
+        }
+      },
+      layers: [{ id: 'osm-layer', type: 'raster', source: 'osm' }]
+    },
+    pitch: 0, bearing: 0
+  },
+  dark: {
+    name: 'Dark Field',
+    style: {
+      version: 8,
+      sources: {
+        'carto-dark': {
+          type: 'raster',
+          tiles: [
+            'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+            'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+            'https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
+          ],
+          tileSize: 256,
+          attribution: 'CARTO | OSM'
+        }
+      },
+      layers: [{ id: 'carto-dark-layer', type: 'raster', source: 'carto-dark' }]
+    },
+    pitch: 0, bearing: 0
+  },
+  hybrid: {
+    name: 'Hybrid Sat + Labels',
+    style: {
+      version: 8,
+      sources: {
+        'esri-sat-h': {
+          type: 'raster',
+          tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+          tileSize: 256,
+          attribution: 'Esri | Maxar'
+        },
+        'labels': {
+          type: 'raster',
+          tiles: [
+            'https://a.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png',
+            'https://b.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png'
+          ],
+          tileSize: 256,
+          attribution: 'CARTO labels'
+        }
+      },
+      layers: [
+        { id: 'esri-sat-h-layer', type: 'raster', source: 'esri-sat-h' },
+        { id: 'labels-layer', type: 'raster', source: 'labels' }
+      ]
+    },
+    pitch: 50, bearing: -15
+  }
+};
+
+// US fallback center (Geographic center of CONUS)
+const DEFAULT_CENTER = [-98.5, 39.8];
+const DEFAULT_ZOOM = 4;
+
+function initMap(layerKey, center, zoom) {
+  const layer = LAYERS[layerKey];
+  if (map) map.remove();
+
+  map = new maplibregl.Map({
+    container: 'map',
+    style: layer.style,
+    center: center || DEFAULT_CENTER,
+    zoom: (zoom != null) ? zoom : DEFAULT_ZOOM,
+    pitch: layer.pitch,
+    bearing: layer.bearing,
+    minZoom: 3,
+    maxZoom: 22,
+    attributionControl: { compact: true }
+  });
+
+  map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
+
+  map.on('load', () => {
+    if (layerKey === '3d') addTerrainSky();
+    if (layer.add3dBuildings) tuneBuildingExtrusion();
+    redrawResultOverlays();
+  });
+}
+
+function tuneBuildingExtrusion() {
+  try {
+    const styleLayers = map.getStyle().layers || [];
+    const bldgLayer = styleLayers.find(l => l.id && l.id.toLowerCase().includes('building'));
+    if (bldgLayer && bldgLayer.type === 'fill-extrusion') {
+      map.setPaintProperty(bldgLayer.id, 'fill-extrusion-color', '#1a1f2e');
+      map.setPaintProperty(bldgLayer.id, 'fill-extrusion-opacity', 0.92);
+    }
+  } catch (e) { /* style may not support */ }
+}
+
+function addTerrainSky() {
+  if (!map.getLayer('sky')) {
+    try {
+      map.addLayer({
+        id: 'sky',
+        type: 'sky',
+        paint: {
+          'sky-type': 'atmosphere',
+          'sky-atmosphere-sun': [0.0, 0.0],
+          'sky-atmosphere-sun-intensity': 8
+        }
+      });
+    } catch (e) {}
+  }
+}
+
+// markers / overlays we replace on each search
+let houseMarker = null;
+let fireMarker  = null;
+let bldgSourceId = 'hipjoy-bldg-fp';
+let glowSourceId = 'hipjoy-house-glow';
+
+function redrawResultOverlays() {
+  if (!currentResult || !map) return;
+  addHouseMarker(currentResult);
+  if (currentResult.fireStation) addFireMarker(currentResult.fireStation);
+  if (currentResult.buildingPolygon) addBuildingPolygon(currentResult.buildingPolygon);
+  addHouseGlow(currentResult.coords);
+}
+
+function addHouseMarker(r) {
+  if (houseMarker) { houseMarker.remove(); houseMarker = null; }
+  const el = document.createElement('div');
+  el.className = 'house-pin';
+  const popup = new maplibregl.Popup({ offset: 22, closeButton: false }).setHTML(
+    `<div style="font-family:'EB Garamond',Georgia,serif; font-size:14px; color:#e8e6e0; margin-bottom:6px;">${escapeHtml(r.shortAddr)}</div>
+     <div class="popup-row"><span class="l">COUNTY</span><span class="v">${escapeHtml(r.county || '--')}</span></div>
+     <div class="popup-row"><span class="l">ZIP</span><span class="v">${escapeHtml(r.zip || '--')}</span></div>
+     <div class="popup-row"><span class="l">COORDS</span><span class="v">${r.coords[1].toFixed(5)}, ${r.coords[0].toFixed(5)}</span></div>
+     <div style="margin-top:8px; padding-top:6px; border-top:1px solid rgba(212,175,55,0.18); font-size:9px; color:#d4af37; letter-spacing:0.2em; text-transform:uppercase;">&#x25C8; HIPJOY FIELD</div>`
+  );
+  houseMarker = new maplibregl.Marker({ element: el, anchor: 'center' })
+    .setLngLat(r.coords)
+    .setPopup(popup)
+    .addTo(map);
+}
+
+function addFireMarker(fs) {
+  if (fireMarker) { fireMarker.remove(); fireMarker = null; }
+  const el = document.createElement('div');
+  el.style.cssText = `width:16px;height:16px;background:#ff5a4e;border:2px solid #07080a;
+    border-radius:2px;transform:rotate(45deg);box-shadow:0 0 12px rgba(255,90,78,0.7);`;
+  const popup = new maplibregl.Popup({ offset: 14, closeButton: false }).setHTML(
+    `<div style="font-family:'JetBrains Mono',monospace;font-size:11px;">
+      <div style="color:#ff5a4e;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:4px;">&#x2715; Fire Service</div>
+      <div style="color:#e8e6e0;">${escapeHtml(fs.name || 'Fire Station')}</div>
+      <div style="color:#6b6f76;font-size:10px;">~${fs.distMi.toFixed(1)} mi &middot; est. ${Math.round(fs.distMi * 2.2)} min</div>
+    </div>`
+  );
+  fireMarker = new maplibregl.Marker({ element: el }).setLngLat([fs.lng, fs.lat]).setPopup(popup).addTo(map);
+}
+
+function addBuildingPolygon(poly) {
+  if (!map.isStyleLoaded()) return;
+  try {
+    if (map.getLayer(bldgSourceId + '-fill')) map.removeLayer(bldgSourceId + '-fill');
+    if (map.getLayer(bldgSourceId + '-outline')) map.removeLayer(bldgSourceId + '-outline');
+    if (map.getSource(bldgSourceId)) map.removeSource(bldgSourceId);
+    map.addSource(bldgSourceId, {
+      type: 'geojson',
+      data: { type: 'Feature', geometry: { type: 'Polygon', coordinates: [poly] } }
+    });
+    map.addLayer({
+      id: bldgSourceId + '-fill',
+      type: 'fill',
+      source: bldgSourceId,
+      paint: { 'fill-color': '#d4af37', 'fill-opacity': 0.22 }
+    });
+    map.addLayer({
+      id: bldgSourceId + '-outline',
+      type: 'line',
+      source: bldgSourceId,
+      paint: { 'line-color': '#d4af37', 'line-width': 2, 'line-opacity': 0.9 }
+    });
+  } catch (e) { console.warn('bldg poly draw failed', e); }
+}
+
+function addHouseGlow(coords) {
+  if (!map.isStyleLoaded()) return;
+  try {
+    if (map.getLayer(glowSourceId + '-layer')) map.removeLayer(glowSourceId + '-layer');
+    if (map.getSource(glowSourceId)) map.removeSource(glowSourceId);
+    map.addSource(glowSourceId, {
+      type: 'geojson',
+      data: { type: 'Feature', geometry: { type: 'Point', coordinates: coords } }
+    });
+    map.addLayer({
+      id: glowSourceId + '-layer',
+      type: 'circle',
+      source: glowSourceId,
+      paint: {
+        'circle-radius': 30,
+        'circle-color': '#d4af37',
+        'circle-opacity': 0.14,
+        'circle-blur': 1.2
+      }
+    });
+  } catch (e) {}
+}
+
+// ============================================================
+// LAYER SWITCH BUTTONS
+// ============================================================
+document.querySelectorAll('.layer-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const key = btn.dataset.layer;
+    document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentLayer = key;
+    const c = currentResult ? currentResult.coords : DEFAULT_CENTER;
+    const z = currentResult ? 18 : DEFAULT_ZOOM;
+    initMap(key, c, z);
+  });
+});
+
+// ============================================================
+// SEARCH FLOW
+// ============================================================
+searchBtn.addEventListener('click', doSearch);
+addrInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); doSearch(); }
+});
+
+addrInput.addEventListener('focus', () => {
+  if (recentList().length) suggestEl.classList.add('open');
+});
+
+addrInput.addEventListener('blur', () => {
+  setTimeout(() => suggestEl.classList.remove('open'), 180);
+});
+
+addrInput.addEventListener('input', () => {
+  renderSuggestions(addrInput.value.trim());
+});
+
+function renderSuggestions(prefix) {
+  const items = recentList().filter(r =>
+    !prefix || r.toLowerCase().includes(prefix.toLowerCase())
+  );
+  if (!items.length) { suggestEl.classList.remove('open'); suggestEl.innerHTML = ''; return; }
+  suggestEl.innerHTML = items.slice(0, 6).map(r =>
+    `<div class="suggest-item" data-addr="${escapeAttr(r)}">${escapeHtml(r)}</div>`
+  ).join('');
+  suggestEl.classList.add('open');
+  suggestEl.querySelectorAll('.suggest-item').forEach(it => {
+    it.addEventListener('mousedown', e => {
+      e.preventDefault();
+      addrInput.value = it.dataset.addr;
+      suggestEl.classList.remove('open');
+      doSearch();
+    });
+  });
+}
+
+async function doSearch() {
+  const addr = addrInput.value.trim();
+  if (!addr) { setStatus('Enter an address.', 'warn'); return; }
+  suggestEl.classList.remove('open');
+  searchBtn.disabled = true;
+  searchBtn.textContent = '...';
+  setStatus('Geocoding address...');
+
+  resetPanels();
+
+  try {
+    const g = await geocode(addr);
+    if (!g) {
+      setStatus('Address not found. Try adding city/state/ZIP.', 'warn');
+      return;
+    }
+    const result = {
+      query: addr,
+      coords: [parseFloat(g.lon), parseFloat(g.lat)],
+      lat: parseFloat(g.lat),
+      lng: parseFloat(g.lon),
+      display: g.display_name,
+      shortAddr: shortenDisplay(g),
+      county: cleanCounty(g.address && (g.address.county || g.address.city_district || '')),
+      state: g.address && (g.address.state || ''),
+      stateCode: g.address && g.address.state ? STATE_TO_ABBR[g.address.state] || '' : '',
+      city: g.address && (g.address.city || g.address.town || g.address.village || g.address.hamlet || g.address.suburb || ''),
+      zip: g.address && (g.address.postcode || ''),
+      country: g.address && (g.address.country_code || 'us')
+    };
+    currentResult = result;
+    pushRecent(addr);
+
+    // immediate UI: address + map + external links
+    renderAddrPanel(result);
+    renderExtLinks(result);
+    initMap(currentLayer, result.coords, 18);
+
+    setStatus(`Geocoded &middot; <span class="ok">${escapeHtml(result.shortAddr)}</span> &middot; loading public data...`);
+
+    // run the rest in parallel, individually resilient
+    await Promise.allSettled([
+      loadBuildingFootprint(result),
+      loadFEMA(result),
+      loadFireStation(result),
+      loadNWSForecast(result)
+    ]);
+
+    setStatus(`Field view ready &middot; <span class="ok">${escapeHtml(result.shortAddr)}</span>`);
+  } catch (e) {
+    console.error(e);
+    setStatus('Search failed: ' + (e.message || e), 'warn');
+  } finally {
+    searchBtn.disabled = false;
+    searchBtn.textContent = '↵ Search';
+  }
+}
+
+function resetPanels() {
+  addrFacts.innerHTML  = '<div class="fact-row"><span class="fact-label">Status</span><span class="fact-value ash">Working...</span></div>';
+  bldgFacts.innerHTML  = '<div class="fact-row"><span class="fact-label">Footprint</span><span class="fact-value ash">...</span></div>';
+  riskFacts.innerHTML  = '<div class="fact-row"><span class="fact-label">FEMA Zone</span><span class="fact-value ash">...</span></div>' +
+                        '<div class="fact-row"><span class="fact-label">Fire Station</span><span class="fact-value ash">...</span></div>' +
+                        '<div class="fact-row"><span class="fact-label">Weather (NWS)</span><span class="fact-value ash">...</span></div>';
+  extLinks.innerHTML   = '<span style="font-size:10px; color:var(--ash);">loading...</span>';
+  assessorLinks.innerHTML = '<span style="font-size:10px; color:var(--ash);">loading...</span>';
+}
+
+function setStatus(msg, kind) {
+  const cls = kind ? ` class="${kind}"` : '';
+  statusEl.innerHTML = `<span${cls}>${msg}</span>`;
+}
+
+// ============================================================
+// API CALLS
+// ============================================================
+
+// --- Nominatim geocode ---
+async function geocode(q) {
+  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&addressdetails=1&countrycodes=us&limit=1`;
+  const r = await fetch(url, { headers: { 'Accept': 'application/json' } });
+  if (!r.ok) throw new Error('Nominatim ' + r.status);
+  const arr = await r.json();
+  return arr && arr.length ? arr[0] : null;
+}
+
+// --- OSM Overpass building footprint ---
+async function loadBuildingFootprint(r) {
+  const q = `[out:json][timeout:18];way["building"](around:30,${r.lat},${r.lng});out body geom;`;
+  const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(q);
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Overpass ' + res.status);
+    const data = await res.json();
+    if (!data.elements || !data.elements.length) {
+      bldgFacts.innerHTML =
+        `<div class="fact-row"><span class="fact-label">Footprint</span><span class="fact-value ash">no OSM building w/in 30m</span></div>` +
+        `<div class="fact-row"><span class="fact-label">Hint</span><span class="fact-value ash">rural / new build / unmapped</span></div>`;
+      return;
+    }
+    // pick closest building (by centroid distance)
+    let best = null, bestD = Infinity;
+    for (const w of data.elements) {
+      if (!w.geometry || w.geometry.length < 4) continue;
+      const cent = centroid(w.geometry.map(p => [p.lon, p.lat]));
+      const d = haversineMi(r.lat, r.lng, cent[1], cent[0]);
+      if (d < bestD) { bestD = d; best = w; }
+    }
+    if (!best) {
+      bldgFacts.innerHTML =
+        `<div class="fact-row"><span class="fact-label">Footprint</span><span class="fact-value ash">none</span></div>`;
+      return;
+    }
+    const polyLngLat = best.geometry.map(p => [p.lon, p.lat]);
+    // close polygon if needed
+    const closed = polyLngLat[0][0] === polyLngLat[polyLngLat.length-1][0] && polyLngLat[0][1] === polyLngLat[polyLngLat.length-1][1]
+      ? polyLngLat : polyLngLat.concat([polyLngLat[0]]);
+    const areaM2 = polygonAreaM2(closed);
+    const sqft = areaM2 * 10.7639;
+    const tags = best.tags || {};
+    const levels = parseInt(tags['building:levels'] || tags.levels || '', 10);
+    const stories = isFinite(levels) && levels > 0 ? levels : 2;
+    const totalSqft = sqft * stories;
+
+    bldgFacts.innerHTML =
+      `<div class="fact-row"><span class="fact-label">Footprint</span><span class="fact-value gold">~${fmt(Math.round(sqft))} sf</span></div>` +
+      `<div class="fact-row"><span class="fact-label">Est. Stories</span><span class="fact-value">${stories}${isFinite(levels) && levels>0 ? '' : ' (default)'}</span></div>` +
+      `<div class="fact-row"><span class="fact-label">Est. Total</span><span class="fact-value lumen">~${fmt(Math.round(totalSqft))} sf</span></div>` +
+      (tags.building && tags.building !== 'yes' ? `<div class="fact-row"><span class="fact-label">Type</span><span class="fact-value">${escapeHtml(tags.building)}</span></div>` : '') +
+      (tags['roof:material'] ? `<div class="fact-row"><span class="fact-label">Roof</span><span class="fact-value">${escapeHtml(tags['roof:material'])}</span></div>` : '') +
+      `<div class="fact-row"><span class="fact-label">OSM Way</span><span class="fact-value ash">#${best.id}</span></div>`;
+
+    currentResult.buildingPolygon = closed;
+    if (map && map.isStyleLoaded()) addBuildingPolygon(closed);
+  } catch (e) {
+    console.warn('Overpass failed', e);
+    bldgFacts.innerHTML =
+      `<div class="fact-row"><span class="fact-label">Footprint</span><span class="fact-value ash">Overpass unavailable</span></div>` +
+      `<div class="fact-row"><span class="fact-label">Note</span><span class="fact-value ash">rate-limited or offline</span></div>`;
+  }
+}
+
+// --- FEMA flood zone (NFHL ArcGIS) ---
+async function loadFEMA(r) {
+  const url = `https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28/query?geometry=${r.lng},${r.lat}&geometryType=esriGeometryPoint&inSR=4326&outFields=FLD_ZONE,ZONE_SUBTY,SFHA_TF&returnGeometry=false&f=json`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('FEMA ' + res.status);
+    const data = await res.json();
+    const f = data.features && data.features[0];
+    if (!f) {
+      setRiskRow('FEMA Zone', 'no data', 'ash');
+      return;
+    }
+    const z = (f.attributes && f.attributes.FLD_ZONE) || '?';
+    const sub = (f.attributes && f.attributes.ZONE_SUBTY) || '';
+    const sfha = (f.attributes && f.attributes.SFHA_TF) || '';
+    const isSFHA = sfha === 'T' || /^(A|AE|AH|AO|AR|A99|V|VE)$/.test(z);
+    const isX = /^X/i.test(z) || z === 'X';
+    const isOpen = /^(OPEN WATER|D)$/i.test(z);
+    let cls = 'warn', label = z;
+    if (isSFHA) { cls = 'risk'; label = `${z} &middot; SFHA`; }
+    else if (isX) { cls = 'ok'; label = `${z} &middot; non-SFHA`; }
+    else if (isOpen) { cls = 'warn'; label = z; }
+    if (sub) label += ` &middot; ${escapeHtml(sub).slice(0, 40)}`;
+    setRiskRow('FEMA Zone', `<span class="badge ${cls}">${label}</span>`, null, true);
+  } catch (e) {
+    console.warn('FEMA failed', e);
+    setRiskRow('FEMA Zone', 'NFHL unavailable', 'ash');
+  }
+}
+
+// --- nearest fire station (OSM Overpass) ---
+async function loadFireStation(r) {
+  const q = `[out:json][timeout:18];(node["amenity"="fire_station"](around:10000,${r.lat},${r.lng});way["amenity"="fire_station"](around:10000,${r.lat},${r.lng}););out center 8;`;
+  const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(q);
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Overpass ' + res.status);
+    const data = await res.json();
+    if (!data.elements || !data.elements.length) {
+      setRiskRow('Fire Station', 'none w/in 10km', 'ash');
+      return;
+    }
+    let best = null, bestD = Infinity;
+    for (const e of data.elements) {
+      const lat = e.lat != null ? e.lat : (e.center && e.center.lat);
+      const lng = e.lon != null ? e.lon : (e.center && e.center.lon);
+      if (lat == null || lng == null) continue;
+      const d = haversineMi(r.lat, r.lng, lat, lng);
+      if (d < bestD) { bestD = d; best = { lat, lng, name: (e.tags && (e.tags.name || e.tags.operator)) || 'Fire Station' }; }
+    }
+    if (!best) { setRiskRow('Fire Station', 'none', 'ash'); return; }
+    best.distMi = bestD;
+    const minutes = Math.round(bestD * 2.2);
+    setRiskRow('Fire Station', `${escapeHtml(best.name)} &middot; ${bestD.toFixed(1)} mi &middot; ~${minutes} min`, 'wellspring');
+    currentResult.fireStation = best;
+    if (map && map.isStyleLoaded()) addFireMarker(best);
+  } catch (e) {
+    console.warn('fire station failed', e);
+    setRiskRow('Fire Station', 'Overpass unavailable', 'ash');
+  }
+}
+
+// --- NWS forecast (US only) ---
+async function loadNWSForecast(r) {
+  if (r.country && r.country.toLowerCase() !== 'us') { setRiskRow('Weather (NWS)', 'non-US', 'ash'); return; }
+  try {
+    const ptUrl = `https://api.weather.gov/points/${r.lat},${r.lng}`;
+    const pt = await fetch(ptUrl, { headers: { 'User-Agent': 'hipjoy-property-field-view (public)' } });
+    if (!pt.ok) throw new Error('NWS pt ' + pt.status);
+    const ptData = await pt.json();
+    const fcUrl = ptData.properties && ptData.properties.forecast;
+    if (!fcUrl) throw new Error('no forecast url');
+    const fc = await fetch(fcUrl);
+    if (!fc.ok) throw new Error('NWS fc ' + fc.status);
+    const fcData = await fc.json();
+    const periods = fcData.properties && fcData.properties.periods;
+    if (!periods || !periods.length) throw new Error('no periods');
+    const today = periods[0];
+    const tonight = periods[1] || {};
+    const precip = today.probabilityOfPrecipitation && today.probabilityOfPrecipitation.value != null
+      ? today.probabilityOfPrecipitation.value + '%' : '--';
+    setRiskRow('Weather (NWS)', `${escapeHtml(today.shortForecast || '')} &middot; ${today.temperature}&deg;${today.temperatureUnit}`, 'lumen');
+
+    // add a 2nd row underneath for tonight
+    riskFacts.insertAdjacentHTML('beforeend',
+      `<div class="fact-row"><span class="fact-label">Tonight</span><span class="fact-value">${escapeHtml(tonight.shortForecast || '--')} &middot; ${tonight.temperature || '?'}&deg;${tonight.temperatureUnit || ''}</span></div>` +
+      `<div class="fact-row"><span class="fact-label">Precip Today</span><span class="fact-value">${precip}</span></div>` +
+      `<div class="fact-row"><span class="fact-label">Wind</span><span class="fact-value ash">${escapeHtml(today.windSpeed || '--')} ${escapeHtml(today.windDirection || '')}</span></div>`
+    );
+  } catch (e) {
+    console.warn('NWS failed', e);
+    setRiskRow('Weather (NWS)', 'unavailable', 'ash');
+  }
+}
+
+// ============================================================
+// PANEL RENDERING
+// ============================================================
+function renderAddrPanel(r) {
+  addrFacts.innerHTML =
+    `<div class="fact-row"><span class="fact-label">Address</span><span class="fact-value gold">${escapeHtml(r.shortAddr)}</span></div>` +
+    `<div class="fact-row"><span class="fact-label">City</span><span class="fact-value">${escapeHtml(r.city || '--')}</span></div>` +
+    `<div class="fact-row"><span class="fact-label">County</span><span class="fact-value lumen">${escapeHtml(r.county || '--')}</span></div>` +
+    `<div class="fact-row"><span class="fact-label">State</span><span class="fact-value">${escapeHtml(r.state || '--')} ${r.stateCode ? '(' + r.stateCode + ')' : ''}</span></div>` +
+    `<div class="fact-row"><span class="fact-label">ZIP</span><span class="fact-value">${escapeHtml(r.zip || '--')}</span></div>` +
+    `<div class="fact-row"><span class="fact-label">Lat / Lng</span><span class="fact-value ash">${r.lat.toFixed(5)}, ${r.lng.toFixed(5)}</span></div>` +
+    `<div class="fact-row"><span class="fact-label">OSM Display</span><span class="fact-value ash" style="font-size:10px;">${escapeHtml(r.display)}</span></div>`;
+}
+
+function setRiskRow(label, valueHtml, valueClass, html) {
+  // Replace or append matching row
+  const rows = riskFacts.querySelectorAll('.fact-row');
+  let found = null;
+  rows.forEach(row => {
+    const l = row.querySelector('.fact-label');
+    if (l && l.textContent.trim().toLowerCase() === label.toLowerCase()) found = row;
+  });
+  const vCls = valueClass ? ` ${valueClass}` : '';
+  const rowHtml = `<span class="fact-label">${label}</span><span class="fact-value${vCls}">${valueHtml}</span>`;
+  if (found) found.innerHTML = rowHtml;
+  else riskFacts.insertAdjacentHTML('beforeend', `<div class="fact-row">${rowHtml}</div>`);
+}
+
+function renderExtLinks(r) {
+  const addrEnc = encodeURIComponent(r.query);
+  const cityEnc = encodeURIComponent(r.city || '');
+  const stateLow = (r.stateCode || '').toLowerCase();
+  const zip = r.zip || '';
+
+  const links = [
+    { label: 'Zillow', url: `https://www.zillow.com/homes/${addrEnc}_rb/`, cls: 'gold' },
+    { label: 'Redfin', url: zip ? `https://www.redfin.com/zipcode/${encodeURIComponent(zip)}` : `https://www.redfin.com/`, cls: 'gold' },
+    { label: 'Realtor.com', url: `https://www.realtor.com/realestateandhomes-search/${addrEnc}` },
+    { label: 'LoopNet', url: stateLow && r.city ? `https://www.loopnet.com/search/commercial-real-estate/${stateLow}/${cityEnc}/` : 'https://www.loopnet.com/' },
+    { label: 'FEMA MSC', url: `https://msc.fema.gov/portal/search?AddressQuery=${addrEnc}`, cls: 'gold' },
+    { label: 'PropertyShark', url: `https://www.propertyshark.com/mason/Search/?search_token=${addrEnc}` },
+    { label: 'GreatSchools', url: zip ? `https://www.greatschools.org/search/search.zipcode?zip=${encodeURIComponent(zip)}` : 'https://www.greatschools.org/' },
+    { label: 'CrimeGrade', url: zip ? `https://crimegrade.org/safest-places-in-${encodeURIComponent(zip)}/` : 'https://crimegrade.org/' },
+    { label: 'Google Maps', url: `https://www.google.com/maps/search/?api=1&query=${addrEnc}` },
+    { label: 'Street View', url: `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${r.lat},${r.lng}` },
+    { label: 'Bing Birdseye', url: `https://www.bing.com/maps?cp=${r.lat}~${r.lng}&lvl=20&style=h` },
+    { label: 'USGS NLCD', url: `https://www.usgs.gov/centers/eros/science/national-land-cover-database` }
+  ];
+  extLinks.innerHTML = links.map(L =>
+    `<a class="link-chip${L.cls ? ' ' + L.cls : ''}" href="${L.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(L.label)}</a>`
+  ).join('');
+
+  // assessor / clerk
+  const assessor = assessorFor(r);
+  assessorLinks.innerHTML = assessor.length
+    ? assessor.map(L => `<a class="link-chip${L.cls ? ' ' + L.cls : ''}" href="${L.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(L.label)}</a>`).join('')
+    : `<span style="font-size:10px; color:var(--ash);">no preset for ${escapeHtml(r.county || r.state || 'this region')} &middot; use Google search:</span>
+       <a class="link-chip" href="https://www.google.com/search?q=${encodeURIComponent((r.county || '') + ' ' + (r.state || '') + ' county assessor property search')}" target="_blank" rel="noopener noreferrer">Search assessor</a>`;
+}
+
+// state-aware assessor/clerk presets (IL counties first, plus a handful nationally)
+function assessorFor(r) {
+  const out = [];
+  const sc = (r.stateCode || '').toUpperCase();
+  const co = (r.county || '').toLowerCase().replace(/\s+county$/i, '').trim();
+  const addrEnc = encodeURIComponent(r.query);
+
+  // IL counties
+  if (sc === 'IL') {
+    const IL = {
+      'dekalb':   ['https://propertyinfo.dekalbcounty.org/Search.aspx',      'https://dekalbcountygis.org/'],
+      'kendall':  ['https://kendallil.devnetwedge.com/',                      'https://propertytax.co.kendall.il.us/'],
+      'will':     ['https://gis.willcountyillinois.com/Html5Viewer/?viewer=willcounty', 'https://willcountysoa.com/'],
+      'kane':     ['https://kaneil.devnetwedge.com/',                         'https://www.kanecountyassessments.org/'],
+      'dupage':   ['https://www.dupagecounty.gov/government/property_information/', 'https://www.dupagecounty.gov/government/departments/treasurer/'],
+      'cook':     ['https://www.cookcountyassessor.com/address-search',       'https://www.cookcountytreasurer.com/'],
+      'mchenry':  ['https://www.mchenrycountyil.gov/county-government/departments-a-i/assessments', 'https://gis.mchenrycountyil.gov/'],
+      'lake':     ['https://maps.lakecountyil.gov/lakemaps/',                 'https://assessor.lakecountyil.gov/'],
+      'lasalle':  ['https://lasalleil.devnetwedge.com/',                      'https://www.lasallecounty.org/'],
+      'grundy':   ['https://grundyil.devnetwedge.com/',                       'https://www.grundyco.org/'],
+      'kankakee': ['https://propertyinfo.k3county.net/',                      'https://www.k3county.net/']
+    };
+    if (IL[co]) {
+      out.push({ label: `${cap(co)} Co. Assessor`, url: IL[co][0], cls: 'gold' });
+      if (IL[co][1]) out.push({ label: `${cap(co)} Co. GIS / Treas.`, url: IL[co][1] });
+    }
+    out.push({ label: 'IDOI (IL Ins)', url: 'https://idoi.illinois.gov/' });
+  }
+
+  // CA -- common
+  if (sc === 'CA' && co) {
+    out.push({ label: `${cap(co)} Co. CA assessor`, url: `https://www.google.com/search?q=${encodeURIComponent(co + ' county california assessor property search')}` });
+  }
+  // TX
+  if (sc === 'TX' && co) {
+    out.push({ label: `${cap(co)} CAD (TX)`, url: `https://www.google.com/search?q=${encodeURIComponent(co + ' county texas appraisal district search')}` });
+  }
+  // FL
+  if (sc === 'FL' && co) {
+    out.push({ label: `${cap(co)} Co. property appraiser`, url: `https://www.google.com/search?q=${encodeURIComponent(co + ' county florida property appraiser')}` });
+  }
+  // generic state catch-all
+  if (sc && co) {
+    out.push({
+      label: 'Google :: assessor',
+      url: `https://www.google.com/search?q=${encodeURIComponent(co + ' county ' + sc + ' assessor parcel search')}`
+    });
+    out.push({
+      label: 'Google :: deed',
+      url: `https://www.google.com/search?q=${encodeURIComponent(co + ' county ' + sc + ' recorder deed search ' + (r.zip || ''))}`
+    });
+  }
+  return out;
+}
+
+// ============================================================
+// RECENT SEARCHES (localStorage)
+// ============================================================
+function recentList() {
+  try {
+    return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]');
+  } catch (e) { return []; }
+}
+function pushRecent(addr) {
+  let list = recentList().filter(x => x.toLowerCase() !== addr.toLowerCase());
+  list.unshift(addr);
+  if (list.length > MAX_RECENT) list = list.slice(0, MAX_RECENT);
+  try { localStorage.setItem(RECENT_KEY, JSON.stringify(list)); } catch (e) {}
+  renderRecent();
+}
+function renderRecent() {
+  const list = recentList();
+  if (!list.length) {
+    recentEl.innerHTML = `<span style="font-size:10px; color:var(--ash); letter-spacing:0.08em;">(none yet)</span>`;
+    return;
+  }
+  recentEl.innerHTML = list.map(a =>
+    `<span class="recent-chip" data-addr="${escapeAttr(a)}">${escapeHtml(a)}</span>`
+  ).join('') + `<span class="recent-chip" id="clearRecent" style="color:var(--rebel);border-color:rgba(255,90,78,0.32);background:rgba(255,90,78,0.06);">&times; clear</span>`;
+  recentEl.querySelectorAll('.recent-chip').forEach(c => {
+    if (c.id === 'clearRecent') {
+      c.addEventListener('click', () => {
+        try { localStorage.removeItem(RECENT_KEY); } catch(e){}
+        renderRecent();
+      });
+    } else {
+      c.addEventListener('click', () => {
+        addrInput.value = c.dataset.addr;
+        doSearch();
+      });
+    }
+  });
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
+function fmt(n) { return n == null || !isFinite(n) ? '--' : Math.round(n).toLocaleString('en-US'); }
+function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+function cleanCounty(c) { return (c || '').replace(/\s*county\s*$/i, '').trim(); }
+
+function shortenDisplay(g) {
+  const a = g.address || {};
+  const num = a.house_number || '';
+  const road = a.road || a.pedestrian || '';
+  const city = a.city || a.town || a.village || a.hamlet || a.suburb || '';
+  const st = STATE_TO_ABBR[a.state] || a.state || '';
+  const zip = a.postcode || '';
+  let line = `${num} ${road}`.trim();
+  if (city) line += line ? `, ${city}` : city;
+  if (st)   line += line ? ` ${st}` : st;
+  if (zip)  line += ` ${zip}`;
+  return line || g.display_name;
+}
+
+function haversineMi(lat1, lng1, lat2, lng2) {
+  const R = 3958.8;
+  const toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(a));
+}
+
+function centroid(pts) {
+  let x = 0, y = 0;
+  for (const p of pts) { x += p[0]; y += p[1]; }
+  return [x / pts.length, y / pts.length];
+}
+
+// shoelace area on a lng/lat polygon, returns square meters (approx)
+function polygonAreaM2(ringLngLat) {
+  if (ringLngLat.length < 4) return 0;
+  // project to local equirectangular meters
+  const lat0 = ringLngLat[0][1] * Math.PI / 180;
+  const mPerDegLat = 111320;
+  const mPerDegLng = 111320 * Math.cos(lat0);
+  const pts = ringLngLat.map(([lng, lat]) => [lng * mPerDegLng, lat * mPerDegLat]);
+  let area = 0;
+  for (let i = 0; i < pts.length - 1; i++) {
+    area += pts[i][0] * pts[i+1][1] - pts[i+1][0] * pts[i][1];
+  }
+  return Math.abs(area) / 2;
+}
+
+const STATE_TO_ABBR = {
+  'Alabama':'AL','Alaska':'AK','Arizona':'AZ','Arkansas':'AR','California':'CA','Colorado':'CO','Connecticut':'CT',
+  'Delaware':'DE','District of Columbia':'DC','Florida':'FL','Georgia':'GA','Hawaii':'HI','Idaho':'ID','Illinois':'IL',
+  'Indiana':'IN','Iowa':'IA','Kansas':'KS','Kentucky':'KY','Louisiana':'LA','Maine':'ME','Maryland':'MD',
+  'Massachusetts':'MA','Michigan':'MI','Minnesota':'MN','Mississippi':'MS','Missouri':'MO','Montana':'MT',
+  'Nebraska':'NE','Nevada':'NV','New Hampshire':'NH','New Jersey':'NJ','New Mexico':'NM','New York':'NY',
+  'North Carolina':'NC','North Dakota':'ND','Ohio':'OH','Oklahoma':'OK','Oregon':'OR','Pennsylvania':'PA',
+  'Rhode Island':'RI','South Carolina':'SC','South Dakota':'SD','Tennessee':'TN','Texas':'TX','Utah':'UT',
+  'Vermont':'VT','Virginia':'VA','Washington':'WA','West Virginia':'WV','Wisconsin':'WI','Wyoming':'WY'
+};
+
+// ============================================================
+// BOOT
+// ============================================================
+initMap('satellite');
+renderRecent();
+setStatus('Ready &middot; <span class="gold">public data only</span> &middot; no PII stored');
+addrInput.focus();
+</script>
+</body>
+</html>
